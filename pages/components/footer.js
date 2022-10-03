@@ -99,7 +99,7 @@ const Footer = () => {
                     <Grid templateColumns={"repeat(6,1fr)"} gap={10} py={10}>
                          {FooterData.map((d, index) => {
                               return (
-                                   <GridItem>
+                                   <GridItem key={index}>
                                         <Stack>
                                              <Heading variant={"smallHeading"}>
                                                   {d.title}
@@ -168,6 +168,7 @@ const Footer = () => {
                                                                  href={
                                                                       props.href
                                                                  }
+                                                                 key={index}
                                                                  passHref
                                                             >
                                                                  <Link
