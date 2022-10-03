@@ -67,7 +67,11 @@ const CategorySelect = () => {
                     >
                          {categoryCardData.map(({ ...props }, index) => {
                               return (
-                                   <NextLink href={props.href} passHref>
+                                   <NextLink
+                                        href={props.href}
+                                        passHref
+                                        key={index}
+                                   >
                                         <Link>
                                              <GridItem
                                                   bgColor="white"

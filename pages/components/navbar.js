@@ -103,20 +103,19 @@ const Navbar = () => {
                                              height={"100%"}
                                         />
                                         <InputRightElement
-                                             children={
-                                                  <Button
-                                                       size={"xl"}
-                                                       width={"full"}
-                                                       height={"full"}
-                                                       fontSize={"20px"}
-                                                  >
-                                                       <BsSearch className="white__icon" />
-                                                  </Button>
-                                             }
                                              height={"100%"}
                                              bgColor="mainBlossom"
                                              borderRightRadius="10px"
-                                        />
+                                        >
+                                             <Button
+                                                  size={"xl"}
+                                                  width={"full"}
+                                                  height={"full"}
+                                                  fontSize={"20px"}
+                                             >
+                                                  <BsSearch className="white__icon" />
+                                             </Button>{" "}
+                                        </InputRightElement>
                                    </InputGroup>
                                    {/* <Box display={"flex"} flexDirection={"row"}>
                                    <Input
