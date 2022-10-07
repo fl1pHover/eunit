@@ -10,7 +10,6 @@ import {
      Link,
 } from "@chakra-ui/react";
 import React from "react";
-import NextLink from "next/link";
 
 import MainContainer from "../../layout/mainContainer";
 
@@ -67,69 +66,55 @@ const CategorySelect = () => {
                     >
                          {categoryCardData.map(({ ...props }, index) => {
                               return (
-                                   <NextLink
-                                        key={index}
-                                        href={props.href}
-                                        passHref
-                                   >
-                                        <Link>
-                                             <GridItem
-                                                  bgColor="white"
-                                                  p={4}
-                                                  borderRadius={"10px"}
-                                                  boxShadow="md"
-                                                  transition={"0.3s ease"}
-                                                  _hover={{
-                                                       boxShadow: "xl",
-                                                  }}
-                                                  textAlign={"center"}
+                                   <Link key={index} href={props.href}>
+                                        <GridItem
+                                             bgColor="white"
+                                             p={4}
+                                             borderRadius={"10px"}
+                                             boxShadow="md"
+                                             transition={"0.3s ease"}
+                                             _hover={{
+                                                  boxShadow: "xl",
+                                             }}
+                                             textAlign={"center"}
+                                        >
+                                             <Stack
+                                                  key={index}
+                                                  display={"flex"}
+                                                  alignItems={"center"}
+                                                  height="100%"
                                              >
-                                                  <Stack
-                                                       key={index}
-                                                       display={"flex"}
-                                                       alignItems={"center"}
-                                                       height="100%"
+                                                  <AspectRatio
+                                                       width="80%"
+                                                       ratio={1 / 1}
                                                   >
-                                                       <AspectRatio
-                                                            width="80%"
-                                                            ratio={1 / 1}
-                                                       >
-                                                            <Image
-                                                                 src={
-                                                                      props.image
-                                                                 }
-                                                                 width="70%"
-                                                                 borderRadius={
-                                                                      "50%"
-                                                                 }
-                                                            />
-                                                       </AspectRatio>
+                                                       <Image
+                                                            src={props.image}
+                                                            width="70%"
+                                                            borderRadius={"50%"}
+                                                       />
+                                                  </AspectRatio>
 
-                                                       <Stack
-                                                            mt={
-                                                                 "15px !important"
+                                                  <Stack
+                                                       mt={"15px !important"}
+                                                       direction="column"
+                                                       justifyContent={
+                                                            "space-between"
+                                                       }
+                                                       height={"100%"}
+                                                  >
+                                                       <Heading
+                                                            variant={
+                                                                 "smallHeading"
                                                             }
-                                                            direction="column"
-                                                            justifyContent={
-                                                                 "space-between"
-                                                            }
-                                                            height={"100%"}
+                                                            height="40px"
                                                        >
-                                                            <Heading
-                                                                 variant={
-                                                                      "smallHeading"
-                                                                 }
-                                                                 height="40px"
-                                                            >
-                                                                 {
-                                                                      props.categoryName
-                                                                 }
-                                                            </Heading>
-                                                       </Stack>
+                                                            {props.categoryName}
+                                                       </Heading>
                                                   </Stack>
-                                             </GridItem>
-                                        </Link>
-                                   </NextLink>
+                                             </Stack>
+                                        </GridItem>
+                                   </Link>
                               );
                          })}
                     </Grid>

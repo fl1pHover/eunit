@@ -17,7 +17,6 @@ import {
      Text,
 } from "@chakra-ui/react";
 import React from "react";
-import NextLink from "next/link";
 
 import { AiOutlineTwitter } from "react-icons/ai";
 import MainContainer from "../layout/mainContainer";
@@ -26,11 +25,10 @@ import { BiWallet } from "react-icons/bi";
 import { FaRegHeart } from "react-icons/fa";
 import { HiOutlineCalculator } from "react-icons/hi";
 import { IoPersonCircleOutline } from "react-icons/io5";
-import ChakraLink from "../util/nextLink";
 
 const NavItem = ({ text, icon, href }) => {
      return (
-          <ChakraLink href={href}>
+          <Link href={href}>
                <Stack
                     alignItems={"center"}
                     className="nav__item"
@@ -43,7 +41,7 @@ const NavItem = ({ text, icon, href }) => {
                          {text}
                     </Text>
                </Stack>
-          </ChakraLink>
+          </Link>
      );
 };
 
@@ -86,11 +84,9 @@ const Navbar = () => {
                               alignItems="center"
                               justifyContent={"space-between"}
                          >
-                              <NextLink href="/" passHref>
-                                   <Link>
-                                        <Heading>BOM</Heading>
-                                   </Link>
-                              </NextLink>
+                              <Link href="/">
+                                   <Heading>BOM</Heading>
+                              </Link>
 
                               <Flex width={"100%"} mx={"50px !important"}>
                                    <InputGroup height={"40px"} width="100%">
@@ -141,21 +137,20 @@ const Navbar = () => {
                                         gap={5}
                                         // className="navbar__item"
                                    >
-                                        <ChakraLink href={"/wallet"}>
-                                             <>
-                                                  <Flex
-                                                       alignItems={"center"}
-                                                       gap={1}
-                                                       className="nav__item"
-                                                  >
-                                                       <BiWallet className="icon nav__icon" />
-                                                       <Box lineHeight={"1"}>
-                                                            <Text>Хэтэвч</Text>
-                                                            <Text>15000</Text>
-                                                       </Box>
-                                                  </Flex>
-                                             </>
-                                        </ChakraLink>
+                                        <Link href="/wallet">
+                                             <Flex
+                                                  alignItems={"center"}
+                                                  gap={1}
+                                                  className="nav__item"
+                                             >
+                                                  <BiWallet className="icon nav__icon" />
+                                                  <Box lineHeight={"1"}>
+                                                       <Text>Хэтэвч</Text>
+                                                       <Text>15000</Text>
+                                                  </Box>
+                                             </Flex>
+                                        </Link>
+
                                         <NavItem
                                              text={"Bookmark"}
                                              href={"/bookmark"}
@@ -215,50 +210,37 @@ const Navbar = () => {
                                    {navCategoryData.map(
                                         ({ ...props }, index) => {
                                              return (
-                                                  <NextLink
+                                                  <Link
                                                        href={props.href}
                                                        key={index}
-                                                       passHref
+                                                       py={3}
+                                                       px={4}
+                                                       color="white"
+                                                       _hover={{
+                                                            bgColor: "white",
+                                                            color: "mainBlossom",
+                                                       }}
                                                   >
-                                                       <Link
-                                                            py={3}
-                                                            px={4}
-                                                            color="white"
-                                                            _hover={{
-                                                                 bgColor: "white",
-                                                                 color: "mainBlossom",
-                                                            }}
-                                                       >
-                                                            <Text
-                                                                 color={
-                                                                      "inherit"
-                                                                 }
-                                                            >
-                                                                 {
-                                                                      props.categoryName
-                                                                 }
-                                                            </Text>
-                                                       </Link>
-                                                  </NextLink>
+                                                       <Text color={"inherit"}>
+                                                            {props.categoryName}
+                                                       </Text>
+                                                  </Link>
                                              );
                                         }
                                    )}
                               </Stack>
                               <Stack direction={"row"}>
-                                   <NextLink href={"/feedback"} passHref>
-                                        <Link>
-                                             <Button variant={"whiteButton"}>
-                                                  Санал хүсэлт
-                                             </Button>
-                                        </Link>
-                                   </NextLink>
-                                   <NextLink href={"/premium"} passHref>
-                                        <Link>
-                                             <Button variant={"blackButton"}>
-                                                  Premium
-                                             </Button>
-                                        </Link>
-                                   </NextLink>
+                                   <Link href={"/feedback"}>
+                                        <Button variant={"whiteButton"}>
+                                             Санал хүсэлт
+                                        </Button>
+                                   </Link>
+
+                                   <Link href={"/premium"}>
+                                        <Button variant={"blackButton"}>
+                                             Premium
+                                        </Button>
+                                   </Link>
                               </Stack>
                          </Stack>
                     </MainContainer>

@@ -10,7 +10,6 @@ import {
      Flex,
 } from "@chakra-ui/react";
 import React from "react";
-import NextLink from "next/link";
 import MainContainer from "../layout/mainContainer";
 import { BsFacebook, BsTwitter, BsYoutube } from "react-icons/bs";
 import { GrInstagram } from "react-icons/gr";
@@ -108,24 +107,20 @@ const Footer = () => {
                                                   d.footerItem.map((a, i) => {
                                                        return (
                                                             <Stack key={i}>
-                                                                 <NextLink
+                                                                 <Link
                                                                       href={
                                                                            a.href
                                                                       }
-                                                                      passHref
+                                                                      _hover={{
+                                                                           color: "mainBlossom",
+                                                                      }}
                                                                  >
-                                                                      <Link
-                                                                           _hover={{
-                                                                                color: "mainBlossom",
-                                                                           }}
-                                                                      >
-                                                                           <Text>
-                                                                                {
-                                                                                     a.text
-                                                                                }
-                                                                           </Text>
-                                                                      </Link>
-                                                                 </NextLink>
+                                                                      <Text>
+                                                                           {
+                                                                                a.text
+                                                                           }
+                                                                      </Text>
+                                                                 </Link>
                                                             </Stack>
                                                        );
                                                   })}
@@ -164,31 +159,27 @@ const Footer = () => {
                                              {footerIcon.map(
                                                   ({ ...props }, index) => {
                                                        return (
-                                                            <NextLink
+                                                            <Link
                                                                  href={
                                                                       props.href
                                                                  }
                                                                  key={index}
-                                                                 passHref
+                                                                 _hover={{
+                                                                      color: "mainBlossom",
+                                                                      transform:
+                                                                           "scale(1.2)",
+                                                                 }}
                                                             >
-                                                                 <Link
-                                                                      _hover={{
-                                                                           color: "mainBlossom",
-                                                                           transform:
-                                                                                "scale(1.2)",
-                                                                      }}
+                                                                 <Text
+                                                                      fontSize={
+                                                                           "18px"
+                                                                      }
                                                                  >
-                                                                      <Text
-                                                                           fontSize={
-                                                                                "18px"
-                                                                           }
-                                                                      >
-                                                                           {
-                                                                                props.icon
-                                                                           }
-                                                                      </Text>
-                                                                 </Link>
-                                                            </NextLink>
+                                                                      {
+                                                                           props.icon
+                                                                      }
+                                                                 </Text>
+                                                            </Link>
                                                        );
                                                   }
                                              )}

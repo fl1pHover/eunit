@@ -55,16 +55,14 @@ const SwiperHeader = () => {
                     {headerImageData.map(({ ...props }, index) => {
                          return (
                               <SwiperSlide key={index}>
-                                   <NextLink href={props.href} passHref>
-                                        <Link>
-                                             <Image
-                                                  src={props.image}
-                                                  width="100%"
-                                                  height={"100%"}
-                                                  objectFit="cover"
-                                             />
-                                        </Link>
-                                   </NextLink>
+                                   <Link href={props.href}>
+                                        <Image
+                                             src={props.image}
+                                             width="100%"
+                                             height={"100%"}
+                                             objectFit="cover"
+                                        />
+                                   </Link>
                               </SwiperSlide>
                          );
                     })}
