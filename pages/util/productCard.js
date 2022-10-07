@@ -23,7 +23,7 @@ import { BiArea } from "react-icons/bi";
 const ProductCard = () => {
      return (
           <NextLink href="/product" passHref justifyContent="center">
-               <Link>
+               <Link href="/">
                     <Box
                          pos="relative"
                          bgColor={"white"}
