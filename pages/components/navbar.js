@@ -28,9 +28,9 @@ import { HiOutlineCalculator } from "react-icons/hi";
 import { IoPersonCircleOutline } from "react-icons/io5";
 import ChakraLink from "../util/nextLink";
 
-const NavItem = ({ text, icon }) => {
+const NavItem = ({ text, icon, href }) => {
      return (
-          <ChakraLink href={"bookmark"}>
+          <ChakraLink href={href}>
                <Stack
                     alignItems={"center"}
                     className="nav__item"
@@ -114,7 +114,7 @@ const Navbar = () => {
                                                   fontSize={"20px"}
                                              >
                                                   <BsSearch className="white__icon" />
-                                             </Button>{" "}
+                                             </Button>
                                         </InputRightElement>
                                    </InputGroup>
                                    {/* <Box display={"flex"} flexDirection={"row"}>
@@ -158,18 +158,21 @@ const Navbar = () => {
                                         </ChakraLink>
                                         <NavItem
                                              text={"Bookmark"}
+                                             href={"/bookmark"}
                                              icon={
                                                   <FaRegHeart className="icon nav__icon" />
                                              }
                                         />
                                         <NavItem
                                              text={"Үнэлгээ"}
+                                             href={"/estimate"}
                                              icon={
                                                   <HiOutlineCalculator className="icon nav__icon" />
                                              }
                                         />
                                         <NavItem
                                              text={"Бүртгүүлэх"}
+                                             href={"/register"}
                                              icon={
                                                   <IoPersonCircleOutline className="icon nav__icon" />
                                              }
@@ -202,9 +205,13 @@ const Navbar = () => {
                               display={"flex"}
                               justifyContent={"space-between"}
                               alignItems={"center"}
-                              py="5px"
+                              py={1}
                          >
-                              <Stack direction={"row"} py={1}>
+                              <Stack
+                                   direction={"row"}
+                                   borderColor="mainBlossom"
+                                   borderWidth={1}
+                              >
                                    {navCategoryData.map(
                                         ({ ...props }, index) => {
                                              return (
@@ -214,14 +221,13 @@ const Navbar = () => {
                                                        passHref
                                                   >
                                                        <Link
-                                                            py={2}
+                                                            py={3}
                                                             px={4}
                                                             color="white"
                                                             _hover={{
                                                                  bgColor: "white",
                                                                  color: "mainBlossom",
                                                             }}
-                                                            borderRadius="2px"
                                                        >
                                                             <Text
                                                                  color={

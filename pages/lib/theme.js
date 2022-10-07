@@ -4,7 +4,7 @@ const styles = {
      global: {
           body: {
                bg: "#eef0f2",
-               color: "#181818",
+               color: "#36454f",
           },
      },
      // global: {
@@ -22,7 +22,7 @@ const styles = {
 const components = {
      Text: {
           baseStyle: {
-               fontSize: "13px",
+               fontSize: "14px",
           },
      },
 
@@ -56,7 +56,7 @@ const components = {
                     px: "20px",
                },
                blackButton: {
-                    bg: "black",
+                    bg: "mainBlue",
                     color: "white",
                     px: "20px",
                },
@@ -69,19 +69,47 @@ const components = {
           },
           variants: {
                smallHeading: { fontSize: "16px" },
+               mediumHeading: {
+                    fontSize: "20px",
+               },
+          },
+     },
+     Input: {
+          baseStyle: {
+               field: {
+                    bg: "red.200",
+               },
+               addon: {
+                    border: "#181818",
+               },
+               borderColor: "#181818",
           },
      },
 };
 
 const textStyles = {
-     // asd
+     smallHeading: {
+          fontSize: "30px",
+     },
 };
-
+const Input = {
+     baseStyle: {
+          field: {
+               borderColor: "#181818",
+               _hover: {
+                    borderColor: "#181818",
+               },
+          },
+     },
+     sizes: {},
+     defaultProps: {},
+};
 const colors = {
      bgGrey: "#eef0f2",
      grey: "#676767",
      dark: "#181818",
-     mainBlossom: "#ff6263",
+     mainBlossom: "#1d1e44",
+     mainBlue: "#4b65f6",
 };
 
 const theme = extendTheme({
@@ -90,5 +118,6 @@ const theme = extendTheme({
      // shadows,
      textStyles,
      colors,
+     Input,
 });
 export default theme;
