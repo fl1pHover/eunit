@@ -1,24 +1,20 @@
-import React from "react";
-import NextLink from "next/link";
 import {
      AspectRatio,
      Box,
-     GridItem,
+     Flex,
      Heading,
      Image,
      Link,
-     Flex,
-     Skeleton,
-     SkeletonCircle,
-     SkeletonText,
      Stack,
      Text,
 } from "@chakra-ui/react";
+import NextLink from "next/link";
+import React from "react";
 
+import { BiArea, BiDoorOpen } from "react-icons/bi";
+import { FiCamera } from "react-icons/fi";
 import { IoBedOutline } from "react-icons/io5";
 import { TbBath } from "react-icons/tb";
-import { BiDoorOpen } from "react-icons/bi";
-import { BiArea } from "react-icons/bi";
 
 const ProductCard = () => {
      return (
@@ -61,14 +57,19 @@ const ProductCard = () => {
                                    >
                                         Logo
                                    </Text>
-                                   <Text
-                                        bgColor={"white"}
+                                   <Flex
+                                        bgColor={"mainBlossom"}
                                         px={2}
                                         py={1}
                                         borderRadius="5px"
+                                        color="white"
+                                        fontWeight={"bold"}
+                                        gap={1}
+                                        alignItems="center"
                                    >
-                                        Type
-                                   </Text>
+                                        <FiCamera />
+                                        <Text>5</Text>
+                                   </Flex>
                               </Stack>
                          </Box>
                          <Stack p={3}>

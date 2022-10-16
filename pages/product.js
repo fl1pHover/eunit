@@ -1,6 +1,7 @@
 import {
      AspectRatio,
      Box,
+     Button,
      Checkbox,
      Flex,
      Grid,
@@ -17,6 +18,8 @@ import React from "react";
 
 import MainContainer from "./layout/mainContainer";
 import ProductCard from "./util/productCard";
+
+import Estimator from "./util/estimator";
 
 import { FaRegHeart } from "react-icons/fa";
 const array = [...Array(700)];
@@ -70,7 +73,10 @@ const Product = () => {
                                    <Heading variant={"smallHeading"} mb={2}>
                                         Зарах & Түрээслүүлэх
                                    </Heading>
-                                   <Checkbox colorScheme={"red"} defaultChecked>
+                                   <Checkbox
+                                        borderColor={"mainBlue"}
+                                        defaultChecked
+                                   >
                                         Зарна
                                    </Checkbox>
                                    <Checkbox>Түрээслүүлнэ</Checkbox>
@@ -90,7 +96,12 @@ const Product = () => {
                                    <Heading variant={"smallHeading"}>
                                         Нэмэлт хайлт
                                    </Heading>
-                                   <Select placeholder="Дүүрэг">
+                                   <Select
+                                        placeholder="Дүүрэг"
+                                        variant="outline"
+                                        borderWidth="2px"
+                                        color={"mainBlossom"}
+                                   >
                                         <option value="option1">
                                              Option 1
                                         </option>
@@ -101,51 +112,56 @@ const Product = () => {
                                              Option 3
                                         </option>
                                    </Select>
-                                   <Flex>
+                                   <Flex alignItems={"center"} gap={2}>
                                         <Input
                                              type="number"
-                                             variant="outline"
-                                             borderColor={"bgGrey"}
-                                             borderWidth="2px"
-                                        />
-                                        <Input
-                                             type="number"
-                                             variant="outline"
-                                             borderColor={"bgGrey"}
-                                             borderWidth="2px"
-                                        />
-                                   </Flex>
-                                   <Flex>
-                                        <Input
                                              placeholder="Дээд"
                                              variant="outline"
                                              borderWidth="2px"
-                                             type="number"
                                         />
+                                        <Text>-</Text>
                                         <Input
+                                             type="number"
                                              placeholder="Доод"
                                              variant="outline"
-                                             borderColor={"bgGrey"}
                                              borderWidth="2px"
-                                             type="number"
                                         />
                                    </Flex>
+                                   <Flex alignItems={"center"} gap={2}>
+                                        <Input
+                                             type="number"
+                                             placeholder="Дээд"
+                                             variant="outline"
+                                             borderWidth="2px"
+                                        />
+                                        <Text>-</Text>
+                                        <Input
+                                             type="number"
+                                             placeholder="Доод"
+                                             variant="outline"
+                                             borderWidth="2px"
+                                        />
+                                   </Flex>
+                                   <Button variant={"blueButton"} mx={4}>
+                                        Хайх
+                                   </Button>
                               </FilterStack>
                          </Box>
+                         {/* <Estimator /> */}
 
                          {/* Main product */}
                          <Box
                               maxWidth={"75%"}
                               flex="0 0 75%"
                               bgColor={"white"}
-                              p={10}
+                              px={10}
+                              py={5}
                               borderRadius="5px"
                          >
+                              {/*Product */}
                               <Heading variant={"mediumHeading"}>
                                    Академи хотхон 3 өрөө байр зарна.
                               </Heading>
-
-                              {/*Product */}
                               <Grid
                                    templateColumns="repeat(2,1fr)"
                                    gap={10}
@@ -157,10 +173,15 @@ const Product = () => {
                                              direction={"row"}
                                              justifyContent="space-between"
                                              alignItems={"center"}
+                                             mb={2}
                                         >
-                                             <Text>
-                                                  Зарын огноо: 2022.09.21 15:53
-                                             </Text>
+                                             <Stack direction={"row"}>
+                                                  <Text>
+                                                       Зарын огноо: 2022.09.21
+                                                       15:53
+                                                  </Text>
+                                                  <Text>Зарын дугаар: 1</Text>
+                                             </Stack>
                                              <Text>
                                                   <IconButton
                                                        aria-label="Search database"
@@ -195,6 +216,12 @@ const Product = () => {
                                              <ProductInfo />
                                              <ProductInfo />
                                              <ProductInfo />
+                                             <ProductInfo />
+                                             <ProductInfo />
+                                             <ProductInfo />
+                                             <ProductInfo />
+                                             <ProductInfo />
+                                             <ProductInfo />
                                         </Grid>
                                    </GridItem>
                               </Grid>
@@ -206,9 +233,22 @@ const Product = () => {
                     </Stack>
                </MainContainer>
                <MainContainer py={"50px"}>
-                    <Heading variant="smallHeader" mb={5}>
-                         Санал болгох зарууд
-                    </Heading>
+                    <Stack direction={"row"} display={"inline-flex"}>
+                         <Heading variant="smallHeader" mb={5}>
+                              Санал болгох зарууд
+                         </Heading>
+                         <Select
+                              placeholder="Дүүрэг"
+                              variant="outline"
+                              borderWidth="2px"
+                              color={"mainBlossom"}
+                         >
+                              <option value="option1">Option 1</option>
+                              <option value="option2">Option 2</option>
+                              <option value="option3">Option 3</option>
+                         </Select>
+                    </Stack>
+
                     <Grid
                          direction={"row"}
                          templateColumns="repeat(auto-fill, minmax(230px, 1fr))"

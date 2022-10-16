@@ -1,31 +1,23 @@
 import {
      Box,
      Button,
-     Center,
-     Divider,
      Flex,
-     Grid,
-     GridItem,
      Heading,
-     Icon,
      Input,
      InputGroup,
      InputRightElement,
      Link,
-     Select,
      Stack,
      Text,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 //TODO Container
 import MainContainer from "../layout/mainContainer";
-// import BarContainer from "../layout/barContainer";
 
 //TODO Icons
-import { AiOutlineTwitter } from "react-icons/ai";
-import { BsSearch } from "react-icons/bs";
 import { BiWallet } from "react-icons/bi";
+import { BsSearch } from "react-icons/bs";
 import { FaRegHeart } from "react-icons/fa";
 import { HiOutlineCalculator } from "react-icons/hi";
 import { IoPersonCircleOutline } from "react-icons/io5";
@@ -81,9 +73,25 @@ const navCategoryData = [
 ];
 
 const Navbar = () => {
+     const [sticky, setSticky] = useState(false);
+
+     useEffect(() => {
+          const handleScroll = () => {
+               setSticky(window.scrollY > 0);
+          };
+          window.addEventListener("scroll", handleScroll);
+          return () => window.removeEventListener("scroll", handleScroll);
+     });
+
      return (
-          <>
-               <Box bgColor={"white"} as={"section"} id="navbar" px={"-100px"}>
+          <Box
+               id="navbar"
+               as={"section"}
+               pos={sticky ? "sticky" : "relative"}
+               top="0"
+               zIndex={"20"}
+          >
+               <Box bgColor={"white"} as={"article"} px={"-100px"}>
                     <MainContainer>
                          <Stack
                               direction={"row"}
@@ -205,7 +213,12 @@ const Navbar = () => {
                          </Stack>
                     </MainContainer>
                </Box>
-               <Box bgColor={"mainBlossom"} as="article" id="nav__category">
+               <Box
+                    bgColor={"mainBlossom"}
+                    as="article"
+                    id="nav__category"
+                    pos={sticky ? "wrap" : "unwrap"}
+               >
                     <MainContainer>
                          <Stack
                               direction={"row"}
@@ -249,7 +262,7 @@ const Navbar = () => {
                                    </Link>
 
                                    <Link href={"/premium"}>
-                                        <Button variant={"blackButton"}>
+                                        <Button variant={"blueButton"}>
                                              Premium
                                         </Button>
                                    </Link>
@@ -257,7 +270,7 @@ const Navbar = () => {
                          </Stack>
                     </MainContainer>
                </Box>
-          </>
+          </Box>
      );
 };
 
