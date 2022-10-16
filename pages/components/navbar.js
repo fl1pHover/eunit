@@ -20,7 +20,7 @@ import React from "react";
 
 //TODO Container
 import MainContainer from "../layout/mainContainer";
-import BarContainer from "../layout/barContainer";
+// import BarContainer from "../layout/barContainer";
 
 //TODO Icons
 import { AiOutlineTwitter } from "react-icons/ai";
