@@ -32,7 +32,7 @@ const ProductCard = () => {
                          transition="0.3s ease"
                          flexShrink="1"
                          _hover={{
-                              transform: "scale(1.3)",
+                              transform: "scale(1.15)",
                               boxShadow: "md",
                               zIndex: "10",
                          }}

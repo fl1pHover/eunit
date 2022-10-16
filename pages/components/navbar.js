@@ -18,8 +18,12 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 
-import { AiOutlineTwitter } from "react-icons/ai";
+//TODO Container
 import MainContainer from "../layout/mainContainer";
+import BarContainer from "../layout/barContainer";
+
+//TODO Icons
+import { AiOutlineTwitter } from "react-icons/ai";
 import { BsSearch } from "react-icons/bs";
 import { BiWallet } from "react-icons/bi";
 import { FaRegHeart } from "react-icons/fa";
@@ -37,7 +41,11 @@ const NavItem = ({ text, icon, href }) => {
                     borderRadius="20px"
                >
                     {icon}
-                    <Text marginTop={"0px !important"} lineHeight={1}>
+                    <Text
+                         marginTop={"3px !important"}
+                         textStyle={""}
+                         lineHeight={1}
+                    >
                          {text}
                     </Text>
                </Stack>
@@ -79,7 +87,7 @@ const Navbar = () => {
                     <MainContainer>
                          <Stack
                               direction={"row"}
-                              py={3}
+                              py={2}
                               width={"full"}
                               alignItems="center"
                               justifyContent={"space-between"}
@@ -91,7 +99,7 @@ const Navbar = () => {
                               <Flex width={"100%"} mx={"50px !important"}>
                                    <InputGroup height={"40px"} width="100%">
                                         <Input
-                                             placeholder="Зараа хайх.."
+                                             placeholder="Хайх.."
                                              borderColor={"#d9dedc"}
                                              bgColor={"bgGrey"}
                                              borderRadius={"10px"}
@@ -108,6 +116,10 @@ const Navbar = () => {
                                                   width={"full"}
                                                   height={"full"}
                                                   fontSize={"20px"}
+                                                  background={"none"}
+                                                  _hover={{
+                                                       opacity: "0.8",
+                                                  }}
                                              >
                                                   <BsSearch className="white__icon" />
                                              </Button>
@@ -127,9 +139,9 @@ const Navbar = () => {
                               {/* NAVBAR RIGHT */}
                               <Flex float={"right"}>
                                    <Flex
-                                        borderColor={"bgGrey"}
-                                        borderWidth={"2px"}
-                                        borderRadius="20px"
+                                        // borderColor={"bgGrey"}
+                                        // borderWidth={"2px"}
+                                        // borderRadius="20px"
                                         height={"full"}
                                         alignItems={"center"}
                                         px={10}
