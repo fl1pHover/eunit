@@ -36,7 +36,7 @@ const FilterStack = ({ children }) => {
 
 const ProductInfo = () => {
      return (
-          <GridItem>
+          <GridItem className="product__info">
                <Stack
                     direction={"row"}
                     p={2}
@@ -175,12 +175,13 @@ const Product = () => {
                                    Академи хотхон 3 өрөө байр зарна.
                               </Heading>
                               <Grid
+                                   className="product__content-wrapper"
                                    templateColumns="repeat(2,1fr)"
                                    gap={10}
                                    mt={5}
                               >
                                    {/* Image and desription */}
-                                   <GridItem>
+                                   <GridItem className="product__image-wrapper">
                                         <Stack
                                              direction={"row"}
                                              justifyContent="space-between"
@@ -201,6 +202,7 @@ const Product = () => {
                                                        _hover={{
                                                             color: "red",
                                                        }}
+                                                       size="lg"
                                                        onClick={() =>
                                                             toast({
                                                                  title: "Зар хадгалагдлаа.",
