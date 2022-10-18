@@ -52,6 +52,7 @@ const Navbar = () => {
      useEffect(() => {
           const handleScroll = () => {
                setSticky(window.scrollY > 0);
+               // else !setSticky(window.scrollY > 0);
           };
           window.addEventListener("scroll", handleScroll);
           return () => window.removeEventListener("scroll", handleScroll);
@@ -65,8 +66,20 @@ const Navbar = () => {
                top="0"
                zIndex={"20"}
           >
-               <Box width={"100%"} bgColor="mainBlue" p={2}></Box>
-               <Box bgColor={"white"} as={"article"} px={"-100px"}>
+               <Box
+                    width={"100%"}
+                    bgColor="mainBlue"
+                    transition={"0.3s ease"}
+                    p={!sticky ? 3 : 0}
+               ></Box>
+               <Box
+                    bgColor={"white"}
+                    boxShadow="md"
+                    as={"article"}
+                    px={"-100px"}
+                    position="sticky"
+                    zIndex={"20"}
+               >
                     <MainContainer>
                          <Stack
                               direction={"row"}
@@ -199,7 +212,9 @@ const Navbar = () => {
                     bgColor={"mainBlossom"}
                     as="article"
                     id="nav__category"
-                    pos={sticky ? "wrap" : "unwrap"}
+                    className={sticky ? "wrap" : "unwrap"}
+                    position="sticky"
+                    zIndex={"19"}
                >
                     <MainContainer>
                          <Stack

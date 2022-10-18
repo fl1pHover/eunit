@@ -16,6 +16,10 @@ a {
      transition: 0.3s ease;
 }
 
+html {
+     scroll-behavior: smooth;
+}
+
 .white__icon {
      color: white;
 }
@@ -34,6 +38,18 @@ a {
      height: 100%;
 }
 .navbar .sticky {
-     position: sticky;
+     position: fixed;
      top: 0;
+}
+
+.wrap,
+.unwrap {
+     transition: 0.4s ease;
+}
+.wrap {
+     transform: translateY(-100%);
+}
+
+.scroll__top {
+     color: red;
 }

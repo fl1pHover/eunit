@@ -25,6 +25,7 @@ import { FaHeart } from "react-icons/fa";
 const array = [...Array(700)];
 
 import { categories } from "../data/categories";
+import ScrollTop from "./util/scrollTop";
 
 const FilterStack = ({ children }) => {
      return (
@@ -55,6 +56,7 @@ const Product = () => {
      const toast = useToast();
      return (
           <Box my={5} as="section" id="main__product">
+               <ScrollTop />
                <MainContainer>
                     <Stack direction={"row"} py={2} gap={3}>
                          {/* Filter Box */}
