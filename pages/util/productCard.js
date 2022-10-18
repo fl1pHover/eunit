@@ -37,7 +37,7 @@ const ProductCard = () => {
           >
                <Box>
                     <Box position={"relative"}>
-                         <Link href="/">
+                         <Link href="/product">
                               <AspectRatio ratio={5 / 4}>
                                    <Image
                                         src="./images/HeaderSlider/1.jpg"
