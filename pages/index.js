@@ -1,19 +1,18 @@
-import Head from "next/head";
 
-import styles from "../styles/Home.module.scss";
-import Navbar from "./components/navbar";
-import SwiperHeader from "./components/home/swiperHeader";
-import CategorySelect from "./components/home/categorySelect";
 import AdContent from "./components/home/adContent";
+import CategorySelect from "./components/home/categorySelect";
+import SwiperHeader from "./components/home/swiperHeader";
 
 export default function Home() {
+    
      return (
           //TODO asdasd
           // asdasd
           <>
+             
                <SwiperHeader></SwiperHeader>
                <CategorySelect />
-               <AdContent />
+               <AdContent />{" "}
           </>
      );
 }

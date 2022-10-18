@@ -21,6 +21,7 @@ import { BsSearch } from "react-icons/bs";
 import { FaRegHeart } from "react-icons/fa";
 import { HiOutlineCalculator } from "react-icons/hi";
 import { IoPersonCircleOutline } from "react-icons/io5";
+import { categories } from "../../data/categories";
 
 const NavItem = ({ text, icon, href }) => {
      return (
@@ -45,33 +46,6 @@ const NavItem = ({ text, icon, href }) => {
      );
 };
 
-const navCategoryData = [
-     {
-          categoryName: "Үл хөдлөх хөрөнгө",
-          href: "/real-state",
-     },
-     {
-          categoryName: "Тээврийн хэрэгсэл",
-          href: "/vehicle",
-     },
-     {
-          categoryName: "Компьютер",
-          href: "/computer",
-     },
-     {
-          categoryName: "Гар утас",
-          href: "phone",
-     },
-     {
-          categoryName: "Цахилгаан бараа",
-          href: "electronic",
-     },
-     {
-          categoryName: "Гэр ахуйн бараа",
-          href: "household-items",
-     },
-];
-
 const Navbar = () => {
      const [sticky, setSticky] = useState(false);
 
@@ -91,6 +65,7 @@ const Navbar = () => {
                top="0"
                zIndex={"20"}
           >
+               <Box width={"100%"} bgColor="mainBlue" p={2}></Box>
                <Box bgColor={"white"} as={"article"} px={"-100px"}>
                     <MainContainer>
                          <Stack
@@ -104,7 +79,11 @@ const Navbar = () => {
                                    <Heading>BOM</Heading>
                               </Link>
 
-                              <Flex width={"100%"} mx={"50px !important"}>
+                              <Flex
+                                   width={"100%"}
+                                   mx={"50px !important"}
+                                   ml={{ xl: "150px !important" }}
+                              >
                                    <InputGroup height={"40px"} width="100%">
                                         <Input
                                              placeholder="Хайх.."
@@ -113,6 +92,9 @@ const Navbar = () => {
                                              borderRadius={"10px"}
                                              focusBorderColor={"mainBlossom"}
                                              height={"100%"}
+                                             _hover={{
+                                                  background: "white",
+                                             }}
                                         />
                                         <InputRightElement
                                              height={"100%"}
@@ -232,27 +214,25 @@ const Navbar = () => {
                                    borderColor="mainBlossom"
                                    borderWidth={1}
                               >
-                                   {navCategoryData.map(
-                                        ({ ...props }, index) => {
-                                             return (
-                                                  <Link
-                                                       href={props.href}
-                                                       key={index}
-                                                       py={3}
-                                                       px={4}
-                                                       color="white"
-                                                       _hover={{
-                                                            bgColor: "white",
-                                                            color: "mainBlossom",
-                                                       }}
-                                                  >
-                                                       <Text color={"inherit"}>
-                                                            {props.categoryName}
-                                                       </Text>
-                                                  </Link>
-                                             );
-                                        }
-                                   )}
+                                   {categories.map(({ ...props }, index) => {
+                                        return (
+                                             <Link
+                                                  href={props.href}
+                                                  key={index}
+                                                  py={3}
+                                                  px={4}
+                                                  color="white"
+                                                  _hover={{
+                                                       bgColor: "white",
+                                                       color: "mainBlossom",
+                                                  }}
+                                             >
+                                                  <Text color={"inherit"}>
+                                                       {props.category}
+                                                  </Text>
+                                             </Link>
+                                        );
+                                   })}
                               </Stack>
                               <Stack direction={"row"}>
                                    <Link href={"/feedback"}>

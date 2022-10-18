@@ -10,19 +10,21 @@ import {
      IconButton,
      Image,
      Input,
+     Link,
      Select,
      Stack,
      Text,
+     useToast,
 } from "@chakra-ui/react";
 import React from "react";
 
 import MainContainer from "./layout/mainContainer";
 import ProductCard from "./util/productCard";
 
-import Estimator from "./util/estimator";
-
-import { FaRegHeart } from "react-icons/fa";
+import { FaHeart } from "react-icons/fa";
 const array = [...Array(700)];
+
+import { categories } from "../data/categories";
 
 const FilterStack = ({ children }) => {
      return (
@@ -50,6 +52,7 @@ const ProductInfo = () => {
 };
 
 const Product = () => {
+     const toast = useToast();
      return (
           <Box my={5} as="section" id="main__product">
                <MainContainer>
@@ -66,7 +69,16 @@ const Product = () => {
                                    <Heading variant={"smallHeading"} mb={2}>
                                         Lorem, ipsum dolor.
                                    </Heading>
-                                   <Text>asdasd</Text>
+                                   {categories.map(({ ...props }, id) => {
+                                        return (
+                                             <Link
+                                                  href={props.href}
+                                                  key={props.id}
+                                             >
+                                                  <Text>{props.category}</Text>
+                                             </Link>
+                                        );
+                                   })}
                               </FilterStack>
 
                               <FilterStack>
@@ -185,10 +197,18 @@ const Product = () => {
                                              <Text>
                                                   <IconButton
                                                        aria-label="Search database"
-                                                       icon={<FaRegHeart />}
+                                                       icon={<FaHeart />}
                                                        _hover={{
                                                             color: "red",
                                                        }}
+                                                       onClick={() =>
+                                                            toast({
+                                                                 title: "Зар хадгалагдлаа.",
+                                                                 status: "success",
+                                                                 duration: 9000,
+                                                                 isClosable: true,
+                                                            })
+                                                       }
                                                   />
                                                   {/* Хандалт: lorem */}
                                              </Text>
@@ -233,20 +253,24 @@ const Product = () => {
                     </Stack>
                </MainContainer>
                <MainContainer py={"50px"}>
-                    <Stack direction={"row"} display={"inline-flex"}>
+                    <Stack
+                         direction={"row"}
+                         display={"flex"}
+                         justifyContent={"space-between"}
+                    >
                          <Heading variant="smallHeader" mb={5}>
                               Санал болгох зарууд
                          </Heading>
-                         <Select
-                              placeholder="Дүүрэг"
-                              variant="outline"
-                              borderWidth="2px"
-                              color={"mainBlossom"}
-                         >
-                              <option value="option1">Option 1</option>
-                              <option value="option2">Option 2</option>
-                              <option value="option3">Option 3</option>
-                         </Select>
+                         <Box>
+                              <Select
+                                   placeholder="Өрөөгөөр"
+                                   variant="outline"
+                                   borderWidth="2px"
+                                   color={"mainBlossom"}
+                              >
+                                   <option value="option1">Байршлаар</option>
+                              </Select>
+                         </Box>
                     </Stack>
 
                     <Grid
