@@ -1,6 +1,6 @@
+import { Image, Stack, Text } from "@chakra-ui/react";
 import React from "react";
-import { Text, Image, Stack } from "@chakra-ui/react";
-import MainContainer from "./layout/mainContainer";
+import MainContainer from "../layout/mainContainer";
 
 const PageNot = () => {
      return (

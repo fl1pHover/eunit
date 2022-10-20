@@ -11,7 +11,7 @@ import {
      Tooltip,
      useToast,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
 
 import { BiArea, BiDoorOpen, BiGitCompare } from "react-icons/bi";
 import { FaHeart } from "react-icons/fa";
@@ -21,6 +21,8 @@ import { TbBath } from "react-icons/tb";
 
 const ProductCard = () => {
      const toast = useToast();
+     const [booked, setBooked] = new useState();
+
      return (
           <Box
                pos="relative"
@@ -61,12 +63,15 @@ const ProductCard = () => {
                                         p={1}
                                         onClick={() =>
                                              toast({
-                                                  title: "Зар хадгалагдлаа.",
+                                                  title: "Account created.",
+                                                  description:
+                                                       "We've created your account for you.",
                                                   status: "success",
                                                   duration: 9000,
                                                   isClosable: true,
                                              })
                                         }
+                                     
                                    />
                               </Tooltip>
                               <Tooltip label="Харьцуулах">

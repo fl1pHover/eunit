@@ -21,7 +21,7 @@ import { BsSearch } from "react-icons/bs";
 import { FaRegHeart } from "react-icons/fa";
 import { HiOutlineCalculator } from "react-icons/hi";
 import { IoPersonCircleOutline } from "react-icons/io5";
-import { categories } from "../../data/categories";
+import { categories } from "../data/categories";
 
 const NavItem = ({ text, icon, href }) => {
      return (

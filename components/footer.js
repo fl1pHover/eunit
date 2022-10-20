@@ -1,23 +1,23 @@
 import {
      Box,
+     Flex,
      Grid,
      GridItem,
-     Stack,
-     Text,
-     Link,
      Heading,
      Image,
-     Flex,
+     Link,
+     Stack,
+     Text,
 } from "@chakra-ui/react";
 import React from "react";
-import MainContainer from "../layout/mainContainer";
 import { BsFacebook, BsTwitter, BsYoutube } from "react-icons/bs";
 import { GrInstagram } from "react-icons/gr";
+import MainContainer from "../layout/mainContainer";
 
 const footerIcon = [
      {
           icon: <BsFacebook />,
-          href: "fb.com",
+          href: "https://www.facebook.com/Bestofmarketmanagement",
      },
      {
           icon: <GrInstagram />,

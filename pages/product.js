@@ -18,14 +18,19 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 
-import MainContainer from "./layout/mainContainer";
-import ProductCard from "./util/productCard";
+// Import Swiper React components
+import { Swiper, SwiperSlide } from "swiper/react";
+// Import Swiper styles
+// import "swiper/css";
+
+import MainContainer from "../layout/mainContainer";
+import ProductCard from "../util/productCard";
 
 import { FaHeart } from "react-icons/fa";
 const array = [...Array(700)];
 
 import { categories } from "../data/categories";
-import ScrollTop from "./util/scrollTop";
+import ScrollTop from "../util/scrollTop";
 
 const FilterStack = ({ children }) => {
      return (
@@ -218,8 +223,24 @@ const Product = () => {
                                              </Text>
                                         </Stack>
                                         <AspectRatio ratio={1 / 1}>
-                                             <Image src="./images/HeaderSlider/1.jpg" />
+                                             <Image src="./images/404.png" />
                                         </AspectRatio>
+                                        <Swiper
+                                             spaceBetween={50}
+                                             slidesPerView={3}
+                                             onSlideChange={() =>
+                                                  console.log("slide change")
+                                             }
+                                             onSwiper={(swiper) =>
+                                                  console.log(swiper)
+                                             }
+                                        >
+                                             <SwiperSlide>Slide 1</SwiperSlide>
+                                             <SwiperSlide>Slide 2</SwiperSlide>
+                                             <SwiperSlide>Slide 3</SwiperSlide>
+                                             <SwiperSlide>Slide 4</SwiperSlide>
+                                             ...
+                                        </Swiper>
                                    </GridItem>
                                    <GridItem>
                                         <Grid

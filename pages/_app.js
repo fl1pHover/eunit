@@ -1,7 +1,7 @@
 import { ChakraProvider } from "@chakra-ui/react";
 import theme from "../lib/theme";
 import "../styles/globals.scss";
-import Layout from "./layout/layout";
+import Layout from "../layout/layout";
 function MyApp({ Component, pageProps }) {
      // const [playAnimation, setPlayAnimation] = useState(false);
 
