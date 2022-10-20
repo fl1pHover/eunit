@@ -42,46 +42,46 @@ import ImageGallery from "react-image-gallery";
 
 const images = [
      {
-          original: "/images/Headerslider/1.jpg",
-          thumbnail: "/images/Headerslider/1.jpg",
+          original: "/images/HeaderSlider/1.jpg",
+          thumbnail: "/images/HeaderSlider/1.jpg",
      },
      {
           original: "/images/404.png",
           thumbnail: "/images/404.png",
      },
      {
-          original: "/images/Headerslider/1.jpg",
-          thumbnail: "/images/Headerslider/1.jpg",
+          original: "/images/HeaderSlider/1.jpg",
+          thumbnail: "/images/HeaderSlider/1.jpg",
      },
      {
-          original: "/images/Headerslider/1.jpg",
-          thumbnail: "/images/Headerslider/1.jpg",
-     },
-
-     {
-          original: "/images/Headerslider/1.jpg",
-          thumbnail: "/images/Headerslider/1.jpg",
-     },
-     {
-          original: "/images/Headerslider/1.jpg",
-          thumbnail: "/images/Headerslider/1.jpg",
-     },
-     {
-          original: "/images/Headerslider/1.jpg",
-          thumbnail: "/images/Headerslider/1.jpg",
-     },
-     {
-          original: "images/Headerslider/1.jpg",
-          thumbnail: "images/Headerslider/1.jpg",
+          original: "/images/HeaderSlider/1.jpg",
+          thumbnail: "/images/HeaderSlider/1.jpg",
      },
 
      {
-          original: "images/Headerslider/1.jpg",
-          thumbnail: "images/Headerslider/1.jpg",
+          original: "/images/HeaderSlider/1.jpg",
+          thumbnail: "/images/HeaderSlider/1.jpg",
      },
      {
-          original: "images/Headerslider/1.jpg",
-          thumbnail: "images/Headerslider/1.jpg",
+          original: "/images/HeaderSlider/1.jpg",
+          thumbnail: "/images/HeaderSlider/1.jpg",
+     },
+     {
+          original: "/images/HeaderSlider/1.jpg",
+          thumbnail: "/images/HeaderSlider/1.jpg",
+     },
+     {
+          original: "images/HeaderSlider/1.jpg",
+          thumbnail: "images/HeaderSlider/1.jpg",
+     },
+
+     {
+          original: "images/HeaderSlider/1.jpg",
+          thumbnail: "images/HeaderSlider/1.jpg",
+     },
+     {
+          original: "images/HeaderSlider/1.jpg",
+          thumbnail: "images/HeaderSlider/1.jpg",
      },
 ];
 
