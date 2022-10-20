@@ -4,7 +4,6 @@ import {
      Grid,
      GridItem,
      Heading,
-     Image,
      Link,
      Stack,
      Text,
@@ -192,10 +191,13 @@ const Footer = () => {
                                    <Heading variant={"smallHeading"}>
                                         Апп татах
                                    </Heading>
-                                   <Image
+                                   <Heading variant={"mediumHeading"}>
+                                        Coming soon...
+                                   </Heading>
+                                   {/* <Image
                                         src="./utils/download-store.png"
                                         alt="app stores"
-                                   />
+                                   /> */}
                               </Stack>
                          </GridItem>
                     </Grid>
