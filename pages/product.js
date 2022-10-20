@@ -779,8 +779,11 @@ const Product = () => {
                                                   </Text>
                                              </Stack>
                                              <Box
-                                                  border={"1px solid black"}
+                                                  boxShadow={"xs"}
+                                                  borderWidth="2px"
+                                                  rounded={4}
                                                   mb="120px"
+                                                  className="product__image"
                                              >
                                                   <AspectRatio ratio={1}>
                                                        <ImageGallery
