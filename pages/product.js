@@ -229,7 +229,10 @@ const Product = () => {
                               </Heading>
                               <Grid
                                    className="product__content-wrapper"
-                                   templateColumns="repeat(2,1fr)"
+                                   templateColumns={{
+                                        base: "repeat(1,1fr)",
+                                        lg: "repeat(2,1fr)",
+                                   }}
                                    gap={10}
                                    mt={5}
                               >
@@ -280,6 +283,11 @@ const Product = () => {
                                                   />
                                              </AspectRatio>
                                         </Box>
+                                        <Text mt={"130px"}>
+                                             Lorem ipsum dolor sit amet
+                                             consectetur adipisicing elit.
+                                             Recusandae, doloremque.
+                                        </Text>
                                    </GridItem>
                                    <GridItem>
                                         <Grid
@@ -309,10 +317,6 @@ const Product = () => {
                                         </Grid>
                                    </GridItem>
                               </Grid>
-                              <Text mt={5}>
-                                   Lorem ipsum dolor sit amet consectetur
-                                   adipisicing elit. Recusandae, doloremque.
-                              </Text>
                          </Box>
                     </Stack>
                </MainContainer>
