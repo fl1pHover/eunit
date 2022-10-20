@@ -63,7 +63,7 @@ const ProductCard = () => {
                                         p={1}
                                         onClick={() =>
                                              toast({
-                                                  title: "Account created.",
+                                                  title: "Зар хадгалагдлаа",
                                                   description:
                                                        "We've created your  for you.",
                                                   status: "success",
