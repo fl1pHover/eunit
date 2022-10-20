@@ -42,5 +42,55 @@
 
 .swiper-pagination-bullet-active {
      background: #4b65f6 !important;
-     // opacity: 1 !important;
+}
+
+.image-gallery-left-nav {
+     left: 10% !important;
+
+     transform-origin: center;
+     &::before {
+          content: "";
+          position: absolute;
+          transform: translate(-50%, -50%);
+          background: url(../../public/utils/swiper-arrow.png);
+          background-position: center;
+          background-size: cover;
+          width: 30px;
+          height: 30px;
+     }
+     &::before:hover {
+          transform: scale(1.1) !important;
+     }
+     .image-gallery-svg {
+          display: none;
+     }
+}
+
+.image-gallery {
+     // overflow: visible !important;
+
+     .image-gallery-content {
+          overflow: visible !important;
+          width: 100% !important;
+          .iamge-gallery-swipe-wrapper {
+               height: 2em;
+          }
+     }
+}
+
+.image-gallery-right-nav {
+     .image-gallery-svg {
+          display: none;
+     }
+     &::after {
+          content: "";
+          position: absolute;
+          transform: translate(-50%, -50%) rotate(180deg);
+          background: url(../../public/utils/swiper-arrow.png);
+          background-position: center;
+          background-size: cover;
+          width: 30px;
+          height: 30px;
+     }
+     right: 10% !important;
 }

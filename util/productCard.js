@@ -21,7 +21,7 @@ import { TbBath } from "react-icons/tb";
 
 const ProductCard = () => {
      const toast = useToast();
-     const [booked, setBooked] = new useState();
+  
 
      return (
           <Box
@@ -63,9 +63,7 @@ const ProductCard = () => {
                                         p={1}
                                         onClick={() =>
                                              toast({
-                                                  title: "Зар хадгалагдлаа",
-                                                  description:
-                                                       "We've created your  for you.",
+                                                  title: "Хүсэл рүү нэмэгдлээ.",
                                                   status: "success",
                                                   duration: 9000,
                                                   isClosable: true,
