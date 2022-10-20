@@ -93,7 +93,7 @@ const FooterData = [
 
 const Footer = () => {
      return (
-          <Box bgColor={"white"}>
+          <Box bgColor={"white"} as="section" id="footer">
                <MainContainer>
                     <Grid templateColumns={"repeat(6,1fr)"} gap={10} py={10}>
                          {FooterData.map((d, index) => {

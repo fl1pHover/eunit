@@ -11,7 +11,7 @@ import {
      Tooltip,
      useToast,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React from "react";
 
 import { BiArea, BiDoorOpen, BiGitCompare } from "react-icons/bi";
 import { FaHeart } from "react-icons/fa";
@@ -21,7 +21,6 @@ import { TbBath } from "react-icons/tb";
 
 const ProductCard = () => {
      const toast = useToast();
-  
 
      return (
           <Box
@@ -42,7 +41,7 @@ const ProductCard = () => {
                          <Link href="/product">
                               <AspectRatio ratio={5 / 4}>
                                    <Image
-                                        src="./images/HeaderSlider/1.jpg"
+                                        src="/images/HeaderSlider/1.jpg"
                                         width="70%"
                                    />
                               </AspectRatio>{" "}
