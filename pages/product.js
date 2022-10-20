@@ -46,8 +46,8 @@ const images = [
           thumbnail: "images/Headerslider/1.jpg",
      },
      {
-          original: "images/Headerslider/1.jpg",
-          thumbnail: "images/Headerslider/1.jpg",
+          original: "images/404.png",
+          thumbnail: "images/404.png",
      },
      {
           original: "images/Headerslider/1.jpg",
@@ -268,7 +268,12 @@ const Product = () => {
                                                   {/* Хандалт: lorem */}
                                              </Text>
                                         </Stack>
-                                        <Box border={"1px solid black"}>
+                                        <Box
+                                             border={"1px solid black"}
+                                             borderColor="bgGrey"
+                                             borderWidth={2}
+                                             borderRadius={5}
+                                        >
                                              <AspectRatio ratio={1}>
                                                   <ImageGallery
                                                        items={images}
