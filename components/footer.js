@@ -4,7 +4,6 @@ import {
      Grid,
      GridItem,
      Heading,
-     Image,
      Link,
      Stack,
      Text,
@@ -93,7 +92,7 @@ const FooterData = [
 
 const Footer = () => {
      return (
-          <Box bgColor={"white"}>
+          <Box bgColor={"white"} as="section" id="footer">
                <MainContainer>
                     <Grid templateColumns={"repeat(6,1fr)"} gap={10} py={10}>
                          {FooterData.map((d, index) => {
@@ -192,10 +191,13 @@ const Footer = () => {
                                    <Heading variant={"smallHeading"}>
                                         Апп татах
                                    </Heading>
-                                   <Image
+                                   <Heading variant={"mediumHeading"}>
+                                        Coming soon...
+                                   </Heading>
+                                   {/* <Image
                                         src="./utils/download-store.png"
                                         alt="app stores"
-                                   />
+                                   /> */}
                               </Stack>
                          </GridItem>
                     </Grid>

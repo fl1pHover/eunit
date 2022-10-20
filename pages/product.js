@@ -42,74 +42,51 @@ const FilterStack = ({ children }) => {
 import ImageGallery from "react-image-gallery";
 import { BsFacebook, BsInstagram } from "react-icons/bs";
 
-const filters = {
-  districts: [
-    {
-      district: "баянгол",
-      towns: ["10-р хороолол", "25-р эмийн сан", "3-р хороолол"],
-    },
-    {
-      district: "баянзүрх",
-      towns: ["1000 оюутны байр", "13-р хороолол", "1₮-р хороолол"],
-    },
-  ],
-  rooms: ["1", "2", "3", "4", "5", "5+"],
-  bathrooms: ["1", "2", "2+"],
-  masterBedrooms: ["байхгүй", "1", "2", "2+"],
-  window: ["вакум", "модон", "төмөр вакум", "модон вакум"],
-  windows: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "10+"],
-  doors: ["бүргэд", "төмөр", "мод"],
-  balconies: ["1", "2", "3", "4", "5", "5+"],
-  floor: ["паркет", "ламинат", "плита", "мод", "чулуу", "бетон", "цемент"],
-  garage: ["байгаа", "байхгүй"],
-  condition: ["банкны лизингтэй", "хувь лизингтэй", "бэлэн"],
-  barter: ["байгаа", "байхгүй"],
-};
-
 const images = [
-  {
-    original: "images/Headerslider/1.jpg",
-    thumbnail: "images/Headerslider/1.jpg",
-  },
-  {
-    original: "images/Headerslider/1.jpg",
-    thumbnail: "images/Headerslider/1.jpg",
-  },
-  {
-    original: "images/Headerslider/1.jpg",
-    thumbnail: "images/Headerslider/1.jpg",
-  },
-  {
-    original: "images/Headerslider/1.jpg",
-    thumbnail: "images/Headerslider/1.jpg",
-  },
+     {
+          original: "/images/HeaderSlider/1.jpg",
+          thumbnail: "/images/HeaderSlider/1.jpg",
+     },
+     {
+          original: "/images/404.png",
+          thumbnail: "/images/404.png",
+     },
+     {
+          original: "/images/HeaderSlider/1.jpg",
+          thumbnail: "/images/HeaderSlider/1.jpg",
+     },
+     {
+          original: "/images/HeaderSlider/1.jpg",
+          thumbnail: "/images/HeaderSlider/1.jpg",
+     },
 
-  {
-    original: "images/Headerslider/1.jpg",
-    thumbnail: "images/Headerslider/1.jpg",
-  },
-  {
-    original: "images/Headerslider/1.jpg",
-    thumbnail: "images/Headerslider/1.jpg",
-  },
-  {
-    original: "images/Headerslider/1.jpg",
-    thumbnail: "images/Headerslider/1.jpg",
-  },
-  {
-    original: "images/Headerslider/1.jpg",
-    thumbnail: "images/Headerslider/1.jpg",
-  },
+     {
+          original: "/images/HeaderSlider/1.jpg",
+          thumbnail: "/images/HeaderSlider/1.jpg",
+     },
+     {
+          original: "/images/HeaderSlider/1.jpg",
+          thumbnail: "/images/HeaderSlider/1.jpg",
+     },
+     {
+          original: "/images/HeaderSlider/1.jpg",
+          thumbnail: "/images/HeaderSlider/1.jpg",
+     },
+     {
+          original: "images/HeaderSlider/1.jpg",
+          thumbnail: "images/HeaderSlider/1.jpg",
+     },
 
-  {
-    original: "images/Headerslider/1.jpg",
-    thumbnail: "images/Headerslider/1.jpg",
-  },
-  {
-    original: "images/Headerslider/1.jpg",
-    thumbnail: "images/Headerslider/1.jpg",
-  },
+     {
+          original: "images/HeaderSlider/1.jpg",
+          thumbnail: "images/HeaderSlider/1.jpg",
+     },
+     {
+          original: "images/HeaderSlider/1.jpg",
+          thumbnail: "images/HeaderSlider/1.jpg",
+     },
 ];
+
 
 const ProductInfo = ({ title, value, children }) => {
   return (

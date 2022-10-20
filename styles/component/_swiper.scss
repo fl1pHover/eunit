@@ -67,14 +67,23 @@
 }
 
 .image-gallery {
-     // overflow: visible !important;
+     overflow: visible !important;
 
      .image-gallery-content {
-          overflow: visible !important;
           width: 100% !important;
-          .iamge-gallery-swipe-wrapper {
-               height: 2em;
+          height: 100%;
+          .image-gallery-slide-wrapper {
+               height: 100%;
+               display: grid;
+               place-items: center;
           }
+     }
+}
+.image-gallery-slide {
+     // top: 50% !important;
+     // transform: translate(0%, -50%) !important;
+     img {
+          height: 100% !important;
      }
 }
 
