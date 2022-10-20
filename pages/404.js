@@ -14,7 +14,7 @@ const PageNot = () => {
                          my="10vh"
                     >
                          <Image
-                              src="./images/404.png"
+                              src="/images/404.png"
                               alt="error image"
                               width={{
                                    base: "80%",
