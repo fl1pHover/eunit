@@ -1,8 +1,5 @@
-import { Container } from "@chakra-ui/react";
-import React, { Children } from "react";
 import Head from "next/head";
-import Navbar from "../components/navbar";
-import Footer from "../components/footer";
+import React from "react";
 
 const Layout = ({ children }) => {
      return (
@@ -12,9 +9,9 @@ const Layout = ({ children }) => {
                     <meta name="description" content="Bom, zariin site" />
                     {/* <link rel="icon" href="/favicon.ico" /> */}
                </Head>
-               <Navbar />
+               {/* <Navbar /> */}
                {children}
-               <Footer />
+               {/* <Footer /> */}
           </>
      );
 };
