@@ -30,6 +30,7 @@ const ProductCard = () => {
                overflow={"hidden"}
                transition="0.3s ease"
                flexShrink="1"
+               boxShadow="base"
                _hover={{
                     transform: "scale(1.05)",
                     boxShadow: "md",
