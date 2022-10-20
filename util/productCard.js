@@ -65,13 +65,12 @@ const ProductCard = () => {
                                              toast({
                                                   title: "Account created.",
                                                   description:
-                                                       "We've created your account for you.",
+                                                       "We've created your  for you.",
                                                   status: "success",
                                                   duration: 9000,
                                                   isClosable: true,
                                              })
                                         }
-                                     
                                    />
                               </Tooltip>
                               <Tooltip label="Харьцуулах">
