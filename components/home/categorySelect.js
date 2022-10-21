@@ -5,9 +5,8 @@ import {
      GridItem,
      Heading,
      Image,
-     Stack,
-     Text,
      Link,
+     Stack,
 } from "@chakra-ui/react";
 import React from "react";
 
@@ -17,7 +16,7 @@ const categoryCardData = [
      {
           image: "./images/HeaderSlider/1.jpg",
           categoryName: "Үл хөдлөх хөрөнгө",
-          href: "/real-state",
+          href: "/category",
           itemCount: "105",
      },
      {

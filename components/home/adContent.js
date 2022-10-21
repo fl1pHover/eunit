@@ -1,14 +1,6 @@
 import React from "react";
 
-import {
-     AspectRatio,
-     Box,
-     Flex,
-     Grid,
-     GridItem,
-     Heading,
-     Skeleton,
-} from "@chakra-ui/react";
+import { Grid, GridItem, Heading, Skeleton } from "@chakra-ui/react";
 
 import MainContainer from "../../layout/mainContainer";
 
@@ -25,7 +17,12 @@ const AdContent = () => {
      return (
           <MainContainer>
                <Heading>Үл хөдлөх хөрөнгө</Heading>
-               <Grid templateColumns={"repeat(6,1fr)"} gap={7} py={5}>
+               <Grid
+                    templateColumns="repeat(auto-fill, minmax(230px, 1fr))"
+                    rowGap={5}
+                    gap={5}
+                    py={5}
+               >
                     {array.map((_, index) => {
                          <GridItem key={index}>{Asd}</GridItem>;
                     })}

@@ -1,9 +1,11 @@
 import {
      Box,
      Center,
+     Code,
      Divider,
      Grid,
      GridItem,
+     Heading,
      HStack,
      Input,
      Select,
@@ -15,64 +17,6 @@ import { useState } from "react";
 
 import MainContainer from "../layout/mainContainer";
 
-const categories = [
-     {
-          category: "Үл хөдлөх хөрөнгө",
-          categories: [
-               {
-                    category: "Газар",
-                    filters: [
-                         "Зарын гарчиг... 100 тэмдэгтэд багтаан бичнэ үү. ",
-                         "Газрын зориулалт",
-                         "Эзэмшлийн хэлбэр",
-                         "Утас",
-                         "Үнэ",
-                         "Талбай",
-                         "Нэгж талбайн үнэ",
-                         "Дүүрэг",
-                         "Хороо",
-                         "Байршил",
-                         "Гэрчилгээ олгосон он",
-                         "Хүчинтэй хугацаа (жил)",
-                         "Бартер",
-                         "Төлбөрийн нөхцөл",
-                         "Газрын зурагт байршил сонго",
-                         "Хөрөнгийн зураг",
-                         "Кадастрын зураг",
-                         "Зарын дэлгэрэнгүй... 10000 тэмдэгтэд багтаан бичнэ үү.",
-                    ],
-               },
-               {
-                    category: "Оффис",
-
-                    filters: [
-                         "Зарын гарчиг... 100 тэмдэгтэд багтаан бичнэ үү. ",
-                         "Утас",
-                         "Үнэ",
-                         "Талбай",
-                         "Нэгж талбайн үнэ",
-                         "Дүүрэг",
-                         "Хороо",
-                         "Байршил",
-                         "Оффисын нэр",
-                         "Ашиглалтад орсон он",
-                         "Барилгын давхар",
-                         "Хэдэн давхарт",
-                         "Бартер",
-                         "Төлбөрийн нөхцөл",
-                         "Газрын зурагт байршил сонго",
-                         "Хөрөнгийн зураг",
-                         "План зураг",
-                         "Зарын дэлгэрэнгүй... 10000 тэмдэгтэд багтаан бичнэ үү.",
-                    ],
-               },
-          ],
-     },
-     {
-          category: "Үл хөдлөх хөрөнгө",
-          categories: [{ category: "Газар" }, { category: "Оффис" }],
-     },
-];
 const types = ["Зарах"];
 
 export default function CreateAd() {
@@ -83,11 +27,21 @@ export default function CreateAd() {
      return (
           <Box as="section" m={5} id="add__ad">
                <MainContainer>
-                    <Box bgColor={"white"} p={10} rounded={10}>
+                    <Box bgColor={"white"} px={10} py={5} rounded={10}>
+                         <Center>
+                              <Heading variant={"bigHeading"}>
+                                   Зар орууулах хэсэг
+                              </Heading>
+                         </Center>
+                         <Code mt={10} textAlign="center">
+                              Зар оруулах дараагийн хэсэг дараах сонголтыг
+                              сонгосны дараа гарч ирнэ.
+                         </Code>
                          <Box
                               display={"grid"}
                               gridTemplateColumns={"repeat(3,1fr)"}
                               gap={10}
+                              mt={4}
                          >
                               <HStack>
                                    <Text width={"100%"}>
@@ -266,7 +220,7 @@ export default function CreateAd() {
                                                                       <Input />
                                                                  )}
                                                        </GridItem>
-                                                  </Grid>{" "}
+                                                  </Grid>
                                                   <Divider />
                                              </>
                                         );

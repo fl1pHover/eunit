@@ -202,49 +202,68 @@ const Navbar = () => {
                                                        <IoPersonCircleOutline className="icon nav__icon" />
                                                   }
                                              /> */}
-                                             <VStack className="animated__wallet">
-                                                  <Flex gap={1}>
+                                             <Link href="/wallet">
+                                                  <VStack className="animated__wallet">
+                                                       <Flex gap={1}>
+                                                            <Box
+                                                                 width={"25px"}
+                                                                 height="25px"
+                                                                 className="animated__icon"
+                                                            />
+                                                            <Box
+                                                                 lineHeight={
+                                                                      "1"
+                                                                 }
+                                                            >
+                                                                 <Text>
+                                                                      Хэтэвч
+                                                                 </Text>
+                                                                 <Text>
+                                                                      0,000₮
+                                                                 </Text>
+                                                            </Box>
+                                                       </Flex>
+                                                  </VStack>
+                                             </Link>
+                                             <Link href="/estimate">
+                                                  <VStack className="animated__estimator">
                                                        <Box
                                                             width={"25px"}
                                                             height="25px"
                                                             className="animated__icon"
                                                        />
-                                                       <Box lineHeight={"1"}>
-                                                            <Text>Хэтэвч</Text>
-                                                            <Text>15000</Text>
-                                                       </Box>
-                                                  </Flex>
-                                             </VStack>
-                                             <VStack className="animated__estimator">
-                                                  <Box
-                                                       width={"25px"}
-                                                       height="25px"
-                                                       className="animated__icon"
-                                                  />
-                                                  <Text mt="0 !important">
-                                                       Үнэлгээ
-                                                  </Text>
-                                             </VStack>
-                                             <VStack className="animated__heart">
-                                                  <Box
-                                                       width={"25px"}
-                                                       height="25px"
-                                                       className="animated__icon"
-                                                  />
-                                                  <Text mt="0 !important">
-                                                       Хадгалсан
-                                                  </Text>
-                                             </VStack>
-                                             <VStack className="animated__account">
-                                                  <Box
-                                                       width={"25px"}
-                                                       height="25px"
-                                                       className="animated__icon"
-                                                  />
-                                                  <Text mt="0 !important">
-                                                       Бүртгүүлэх
-                                                  </Text>
-                                             </VStack>
+                                                       <Text mt="0 !important">
+                                                            Үнэлгээ
+                                                       </Text>
+                                                  </VStack>
+                                             </Link>
+                                             <Link href="/bookmark">
+                                                  <VStack className="animated__heart">
+                                                       <Box
+                                                            width={"25px"}
+                                                            height="25px"
+                                                            className="animated__icon"
+                                                       />
+                                                       <Text mt="0 !important">
+                                                            Хүсэл
+                                                       </Text>
+                                                  </VStack>
+                                             </Link>
+                                             <Link href="/login">
+                                                  <VStack
+                                                       className="animated__account"
+                                                       textAlign={"center"}
+                                                  >
+                                                       <Box
+                                                            width={"25px"}
+                                                            height="25px"
+                                                            className="animated__icon"
+                                                       />
+                                                       <Text mt="0 !important">
+                                                            Бүртгүүлэх
+                                                       </Text>
+                                                  </VStack>{" "}
+                                             </Link>
                                              {/* <Select
                                         placeholder="MN"
                                         bg={"mainBlossom"}
