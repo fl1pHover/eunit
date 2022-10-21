@@ -1,18 +1,4 @@
-import {
-     Box,
-     Center,
-     Code,
-     Divider,
-     Grid,
-     GridItem,
-     Heading,
-     HStack,
-     Input,
-     Select,
-     Text,
-     Textarea,
-     VStack,
-} from "@chakra-ui/react";
+import { Box, Center, Code, Heading } from "@chakra-ui/react";
 import { useState } from "react";
 
 import MainContainer from "../layout/mainContainer";
@@ -37,7 +23,7 @@ export default function CreateAd() {
                               Зар оруулах дараагийн хэсэг дараах сонголтыг
                               сонгосны дараа гарч ирнэ.
                          </Code>
-                         <Box
+                         {/* <Box
                               display={"grid"}
                               gridTemplateColumns={"repeat(3,1fr)"}
                               gap={10}
@@ -225,7 +211,7 @@ export default function CreateAd() {
                                              </>
                                         );
                                    })}
-                         </VStack>
+                         </VStack> */}
                     </Box>
                </MainContainer>
           </Box>
