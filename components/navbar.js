@@ -6,9 +6,11 @@ import {
      Input,
      InputGroup,
      InputRightElement,
+     keyframes,
      Link,
      Stack,
      Text,
+     VStack,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 
@@ -16,11 +18,7 @@ import React, { useEffect, useState } from "react";
 import MainContainer from "../layout/mainContainer";
 
 //TODO Icons
-import { BiWallet } from "react-icons/bi";
 import { BsSearch } from "react-icons/bs";
-import { FaRegHeart } from "react-icons/fa";
-import { HiOutlineCalculator } from "react-icons/hi";
-import { IoPersonCircleOutline } from "react-icons/io5";
 import { categories } from "../data/categories";
 
 const NavItem = ({ text, icon, href }) => {
@@ -45,7 +43,15 @@ const NavItem = ({ text, icon, href }) => {
           </Link>
      );
 };
+const animationKeyframes = keyframes`
+  0% { transform: scale(1) rotate(0); border-radius: 20%; }
+  25% { transform: scale(2) rotate(0); border-radius: 20%; }
+  50% { transform: scale(2) rotate(27deg); border-radius: 50%; }
+  75% { transform: scale(1) rotate(27deg); border-radius: 50%; }
+  100% { transform: scale(1) rotate(0); border-radius: 20%; }
+`;
 
+const animation = `${animationKeyframes} 2s ease-in-out infinite`;
 const Navbar = () => {
      const [sticky, setSticky] = useState(false);
 
@@ -162,7 +168,7 @@ const Navbar = () => {
                                              gap={5}
                                              // className="navbar__item"
                                         >
-                                             <Link href="/wallet">
+                                             {/* <Link href="/wallet">
                                                   <Flex
                                                        alignItems={"center"}
                                                        gap={1}
@@ -174,10 +180,9 @@ const Navbar = () => {
                                                             <Text>15000</Text>
                                                        </Box>
                                                   </Flex>
-                                             </Link>
-
-                                             <NavItem
-                                                  text={"Bookmark"}
+                                             </Link> */}
+                                             {/* <NavItem
+                                                  text={"Хүсэл"}
                                                   href={"/bookmark"}
                                                   icon={
                                                        <FaRegHeart className="icon nav__icon" />
@@ -189,14 +194,57 @@ const Navbar = () => {
                                                   icon={
                                                        <HiOutlineCalculator className="icon nav__icon" />
                                                   }
-                                             />
+                                             />{" "}
                                              <NavItem
                                                   text={"Бүртгүүлэх"}
                                                   href={"/register"}
                                                   icon={
                                                        <IoPersonCircleOutline className="icon nav__icon" />
                                                   }
-                                             />
+                                             /> */}
+                                             <VStack className="animated__wallet">
+                                                  <Flex gap={1}>
+                                                       <Box
+                                                            width={"25px"}
+                                                            height="25px"
+                                                            className="animated__icon"
+                                                       />
+                                                       <Box lineHeight={"1"}>
+                                                            <Text>Хэтэвч</Text>
+                                                            <Text>15000</Text>
+                                                       </Box>
+                                                  </Flex>
+                                             </VStack>
+                                             <VStack className="animated__estimator">
+                                                  <Box
+                                                       width={"25px"}
+                                                       height="25px"
+                                                       className="animated__icon"
+                                                  />
+                                                  <Text mt="0 !important">
+                                                       Үнэлгээ
+                                                  </Text>
+                                             </VStack>
+                                             <VStack className="animated__heart">
+                                                  <Box
+                                                       width={"25px"}
+                                                       height="25px"
+                                                       className="animated__icon"
+                                                  />
+                                                  <Text mt="0 !important">
+                                                       Хадгалсан
+                                                  </Text>
+                                             </VStack>
+                                             <VStack className="animated__account">
+                                                  <Box
+                                                       width={"25px"}
+                                                       height="25px"
+                                                       className="animated__icon"
+                                                  />
+                                                  <Text mt="0 !important">
+                                                       Бүртгүүлэх
+                                                  </Text>
+                                             </VStack>
                                              {/* <Select
                                         placeholder="MN"
                                         bg={"mainBlossom"}
@@ -274,9 +322,9 @@ const Navbar = () => {
                                              </Button>
                                         </Link>
 
-                                        <Link href={"/premium"}>
+                                        <Link href={"/createAd"}>
                                              <Button variant={"blueButton"}>
-                                                  Premium
+                                                  Зар нэмэх
                                              </Button>
                                         </Link>
                                    </Stack>

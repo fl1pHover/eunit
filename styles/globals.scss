@@ -77,3 +77,57 @@ html {
           background: $bgGrey;
      }
 }
+
+.animated__icon {
+     background-size: cover;
+     width: 30px;
+     height: 30px;
+}
+
+.animated__wallet {
+     .animated__icon {
+          background-image: url(../public/utils/icons/wallet.png);
+          background-size: cover;
+          width: 30px;
+          height: 30px;
+     }
+     &:hover .animated__icon {
+          background-image: url(../public/utils/icons/wallet.gif);
+     }
+}
+
+.animated__estimator {
+     .animated__icon {
+          background-image: url(../public/utils/icons/estimator.png);
+          background-size: cover;
+          width: 30px;
+          height: 30px;
+     }
+     &:hover .animated__icon {
+          background-image: url(../public/utils/icons/estimator.gif);
+     }
+}
+
+.animated__heart {
+     .animated__icon {
+          background-image: url(../public/utils/icons/heart.png);
+          background-size: cover;
+          width: 30px;
+          height: 30px;
+     }
+     &:hover .animated__icon {
+          background-image: url(../public/utils/icons/heart.gif);
+     }
+}
+
+.animated__account {
+     .animated__icon {
+          background-image: url(../public/utils/icons/account.png);
+          background-size: cover;
+          width: 30px;
+          height: 30px;
+     }
+     &:hover .animated__icon {
+          background-image: url(../public/utils/icons/account.gif);
+     }
+}
