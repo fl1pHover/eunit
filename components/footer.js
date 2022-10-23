@@ -162,6 +162,7 @@ const Footer = () => {
                                                                  href={
                                                                       props.href
                                                                  }
+                                                                 target="_blank"
                                                                  key={index}
                                                                  _hover={{
                                                                       color: "mainBlossom",

@@ -1,12 +1,14 @@
 import {
+     Avatar,
      Box,
      Button,
+     Divider,
      Flex,
      Heading,
+     HStack,
      Input,
      InputGroup,
      InputRightElement,
-     keyframes,
      Link,
      Stack,
      Text,
@@ -43,17 +45,29 @@ const NavItem = ({ text, icon, href }) => {
           </Link>
      );
 };
-const animationKeyframes = keyframes`
-  0% { transform: scale(1) rotate(0); border-radius: 20%; }
-  25% { transform: scale(2) rotate(0); border-radius: 20%; }
-  50% { transform: scale(2) rotate(27deg); border-radius: 50%; }
-  75% { transform: scale(1) rotate(27deg); border-radius: 50%; }
-  100% { transform: scale(1) rotate(0); border-radius: 20%; }
-`;
 
-const animation = `${animationKeyframes} 2s ease-in-out infinite`;
+const DownLink = ({ href, text }) => {
+     return (
+          <Link
+               href={href}
+               width="100%"
+               _hover={{
+                    color: "mainBlossom",
+               }}
+          >
+               <Text>{text}</Text>
+          </Link>
+     );
+};
+
 const Navbar = () => {
      const [sticky, setSticky] = useState(false);
+     const [active, setActive] = useState(false);
+
+     const handleClick = (event) => {
+          // 👇️ toggle isActive state on click
+          setActive((current) => !current);
+     };
 
      useEffect(() => {
           const handleScroll = () => {
@@ -249,39 +263,106 @@ const Navbar = () => {
                                                        </Text>
                                                   </VStack>
                                              </Link>
-                                             <Link href="/login">
-                                                  <VStack
-                                                       className="animated__account"
-                                                       textAlign={"center"}
+                                             {/* <Link href="/"> */}
+                                             <VStack
+                                                  // className="animated__account"
+                                                  className="animated__account"
+                                                  textAlign={"center"}
+                                                  onClick={handleClick}
+                                                  pos="relative"
+                                             >
+                                                  <Box
+                                                       width={"25px"}
+                                                       height="25px"
+                                                       className="animated__icon"
+                                                  />
+                                                  <Text mt="0 !important">
+                                                       Бүртгүүлэх
+                                                  </Text>
+                                                  <Box
+                                                       className={
+                                                            active
+                                                                 ? "profile__drop-menu"
+                                                                 : "profile__drop-menu drop__hidden"
+                                                       }
+                                                       pos="absolute"
+                                                       bottom="-200px"
+                                                       right="0"
+                                                       onClick={handleClick}
+                                                       // boxShadow="xl"
+                                                       height="200px"
+                                                       width="250px"
+                                                       bgColor="white"
+                                                       rounded={5}
+                                                       p={3}
                                                   >
-                                                       <Box
-                                                            width={"25px"}
-                                                            height="25px"
-                                                            className="animated__icon"
+                                                       <HStack
+                                                            alignItems={
+                                                                 "center"
+                                                            }
+                                                       >
+                                                            <Avatar
+                                                                 size={"sm"}
+                                                            />
+                                                            <VStack
+                                                                 alignItems={
+                                                                      "flex-start"
+                                                                 }
+                                                            >
+                                                                 <Text
+                                                                      fontWeight={
+                                                                           "bold"
+                                                                      }
+                                                                 >
+                                                                      Soko
+                                                                 </Text>
+                                                                 <Text
+                                                                      mt={
+                                                                           "0 !important"
+                                                                      }
+                                                                 >
+                                                                      soko_bishu@yahoo.com
+                                                                 </Text>
+                                                            </VStack>
+                                                       </HStack>
+                                                       <Divider
+                                                            orientation="horizontal"
+                                                            bgColor={"red"}
+                                                            my={3}
                                                        />
-                                                       <Text mt="0 !important">
-                                                            Бүртгүүлэх
-                                                       </Text>
-                                                  </VStack>{" "}
-                                             </Link>
-                                             {/* <Select
-                                        placeholder="MN"
-                                        bg={"mainBlossom"}
-                                        p={"5px   "}
-                                   >
-                                        <option
-                                             value="option2"
-                                             bgColor="white"
-                                             width="50% !inmportant"
-                                        >
-                                             English
-                                        </option>
-                                   </Select> */}
+                                                       <VStack
+                                                            textAlign="left"
+                                                            color={"grey"}
+                                                       >
+                                                            <DownLink
+                                                                 href={"/"}
+                                                                 text="Хувийн
+                                                                 мэдэээлэл"
+                                                            />
+                                                            <DownLink
+                                                                 href={"/"}
+                                                                 text="  Миний
+                                                            зарууд"
+                                                            />
+
+                                                            <DownLink
+                                                                 href={"/"}
+                                                                 text="Хэтэвч"
+                                                            />
+                                                            <Divider
+                                                                 orientation="horizontal"
+                                                                 bgColor={"red"}
+                                                                 my={3}
+                                                            />
+                                                            <DownLink
+                                                                 href={"/"}
+                                                                 text="Гарах"
+                                                            />
+                                                       </VStack>
+                                                  </Box>
+                                             </VStack>
                                         </Flex>
                                    </Flex>
-                                   {/* <GridItem w="100%" h="10" bg="blue.500"></GridItem>
-                    <GridItem w="100%" h="10" bg="blue.500"></GridItem>
-                    <GridItem w="100%" h="10" bg="blue.500"></GridItem> */}
                               </Stack>
                          </MainContainer>
                     </Box>

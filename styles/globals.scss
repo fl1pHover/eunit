@@ -19,6 +19,7 @@ a {
 
 html {
      scroll-behavior: smooth;
+     user-select: none;
 }
 
 .white__icon {
@@ -134,4 +135,63 @@ html {
 
 .info__icon {
      font-size: 20px;
+}
+
+.menu__item {
+     &:hover {
+          background: transparent !important;
+     }
+}
+
+.profile__dropdown-menu {
+     margin-right: 10% !important;
+     transform: translate(600px, 70px) !important;
+     &::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 10px;
+          height: 10px;
+          background-color: red;
+     }
+}
+
+.animated__account .asd {
+     display: none;
+}
+
+.profile__drop-menu {
+     display: block;
+     box-shadow: rgba(0, 0, 0, 0.2) 0px 6px 14px 0px;
+     &::before {
+          content: "";
+          display: inline-block;
+          border-bottom-style: solid;
+          border-bottom-width: 7px;
+          border-right: 7px solid transparent;
+          border-left: 7px solid transparent;
+          border-bottom-color: white;
+          position: absolute;
+          right: 23px;
+          top: -7px;
+     }
+}
+.drop__hidden {
+     // animation: dropdownHidden 1s;
+     display: none;
+}
+
+@keyframes dropdownHidedown {
+     0% {
+          transform: translateY(0);
+          display: block;
+     }
+     50% {
+          transform: translateY(-50px);
+     }
+     0% {
+          transform: translateY(-50px);
+          display: none;
+     }
 }

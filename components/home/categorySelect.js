@@ -58,7 +58,8 @@ const CategorySelect = () => {
                <MainContainer>
                     <Grid
                          templateColumns={{
-                              base: "repeat(3,1fr)",
+                              base: "repeat(2,1fr)",
+                              sm: "repeat(3,1fr)",
                               lg: "repeat(6,1fr)",
                          }}
                          gap={5}

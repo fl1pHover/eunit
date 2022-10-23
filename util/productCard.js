@@ -85,7 +85,7 @@ const ProductCard = () => {
                          >
                               <Box>
                                    <Box position={"relative"}>
-                                        <Link href={props.href}>
+                                        <Link href={props.href} target="_blank">
                                              <AspectRatio ratio={5 / 4}>
                                                   <Image
                                                        src={props.image}
