@@ -184,7 +184,7 @@ const Product = () => {
                                              >
                                                   <Stack direction={"row"}>
                                                        <Text>
-                                                            Зарын огноо:{" "}
+                                                            Зарын огноо:
                                                             {product.date}
                                                        </Text>
                                                        <Text>

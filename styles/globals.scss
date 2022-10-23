@@ -178,20 +178,5 @@ html {
      }
 }
 .drop__hidden {
-     // animation: dropdownHidden 1s;
      display: none;
-}
-
-@keyframes dropdownHidedown {
-     0% {
-          transform: translateY(0);
-          display: block;
-     }
-     50% {
-          transform: translateY(-50px);
-     }
-     0% {
-          transform: translateY(-50px);
-          display: none;
-     }
 }
