@@ -4,8 +4,8 @@ import {
      Button,
      Divider,
      Flex,
-     Heading,
      HStack,
+     Image,
      Input,
      InputGroup,
      InputRightElement,
@@ -87,7 +87,12 @@ const Navbar = () => {
                     px={3}
                     color="white"
                >
-                    <Text>Welcome to Bom Website</Text>
+                    <MainContainer>
+                         <HStack justifyContent={"space-between"}>
+                              <Text>Welcome to BOM Website</Text>
+                              <Text>Холбоо барих: 9999-9999</Text>
+                         </HStack>
+                    </MainContainer>
                </Box>
                <Box
                     id="navbar"
@@ -113,7 +118,14 @@ const Navbar = () => {
                                    justifyContent={"space-between"}
                               >
                                    <Link href="/">
-                                        <Heading>BOM</Heading>
+                                        <Image
+                                             src="/images/logo/logo-blue.png"
+                                             alt="BOM logo"
+                                             // height={"75px"}
+                                             width={"100%"}
+                                             maxHeight="75px"
+                                             objectFit="contain"
+                                        />
                                    </Link>
 
                                    <Flex
@@ -300,7 +312,7 @@ const Navbar = () => {
                                                        bottom="-200px"
                                                        right="0"
                                                        onClick={handleClick}
-                                                       // boxShadow="xl"
+                                                       boxShadow="lg"
                                                        height="200px"
                                                        width="250px"
                                                        bgColor="white"

@@ -1,4 +1,8 @@
-import { Box, Center, Code, Heading } from "@chakra-ui/react";
+import {
+     Box,
+     Center,
+     Code, Heading
+} from "@chakra-ui/react";
 import { useState } from "react";
 
 import MainContainer from "../layout/mainContainer";

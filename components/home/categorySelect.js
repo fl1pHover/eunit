@@ -25,7 +25,7 @@ const categoryCardData = [
           itemCount: "105",
      },
      {
-          image: "./images/HeaderSlider/1.jpg",
+          image: "./images/category/car.jpg",
           icon: <AiOutlineCar />,
           categoryName: "Тээврийн хэрэгсэл",
           href: "/vehicle",
@@ -33,28 +33,28 @@ const categoryCardData = [
           itemCount: "105",
      },
      {
-          image: "./images/HeaderSlider/1.jpg",
+          image: "./images/category/computer.jpg",
           icon: <MdComputer />,
           categoryName: "Компьютер",
           href: "/computer",
           itemCount: "105",
      },
      {
-          image: "./images/HeaderSlider/1.jpg",
+          image: "./images/category/phone.jpg",
           icon: <BsPhone />,
           categoryName: "Гар утас",
           href: "phone",
           itemCount: "105",
      },
      {
-          image: "./images/HeaderSlider/1.jpg",
+          image: "./images/category/electronic.jpg",
           icon: <CgSmartHomeWashMachine />,
           categoryName: "Цахилгаан бараа",
           href: "electronic",
           itemCount: "105",
      },
      {
-          image: "./images/HeaderSlider/1.jpg",
+          image: "./images/category/home.jpg",
           icon: <RiHomeSmile2Line />,
           categoryName: "Гэр ахуйн бараа",
           href: "household-items",
@@ -79,7 +79,7 @@ const CategorySelect = () => {
                                    <Link key={index} href={props.href}>
                                         <GridItem
                                              bgColor="white"
-                                             py={6}
+                                             py={8}
                                              rounded={20}
                                              boxShadow="md"
                                              transition={"0.3s ease"}
@@ -87,7 +87,7 @@ const CategorySelect = () => {
                                                   boxShadow: "xl",
                                              }}
                                              textAlign={"center"}
-                                             backgroundImage="/images/HeaderSlider/1.jpg"
+                                             backgroundImage={props.image}
                                              backgroundPosition={"center"}
                                              backgroundSize="cover"
                                              className="card"
