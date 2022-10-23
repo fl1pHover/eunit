@@ -263,7 +263,19 @@ const Navbar = () => {
                                                        </Text>
                                                   </VStack>
                                              </Link>
-                                             {/* <Link href="/"> */}
+                                             <Link href="/login">
+                                                  <VStack className="animated__account">
+                                                       <Box
+                                                            width={"25px"}
+                                                            height="25px"
+                                                            className="animated__icon"
+                                                       />
+                                                       <Text mt="0 !important">
+                                                            Бүртгүүлэх
+                                                       </Text>
+                                                  </VStack>
+                                             </Link>
+                                            
                                              <VStack
                                                   // className="animated__account"
                                                   className="animated__account"
@@ -277,7 +289,7 @@ const Navbar = () => {
                                                        className="animated__icon"
                                                   />
                                                   <Text mt="0 !important">
-                                                       Бүртгүүлэх
+                                                       Профайл
                                                   </Text>
                                                   <Box
                                                        className={
