@@ -309,7 +309,7 @@ export const SignUpComp = ({ credential, setCredential, fc, google }) => {
                <Box h={4} />
                <InputComp
                     lbl={"Та нэрээ оруулна уу"}
-                    type="tel"
+                    type="text"
                     value={credential.username}
                     setValue={setCredential}
                     v="username"
@@ -317,10 +317,10 @@ export const SignUpComp = ({ credential, setCredential, fc, google }) => {
                <Box h={4} />
                <InputComp
                     lbl={"Та нууц үгээ оруулна уу"}
-                    type="text"
+                    type="password"
                     value={credential.password}
                     setValue={setCredential}
-                    v="username"
+                    v="password"
                />
                <Box h={4} />
                <InputComp
