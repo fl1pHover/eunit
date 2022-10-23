@@ -190,9 +190,9 @@ export const SignUpComp = ({credential, setCredential, fc, google}) => {
       <Box h={4}/>
       <InputComp lbl={"Та утасны дугаараа оруулна уу"} type='tel' value={credential.phone} setValue={setCredential} v='phone'/>
       <Box h={4}/>
-      <InputComp lbl={"Та нэрээ оруулна уу"} type='tel' value={credential.username} setValue={setCredential} v='username'/>
+      <InputComp lbl={"Та нэрээ оруулна уу"} type='text' value={credential.username} setValue={setCredential} v='username'/>
       <Box h={4}/>
-      <InputComp lbl={"Та нууц үгээ оруулна уу"} type='text' value={credential.password} setValue={setCredential} v='username'/>
+      <InputComp lbl={"Та нууц үгээ оруулна уу"} type='password' value={credential.password} setValue={setCredential} v='password'/>
       <Box h={4}/>
       <InputComp lbl={"Та нууц үгээ дахин оруулна уу"} type='password' value={credential.confirmPassword} setValue={setCredential} v='confirmPassword'/>
       <Box h={10}/>
