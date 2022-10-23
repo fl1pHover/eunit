@@ -275,7 +275,7 @@ const Navbar = () => {
                                                        </Text>
                                                   </VStack>
                                              </Link>
-                                            
+
                                              <VStack
                                                   // className="animated__account"
                                                   className="animated__account"
@@ -314,6 +314,7 @@ const Navbar = () => {
                                                             }
                                                        >
                                                             <Avatar
+                                                                 src="https://bit.ly/dan-abramov"
                                                                  size={"sm"}
                                                             />
                                                             <VStack
