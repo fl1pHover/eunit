@@ -16,8 +16,71 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { SiGmail } from "react-icons/si";
+import { useState } from "react";
+import {getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup} from 'firebase/auth'
+import { initializeApp } from "firebase/app";
+
+const firebaseConfig = {
+
+  apiKey: "AIzaSyDrmzxc8MCm7PcO0Ood0MEvliD86e3RBEg",
+
+  authDomain: "bomregistration.firebaseapp.com",
+
+projectId: "bomregistration",
+
+  storageBucket: "bomregistration.appspot.com",
+
+  messagingSenderId:"567513313511",
+
+  appId: "1:567513313511:web:1d919d03c2334022667242",
+
+  measurementId: "G-T3VWESJ3PF",
+
+};
+
+
+const app = initializeApp(firebaseConfig);
+
+
 export default function Login() {
+  const [signupCredential , setSignupcredential] = useState({email: '', phone: '', password: '', confirmPassword: '', username: ''})
+  const [credential, setCredential] = useState({email: '', password: ''})
+  const signUp = () => {
+    const auth = getAuth()
+    if(signupCredential.password ==signupCredential.confirmPassword && signupCredential.email != '' && setSignupcredential.password != '' ) {
+      createUserWithEmailAndPassword(auth, signupCredential.email, signupCredential.password).then((u) => {
+        const user = u.user
+        console.log(user)
+        if(user) {
+          setSignupcredential((signupCredential) => ({...signupCredential, email: '', phone: '', password:"", confirmPassword:''}))
+        }
+      }).catch((err) => {
+        console.log(err)
+      })
+    }
+  }
+  const signByGoogle = () => {
+    const provider = new GoogleAuthProvider()
+    const auth = getAuth()
+    signInWithPopup(auth, provider).then((res) => {
+      const cre = GoogleAuthProvider.credentialFromResult(res)
+      const user = res.user
+      console.log(user)
+    })
+  }
+
+  const signIn = () => {
+    const auth = getAuth()
+    if(credential.email != '' && credential.password) {
+      signInWithEmailAndPassword(auth, credential.email, credential.password).then((r) => {
+        const user = r.user
+        setCredential((credential) => ({...credential, email: '', password: ''}))
+        console.log(user)
+      }).catch((err) => {
+        console.log(err)
+      })
+    }
+  }
   return (
     <Container w={'450px'} my={10}>
       <VStack
@@ -34,10 +97,10 @@ export default function Login() {
           </TabList>
           <TabPanels w={'full'}>
             <TabPanel>
-              <LoginComp />
+              <LoginComp credential={credential} setCredential={setCredential} fc={signIn} google={signByGoogle}/>
             </TabPanel>
             <TabPanel>
-              <SignUpComp />
+              <SignUpComp credential={signupCredential} setCredential={setSignupcredential} fc={signUp} google={signByGoogle}/>
             </TabPanel>
           </TabPanels>
         </Tabs>
@@ -46,7 +109,7 @@ export default function Login() {
   );
 }
 
-export const LoginComp = () => {
+export const LoginComp = ({credential, setCredential, fc, google}) => {
   return (
     <FormControl>
         <Box h={3}/>
@@ -57,6 +120,7 @@ export const LoginComp = () => {
         borderRadius={"5px"}
         height="auto"
         w={'full'}
+        onClick={() => google()}
       >
         <HStack>
           <Image
@@ -79,16 +143,16 @@ export const LoginComp = () => {
           эсвэл
         </Text>
       </Box>
-      <InputComp lbl={"Та И-Мэйл хаягаа оруулна уу"} type='email'/>
+      <InputComp lbl={"Та И-Мэйл хаягаа оруулна уу"} type='email' setValue={setCredential} value={credential.email} v={'email'}/>
       <Box h={4}/>
-      <InputComp lbl={"Та нууц үгээ оруулна уу"} type='password'/>
+      <InputComp lbl={"Та нууц үгээ оруулна уу"} type='password' value={credential.password} setValue={setCredential} v='password'/>
       <Box h={10}/>
-      <Button w={'full'} borderRadius={'5px'} h={'auto'} py={4}>Нэвтрэх</Button>
+      <Button w={'full'} borderRadius={'5px'} h={'auto'} py={4} onClick={() => fc()}>Нэвтрэх</Button>
     </FormControl>
   );
 };
 
-export const SignUpComp = () => {
+export const SignUpComp = ({credential, setCredential, fc, google}) => {
     return (
         <FormControl>
         <Box h={3}/>
@@ -99,6 +163,7 @@ export const SignUpComp = () => {
         borderRadius={"5px"}
         height="auto"
         w={'full'}
+        onClick={() => google()}
       >
         <HStack>
           <Image
@@ -121,20 +186,22 @@ export const SignUpComp = () => {
           эсвэл
         </Text>
       </Box>
-      <InputComp lbl={"Та И-Мэйл хаягаа оруулна уу"} type='email'/>
+      <InputComp lbl={"Та И-Мэйл хаягаа оруулна уу"} type='email' value={credential.email} setValue={setCredential} v='email'/>
       <Box h={4}/>
-      <InputComp lbl={"Та утасны дугаараа оруулна уу"} type='email'/>
+      <InputComp lbl={"Та утасны дугаараа оруулна уу"} type='tel' value={credential.phone} setValue={setCredential} v='phone'/>
       <Box h={4}/>
-      <InputComp lbl={"Та нууц үгээ оруулна уу"} type='password'/>
+      <InputComp lbl={"Та нэрээ оруулна уу"} type='tel' value={credential.username} setValue={setCredential} v='username'/>
       <Box h={4}/>
-      <InputComp lbl={"Та нууц үгээ дахин оруулна уу"} type='password'/>
+      <InputComp lbl={"Та нууц үгээ оруулна уу"} type='text' value={credential.password} setValue={setCredential} v='username'/>
+      <Box h={4}/>
+      <InputComp lbl={"Та нууц үгээ дахин оруулна уу"} type='password' value={credential.confirmPassword} setValue={setCredential} v='confirmPassword'/>
       <Box h={10}/>
-      <Button w={'full'} borderRadius={'5px'} h={'auto'} py={4}>Нэвтрэх</Button>
+      <Button w={'full'} borderRadius={'5px'} h={'auto'} py={4} onClick={() => fc()}>Нэвтрэх</Button>
     </FormControl>
     )
 }
 
-export const InputComp = ({ lbl, type }) => {
+export const InputComp = ({ lbl, type, value, setValue, v }) => {
   return (
     <Box bg={"bg.input"} borderRadius={12}  w="full">
       <FormControl variant="floating" id="first-name" isRequired>
@@ -144,6 +211,17 @@ export const InputComp = ({ lbl, type }) => {
         //   _focusVisible={{ border: "none" }}
           fontSize={14}
           type={type}
+          value={value}
+          onChange={(e) => {
+            switch(v) {
+              case 'email': setValue((value) =>( {...value, email: e.target.value })); break;
+              case 'phone': setValue((value) => ({...value, phone: e.target.value })); break;
+              case 'password': setValue((value) => ({...value, password: e.target.value })); break;
+              case 'confirmPassword': setValue((value) => ({...value, confirmPassword: e.target.value })); break;
+              case 'username': setValue((value) => ({...value, username: e.target.value })); break;
+              default: break;
+            }
+          }}
         />
         <FormLabel >{lbl}</FormLabel>
       </FormControl>
