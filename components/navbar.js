@@ -169,23 +169,11 @@ const Navbar = () => {
                                                   </Button>
                                              </InputRightElement>
                                         </InputGroup>
-                                        {/* <Box display={"flex"} flexDirection={"row"}>
-                                   <Input
-                                        type="search"
-                                        borderColor={"bgGrey"}
-                                   />
-                                   <Center>
-                                        <BsSearch />
-                                   </Center>
-                              </Box> */}
                                    </Flex>
 
                                    {/* NAVBAR RIGHT */}
                                    <Flex float={"right"}>
                                         <Flex
-                                             // borderColor={"bgGrey"}
-                                             // borderWidth={"2px"}
-                                             // borderRadius="20px"
                                              height={"full"}
                                              alignItems={"center"}
                                              px={10}
@@ -193,40 +181,6 @@ const Navbar = () => {
                                              gap={5}
                                              // className="navbar__item"
                                         >
-                                             {/* <Link href="/wallet">
-                                                  <Flex
-                                                       alignItems={"center"}
-                                                       gap={1}
-                                                       className="nav__item"
-                                                  >
-                                                       <BiWallet className="icon nav__icon" />
-                                                       <Box lineHeight={"1"}>
-                                                            <Text>Хэтэвч</Text>
-                                                            <Text>15000</Text>
-                                                       </Box>
-                                                  </Flex>
-                                             </Link> */}
-                                             {/* <NavItem
-                                                  text={"Хүсэл"}
-                                                  href={"/bookmark"}
-                                                  icon={
-                                                       <FaRegHeart className="icon nav__icon" />
-                                                  }
-                                             />
-                                             <NavItem
-                                                  text={"Үнэлгээ"}
-                                                  href={"/estimate"}
-                                                  icon={
-                                                       <HiOutlineCalculator className="icon nav__icon" />
-                                                  }
-                                             />{" "}
-                                             <NavItem
-                                                  text={"Бүртгүүлэх"}
-                                                  href={"/register"}
-                                                  icon={
-                                                       <IoPersonCircleOutline className="icon nav__icon" />
-                                                  }
-                                             /> */}
                                              <Link href="/wallet">
                                                   <VStack className="animated__wallet">
                                                        <Flex gap={1}>
@@ -414,8 +368,7 @@ const Navbar = () => {
                                         {categories.map(
                                              ({ ...props }, index) => {
                                                   return (
-                                                       <Link
-                                                            href={props.href}
+                                                       <Box
                                                             key={index}
                                                             py={3}
                                                             px={4}
@@ -424,17 +377,59 @@ const Navbar = () => {
                                                                  bgColor: "white",
                                                                  color: "mainBlossom",
                                                             }}
+                                                            className="nav__category"
                                                        >
-                                                            <Text
+                                                            <Link
                                                                  color={
                                                                       "inherit"
+                                                                 }
+                                                                 href={
+                                                                      props.href
                                                                  }
                                                             >
                                                                  {
                                                                       props.category
                                                                  }
-                                                            </Text>
-                                                       </Link>
+                                                            </Link>
+                                                            <Stack
+                                                                 direction={
+                                                                      "column"
+                                                                 }
+                                                                 className="nav__sub"
+                                                                 position="absolute"
+                                                                 whiteSpace="nowrap"
+                                                                 p={1}
+                                                                 roundedBottom={
+                                                                      6
+                                                                 }
+                                                            >
+                                                                 {props.submenu &&
+                                                                      props.submenu.map(
+                                                                           (
+                                                                                d,
+                                                                                i
+                                                                           ) => {
+                                                                                return (
+                                                                                     <Link
+                                                                                          key={
+                                                                                               i
+                                                                                          }
+                                                                                          href={
+                                                                                               d.href
+                                                                                          }
+                                                                                          p={
+                                                                                               2
+                                                                                          }
+                                                                                     >
+                                                                                          {
+                                                                                               d.category
+                                                                                          }
+                                                                                     </Link>
+                                                                                );
+                                                                           }
+                                                                      )}
+                                                            </Stack>
+                                                       </Box>
                                                   );
                                              }
                                         )}

@@ -199,7 +199,10 @@ export const LoginComp = ({ credential, setCredential, fc, google }) => {
           <FormControl>
                <Box h={3} />
                <Button
-                    bg="#4285F4"
+                    bgColor="mainBlue"
+                    _hover={{
+                         bgColor: "mainBlossom",
+                    }}
                     color={"white"}
                     p={"12px"}
                     borderRadius={"5px"}

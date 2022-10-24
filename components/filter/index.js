@@ -7,10 +7,10 @@ import {
      Input,
      Link,
      Select,
-     Stack,
      Text,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
+import FilterStack from "../../util/filterStack";
 
 const filters = {
      districts: [
@@ -93,14 +93,6 @@ const categories = [
           categories: [{ category: "Газар" }, { category: "Оффис" }],
      },
 ];
-
-const FilterStack = ({ children }) => {
-     return (
-          <Stack borderBottom={"2px solid "} borderColor="bgGrey" py={5}>
-               {children}
-          </Stack>
-     );
-};
 
 const FilterLayout = () => {
      const [filter, setFilter] = useState({

@@ -163,7 +163,11 @@ html {
 
 .profile__drop-menu {
      display: block;
+     visibility: visible;
+     transform: translateY(20px);
      box-shadow: rgba(0, 0, 0, 0.2) 0px 6px 14px 0px;
+     transition: 0.3s ease;
+     opacity: 1;
      &::before {
           content: "";
           display: inline-block;
@@ -178,7 +182,10 @@ html {
      }
 }
 .drop__hidden {
-     display: none;
+     visibility: hidden;
+     opacity: 0;
+     transform: translateY(-20px);
+     transition: 0.3s ease;
 }
 
 .card {
@@ -194,5 +201,35 @@ html {
           background-color: $mainBlossom;
           opacity: 0.7;
           z-index: 1;
+     }
+}
+
+.nav__category {
+     position: relative;
+     &:hover {
+          .nav__sub {
+               // display: flex;
+               visibility: visible;
+               opacity: 1;
+               width: 300px;
+          }
+     }
+     .nav__sub {
+          // display: none;
+          visibility: hidden;
+          position: absolute;
+          transform: translateY(10px);
+          left: 0;
+          width: 0;
+          background-color: $mainBlossom;
+          color: white;
+          opacity: 0;
+          transition: 0.2s ease;
+          a {
+               &:hover {
+                    background-color: white;
+                    color: $mainBlossom;
+               }
+          }
      }
 }
