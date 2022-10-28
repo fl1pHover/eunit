@@ -273,36 +273,40 @@ const Navbar = () => {
                                                        rounded={5}
                                                        p={3}
                                                   >
-                                                       <HStack
-                                                            alignItems={
-                                                                 "center"
-                                                            }
-                                                       >
-                                                            <Avatar
-                                                                 src="https://bit.ly/dan-abramov"
-                                                                 size={"sm"}
-                                                            />
-                                                            <VStack
+                                                       <Link href="/account?profile">
+                                                            <HStack
                                                                  alignItems={
-                                                                      "flex-start"
+                                                                      "center"
                                                                  }
                                                             >
-                                                                 <Text
-                                                                      fontWeight={
-                                                                           "bold"
+                                                                 <Avatar
+                                                                      src="https://bit.ly/dan-abramov"
+                                                                      size={
+                                                                           "sm"
+                                                                      }
+                                                                 />
+                                                                 <VStack
+                                                                      alignItems={
+                                                                           "flex-start"
                                                                       }
                                                                  >
-                                                                      Soko
-                                                                 </Text>
-                                                                 <Text
-                                                                      mt={
-                                                                           "0 !important"
-                                                                      }
-                                                                 >
-                                                                      soko_bishu@yahoo.com
-                                                                 </Text>
-                                                            </VStack>
-                                                       </HStack>
+                                                                      <Text
+                                                                           fontWeight={
+                                                                                "bold"
+                                                                           }
+                                                                      >
+                                                                           Soko
+                                                                      </Text>
+                                                                      <Text
+                                                                           mt={
+                                                                                "0 !important"
+                                                                           }
+                                                                      >
+                                                                           soko_bishu@yahoo.com
+                                                                      </Text>
+                                                                 </VStack>
+                                                            </HStack>
+                                                       </Link>
                                                        <Divider
                                                             orientation="horizontal"
                                                             bgColor={"red"}
@@ -313,18 +317,24 @@ const Navbar = () => {
                                                             color={"grey"}
                                                        >
                                                             <DownLink
-                                                                 href={"/"}
+                                                                 href={
+                                                                      "/account?profile"
+                                                                 }
                                                                  text="Хувийн
                                                                  мэдэээлэл"
                                                             />
                                                             <DownLink
-                                                                 href={"/"}
+                                                                 href={
+                                                                      "/account?ads"
+                                                                 }
                                                                  text="  Миний
                                                             зарууд"
                                                             />
 
                                                             <DownLink
-                                                                 href={"/"}
+                                                                 href={
+                                                                      "/account?wallet"
+                                                                 }
                                                                  text="Хэтэвч"
                                                             />
                                                             <Divider
@@ -437,7 +447,7 @@ const Navbar = () => {
                                    <Stack direction={"row"}>
                                         <Link href={"/feedback"}>
                                              <Button variant={"whiteButton"}>
-                                                  Санал хүсэлт
+                                                  Шинэ төсөл
                                              </Button>
                                         </Link>
 

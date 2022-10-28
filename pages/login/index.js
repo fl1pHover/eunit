@@ -126,6 +126,7 @@ export default function Login() {
                     }}
                     my={10}
                     position={"relative"}
+                    height="65vh"
                >
                     <GridItem>
                          <Image
@@ -199,9 +200,10 @@ export const LoginComp = ({ credential, setCredential, fc, google }) => {
           <FormControl>
                <Box h={3} />
                <Button
-                    bgColor="mainBlue"
+                    bgColor={"mainBlue !important"}
                     _hover={{
-                         bgColor: "mainBlossom",
+                         // opacity: 0.8,
+                         bgColor: "mainBlossom !important",
                     }}
                     color={"white"}
                     p={"12px"}
