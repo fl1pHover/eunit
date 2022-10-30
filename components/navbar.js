@@ -46,7 +46,7 @@ const NavItem = ({ text, icon, href }) => {
      );
 };
 
-const DownLink = ({ href, text }) => {
+const DownLink = ({ href, text, children }) => {
      return (
           <Link
                href={href}
@@ -55,12 +55,13 @@ const DownLink = ({ href, text }) => {
                     color: "mainBlossom",
                }}
           >
-               <Text>{text}</Text>
+               {children && children}
+               {text !='' && <Text>{text}</Text>}
           </Link>
      );
 };
 
-const Navbar = () => {
+const Navbar = ({user, logout}) => {
      const [sticky, setSticky] = useState(false);
      const [active, setActive] = useState(false);
 
@@ -263,7 +264,7 @@ const Navbar = () => {
                                                        </Text>
                                                   </VStack>
                                              </Link>
-                                             <Link href="/login">
+                                             {user.status == false  && <Link href="/login">
                                                   <VStack className="animated__account">
                                                        <Box
                                                             width={"25px"}
@@ -274,9 +275,9 @@ const Navbar = () => {
                                                             Бүртгүүлэх
                                                        </Text>
                                                   </VStack>
-                                             </Link>
+                                             </Link>}
 
-                                             <VStack
+                                             {user.status == true && <VStack
                                                   // className="animated__account"
                                                   className="animated__account"
                                                   textAlign={"center"}
@@ -314,7 +315,7 @@ const Navbar = () => {
                                                             }
                                                        >
                                                             <Avatar
-                                                                 src="https://bit.ly/dan-abramov"
+                                                                 src={user.profileImg}
                                                                  size={"sm"}
                                                             />
                                                             <VStack
@@ -327,14 +328,14 @@ const Navbar = () => {
                                                                            "bold"
                                                                       }
                                                                  >
-                                                                      Soko
+                                                                      {user.username}
                                                                  </Text>
                                                                  <Text
                                                                       mt={
                                                                            "0 !important"
                                                                       }
                                                                  >
-                                                                      soko_bishu@yahoo.com
+                                                                      {user.email}
                                                                  </Text>
                                                             </VStack>
                                                        </HStack>
@@ -367,13 +368,14 @@ const Navbar = () => {
                                                                  bgColor={"red"}
                                                                  my={3}
                                                             />
-                                                            <DownLink
-                                                                 href={"/"}
-                                                                 text="Гарах"
-                                                            />
+                                                            <DownLink><Button width="100%"
+                                                            h={'auto'}
+                                                            _hover={{
+                                                                 color: "mainBlossom",
+                                                            }} variant={'unstyled'} onClick={() => logout()}>Гарах</Button></DownLink>
                                                        </VStack>
                                                   </Box>
-                                             </VStack>
+                                             </VStack>}
                                         </Flex>
                                    </Flex>
                               </Stack>

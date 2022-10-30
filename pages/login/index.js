@@ -17,7 +17,9 @@ import {
      Text,
      VStack,
 } from "@chakra-ui/react";
+import axios from "axios";
 import { initializeApp } from "firebase/app";
+
 import {
      createUserWithEmailAndPassword,
      getAuth,
@@ -25,6 +27,7 @@ import {
      signInWithEmailAndPassword,
      signInWithPopup,
 } from "firebase/auth";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import MainContainer from "../../layout/mainContainer";
 
@@ -54,6 +57,7 @@ export default function Login() {
           confirmPassword: "",
           username: "",
      });
+     const router = useRouter()
      const [credential, setCredential] = useState({ email: "", password: "" });
      const signUp = () => {
           const auth = getAuth();
@@ -67,10 +71,21 @@ export default function Login() {
                     signupCredential.email,
                     signupCredential.password
                )
-                    .then((u) => {
+                    .then(async (u) => {
                          const user = u.user;
-                         console.log(user);
+                         
                          if (user) {
+                              try {
+                                   await axios.post('https://bom-location.herokuapp.com/user', {
+                                   username : signupCredential.username,
+                                   email: user.email,
+                                   profileImg: 'https://png.pngtree.com/png-clipart/20190629/original/pngtree-vector-edit-profile-icon-png-image_4101351.jpg',
+                                   phone: signupCredential.phone
+                              })
+                              } catch(err) {
+                                   console.log(err)
+                              }
+                              router.push('/')
                               setSignupcredential((signupCredential) => ({
                                    ...signupCredential,
                                    email: "",
@@ -88,10 +103,23 @@ export default function Login() {
      const signByGoogle = () => {
           const provider = new GoogleAuthProvider();
           const auth = getAuth();
-          signInWithPopup(auth, provider).then((res) => {
+          signInWithPopup(auth, provider).then(async (res) => {
                const cre = GoogleAuthProvider.credentialFromResult(res);
                const user = res.user;
-               console.log(user);
+               if(user) {
+                    console.log(user)
+                    try {
+                         await axios.post('https://bom-location.herokuapp.com/user', {
+                         username : user.displayName,
+                         email: user.email,
+                         profileImg: user.profileImg,
+                         phone: '99999999'
+                    })
+                    } catch(err) {
+                         console.log(err)
+                    }
+                    router.push('/')
+               }
           });
      };
 

@@ -1,5 +1,5 @@
-import { Box, Center, Code, Heading } from "@chakra-ui/react";
-import { useState } from "react";
+import { Box, Button, Center, Code, Divider, Heading, HStack, Input, Select, Text, Textarea, VStack } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 
 import MainContainer from "../layout/mainContainer";
 
@@ -9,21 +9,55 @@ export default function CreateAd() {
      const [type, setType] = useState("");
      const [category, setCategory] = useState("");
      const [subCategory, setSubCategory] = useState("");
+     const [select, setSelect] = useState({category:'', subCategory: '', type: '', title: '', description: '', location: '', position: ''})
+     const getData = async () => {
+     
+          if(category == '') {
+               try {
+                    await fetch('https://bom-location.herokuapp.com/category').then((d) => d.json()).then((r) => setCategory(r))
+                    
+               }     catch(err) {
+                    console.log(err)
+               }
+          }
+          if(category != '' && select.category != '') {
+               try {
+                    await fetch(`https://bom-location.herokuapp.com/category/${select.category}`).then((r) => r.json()).then((d) => setSubCategory(d))
+               } catch (error) {
+                    console.log(error)
+               }
+          }
+     }
+     const createAd = async () => {
+          try {
+               
+          } catch (error) {
+               
+          }
+     }
+     const capitalizeFirst = str => {
+          return str.charAt(0).toUpperCase() + str.slice(1)
+     }
+     useEffect(() => {
 
+               getData()
+     
+     }, [select])
+     
      return (
           <Box as="section" m={5} id="add__ad">
                <MainContainer>
                     <Box bgColor={"white"} px={10} py={5} rounded={10}>
                          <Center>
                               <Heading variant={"bigHeading"}>
-                                   Зар орууулах хэсэг
+                                   Зар оруулах хэсэг
                               </Heading>
                          </Center>
                          <Code mt={10} textAlign="center">
                               Зар оруулах дараагийн хэсэг дараах сонголтыг
                               сонгосны дараа гарч ирнэ.
                          </Code>
-                         {/* <Box
+                         <Box
                               display={"grid"}
                               gridTemplateColumns={"repeat(3,1fr)"}
                               gap={10}
@@ -36,182 +70,108 @@ export default function CreateAd() {
                                    <Select
                                         placeholder="Сонгох"
                                         onChange={(e) =>
-                                             setCategory(e.target.value)
+                                             setSelect((select) => ({...select, category: e.target.value}))
                                         }
-                                        value={category}
+                                        value={select.category}
                                    >
-                                        {categories.map((c, i) => {
+                                        {category && category.map((c, i) => {
+                                         
                                              return (
                                                   <option
-                                                       value={`${i}`}
+                                                       value={`${c._id}`}
                                                        key={i}
                                                   >
-                                                       {c.category}
+                                                       {capitalizeFirst(c.name)}
                                                   </option>
                                              );
                                         })}
                                    </Select>
                               </HStack>
-                              <HStack>
+                             {subCategory != '' &&  <HStack>
+                                   <Text width={"100%"}>Дэд төрөл</Text>
+                                   <Select
+                                        placeholder="Сонгох"
+                                        onChange={(e) =>
+                                             setSelect((select) => ({...select, subCategory: e.target.value}))
+                                        }
+                                        value={select.subCategory}
+                                   >
+                                        {subCategory && subCategory.map((t, i) => {
+                                             
+                                             return (
+                                                  <option value={i} key={i}>
+                                                       {capitalizeFirst(t.name)}
+                                                  </option>
+                                             );
+                                        })}
+                                   </Select>
+                              </HStack>}
+                             {subCategory.length > 0 && select.subCategory &&  <HStack>
                                    <Text width={"100%"}>Борлуулах төрөл</Text>
                                    <Select
                                         placeholder="Сонгох"
                                         onChange={(e) =>
-                                             setType(e.target.value)
+                                             setSelect((select) => ({...select, type: e.target.value}))
                                         }
-                                        value={type}
+                                        value={select.type}
+                                        
                                    >
-                                        {types.map((t, i) => {
+                                        {subCategory[select.subCategory].types && subCategory[select.subCategory].types.map((t, i) => {
+                                             
                                              return (
-                                                  <option value={t} key={i}>
-                                                       {t}
+                                                  <option value={i} key={i}>
+                                                       {capitalizeFirst(t.name)}
                                                   </option>
                                              );
                                         })}
                                    </Select>
-                              </HStack>
-                              <HStack>
-                                   {category != "" && (
-                                        <>
-                                             <Text width={"100%"}>
-                                                  Хөрөнгийн дэд төрөл
-                                             </Text>
-                                             <Select
-                                                  placeholder="Сонгох"
-                                                  onChange={(e) =>
-                                                       setSubCategory(
-                                                            e.target.value
-                                                       )
-                                                  }
-                                                  value={subCategory}
-                                             >
-                                                  {categories[category] !==
-                                                       undefined &&
-                                                       categories[
-                                                            category
-                                                       ].categories.map(
-                                                            (c, i) => {
-                                                                 return (
-                                                                      <option
-                                                                           key={
-                                                                                i
-                                                                           }
-                                                                           value={`${i}`}
-                                                                      >
-                                                                           {
-                                                                                c.category
-                                                                           }
-                                                                      </option>
-                                                                 );
-                                                            }
-                                                       )}
-                                             </Select>
-                                        </>
-                                   )}
-                              </HStack>
+                              </HStack>}
+                              
                          </Box>
-                         <VStack gap={5} mt={10}>
-                              {category != "" &&
-                                   subCategory != "" &&
-                                   categories[category].categories[
-                                        subCategory
-                                   ].filters.map((f, i) => {
-                                        console.log(
-                                             categories[category].categories[
-                                                  subCategory
-                                             ].filters.length
-                                        );
-                                        return (
-                                             <>
-                                                  {i == 0 && (
+                        <VStack gap={5} mt={10}>
+                              {
+                                   select.type != "" && subCategory != '' && 
+                                   <>
                                                        <Textarea
-                                                            placeholder={f}
+                                                            placeholder={'Гарчиг'}
                                                             type="textarea"
                                                             height="100px"
                                                             whiteSpace={
                                                                  "nowrap"
                                                             }
+                                                            onChange={(e) => setSelect((select) => ({...select, title: e.target.value}))}
+                                                            value={select.title}
                                                        />
-                                                  )}
-                                                  {i ==
-                                                       categories[category]
-                                                            .categories[
-                                                            subCategory
-                                                       ].filters.length -
-                                                            1 && (
-                                                       <Input placeholder={f} />
-                                                  )}
-                                                  {i ==
-                                                       categories[category]
-                                                            .categories[
-                                                            subCategory
-                                                       ].filters.length -
-                                                            3 && (
-                                                       <Center>
+                                                       <Textarea
+                                                            placeholder={'Дэлгэрэнгүй'}
+                                                            type="textarea"
+                                                            height="100px"
+                                                            whiteSpace={
+                                                                 "nowrap"
+                                                            }
+                                                            value={select.description}
+                                                            onChange={(e) => setSelect((select) => ({...select, description: e.target.value}))}
+                                                       />
+                                                 
+                                                  
+                                                       <Input placeholder={'Хаяг'} value={select.location}
+                                                            onChange={(e) => setSelect((select) => ({...select, location: e.target.value}))}/>
+                                                 
+                                                       
+                                                       {/* <Center>
                                                             <Input
                                                                  type={"file"}
                                                                  height="100px"
                                                             />
                                                        </Center>
-                                                  )}
-                                                  {i ==
-                                                       categories[category]
-                                                            .categories[
-                                                            subCategory
-                                                       ].filters.length -
-                                                            3 && (
-                                                       <Input type={"file"} />
-                                                  )}
-                                                  <Grid
-                                                       templateColumns={
-                                                            "repeat(2,1fr)"
-                                                       }
-                                                  >
-                                                       <GridItem>
-                                                            {i != 0 &&
-                                                                 i !=
-                                                                      categories[
-                                                                           category
-                                                                      ]
-                                                                           .categories[
-                                                                           subCategory
-                                                                      ].filters
-                                                                           .length -
-                                                                           1 &&
-                                                                 i !=
-                                                                      categories[
-                                                                           category
-                                                                      ]
-                                                                           .categories[
-                                                                           subCategory
-                                                                      ].filters
-                                                                           .length -
-                                                                           2 &&
-                                                                 i !=
-                                                                      categories[
-                                                                           category
-                                                                      ]
-                                                                           .categories[
-                                                                           subCategory
-                                                                      ].filters
-                                                                           .length -
-                                                                           3 &&
-                                                                 categories[
-                                                                      category
-                                                                 ].categories[
-                                                                      subCategory
-                                                                 ].filters
-                                                                      .length -
-                                                                      4 && (
-                                                                      <Input />
-                                                                 )}
-                                                       </GridItem>
-                                                  </Grid>
+                                                 
+                                                       <Input type={"file"} /> */}
+                                                  <Button onClick={() => createAd()}>Илгээх</Button>
+                                                  
                                                   <Divider />
                                              </>
-                                        );
-                                   })}
-                         </VStack> */}
+                                        }
+                         </VStack>  
                     </Box>
                </MainContainer>
           </Box>

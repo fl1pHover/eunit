@@ -11,7 +11,6 @@ const Layout = ({ children }) => {
                     <meta name="description" content="Bom, zariin site" />
                     {/* <link rel="icon" href="/favicon.ico" /> */}
                </Head>
-               <Navbar />
                {children}
                <Footer />
           </>
