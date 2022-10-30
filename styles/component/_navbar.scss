@@ -18,6 +18,11 @@
      top: 0;
 }
 
+.profile__drop-menu {
+     // transform: translateY(20px);
+     transition: 0.3s ease;
+}
+
 // Profile button
 .drop__hidden {
      visibility: hidden;
