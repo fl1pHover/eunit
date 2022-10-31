@@ -86,7 +86,7 @@ function MyApp({ Component, pageProps }) {
           //      ) : (
           //           <>
           <ChakraProvider theme={theme}>
-               <Layout>
+               <Layout user={user}>
                     <Navbar user={user} logout={logout}/>
                     <Component {...pageProps} />
                </Layout>

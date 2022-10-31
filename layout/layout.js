@@ -3,7 +3,7 @@ import React from "react";
 import Footer from "../components/footer";
 import Navbar from "../components/navbar";
 
-const Layout = ({ children }) => {
+const Layout = ({ children, user }) => {
      return (
           <>
                <Head>
