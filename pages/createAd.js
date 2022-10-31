@@ -12,6 +12,7 @@ import {
      Select,
      Text,
      Textarea,
+     useToast,
      VStack,
 } from "@chakra-ui/react";
 import axios from "axios";
@@ -79,6 +80,7 @@ export default function CreateAd() {
           getData();
      }, [select]);
 
+     const toast = useToast();
      return (
           <Box as="section" m={5} id="add__ad">
                <MainContainer>
