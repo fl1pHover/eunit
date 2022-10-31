@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { Grid, GridItem, Heading, Skeleton } from "@chakra-ui/react";
 
@@ -13,7 +13,9 @@ const array = [...Array(10)];
 //      return <GridItem></GridItem>;
 // };
 
-const AdContent = () => {
+
+const AdContent = ({data}) => {
+     
      return (
           <MainContainer>
                <Heading>Үл хөдлөх хөрөнгө</Heading>
@@ -26,7 +28,7 @@ const AdContent = () => {
                     {array.map((_, index) => {
                          <GridItem key={index}>{Asd}</GridItem>;
                     })}
-                    <ProductCard />
+                    <ProductCard data={data}/>
                     <ProductCard />
                     <ProductCard />
                     <Skeleton />

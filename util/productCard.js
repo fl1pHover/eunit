@@ -61,12 +61,13 @@ const cardData = [
      },
 ];
 
-const ProductCard = () => {
+const ProductCard = ({data}) => {
      const toast = useToast();
 
      return (
           <>
-               {cardData.map(({ ...props }, index) => {
+               {data && data.map(({ ...props }, index) => {
+                    // console.log(props)
                     return (
                          <Box
                               key={index}
@@ -85,10 +86,10 @@ const ProductCard = () => {
                          >
                               <Box>
                                    <Box position={"relative"}>
-                                        <Link href={props.href} target="_blank">
+                                        <Link href={`/product/${props._id}`} target="_blank">
                                              <AspectRatio ratio={5 / 4}>
                                                   <Image
-                                                       src={props.image}
+                                                       src={props.image ? props.image : '/images/HeaderSlider/1.jpg'}
                                                        width="70%"
                                                   />
                                              </AspectRatio>{" "}
@@ -165,9 +166,9 @@ const ProductCard = () => {
                                         variant={"smallHeading"}
                                         flexWrap="nowrap"
                                    >
-                                        Рокмон бюлдинг оффис
+                                        {props.title}
                                    </Heading>
-                                   <Text>{props.title}</Text>
+                                   <Text>{props.description}</Text>
                                    <Stack
                                         direction={"row"}
                                         gap={2}
@@ -179,7 +180,7 @@ const ProductCard = () => {
                                                   variant={"smallHeading"}
                                                   fontWeight="normal"
                                              >
-                                                  {props.room}
+                                                  {props.filters[1].value}
                                              </Heading>
                                         </Flex>
                                         <Flex alignItems={"center"} gap={1}>
@@ -188,7 +189,7 @@ const ProductCard = () => {
                                                   variant={"smallHeading"}
                                                   fontWeight="normal"
                                              >
-                                                  {props.bedroom}
+                                                  {props.filters[2].value}
                                              </Heading>
                                         </Flex>
                                         <Flex alignItems={"center"} gap={1}>
@@ -197,7 +198,7 @@ const ProductCard = () => {
                                                   variant={"smallHeading"}
                                                   fontWeight="normal"
                                              >
-                                                  {props.bathroom}
+                                                  {props.filters[3].value}
                                              </Heading>
                                         </Flex>
                                         <Flex alignItems={"center"} gap={1}>

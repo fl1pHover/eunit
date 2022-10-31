@@ -1,9 +1,21 @@
+import { useEffect, useState } from "react";
 import AdContent from "../components/home/adContent";
 import CategorySelect from "../components/home/categorySelect";
 import SwiperHeader from "../components/home/swiperHeader";
 import ScrollTop from "../util/scrollTop";
 
 export default function Home() {
+     const [products, setProducts] = useState('')
+     const getData = async () => {
+          try {
+               await fetch('http://localhost:5050/ad').then((r) => r.json()).then((d) => setProducts(d))
+          } catch (error) {
+               console.log(error)
+          }
+     }
+     useEffect(() => {
+          getData()
+     }, [])
      // async function getData() {
      //      const res = await fetch("http://192.168.1.49:3000/ad")
      //           .then(async (r) => {
@@ -21,7 +33,7 @@ export default function Home() {
           <>
                <SwiperHeader></SwiperHeader>
                <CategorySelect />
-               <AdContent />
+               <AdContent data={products}/>
 
                {/* Scroll */}
                <ScrollTop />
