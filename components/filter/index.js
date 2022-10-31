@@ -7,33 +7,34 @@ import {
      Input,
      Link,
      Select,
-     Stack,
      Text,
+     VStack,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
+import FilterStack from "../../util/filterStack";
 
 const filters = {
      districts: [
           {
-               district: "баянгол",
+               district: "Баянгол",
                towns: ["10-р хороолол", "25-р эмийн сан", "3-р хороолол"],
           },
           {
-               district: "баянзүрх",
+               district: "Баянзүрх",
                towns: ["1000 оюутны байр", "13-р хороолол", "1₮-р хороолол"],
           },
      ],
      rooms: ["1", "2", "3", "4", "5", "5+"],
      bathrooms: ["1", "2", "2+"],
-     masterBedrooms: ["байхгүй", "1", "2", "2+"],
-     window: ["вакум", "модон", "төмөр вакум", "модон вакум"],
+     masterBedrooms: ["Байхгүй", "1", "2", "2+"],
+     window: ["Вакум", "Модон", "Төмөр вакум", "Модон вакум"],
      windows: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "10+"],
-     doors: ["бүргэд", "төмөр", "мод"],
+     doors: ["Бүргэд", "Төмөр", "Мод"],
      balconies: ["1", "2", "3", "4", "5", "5+"],
-     floor: ["паркет", "ламинат", "плита", "мод", "чулуу", "бетон", "цемент"],
-     garage: ["байгаа", "байхгүй"],
-     condition: ["банкны лизингтэй", "хувь лизингтэй", "бэлэн"],
-     barter: ["байгаа", "байхгүй"],
+     floor: ["Паркет", "Ламинат", "Плита", "Мод", "Чулуу", "Бетон", "Цемент"],
+     garage: ["Байгаа", "Байхгүй"],
+     condition: ["Банкны лизингтэй", "Хувь лизингтэй", "Бэлэн"],
+     barter: ["Байгаа", "Байхгүй"],
 };
 const categories = [
      {
@@ -93,14 +94,6 @@ const categories = [
           categories: [{ category: "Газар" }, { category: "Оффис" }],
      },
 ];
-
-const FilterStack = ({ children }) => {
-     return (
-          <Stack borderBottom={"2px solid "} borderColor="bgGrey" py={5}>
-               {children}
-          </Stack>
-     );
-};
 
 const FilterLayout = () => {
      const [filter, setFilter] = useState({
@@ -528,37 +521,45 @@ const FilterLayout = () => {
                                    )}
                               </>
                          )}
+                         <VStack>
+                              <Heading variant={"smallHeading"}>Үнэ</Heading>
+                              <Flex alignItems={"center"} gap={2}>
+                                   <Input
+                                        type="number"
+                                        placeholder="Доод"
+                                        variant="outline"
+                                        borderWidth="2px"
+                                   />
+                                   <Text>-</Text>
+                                   <Input
+                                        type="number"
+                                        placeholder="Дээд"
+                                        variant="outline"
+                                        borderWidth="2px"
+                                   />
+                              </Flex>
+                         </VStack>
+                         <VStack flex>
+                              <Heading variant={"smallHeading"}>
+                                   Талбайн хэмжээ
+                              </Heading>
+                              <Flex alignItems={"center"} gap={2}>
+                                   <Input
+                                        type="number"
+                                        placeholder="Доод"
+                                        variant="outline"
+                                        borderWidth="2px"
+                                   />
+                                   <Text>-</Text>
+                                   <Input
+                                        type="number"
+                                        placeholder="Дээд"
+                                        variant="outline"
+                                        borderWidth="2px"
+                                   />
+                              </Flex>
+                         </VStack>
 
-                         <Flex alignItems={"center"} gap={2}>
-                              <Input
-                                   type="number"
-                                   placeholder="Дээд"
-                                   variant="outline"
-                                   borderWidth="2px"
-                              />
-                              <Text>-</Text>
-                              <Input
-                                   type="number"
-                                   placeholder="Доод"
-                                   variant="outline"
-                                   borderWidth="2px"
-                              />
-                         </Flex>
-                         <Flex alignItems={"center"} gap={2}>
-                              <Input
-                                   type="number"
-                                   placeholder="Дээд"
-                                   variant="outline"
-                                   borderWidth="2px"
-                              />
-                              <Text>-</Text>
-                              <Input
-                                   type="number"
-                                   placeholder="Доод"
-                                   variant="outline"
-                                   borderWidth="2px"
-                              />
-                         </Flex>
                          <Button variant={"blueButton"} mx={4}>
                               Хайх
                          </Button>

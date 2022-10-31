@@ -86,6 +86,10 @@ const FooterData = [
                     href: "/",
                     text: "Хамтран ажиллагаа",
                },
+               {
+                    href: "/feedback",
+                    text: "Санал хүсэлт",
+               },
           ],
      },
 ];

@@ -4,8 +4,8 @@ import {
      Button,
      Divider,
      Flex,
-     Heading,
      HStack,
+     Image,
      Input,
      InputGroup,
      InputRightElement,
@@ -66,7 +66,6 @@ const Navbar = ({user, logout}) => {
      const [active, setActive] = useState(false);
 
      const handleClick = (event) => {
-          // 👇️ toggle isActive state on click
           setActive((current) => !current);
      };
 
@@ -89,7 +88,12 @@ const Navbar = ({user, logout}) => {
                     px={3}
                     color="white"
                >
-                    <Text>Welcome to Bom Website</Text>
+                    <MainContainer>
+                         <HStack justifyContent={"space-between"}>
+                              <Text>Welcome to BOM Website</Text>
+                              <Text>Холбоо барих: 9999-9999</Text>
+                         </HStack>
+                    </MainContainer>
                </Box>
                <Box
                     id="navbar"
@@ -115,7 +119,14 @@ const Navbar = ({user, logout}) => {
                                    justifyContent={"space-between"}
                               >
                                    <Link href="/">
-                                        <Heading>BOM</Heading>
+                                        <Image
+                                             src="/images/logo/logo-blue.png"
+                                             alt="BOM logo"
+                                             // height={"75px"}
+                                             width={"100%"}
+                                             maxHeight="75px"
+                                             objectFit="contain"
+                                        />
                                    </Link>
 
                                    <Flex
@@ -159,23 +170,11 @@ const Navbar = ({user, logout}) => {
                                                   </Button>
                                              </InputRightElement>
                                         </InputGroup>
-                                        {/* <Box display={"flex"} flexDirection={"row"}>
-                                   <Input
-                                        type="search"
-                                        borderColor={"bgGrey"}
-                                   />
-                                   <Center>
-                                        <BsSearch />
-                                   </Center>
-                              </Box> */}
                                    </Flex>
 
                                    {/* NAVBAR RIGHT */}
                                    <Flex float={"right"}>
                                         <Flex
-                                             // borderColor={"bgGrey"}
-                                             // borderWidth={"2px"}
-                                             // borderRadius="20px"
                                              height={"full"}
                                              alignItems={"center"}
                                              px={10}
@@ -183,40 +182,6 @@ const Navbar = ({user, logout}) => {
                                              gap={5}
                                              // className="navbar__item"
                                         >
-                                             {/* <Link href="/wallet">
-                                                  <Flex
-                                                       alignItems={"center"}
-                                                       gap={1}
-                                                       className="nav__item"
-                                                  >
-                                                       <BiWallet className="icon nav__icon" />
-                                                       <Box lineHeight={"1"}>
-                                                            <Text>Хэтэвч</Text>
-                                                            <Text>15000</Text>
-                                                       </Box>
-                                                  </Flex>
-                                             </Link> */}
-                                             {/* <NavItem
-                                                  text={"Хүсэл"}
-                                                  href={"/bookmark"}
-                                                  icon={
-                                                       <FaRegHeart className="icon nav__icon" />
-                                                  }
-                                             />
-                                             <NavItem
-                                                  text={"Үнэлгээ"}
-                                                  href={"/estimate"}
-                                                  icon={
-                                                       <HiOutlineCalculator className="icon nav__icon" />
-                                                  }
-                                             />{" "}
-                                             <NavItem
-                                                  text={"Бүртгүүлэх"}
-                                                  href={"/register"}
-                                                  icon={
-                                                       <IoPersonCircleOutline className="icon nav__icon" />
-                                                  }
-                                             /> */}
                                              <Link href="/wallet">
                                                   <VStack className="animated__wallet">
                                                        <Flex gap={1}>
@@ -302,7 +267,7 @@ const Navbar = ({user, logout}) => {
                                                        bottom="-200px"
                                                        right="0"
                                                        onClick={handleClick}
-                                                       // boxShadow="xl"
+                                                       boxShadow="lg"
                                                        height="200px"
                                                        width="250px"
                                                        bgColor="white"
@@ -320,14 +285,21 @@ const Navbar = ({user, logout}) => {
                                                             />
                                                             <VStack
                                                                  alignItems={
-                                                                      "flex-start"
+                                                                      "center"
                                                                  }
                                                             >
-                                                                 <Text
-                                                                      fontWeight={
-                                                                           "bold"
+                                                                 <Avatar
+                                                                      src="https://bit.ly/dan-abramov"
+                                                                      size={
+                                                                           "sm"
+                                                                      }
+                                                                 />
+                                                                 <VStack
+                                                                      alignItems={
+                                                                           "flex-start"
                                                                       }
                                                                  >
+                                                                      <Text>
                                                                       {user.username}
                                                                  </Text>
                                                                  <Text
@@ -337,6 +309,7 @@ const Navbar = ({user, logout}) => {
                                                                  >
                                                                       {user.email}
                                                                  </Text>
+                                                            </VStack>
                                                             </VStack>
                                                        </HStack>
                                                        <Divider
@@ -349,18 +322,24 @@ const Navbar = ({user, logout}) => {
                                                             color={"grey"}
                                                        >
                                                             <DownLink
-                                                                 href={"/"}
+                                                                 href={
+                                                                      "/account?profile"
+                                                                 }
                                                                  text="Хувийн
                                                                  мэдэээлэл"
                                                             />
                                                             <DownLink
-                                                                 href={"/"}
+                                                                 href={
+                                                                      "/account?ads"
+                                                                 }
                                                                  text="  Миний
                                                             зарууд"
                                                             />
 
                                                             <DownLink
-                                                                 href={"/"}
+                                                                 href={
+                                                                      "/account?wallet"
+                                                                 }
                                                                  text="Хэтэвч"
                                                             />
                                                             <Divider
@@ -405,8 +384,7 @@ const Navbar = ({user, logout}) => {
                                         {categories.map(
                                              ({ ...props }, index) => {
                                                   return (
-                                                       <Link
-                                                            href={props.href}
+                                                       <Box
                                                             key={index}
                                                             py={3}
                                                             px={4}
@@ -415,17 +393,59 @@ const Navbar = ({user, logout}) => {
                                                                  bgColor: "white",
                                                                  color: "mainBlossom",
                                                             }}
+                                                            className="nav__category"
                                                        >
-                                                            <Text
+                                                            <Link
                                                                  color={
                                                                       "inherit"
+                                                                 }
+                                                                 href={
+                                                                      props.href
                                                                  }
                                                             >
                                                                  {
                                                                       props.category
                                                                  }
-                                                            </Text>
-                                                       </Link>
+                                                            </Link>
+                                                            <Stack
+                                                                 direction={
+                                                                      "column"
+                                                                 }
+                                                                 className="nav__sub"
+                                                                 position="absolute"
+                                                                 whiteSpace="nowrap"
+                                                                 p={1}
+                                                                 roundedBottom={
+                                                                      6
+                                                                 }
+                                                            >
+                                                                 {props.submenu &&
+                                                                      props.submenu.map(
+                                                                           (
+                                                                                d,
+                                                                                i
+                                                                           ) => {
+                                                                                return (
+                                                                                     <Link
+                                                                                          key={
+                                                                                               i
+                                                                                          }
+                                                                                          href={
+                                                                                               d.href
+                                                                                          }
+                                                                                          p={
+                                                                                               2
+                                                                                          }
+                                                                                     >
+                                                                                          {
+                                                                                               d.category
+                                                                                          }
+                                                                                     </Link>
+                                                                                );
+                                                                           }
+                                                                      )}
+                                                            </Stack>
+                                                       </Box>
                                                   );
                                              }
                                         )}
@@ -433,7 +453,7 @@ const Navbar = ({user, logout}) => {
                                    <Stack direction={"row"}>
                                         <Link href={"/feedback"}>
                                              <Button variant={"whiteButton"}>
-                                                  Санал хүсэлт
+                                                  Шинэ төсөл
                                              </Button>
                                         </Link>
 

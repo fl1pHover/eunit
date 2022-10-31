@@ -1,5 +1,9 @@
-import { Box, Button, Center, Code, Divider, Heading, HStack, Input, Select, Text, Textarea, VStack } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import {
+     Box,
+     Center,
+     Code, Heading
+} from "@chakra-ui/react";
+import { useState } from "react";
 
 import MainContainer from "../layout/mainContainer";
 

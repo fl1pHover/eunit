@@ -24,7 +24,6 @@ import Estimator from "../util/estimator";
 import ProductCard from "../util/productCard";
 
 import { FaHeart } from "react-icons/fa";
-const array = [...Array(700)];
 
 import ScrollTop from "../util/scrollTop";
 
@@ -119,7 +118,7 @@ const product = {
           { "Хэдэн давхар": "18" },
           { Өрөө: "3" },
           { "Угаалгын өрөө": "1" },
-          { "Mac/унтлгаын өрөө": "Байхгүй" },
+          { "Mac/Унтлгаын өрөө": "Байхгүй" },
           { Цонх: "Вакум" },
           { "Цонхны тоо": "4" },
           { Хаалга: "Бүргэд" },
@@ -135,6 +134,7 @@ const product = {
 };
 const Product = () => {
      const toast = useToast();
+     
 
      console.log(product);
      return (
@@ -184,7 +184,7 @@ const Product = () => {
                                              >
                                                   <Stack direction={"row"}>
                                                        <Text>
-                                                            Зарын огноо:{" "}
+                                                            Зарын огноо:
                                                             {product.date}
                                                        </Text>
                                                        <Text>

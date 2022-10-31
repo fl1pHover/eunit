@@ -1,51 +1,61 @@
 import {
-     AspectRatio,
      Box,
      Grid,
      GridItem,
      Heading,
-     Image,
      Link,
      Stack,
+     Text,
 } from "@chakra-ui/react";
 import React from "react";
 
+import { AiOutlineCar } from "react-icons/ai";
+import { BsBuilding, BsPhone } from "react-icons/bs";
+import { CgSmartHomeWashMachine } from "react-icons/cg";
+import { MdComputer } from "react-icons/md";
+import { RiHomeSmile2Line } from "react-icons/ri";
 import MainContainer from "../../layout/mainContainer";
 
 const categoryCardData = [
      {
           image: "./images/HeaderSlider/1.jpg",
+          icon: <BsBuilding />,
           categoryName: "Үл хөдлөх хөрөнгө",
           href: "/category",
           itemCount: "105",
      },
      {
-          image: "./images/HeaderSlider/1.jpg",
+          image: "./images/category/car.jpg",
+          icon: <AiOutlineCar />,
           categoryName: "Тээврийн хэрэгсэл",
           href: "/vehicle",
 
           itemCount: "105",
      },
      {
-          image: "./images/HeaderSlider/1.jpg",
+          image: "./images/category/computer.jpg",
+          icon: <MdComputer />,
           categoryName: "Компьютер",
           href: "/computer",
           itemCount: "105",
      },
      {
-          image: "./images/HeaderSlider/1.jpg",
+          image: "./images/category/phone.jpg",
+          icon: <BsPhone />,
           categoryName: "Гар утас",
           href: "phone",
           itemCount: "105",
      },
      {
-          image: "./images/HeaderSlider/1.jpg",
+          image: "./images/category/electronic.jpg",
+          icon: <CgSmartHomeWashMachine />,
           categoryName: "Цахилгаан бараа",
           href: "electronic",
           itemCount: "105",
      },
      {
-          image: "./images/HeaderSlider/1.jpg",
+          image: "./images/category/home.jpg",
+          icon: <RiHomeSmile2Line />,
           categoryName: "Гэр ахуйн бараа",
           href: "household-items",
           itemCount: "105",
@@ -69,22 +79,30 @@ const CategorySelect = () => {
                                    <Link key={index} href={props.href}>
                                         <GridItem
                                              bgColor="white"
-                                             p={4}
-                                             borderRadius={"10px"}
+                                             py={8}
+                                             rounded={20}
                                              boxShadow="md"
                                              transition={"0.3s ease"}
                                              _hover={{
                                                   boxShadow: "xl",
                                              }}
                                              textAlign={"center"}
+                                             backgroundImage={props.image}
+                                             backgroundPosition={"center"}
+                                             backgroundSize="cover"
+                                             className="card"
+                                             overflow={"hidden"}
                                         >
                                              <Stack
                                                   key={index}
                                                   display={"flex"}
                                                   alignItems={"center"}
                                                   height="100%"
+                                                  position={"relative"}
+                                                  zIndex={"2"}
+                                                  color="white"
                                              >
-                                                  <AspectRatio
+                                                  {/* <AspectRatio
                                                        width="80%"
                                                        ratio={1 / 1}
                                                   >
@@ -93,8 +111,13 @@ const CategorySelect = () => {
                                                             width="70%"
                                                             borderRadius={"50%"}
                                                        />
-                                                  </AspectRatio>
-
+                                                  </AspectRatio> */}
+                                                  {/* <AiOutlineCar
+                                                       fontSize={"50px"}
+                                                  /> */}
+                                                  <Text fontSize={"50px"}>
+                                                       {props.icon}
+                                                  </Text>
                                                   <Stack
                                                        mt={"15px !important"}
                                                        direction="column"
