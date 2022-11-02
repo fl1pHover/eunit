@@ -143,7 +143,7 @@ const Product = () => {
     const [data, setData] = useState('')
     const getData = async () => {
         try {
-            await fetch(`http://localhost:5050/ad/${router.query.slug}`).then((r) => r.json()).then((d) => {setData(d), console.log(d)}).then((d) => console.log(data))
+            await fetch(`https://bom-location.herokuapp.com/ad/${router.query.slug}`).then((r) => r.json()).then((d) => {setData(d), console.log(d)}).then((d) => console.log(data))
             
         } catch (error) {
             console.log(error)
