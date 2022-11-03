@@ -419,7 +419,7 @@ export default function CreateAd() {
                                                             }
                                                             mt={5}
                                                        >
-                                                            План зураг нэмэх
+                                                            Хөрөнгийн зураг
                                                        </Button>
                                                        <Text
                                                             mt={1}
@@ -428,7 +428,7 @@ export default function CreateAd() {
                                                                  lg: "block",
                                                             }}
                                                        >
-                                                            эсвэл зургийг
+                                                            нэмэх эсвэл зургийг
                                                             буулгах
                                                        </Text>
                                                   </Flex>
