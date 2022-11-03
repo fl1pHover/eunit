@@ -1,23 +1,23 @@
 export const categories = [
      {
           category: "Үл хөдлөх хөрөнгө",
-          href: "/real-state",
+          href: "/category",
           submenu: [
                {
                     category: "Орон сууц",
-                    href: "land",
+                    href: "/real-state",
                },
                {
                     category: "Газар",
-                    href: "land",
+                    href: "/real-state/land",
                },
                {
                     category: "Хашаа байшин",
-                    href: "land",
+                    href: "/real-state/fenceHouse",
                },
                {
                     category: "Худалдаа, үйлчилгээний талбай",
-                    href: "land",
+                    href: "/real-state/department",
                },
                {
                     category: "АОС, хаус, зуслан",
@@ -42,11 +42,15 @@ export const categories = [
           href: "/vehicle",
           submenu: [
                {
-                    category: "Орон сууц",
+                    category: "Автомашин",
                     href: "land",
                },
                {
-                    category: "Газар",
+                    category: "Мотоцикл, мопед",
+                    href: "land",
+               },
+               {
+                    category: "Унадаг дугуй",
                     href: "land",
                },
           ],
@@ -56,11 +60,11 @@ export const categories = [
           href: "/computer",
           submenu: [
                {
-                    category: "Орон сууц",
+                    category: "Суурин компьютер",
                     href: "land",
                },
                {
-                    category: "Газар",
+                    category: "Зөөврийн компьютер",
                     href: "land",
                },
           ],
@@ -70,41 +74,45 @@ export const categories = [
           href: "phone",
           submenu: [
                {
-                    category: "Орон сууц",
+                    category: "Ухаалаг утас",
                     href: "land",
                },
                {
-                    category: "Газар",
+                    category: "IPad/Tablet",
+                    href: "land",
+               },
+               {
+                    category: "дагалдах хэрэгсэл",
                     href: "land",
                },
           ],
      },
-     {
-          category: "Цахилгаан бараа",
-          href: "electronic",
-          submenu: [
-               {
-                    category: "Орон сууц",
-                    href: "land",
-               },
-               {
-                    category: "Газар",
-                    href: "land",
-               },
-          ],
-     },
-     {
-          category: "Гэр ахуйн бараа",
-          href: "household-items",
-          submenu: [
-               {
-                    category: "Орон сууц",
-                    href: "land",
-               },
-               {
-                    category: "Газар",
-                    href: "land",
-               },
-          ],
-     },
+     // {
+     //      category: "Цахилгаан бараа",
+     //      href: "electronic",
+     //      submenu: [
+     //           {
+     //                category: "Орон сууц",
+     //                href: "land",
+     //           },
+     //           {
+     //                category: "Газар",
+     //                href: "land",
+     //           },
+     //      ],
+     // },
+     // {
+     //      category: "Гэр ахуйн бараа",
+     //      href: "household-items",
+     //      submenu: [
+     //           {
+     //                category: "Орон сууц",
+     //                href: "land",
+     //           },
+     //           {
+     //                category: "Газар",
+     //                href: "land",
+     //           },
+     //      ],
+     // },
 ];

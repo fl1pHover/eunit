@@ -2,20 +2,23 @@ import { useEffect, useState } from "react";
 import AdContent from "../components/home/adContent";
 import CategorySelect from "../components/home/categorySelect";
 import SwiperHeader from "../components/home/swiperHeader";
+import Loader from "../components/loader";
 import ScrollTop from "../util/scrollTop";
 
 export default function Home() {
-     const [products, setProducts] = useState('')
+     const [products, setProducts] = useState("");
      const getData = async () => {
           try {
-               await fetch('https://bom-location.herokuapp.com/ad').then((r) => r.json()).then((d) => setProducts(d))
+               await fetch("https://bom-location.herokuapp.com/ad")
+                    .then((r) => r.json())
+                    .then((d) => setProducts(d));
           } catch (error) {
-               console.log(error)
+               console.log(error);
           }
-     }
+     };
      useEffect(() => {
-          getData()
-     }, [])
+          getData();
+     }, []);
      // async function getData() {
      //      const res = await fetch("http://192.168.1.49:3000/ad")
      //           .then(async (r) => {
@@ -28,13 +31,11 @@ export default function Home() {
      //      getData();
      // }, []);
      return (
-          //TODO asdasd
-          // asdasd
           <>
-               <SwiperHeader></SwiperHeader>
+               <SwiperHeader />
                <CategorySelect />
-               <AdContent data={products}/>
-
+               <AdContent data={products} />
+               <Loader />
                {/* Scroll */}
                <ScrollTop />
           </>

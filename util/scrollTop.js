@@ -20,7 +20,7 @@ const ScrollTop = () => {
      return (
           <Box pos={"fixed"} bottom="50px" right={"50px"}>
                <Button
-                    classname={!scrolled ? "hidden scroll__top" : "scroll__top"}
+                    // className={!scrolled ? "hidden scroll__top" : "scroll__top"}
                     opacity={!scrolled ? "0" : "1"}
                     // display={!scrolled ? "none" : "block"}
                     transition="0.3s ease"

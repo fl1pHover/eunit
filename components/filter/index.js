@@ -26,7 +26,7 @@ const filters = {
      ],
      rooms: ["1", "2", "3", "4", "5", "5+"],
      bathrooms: ["1", "2", "2+"],
-     masterBedrooms: ["Байхгүй", "1", "2", "2+"],
+     masterBedrooms: ["0", "1", "2", "2+"],
      window: ["Вакум", "Модон", "Төмөр вакум", "Модон вакум"],
      windows: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "10+"],
      doors: ["Бүргэд", "Төмөр", "Мод"],
@@ -38,7 +38,7 @@ const filters = {
 };
 const categories = [
      {
-          category: "Үл хөдлөх хөрөнгө",
+          category: "Орон сууц",
           categories: [
                {
                     category: "Газар",
@@ -93,6 +93,34 @@ const categories = [
           category: "Үл хөдлөх хөрөнгө",
           categories: [{ category: "Газар" }, { category: "Оффис" }],
      },
+     {
+          category: "Оффис",
+          categories: [{ category: "Газар" }, { category: "Оффис" }],
+     },
+     {
+          category: "Худалдаа үйлчилгээний талбай",
+          categories: [{ category: "Газар" }, { category: "Оффис" }],
+     },
+     {
+          category: "Үйлдвэр, агуулах",
+          categories: [{ category: "Газар" }, { category: "Оффис" }],
+     },
+     {
+          category: "Хашаа байшин",
+          categories: [{ category: "Газар" }, { category: "Оффис" }],
+     },
+     {
+          category: "Хаус, зуслангийн байшин",
+          categories: [{ category: "Газар" }, { category: "Оффис" }],
+     },
+     {
+          category: "Гараж",
+          categories: [{ category: "Газар" }, { category: "Оффис" }],
+     },
+     {
+          category: "Контейнер, зөөврийн сууц",
+          categories: [{ category: "Газар" }, { category: "Оффис" }],
+     },
 ];
 
 const FilterLayout = () => {
@@ -124,7 +152,7 @@ const FilterLayout = () => {
                >
                     <FilterStack>
                          <Heading variant={"smallHeading"} mb={2}>
-                              Lorem, ipsum dolor.
+                              Үл хөдлах хөрөнгө
                          </Heading>
                          {categories.map(({ ...props }, id) => {
                               return (
@@ -149,8 +177,8 @@ const FilterLayout = () => {
                               Байршлаар
                          </Heading>
                          {/* <AspectRatio ratio={16 / 9}>
-          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3963.952912260219!2d3.375295414770757!3d6.5276316452784755!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103b8b2ae68280c1%3A0xdc9e87a367c3d9cb!2sLagos!5e0!3m2!1sen!2sng!4v1567723392506!5m2!1sen!2sng" />
-     </AspectRatio> */}
+                              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3963.952912260219!2d3.375295414770757!3d6.5276316452784755!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103b8b2ae68280c1%3A0xdc9e87a367c3d9cb!2sLagos!5e0!3m2!1sen!2sng!4v1567723392506!5m2!1sen!2sng" />
+                         </AspectRatio> */}
                     </FilterStack>
 
                     <FilterStack

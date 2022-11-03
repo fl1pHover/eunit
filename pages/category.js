@@ -3,7 +3,6 @@ import React from "react";
 import MainContainer from "../layout/mainContainer";
 
 import FilterLayout from "../components/filter";
-import ProductCard from "../util/productCard";
 
 const Category = () => {
      return (
@@ -38,15 +37,7 @@ const Category = () => {
                                    gap={3}
                                    width="100%"
                                    justifyContent={"center"}
-                              >
-                                   <ProductCard />
-                                   <ProductCard />
-                                   <ProductCard />
-                                   <ProductCard />
-                                   <ProductCard />
-                                   <ProductCard />
-                                   <ProductCard />
-                              </Grid>
+                              ></Grid>
                          </Box>
                     </Stack>
                </MainContainer>

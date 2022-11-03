@@ -1,8 +1,18 @@
-import { Center } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import React from "react";
 
 const Loader = () => {
-     return <Center>Loading</Center>;
+     return (
+          <Box
+               id="spinner"
+               height={"100%"}
+               pos="fixed"
+               width={"100%"}
+               bgColor="red"
+          >
+               Loading
+          </Box>
+     );
 };
 
 export default Loader;
