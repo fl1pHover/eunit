@@ -1,32 +1,33 @@
 import React from "react";
-import NextLink from "next/link";
 // import swiper
 import { Swiper, SwiperSlide } from "swiper/react";
 
 // Import Swiper styles
 import "swiper/css";
-import "swiper/css/pagination";
 import "swiper/css/navigation";
+import "swiper/css/pagination";
 
 // import required modules
-import { Autoplay, Pagination, Navigation } from "swiper";
-import { Box, Image, Link } from "@chakra-ui/react";
+import { Box, Link } from "@chakra-ui/react";
+import { Autoplay, Navigation, Pagination } from "swiper";
+
+import Image from "next/image";
 
 const headerImageData = [
      {
-          image: "./images/HeaderSlider/1.jpg",
+          image: "/images/HeaderSlider/1.jpg",
           href: "/1",
      },
      {
-          image: "./images/HeaderSlider/2.jpg",
+          image: "/images/HeaderSlider/2.jpg",
           href: "/1",
      },
      {
-          image: "./images/HeaderSlider/1.jpg",
+          image: "/images/HeaderSlider/1.jpg",
           href: "/1",
      },
      {
-          image: "./images/HeaderSlider/2.jpg",
+          image: "/images/HeaderSlider/2.jpg",
           href: "/1",
      },
 ];
@@ -58,9 +59,9 @@ const SwiperHeader = () => {
                                    <Link href={props.href}>
                                         <Image
                                              src={props.image}
-                                             width="100%"
-                                             height={"100%"}
+                                             layout="fill"
                                              objectFit="cover"
+                                             alt="swiper image"
                                         />
                                    </Link>
                               </SwiperSlide>

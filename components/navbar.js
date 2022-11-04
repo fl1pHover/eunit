@@ -56,12 +56,12 @@ const DownLink = ({ href, text, children }) => {
                }}
           >
                {children && children}
-               {text !='' && <Text>{text}</Text>}
+               {text != "" && <Text>{text}</Text>}
           </Link>
      );
 };
 
-const Navbar = ({user, logout}) => {
+const Navbar = ({ user, logout }) => {
      const [sticky, setSticky] = useState(false);
      const [active, setActive] = useState(false);
 
@@ -229,132 +229,162 @@ const Navbar = ({user, logout}) => {
                                                        </Text>
                                                   </VStack>
                                              </Link>
-                                             {user.status == false  && <Link href="/login">
-                                                  <VStack className="animated__account">
+                                             {user.status == false && (
+                                                  <Link href="/login">
+                                                       <VStack className="animated__account">
+                                                            <Box
+                                                                 width={"25px"}
+                                                                 height="25px"
+                                                                 className="animated__icon"
+                                                            />
+                                                            <Text mt="0 !important">
+                                                                 Бүртгүүлэх
+                                                            </Text>
+                                                       </VStack>
+                                                  </Link>
+                                             )}
+
+                                             {user.status == true && (
+                                                  <VStack
+                                                       // className="animated__account"
+                                                       className="animated__account"
+                                                       textAlign={"center"}
+                                                       onClick={handleClick}
+                                                       pos="relative"
+                                                  >
                                                        <Box
                                                             width={"25px"}
                                                             height="25px"
                                                             className="animated__icon"
                                                        />
                                                        <Text mt="0 !important">
-                                                            Бүртгүүлэх
+                                                            Профайл
                                                        </Text>
-                                                  </VStack>
-                                             </Link>}
-
-                                             {user.status == true && <VStack
-                                                  // className="animated__account"
-                                                  className="animated__account"
-                                                  textAlign={"center"}
-                                                  onClick={handleClick}
-                                                  pos="relative"
-                                             >
-                                                  <Box
-                                                       width={"25px"}
-                                                       height="25px"
-                                                       className="animated__icon"
-                                                  />
-                                                  <Text mt="0 !important">
-                                                       Профайл
-                                                  </Text>
-                                                  <Box
-                                                       className={
-                                                            active
-                                                                 ? "profile__drop-menu"
-                                                                 : "profile__drop-menu drop__hidden"
-                                                       }
-                                                       pos="absolute"
-                                                       bottom="-200px"
-                                                       right="0"
-                                                       onClick={handleClick}
-                                                       boxShadow="lg"
-                                                       height="200px"
-                                                       width="250px"
-                                                       bgColor="white"
-                                                       rounded={5}
-                                                       p={3}
-                                                  >
-                                                       <HStack
-                                                            alignItems={
-                                                                 "center"
+                                                       <Box
+                                                            className={
+                                                                 active
+                                                                      ? "profile__drop-menu"
+                                                                      : "profile__drop-menu drop__hidden"
                                                             }
+                                                            pos="absolute"
+                                                            bottom="-200px"
+                                                            right="0"
+                                                            onClick={
+                                                                 handleClick
+                                                            }
+                                                            boxShadow="lg"
+                                                            height="200px"
+                                                            width="250px"
+                                                            bgColor="white"
+                                                            rounded={5}
+                                                            p={3}
                                                        >
-                                                            <Avatar
-                                                                 src={user.profileImg}
-                                                                 size={"sm"}
-                                                            />
-                                                            <VStack
+                                                            <HStack
                                                                  alignItems={
                                                                       "center"
                                                                  }
                                                             >
                                                                  <Avatar
-                                                                      src="https://bit.ly/dan-abramov"
+                                                                      src={
+                                                                           user.profileImg
+                                                                      }
                                                                       size={
                                                                            "sm"
                                                                       }
                                                                  />
                                                                  <VStack
                                                                       alignItems={
-                                                                           "flex-start"
+                                                                           "center"
                                                                       }
                                                                  >
-                                                                      <Text>
-                                                                      {user.username}
-                                                                 </Text>
-                                                                 <Text
-                                                                      mt={
-                                                                           "0 !important"
-                                                                      }
-                                                                 >
-                                                                      {user.email}
-                                                                 </Text>
-                                                            </VStack>
-                                                            </VStack>
-                                                       </HStack>
-                                                       <Divider
-                                                            orientation="horizontal"
-                                                            bgColor={"red"}
-                                                            my={3}
-                                                       />
-                                                       <VStack
-                                                            textAlign="left"
-                                                            color={"grey"}
-                                                       >
-                                                            <DownLink
-                                                                 href={
-                                                                      "/account?profile"
-                                                                 }
-                                                                 text="Хувийн
-                                                                 мэдэээлэл"
-                                                            />
-                                                            <DownLink
-                                                                 href={
-                                                                      "/account?ads"
-                                                                 }
-                                                                 text="  Миний
-                                                            зарууд"
-                                                            />
-
-                                                            <DownLink
-                                                                 href={
-                                                                      "/account?wallet"
-                                                                 }
-                                                                 text="Хэтэвч"
-                                                            />
+                                                                      <Avatar
+                                                                           src="https://bit.ly/dan-abramov"
+                                                                           size={
+                                                                                "sm"
+                                                                           }
+                                                                      />
+                                                                      <VStack
+                                                                           alignItems={
+                                                                                "flex-start"
+                                                                           }
+                                                                      >
+                                                                           <Text>
+                                                                                {
+                                                                                     user.username
+                                                                                }
+                                                                           </Text>
+                                                                           <Text
+                                                                                mt={
+                                                                                     "0 !important"
+                                                                                }
+                                                                           >
+                                                                                {
+                                                                                     user.email
+                                                                                }
+                                                                           </Text>
+                                                                      </VStack>
+                                                                 </VStack>
+                                                            </HStack>
                                                             <Divider
                                                                  orientation="horizontal"
                                                                  bgColor={"red"}
                                                                  my={3}
                                                             />
-                                                            <DownLink><Button width="100%"
-                                                            h={'auto'}
-                                                            _hover={{
-                                                                 color: "mainBlossom",
-                                                            }} variant={'unstyled'} onClick={() => logout()}>Гарах</Button></DownLink>
-                                                       </VStack>
-                                                  </Box>
-                                             </VStack>}
+                                                            <VStack
+                                                                 textAlign="left"
+                                                                 color={"grey"}
+                                                            >
+                                                                 <DownLink
+                                                                      href={
+                                                                           "/account?profile"
+                                                                      }
+                                                                      text="Хувийн
+                                                                 мэдэээлэл"
+                                                                 />
+                                                                 <DownLink
+                                                                      href={
+                                                                           "/account?ads"
+                                                                      }
+                                                                      text="  Миний
+                                                            зарууд"
+                                                                 />
+
+                                                                 <DownLink
+                                                                      href={
+                                                                           "/account?wallet"
+                                                                      }
+                                                                      text="Хэтэвч"
+                                                                 />
+                                                                 <Divider
+                                                                      orientation="horizontal"
+                                                                      bgColor={
+                                                                           "red"
+                                                                      }
+                                                                      my={3}
+                                                                 />
+                                                                 <DownLink>
+                                                                      <Button
+                                                                           width="100%"
+                                                                           h={
+                                                                                "auto"
+                                                                           }
+                                                                           _hover={{
+                                                                                color: "mainBlossom",
+                                                                           }}
+                                                                           variant={
+                                                                                "unstyled"
+                                                                           }
+                                                                           onClick={() =>
+                                                                                logout()
+                                                                           }
+                                                                      >
+                                                                           Гарах
+                                                                      </Button>
+                                                                 </DownLink>
+                                                            </VStack>
+                                                       </Box>
+                                                  </VStack>
+                                             )}
                                         </Flex>
                                    </Flex>
                               </Stack>
@@ -422,7 +452,7 @@ const Navbar = ({user, logout}) => {
                                                                  {props.submenu &&
                                                                       props.submenu.map(
                                                                            (
-                                                                                d,
+                                                                                sub,
                                                                                 i
                                                                            ) => {
                                                                                 return (
@@ -431,14 +461,14 @@ const Navbar = ({user, logout}) => {
                                                                                                i
                                                                                           }
                                                                                           href={
-                                                                                               d.href
+                                                                                               sub.href
                                                                                           }
                                                                                           p={
                                                                                                2
                                                                                           }
                                                                                      >
                                                                                           {
-                                                                                               d.category
+                                                                                               sub.category
                                                                                           }
                                                                                      </Link>
                                                                                 );

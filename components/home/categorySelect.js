@@ -18,14 +18,14 @@ import MainContainer from "../../layout/mainContainer";
 
 const categoryCardData = [
      {
-          image: "./images/HeaderSlider/1.jpg",
+          image: "/images/HeaderSlider/1.jpg",
           icon: <BsBuilding />,
           categoryName: "Үл хөдлөх хөрөнгө",
           href: "/category",
           itemCount: "105",
      },
      {
-          image: "./images/category/car.jpg",
+          image: "/images/category/car.jpg",
           icon: <AiOutlineCar />,
           categoryName: "Тээврийн хэрэгсэл",
           href: "/vehicle",
@@ -33,28 +33,28 @@ const categoryCardData = [
           itemCount: "105",
      },
      {
-          image: "./images/category/computer.jpg",
+          image: "/images/category/computer.jpg",
           icon: <MdComputer />,
           categoryName: "Компьютер",
           href: "/computer",
           itemCount: "105",
      },
      {
-          image: "./images/category/phone.jpg",
+          image: "/images/category/phone.jpg",
           icon: <BsPhone />,
           categoryName: "Гар утас",
           href: "phone",
           itemCount: "105",
      },
      {
-          image: "./images/category/electronic.jpg",
+          image: "/images/category/electronic.jpg",
           icon: <CgSmartHomeWashMachine />,
           categoryName: "Цахилгаан бараа",
           href: "electronic",
           itemCount: "105",
      },
      {
-          image: "./images/category/home.jpg",
+          image: "/images/category/home.jpg",
           icon: <RiHomeSmile2Line />,
           categoryName: "Гэр ахуйн бараа",
           href: "household-items",
