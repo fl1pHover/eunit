@@ -12,6 +12,7 @@ const Bookmark = () => {
                          {/* <FilterLayout /> */}
                          <Box
                               maxWidth={"25%"}
+                              minHeight="600px"
                               flex="0 0 25%"
                               bgColor={"white"}
                               p={5}
@@ -21,7 +22,7 @@ const Bookmark = () => {
                               top="0"
                          >
                               <Select
-                                   placeholder="Өрөөний тоо"
+                                   placeholder="Үл хөдлөх"
                                    variant="outline"
                                    borderWidth="2px"
                                    color={"mainBlossom"}

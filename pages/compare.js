@@ -67,6 +67,54 @@ const compareTitle = [
           title: "Төлбөрийн нөхцөл",
      },
 ];
+const CompareItem = () => {
+     return (
+          <Box
+               // boxShadow="md"
+               minWidth="300px"
+               p={3}
+          >
+               <Link href="/">
+                    <Image
+                         src="./images/HeaderSlider/1.jpg"
+                         alt="Image"
+                         mb={4}
+                         height="150px"
+                         rounded={6}
+                    />
+                    <Heading
+                         variant={"smallHeading"}
+                         height={"100px"}
+                         overflowY={"scroll"}
+                         pr="10px"
+                    >
+                         Lorem ipsum dolor sit amet consectetur adipisicing
+                         elit. Distinctio, nesciunt? Magnam consectetur
+                         adipisicing elit. Distinctio, nesciunt? Magnam
+                    </Heading>
+               </Link>
+               <Divider my={3} />
+               <Heading variant={"smallHeading"}>$100,000</Heading>
+               <Divider my={3} />
+
+               <Text overflowY={"scroll"} height="120px" pr="10px">
+                    Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                    Dicta, unde. Excepturi in maiores possimus soluta aliquid
+                    corrupti voluptates accusamus consequatur. Itaque
+               </Text>
+
+               <Divider my={3} />
+               {compareTitle.map(({ ...props }, index) => {
+                    return (
+                         <Heading variant={"smallHeading"} key={index}>
+                              {props.title}
+                              <Divider my={3} />
+                         </Heading>
+                    );
+               })}
+          </Box>
+     );
+};
 
 const Compare = () => {
      return (
@@ -93,277 +141,13 @@ const Compare = () => {
                               py={5}
                               overflowX="scroll"
                          >
-                              {/* <Box minW={"200px"} p={3}>
-                                   <Box height={"150px"} mb={4} />
-                                   <Heading
-                                        variant={"smallHeading"}
-                                        height={"100px"}
-                                   >
-                                        Зарын гарчиг
-                                   </Heading>
-                                   <Divider my={3} />
-                                   <Heading variant={"smallHeading"}>
-                                        Үнэ
-                                   </Heading>
-                                   <Divider my={3} />
-                                   <Heading
-                                        variant={"smallHeading"}
-                                        height="120px"
-                                   >
-                                        Тайлбар
-                                   </Heading>
-                                   <Divider my={3} />
-                                   {compareTitle.map(({ ...props }, index) => {
-                                        return (
-                                             <Heading
-                                                  variant={"smallHeading"}
-                                                  key={index}
-                                             >
-                                                  {props.title}
-                                                  <Divider my={3} />
-                                             </Heading>
-                                        );
-                                   })}
-                              </Box>
-                              <Center height="100%">
-                                   <Divider orientation="vertical" />
-                              </Center> */}
                               {/* //TODO scrolable compare div */}
-                              {/* <Box
-                                   direction="row"
-                                   display={"block ruby"}
-                                   overflowX="scroll"
-                                   // flexWrap={""}
-                                   pb={"50px"}
-                              > */}
-                              <Box
-                                   // boxShadow="md"
-                                   minWidth="300px"
-                                   p={3}
-                              >
-                                   <Link href="/">
-                                        <Image
-                                             src="./images/HeaderSlider/1.jpg"
-                                             alt="Image"
-                                             mb={4}
-                                             height="150px"
-                                             rounded={6}
-                                        />
-                                        <Heading
-                                             variant={"smallHeading"}
-                                             height={"100px"}
-                                             overflowY={"scroll"}
-                                             pr="10px"
-                                        >
-                                             Lorem ipsum dolor sit amet
-                                             consectetur adipisicing elit.
-                                             Distinctio, nesciunt? Magnam
-                                             consectetur adipisicing elit.
-                                             Distinctio, nesciunt? Magnam
-                                        </Heading>
-                                   </Link>
-                                   <Divider my={3} />
-                                   <Heading variant={"smallHeading"}>
-                                        $100,000
-                                   </Heading>
-                                   <Divider my={3} />
 
-                                   <Text
-                                        overflowY={"scroll"}
-                                        height="120px"
-                                        pr="10px"
-                                   >
-                                        Lorem ipsum, dolor sit amet consectetur
-                                        adipisicing elit. Dicta, unde. Excepturi
-                                        in maiores possimus soluta aliquid
-                                        corrupti voluptates accusamus
-                                        consequatur. Itaque
-                                   </Text>
+                              <CompareItem />
+                              <CompareItem />
+                              <CompareItem />
+                              <CompareItem />
 
-                                   <Divider my={3} />
-                                   {compareTitle.map(({ ...props }, index) => {
-                                        return (
-                                             <Heading
-                                                  variant={"smallHeading"}
-                                                  key={index}
-                                             >
-                                                  {props.title}
-                                                  <Divider my={3} />
-                                             </Heading>
-                                        );
-                                   })}
-                              </Box>
-                              <Box
-                                   // boxShadow="md"
-                                   minWidth="300px"
-                                   p={3}
-                              >
-                                   <Link href="/">
-                                        <Image
-                                             src="./images/HeaderSlider/1.jpg"
-                                             alt="Image"
-                                             mb={4}
-                                             height="150px"
-                                             rounded={6}
-                                        />
-                                        <Heading
-                                             variant={"smallHeading"}
-                                             height={"100px"}
-                                             overflowY={"scroll"}
-                                             pr="10px"
-                                        >
-                                             Lorem ipsum dolor sit amet
-                                             consectetur adipisicing elit.
-                                             Distinctio, nesciunt? Magnam
-                                             consectetur adipisicing elit.
-                                             Distinctio, nesciunt? Magnam
-                                        </Heading>
-                                   </Link>
-                                   <Divider my={3} />
-                                   <Heading variant={"smallHeading"}>
-                                        $100,000
-                                   </Heading>
-                                   <Divider my={3} />
-
-                                   <Text
-                                        overflowY={"scroll"}
-                                        height="120px"
-                                        pr="10px"
-                                   >
-                                        Lorem ipsum, dolor sit amet consectetur
-                                        adipisicing elit. Dicta, unde. Excepturi
-                                        in maiores possimus soluta aliquid
-                                        corrupti voluptates accusamus
-                                        consequatur. Itaque
-                                   </Text>
-
-                                   <Divider my={3} />
-                                   {compareTitle.map(({ ...props }, index) => {
-                                        return (
-                                             <Heading
-                                                  variant={"smallHeading"}
-                                                  key={index}
-                                             >
-                                                  {props.title}
-                                                  <Divider my={3} />
-                                             </Heading>
-                                        );
-                                   })}
-                              </Box>
-                              <Box
-                                   // boxShadow="md"
-                                   minWidth="300px"
-                                   p={3}
-                              >
-                                   <Link href="/">
-                                        <Image
-                                             src="./images/HeaderSlider/1.jpg"
-                                             alt="Image"
-                                             mb={4}
-                                             height="150px"
-                                             rounded={6}
-                                        />
-                                        <Heading
-                                             variant={"smallHeading"}
-                                             height={"100px"}
-                                             overflowY={"scroll"}
-                                             pr="10px"
-                                        >
-                                             Lorem ipsum dolor sit amet
-                                             consectetur adipisicing elit.
-                                             Distinctio, nesciunt? Magnam
-                                             consectetur adipisicing elit.
-                                             Distinctio, nesciunt? Magnam
-                                        </Heading>
-                                   </Link>
-                                   <Divider my={3} />
-                                   <Heading variant={"smallHeading"}>
-                                        $100,000
-                                   </Heading>
-                                   <Divider my={3} />
-
-                                   <Text
-                                        overflowY={"scroll"}
-                                        height="120px"
-                                        pr="10px"
-                                   >
-                                        Lorem ipsum, dolor sit amet consectetur
-                                        adipisicing elit. Dicta, unde. Excepturi
-                                        in maiores possimus soluta aliquid
-                                        corrupti voluptates accusamus
-                                        consequatur. Itaque
-                                   </Text>
-
-                                   <Divider my={3} />
-                                   {compareTitle.map(({ ...props }, index) => {
-                                        return (
-                                             <Heading
-                                                  variant={"smallHeading"}
-                                                  key={index}
-                                             >
-                                                  {props.title}
-                                                  <Divider my={3} />
-                                             </Heading>
-                                        );
-                                   })}
-                              </Box>
-                              <Box
-                                   // boxShadow="md"
-                                   minWidth="300px"
-                                   p={3}
-                              >
-                                   <Link href="/">
-                                        <Image
-                                             src="./images/HeaderSlider/1.jpg"
-                                             alt="Image"
-                                             mb={4}
-                                             height="150px"
-                                             rounded={6}
-                                        />
-                                        <Heading
-                                             variant={"smallHeading"}
-                                             height={"100px"}
-                                             overflowY={"scroll"}
-                                             pr="10px"
-                                        >
-                                             Lorem ipsum dolor sit amet
-                                             consectetur adipisicing elit.
-                                             Distinctio, nesciunt? Magnam
-                                             consectetur adipisicing elit.
-                                             Distinctio, nesciunt? Magnam
-                                        </Heading>
-                                   </Link>
-                                   <Divider my={3} />
-                                   <Heading variant={"smallHeading"}>
-                                        $100,000
-                                   </Heading>
-                                   <Divider my={3} />
-
-                                   <Text
-                                        overflowY={"scroll"}
-                                        height="120px"
-                                        pr="10px"
-                                   >
-                                        Lorem ipsum, dolor sit amet consectetur
-                                        adipisicing elit. Dicta, unde. Excepturi
-                                        in maiores possimus soluta aliquid
-                                        corrupti voluptates accusamus
-                                        consequatur. Itaque
-                                   </Text>
-
-                                   <Divider my={3} />
-                                   {compareTitle.map(({ ...props }, index) => {
-                                        return (
-                                             <Heading
-                                                  variant={"smallHeading"}
-                                                  key={index}
-                                             >
-                                                  {props.title}
-                                                  <Divider my={3} />
-                                             </Heading>
-                                        );
-                                   })}
-                              </Box>
                               {/* </Box> */}
                          </Stack>
                     </Box>

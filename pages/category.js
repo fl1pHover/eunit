@@ -26,6 +26,7 @@ const Category = () => {
                                    height={"400px"}
                                    width="100%"
                                    objectFit={"cover"}
+                                   alt="image"
                               />
                               <Heading variant={"mediumHeading"} my={3}>
                                    Онцгой зар

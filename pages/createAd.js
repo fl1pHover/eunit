@@ -230,7 +230,7 @@ export default function CreateAd() {
                                         <Textarea
                                              placeholder={"Гарчиг"}
                                              type="textarea"
-                                             height="100px"
+                                             height="50px"
                                              whiteSpace={"nowrap"}
                                              onChange={(e) =>
                                                   setSelect((select) => ({
@@ -238,6 +238,7 @@ export default function CreateAd() {
                                                        title: e.target.value,
                                                   }))
                                              }
+                                             // resize="none"
                                              value={select.title}
                                         />
                                         <Textarea
