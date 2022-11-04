@@ -81,7 +81,7 @@ export default function Login() {
                                    email: user.email,
                                    profileImg: 'https://png.pngtree.com/png-clipart/20190629/original/pngtree-vector-edit-profile-icon-png-image_4101351.jpg',
                                    phone: signupCredential.phone
-                              })
+                              }).then((r) => console.log(r))
                               } catch(err) {
                                    console.log(err)
                               }
