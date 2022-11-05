@@ -16,12 +16,11 @@ import React, { useEffect, useState } from "react";
 // Import Swiper styles
 // import "swiper/css";
 
+import { FaHeart } from "react-icons/fa";
 import FilterLayout from "../../components/filter";
 import MainContainer from "../../layout/mainContainer";
-import Estimator from "../../util/estimator";
 import ProductCard from "../../util/productCard";
-
-import { FaHeart } from "react-icons/fa";
+import ECalculator from "../calculator";
 
 import ScrollTop from "../../util/scrollTop";
 
@@ -329,7 +328,8 @@ const Product = () => {
                               </Box>
 
                               <Box>
-                                   <Estimator />
+                                   {/* <Estimator /> */}
+                                   <ECalculator />
                               </Box>
                          </Box>
                     </Stack>

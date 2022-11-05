@@ -19,7 +19,7 @@ a {
 
 html {
      scroll-behavior: smooth;
-     user-select: none;
+     // user-select: none;
 }
 
 .white__icon {
@@ -143,8 +143,6 @@ html {
      display: none;
 }
 
-
-
 .card {
      position: relative;
      // z-index: 3;
@@ -162,7 +160,4 @@ html {
 }
 
 .file__upload {
-     
 }
-
-
