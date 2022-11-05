@@ -15,13 +15,16 @@ export default function Home() {
      const [products, setProducts] = useState("");
      const getData = async () => {
           try {
-               await fetch("https://bom-location.herokuapp.com/ad")
+               await fetch("http://localhost:5050/ad")
                     .then((r) => r.json())
                     .then((d) => setProducts(d));
           } catch (error) {
                console.log(error);
           }
      };
+     const toLowerCase = (text) => {
+          return text.toLowerCase()
+     }
      useEffect(() => {
           getData();
      }, []);
@@ -40,7 +43,7 @@ export default function Home() {
           <>
                <SwiperHeader />
                <CategorySelect />
-               <AdContent data={products} />
+               <AdContent data={products} tlc={toLowerCase}/>
                {/* <Loader /> */}
 
                <ScrollTop />

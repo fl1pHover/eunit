@@ -140,7 +140,7 @@ const Product = () => {
      const getData = async () => {
           try {
                await fetch(
-                    `https://bom-location.herokuapp.com/ad/${router.query.slug}`
+                    `http://localhost:5050/ad/${router.query.slug}`
                )
                     .then((r) => r.json())
                     .then((d) => {
@@ -262,21 +262,24 @@ const Product = () => {
                                                   {data &&
                                                        data.filters.map(
                                                             (p, i) => {
-                                                                 return (
-                                                                      <ProductInfo
-                                                                           key={
-                                                                                i
-                                                                           }
-                                                                           title={
-                                                                                p
-                                                                                     .id
-                                                                                     .name
-                                                                           }
-                                                                           value={
-                                                                                p.value
-                                                                           }
-                                                                      />
-                                                                 );
+                                                                 if(p.id != null) {
+                                                                      return (
+                                                                      
+                                                                           <ProductInfo
+                                                                                key={
+                                                                                     i
+                                                                                }
+                                                                                title={
+                                                                                     p
+                                                                                          .id
+                                                                                          .name
+                                                                                }
+                                                                                value={
+                                                                                     p.value
+                                                                                }
+                                                                           />
+                                                                      );
+                                                                 }
 
                                                                  //   return (
                                                                  //        <ProductInfo

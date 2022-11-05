@@ -61,8 +61,10 @@ const cardData = [
      },
 ];
 
-const ProductCard = ({data}) => {
+const ProductCard = ({data, tlc}) => {
      const toast = useToast();
+
+
 
      return (
           <>
@@ -174,42 +176,57 @@ const ProductCard = ({data}) => {
                                         gap={2}
                                         justifyContent="space-around"
                                    >
-                                        <Flex alignItems={"center"} gap={1}>
-                                             <BiDoorOpen className="info__icon" />
-                                             <Heading
-                                                  variant={"smallHeading"}
-                                                  fontWeight="normal"
-                                             >
-                                                  {props.filters[1].value}
-                                             </Heading>
-                                        </Flex>
-                                        <Flex alignItems={"center"} gap={1}>
-                                             <IoBedOutline className="info__icon" />
-                                             <Heading
-                                                  variant={"smallHeading"}
-                                                  fontWeight="normal"
-                                             >
-                                                  {props.filters[2].value}
-                                             </Heading>
-                                        </Flex>
-                                        <Flex alignItems={"center"} gap={1}>
-                                             <TbBath className="info__icon" />
-                                             <Heading
-                                                  variant={"smallHeading"}
-                                                  fontWeight="normal"
-                                             >
-                                                  {props.filters[3].value}
-                                             </Heading>
-                                        </Flex>
-                                        <Flex alignItems={"center"} gap={1}>
-                                             <BiArea className="info__icon" />
-                                             <Heading
-                                                  variant={"smallHeading"}
-                                                  fontWeight="normal"
-                                             >
-                                                  {props.space}м.кв
-                                             </Heading>
-                                        </Flex>
+                                        {props.filters && props.filters.map((p, i) => {
+                                             // console.log(p)
+                                             return <> { (p.id && tlc(p.id.name) == 'өрөө' && p.value ) &&
+                                                  <Flex alignItems={"center"} gap={1}>
+                                            <BiDoorOpen className="info__icon" />
+                                            <Heading
+                                                 variant={"smallHeading"}
+                                                 fontWeight="normal"
+                                            >
+                                                 {tlc(p.value) == 'байхгүй' ? 0 : p.value}
+                                            </Heading>
+                                       </Flex>
+                                            }
+                                             { (p.id && tlc(p.id.name) == 'мастер унтлагын өрөө' && p.value ) &&
+                                                  <Flex alignItems={"center"} gap={1}>
+                                                 <IoBedOutline className="info__icon" />
+                                                 <Heading
+                                                      variant={"smallHeading"}
+                                                      fontWeight="normal"
+                                                 >
+                                                      {tlc(p.value) == 'байхгүй' ? 0 : p.value}
+                                                 </Heading>
+                                            </Flex>
+                                            }
+                                             { (p.id && tlc(p.id.name) == 'угаалгын өрөөний тоо' && p.value) && 
+                                                  <Flex alignItems={"center"} gap={1}>
+                                                 <TbBath className="info__icon" />
+                                                 <Heading
+                                                      variant={"smallHeading"}
+                                                      fontWeight="normal"
+                                                 >
+                                                      {tlc(p.value) == 'байхгүй' ? 0 : p.value}
+                                                 </Heading>
+                                            </Flex>
+                                            }
+                                           
+                                             { ( p.id && tlc(p.id.name) == 'талбай' ) &&
+                                                   <Flex alignItems={"center"} gap={1}>
+                                                 <BiArea className="info__icon" />
+                                                 <Heading
+                                                      variant={"smallHeading"}
+                                                      fontWeight="normal"
+                                                 >
+                                                      {tlc(p.value) == 'байхгүй' ? 0 : p.value}м.кв
+                                                 </Heading>
+                                            </Flex>
+                                            }</>
+                                        
+                                        
+                                       
+                                        })}
                                    </Stack>
                                    {/* <Grid
                templateColumns={{
