@@ -138,9 +138,7 @@ const Product = () => {
      const [data, setData] = useState("");
      const getData = async () => {
           try {
-               await fetch(
-                    `http://localhost:5050/ad/${router.query.slug}`
-               )
+               await fetch(`http://192.168.1.49:5050/ad/${router.query.slug}`)
                     .then((r) => r.json())
                     .then((d) => {
                          setData(d), console.log(d);
@@ -261,9 +259,11 @@ const Product = () => {
                                                   {data &&
                                                        data.filters.map(
                                                             (p, i) => {
-                                                                 if(p.id != null) {
+                                                                 if (
+                                                                      p.id !=
+                                                                      null
+                                                                 ) {
                                                                       return (
-                                                                      
                                                                            <ProductInfo
                                                                                 key={
                                                                                      i

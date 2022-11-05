@@ -481,8 +481,11 @@ const Navbar = ({ user, logout }) => {
                                         )}
                                    </Stack>
                                    <Stack direction={"row"}>
-                                        <Link href={"/feedback"}>
-                                             <Button variant={"whiteButton"}>
+                                        <Link href={"/project"}>
+                                             <Button
+                                                  variant={"whiteButton"}
+                                                  disabled
+                                             >
                                                   Шинэ төсөл
                                              </Button>
                                         </Link>
