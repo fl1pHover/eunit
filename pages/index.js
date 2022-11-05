@@ -17,7 +17,7 @@ export default function Home() {
      const getData = async () => {
           setIsLoading(true);
           try {
-               await fetch("https://bom-location.herokuapp.com/ad")
+               await fetch("http://localhost:5050/ad")
                     .then((r) => r.json())
                     .then((d) => setProducts(d))
                     .then((a) => setIsLoading(false));
@@ -25,6 +25,9 @@ export default function Home() {
                console.log(error);
           }
      };
+     const toLowerCase = (text) => {
+          return text.toLowerCase()
+     }
      useEffect(() => {
           getData();
      }, []);
@@ -45,7 +48,7 @@ export default function Home() {
           <>
                <SwiperHeader />
                <CategorySelect />
-               <AdContent data={products} />
+               <AdContent data={products} tlc={toLowerCase}/>
                {/* <Loader /> */}
 
                <ScrollTop />

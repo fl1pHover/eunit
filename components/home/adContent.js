@@ -9,7 +9,7 @@ import ProductCard from "../../util/productCard";
 // const Asd = <ProductCard />;
 // const array = [...Array(10)];
 
-const AdContent = ({ data }) => {
+const AdContent = ({ data, tlc }) => {
      return (
           <MainContainer>
                <Heading>Үл хөдлөх хөрөнгө</Heading>
@@ -22,7 +22,7 @@ const AdContent = ({ data }) => {
                     {/* {array.map((_, index) => {
                          <GridItem key={index}>{Asd}</GridItem>;
                     })} */}
-                    <ProductCard data={data} />
+                    <ProductCard data={data} tlc={tlc}/>
                     <ProductCard />
                     <ProductCard />
                     <Skeleton />

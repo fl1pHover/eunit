@@ -114,7 +114,7 @@ function MyApp({ Component, pageProps }) {
      });
 
      const logout = () => {
-          console.log("asdf");
+        
           signOut(auth)
                .then(() => {
                     setUser((user) => ({

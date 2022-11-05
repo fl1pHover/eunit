@@ -20,7 +20,6 @@ import { useEffect, useState } from "react";
 import MainContainer from "../layout/mainContainer";
 import Login from "./login";
 
-const types = ["Зарах"];
 const firebaseConfig = {
      apiKey: "AIzaSyDrmzxc8MCm7PcO0Ood0MEvliD86e3RBEg",
 
@@ -42,11 +41,12 @@ export default function CreateAd() {
      const auth = getAuth()
      const [user, setUser] = useState({status: false, profileImg: '', username: '', email: ''})
      const router = useRouter()
-     onAuthStateChanged(auth, async (user) => {
-          if(user && user.email) {
+     onAuthStateChanged(auth, async (u) => {
+          if(u && u.email) {
+               console.log(u)
                let res 
                try {
-                   res = await axios.get(`https://bom-location.herokuapp.com/user/${user.email}`)
+               //     res = await axios.get(`https://bom-location.herokuapp.com/user/${u.email}`)
                } catch(err) { 
                     console.log(err)
                }
@@ -56,11 +56,13 @@ export default function CreateAd() {
                     setUser((user) => ({...user, username: res.data.username, profileImg: res.data.profileImg, email: res.data.email}))
                setUser((user) => ({...user, status: true}))
                }
-          } else {
-               NextResponse.redirect('http://localhost:3000/login', 301)
-               setUser((user) => ({...user, username: '', profileImg: '', email: '', status: false}))
-          }
+          } 
+          // else {
+          //      NextResponse.redirect('http://localhost:3000/login', 301)
+          //      setUser((user) => ({...user, username: '', profileImg: '', email: '', status: false}))
+          // }
      })
+     
   const [type, setType] = useState("");
   const [category, setCategory] = useState("");
   const [subCategory, setSubCategory] = useState("");
@@ -74,6 +76,7 @@ export default function CreateAd() {
     position: "",
   });
   const [filters, setFilters] = useState([])
+
   const getData = async () => {
     if (category == "") {
       try {
@@ -88,11 +91,14 @@ export default function CreateAd() {
       try {
         await fetch(`http://192.168.1.49:5050/category/${select.category}`)
           .then((r) => r.json())
-          .then((d) => setSubCategory(d));
+          .then((d) => setSubCategory(d)).then((a) => console.log(subCategory));
       } catch (error) {
         console.log(error);
       }
     }
+    if(select.type != '' && select.category != '' && category != '' && subCategory != '') {
+     setFilters(subCategory[select.subCategory].filters)
+}
   };
   const createAd = async () => {
     try {
@@ -100,9 +106,10 @@ export default function CreateAd() {
         title: select.title,
         description: select.description,
         location: select.location,
+        type: select.type,
         filters: 
           filters.map((f) => {
-               return {id: f.id, value: f.value}
+               return {id: f._id, value: f.value}
           })
         ,
         subCategory: subCategory[select.subCategory]._id,
@@ -113,10 +120,18 @@ export default function CreateAd() {
   const capitalizeFirst = (str) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
   };
+  const setFilter = (e, index,  ) => {
+     e.preventDefault()
+     let filter = [...filters]
+     let f = {...filters[index]}
+     f.value = e.target.value
+     filter[index] = f
+     setFilters(filter)
+  }
 
   useEffect(() => {
     getData();
-  }, [select, user]);
+  }, [select]);
 
   if(user.email == '') {
      return (
@@ -247,15 +262,19 @@ export default function CreateAd() {
                       {subCategory.length > 0 &&  subCategory[select.subCategory] && subCategory[select.subCategory].filters && 
                         subCategory[select.subCategory].filters.map((s, i) => {
                           // console.log(filters)
-                               // console.log(s)
-                          
-                               return <Select key={i}  placeholder={s.name} value={filters[i] ? filters[i].value : '' } onChange={(e) => setFilters((filters) => [...filters, {value: e.target.value, key: i, id: s._id}])}>
-                                    {s.choices && s.choices.map((s, i) => {
-                                         return (
-                                              <option key={i}   value={s}>{s}</option>
-                                         )
-                                    })}
+                              if(s.type == 'dropdown' && s.type) {
+                                   return <Select placeholder={s.name} onChange={(e) => setFilter(e, i)} key={i}>
+                                   {
+                                        s.choices && s.choices.map((c, ind) => {
+                                             return <option key={ind}>{capitalizeFirst(c.value)}</option>
+                                        })
+                                   }
                                </Select>
+                              }
+                              if(s.type =='inputText' && s.type) {
+                                   return <Input onChange={(e) => setFilter(e, i)} placeholder={s.name}></Input>
+                              }
+                               
                           
                         })}
       
