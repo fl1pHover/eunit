@@ -3,20 +3,11 @@ import {
      Button,
      Center,
      Code,
-     Divider,
-     Flex,
-     Grid,
-     GridItem,
-     Heading,
-     HStack,
-     IconButton,
-     Image,
-     Input,
+     Divider, Heading,
+     HStack, Input,
      Select,
      Text,
-     Textarea,
-     useToast,
-     VStack,
+     Textarea, VStack
 } from "@chakra-ui/react";
 import axios from "axios";
 import { initializeApp } from "firebase/app";
@@ -25,8 +16,6 @@ import { useRouter } from "next/router";
 import { NextResponse } from "next/server";
 import { useEffect, useState } from "react";
 
-import { MdDeleteForever } from "react-icons/md";
-import { RiImageAddLine } from "react-icons/ri";
 
 import MainContainer from "../layout/mainContainer";
 import Login from "./login";
