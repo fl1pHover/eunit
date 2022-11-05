@@ -13,11 +13,14 @@ import ScrollTop from "../util/scrollTop";
 
 export default function Home() {
      const [products, setProducts] = useState("");
+     const [isLoading, setIsLoading] = useState(false);
      const getData = async () => {
+          setIsLoading(true);
           try {
                await fetch("https://bom-location.herokuapp.com/ad")
                     .then((r) => r.json())
-                    .then((d) => setProducts(d));
+                    .then((d) => setProducts(d))
+                    .then((a) => setIsLoading(false));
           } catch (error) {
                console.log(error);
           }
@@ -36,6 +39,8 @@ export default function Home() {
      // useEffect(() => {
      //      getData();
      // }, []);
+
+     // if (!isLoading) {
      return (
           <>
                <SwiperHeader />
@@ -46,4 +51,7 @@ export default function Home() {
                <ScrollTop />
           </>
      );
+     // } else {
+     //      return <Loader />;
+     // }
 }

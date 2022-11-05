@@ -77,7 +77,7 @@ export default function CreateAd() {
   const getData = async () => {
     if (category == "") {
       try {
-        await fetch("http://localhost:5050/category")
+        await fetch("http://192.168.1.49:5050/category")
           .then((d) => d.json())
           .then((r) => setCategory(r));
       } catch (err) {
@@ -86,7 +86,7 @@ export default function CreateAd() {
     }
     if (category != "" && select.category != "") {
       try {
-        await fetch(`http://localhost:5050/category/${select.category}`)
+        await fetch(`http://192.168.1.49:5050/category/${select.category}`)
           .then((r) => r.json())
           .then((d) => setSubCategory(d));
       } catch (error) {
@@ -96,7 +96,7 @@ export default function CreateAd() {
   };
   const createAd = async () => {
     try {
-      await axios.post("http://localhost:5050/ad", {
+      await axios.post("http://192.168.1.49:5050/ad", {
         title: select.title,
         description: select.description,
         location: select.location,
@@ -118,11 +118,11 @@ export default function CreateAd() {
     getData();
   }, [select, user]);
 
-  if(user.email != '') {
+  if(user.email == '') {
      return (
-          <Box as="section" m={5} id="add__ad">
+          <Box as="section" m={5} id="add__ad" >
             <MainContainer>
-              <Box bgColor={"white"} px={10} py={5} rounded={10}>
+              <Box bgColor={"white"} px={10} py={5} rounded={10} minHeight={"50vh"}>
                 <Center>
                   <Heading variant={"bigHeading"}>Зар оруулах хэсэг</Heading>
                 </Center>

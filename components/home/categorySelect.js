@@ -21,7 +21,7 @@ const categoryCardData = [
           image: "/images/HeaderSlider/1.jpg",
           icon: <BsBuilding />,
           categoryName: "Үл хөдлөх хөрөнгө",
-          href: "/category",
+          href: "/category/realState",
           itemCount: "105",
      },
      {
