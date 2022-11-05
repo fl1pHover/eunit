@@ -126,6 +126,7 @@ function ECalculator() {
                               </Heading>
                               <NumberInput precision={2}>
                                    <NumberInputField
+                                        placeholder="0.00₮"
                                         width="150px"
                                         onChange={handlePriceChange}
                                         value={price}
@@ -143,6 +144,7 @@ function ECalculator() {
                               </Heading>
                               <NumberInput precision={2}>
                                    <NumberInputField
+                                        placeholder="0.00₮"
                                         width="150px"
                                         onChange={handlePrincipalchange}
                                         value={principal}
@@ -161,6 +163,7 @@ function ECalculator() {
                               </Heading>
                               <NumberInput>
                                    <NumberInputField
+                                        placeholder="0%"
                                         width="150px"
                                         onChange={handleInterestchange}
                                         value={interest}
@@ -178,6 +181,7 @@ function ECalculator() {
                               </Heading>
                               <NumberInput precision={2}>
                                    <NumberInputField
+                                        placeholder="0.00₮"
                                         width="150px"
                                         onChange={handlePayChange}
                                         value={pay}
@@ -194,6 +198,7 @@ function ECalculator() {
                               </Heading>
                               <NumberInput>
                                    <NumberInputField
+                                        placeholder="0 сар"
                                         width="150px"
                                         onChange={handleTimechange}
                                         value={time}
