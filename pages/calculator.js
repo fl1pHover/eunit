@@ -41,8 +41,8 @@ function ECalculator() {
      // Uridchilgaa
      const [pay, setPay] = useState(9);
 
-     // const [emi, setEmi] = useState(0);
-     const [totalinterest, setTotalinterest] = useState(0);
+     const [emi, setEmi] = useState(0);
+     // const [totalinterest, setTotalinterest] = useState(0);
 
      const handlePriceChange = (event) => {
           setPrice(event.target.value);
@@ -76,10 +76,10 @@ function ECalculator() {
                     (Math.pow(1 + actualRate, n) /
                          (Math.pow(1 + actualRate, n) - 1));
 
-               setPrincipal(price - pay);
-               // setEmi(Math.round(calcemi).toFixed(2));
+               // setPrincipal(price - pay);
+               setEmi(Math.round(calcemi).toFixed(2));
                setAmount((calcemi * n).toFixed(2));
-               setTotalinterest((calcemi * n - p).toFixed(2));
+               // setTotalinterest((calcemi * n - p).toFixed(2));
           } else {
           }
      };
@@ -212,7 +212,7 @@ function ECalculator() {
                                    variant={"mediumHeading"}
                                    color="mainBlossom"
                               >
-                                   {totalinterest}₮
+                                   {emi}₮{/* {totalinterest}₮ */}
                               </Heading>
                          </Flex>
                          <Flex
