@@ -130,15 +130,26 @@ function MyApp({ Component, pageProps }) {
      };
 
      return (
-          <>
-               {/* <Loading /> */}
-               <ChakraProvider theme={theme}>
-                    <Layout>
-                         <Navbar user={user} logout={logout} />
-                         <Component {...pageProps} />
-                    </Layout>
-               </ChakraProvider>
-          </>
+          // <>
+          //      {playAnimation ? (
+          //           <ClipLoader
+          //                color={"#00000"}
+          //                loading={playAnimation}
+          //                size={150}
+          //                aria-label="Loading Spinner"
+          //                data-testid="loader"
+          //           />
+          //      ) : (
+          //           <>
+          <ChakraProvider theme={theme}>
+               <Layout user={user}>
+                    <Navbar user={user} logout={logout}/>
+                    <Component {...pageProps} />
+               </Layout>
+          </ChakraProvider>
+          //           </>
+          //      )}
+          // </>
      );
 }
 
