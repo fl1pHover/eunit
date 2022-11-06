@@ -1,7 +1,7 @@
 export const categories = [
      {
           category: "Үл хөдлөх хөрөнгө",
-          href: "/category",
+          href: "/category/realState",
           submenu: [
                {
                     category: "Орон сууц",

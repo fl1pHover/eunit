@@ -16,7 +16,6 @@ import axios from "axios";
 import { initializeApp } from "firebase/app";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "next/router";
-import { NextResponse } from "next/server";
 import { useEffect, useState } from "react";
 
 import MainContainer from "../layout/mainContainer";
@@ -215,9 +214,7 @@ export default function CreateAd() {
     setFilters(filter);
   };
 
-  useEffect(() => {
-    getData();
-  }, [select]);
+
 
   if (user.email == "") {
     return (

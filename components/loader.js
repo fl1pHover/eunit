@@ -9,6 +9,7 @@ const Loader = () => {
                pos="fixed"
                width={"100%"}
                bgColor="red"
+               zIndex={"9999"}
           >
                Loading
           </Box>

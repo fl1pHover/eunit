@@ -13,11 +13,14 @@ import ScrollTop from "../util/scrollTop";
 
 export default function Home() {
      const [products, setProducts] = useState("");
+     const [isLoading, setIsLoading] = useState(false);
      const getData = async () => {
+          setIsLoading(true);
           try {
                await fetch("https://bom-location.herokuapp.com/ad")
                     .then((r) => r.json())
-                    .then((d) => setProducts(d));
+                    .then((d) => setProducts(d))
+                    .then((a) => setIsLoading(false));
           } catch (error) {
                console.log(error);
           }
@@ -41,14 +44,19 @@ export default function Home() {
      // useEffect(() => {
      //      getData();
      // }, []);
+
+     // if (!isLoading) {
      return (
           <>
                <SwiperHeader />
                <CategorySelect />
-               <AdContent data={products} tlc={toLowerCase}/>
+               <AdContent data={products} tlc={toLowerCase} />
                {/* <Loader /> */}
 
                <ScrollTop />
           </>
      );
+     // } else {
+     //      return <Loader />;
+     // }
 }

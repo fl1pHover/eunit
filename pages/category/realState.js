@@ -1,10 +1,10 @@
 import { Box, Grid, Heading, Image, Stack } from "@chakra-ui/react";
 import React from "react";
-import MainContainer from "../layout/mainContainer";
+import MainContainer from "../../layout/mainContainer";
 
-import FilterLayout from "../components/filter";
+import FilterLayout from "../../components/filter";
 
-const Category = () => {
+const RealState = () => {
      return (
           <Box my={5} as="section" id="category">
                <MainContainer>
@@ -46,4 +46,4 @@ const Category = () => {
      );
 };
 
-export default Category;
+export default RealState;

@@ -336,9 +336,11 @@ const Product = () => {
                                                   {data &&
                                                        data.filters.map(
                                                             (p, i) => {
-                                                                 if(p.id != null) {
+                                                                 if (
+                                                                      p.id !=
+                                                                      null
+                                                                 ) {
                                                                       return (
-                                                                      
                                                                            <ProductInfo
                                                                                 key={
                                                                                      i

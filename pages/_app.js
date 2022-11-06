@@ -1,8 +1,9 @@
-import { ChakraProvider } from "@chakra-ui/react";
+import { Center, ChakraProvider } from "@chakra-ui/react";
 import axios from "axios";
 import { initializeApp } from "firebase/app";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import PulseLoader from "react-spinners/PulseLoader";
 import Navbar from "../components/navbar";
 import Layout from "../layout/layout";
 import theme from "../lib/theme";
@@ -129,10 +130,17 @@ function MyApp({ Component, pageProps }) {
                });
      };
 
+     let [loading, setLoading] = useState(true);
+     let [color, setColor] = useState("#1d1e44");
+     useEffect(() => {
+          setLoading(true);
+          setTimeout(() => setLoading(false), 2000);
+     }, []);
+
      return (
           // <>
           //      {playAnimation ? (
-          //           <ClipLoader
+          //           <PulseLoader
           //                color={"#00000"}
           //                loading={playAnimation}
           //                size={150}
@@ -141,12 +149,24 @@ function MyApp({ Component, pageProps }) {
           //           />
           //      ) : (
           //           <>
-          <ChakraProvider theme={theme}>
-               <Layout user={user}>
-                    <Navbar user={user} logout={logout}/>
-                    <Component {...pageProps} />
-               </Layout>
-          </ChakraProvider>
+          <>
+               {!loading ? (
+                    <ChakraProvider theme={theme}>
+                         <Layout user={user}>
+                              <Navbar user={user} logout={logout} />
+                              <Component {...pageProps} />
+                         </Layout>
+                    </ChakraProvider>
+               ) : (
+                    <Center width={"100vw"} height="100vh" className="loader">
+                         <PulseLoader
+                              color={color}
+                              loading={loading}
+                              size={30}
+                         />
+                    </Center>
+               )}
+          </>
           //           </>
           //      )}
           // </>

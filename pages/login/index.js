@@ -57,7 +57,7 @@ export default function Login() {
           confirmPassword: "",
           username: "",
      });
-     const router = useRouter()
+     const router = useRouter();
      const [credential, setCredential] = useState({ email: "", password: "" });
      const signUp = () => {
           const auth = getAuth();
@@ -73,19 +73,26 @@ export default function Login() {
                )
                     .then(async (u) => {
                          const user = u.user;
-                         
+
                          if (user) {
                               try {
-                                   await axios.post('https://bom-location.herokuapp.com/user', {
-                                   username : signupCredential.username,
-                                   email: user.email,
-                                   profileImg: 'https://png.pngtree.com/png-clipart/20190629/original/pngtree-vector-edit-profile-icon-png-image_4101351.jpg',
-                                   phone: signupCredential.phone
-                              }).then((r) => console.log(r))
-                              } catch(err) {
-                                   console.log(err)
+                                   await axios
+                                        .post(
+                                             "https://bom-location.herokuapp.com/user",
+                                             {
+                                                  username:
+                                                       signupCredential.username,
+                                                  email: user.email,
+                                                  profileImg:
+                                                       "https://png.pngtree.com/png-clipart/20190629/original/pngtree-vector-edit-profile-icon-png-image_4101351.jpg",
+                                                  phone: signupCredential.phone,
+                                             }
+                                        )
+                                        .then((r) => console.log(r));
+                              } catch (err) {
+                                   console.log(err);
                               }
-                              router.push('/')
+                              router.push("/");
                               setSignupcredential((signupCredential) => ({
                                    ...signupCredential,
                                    email: "",
@@ -106,19 +113,22 @@ export default function Login() {
           signInWithPopup(auth, provider).then(async (res) => {
                const cre = GoogleAuthProvider.credentialFromResult(res);
                const user = res.user;
-               if(user) {
-                    console.log(user)
+               if (user) {
+                    console.log(user);
                     try {
-                         await axios.post('https://bom-location.herokuapp.com/user', {
-                         username : user.displayName,
-                         email: user.email,
-                         profileImg: user.profileImg,
-                         phone: '99999999'
-                    })
-                    } catch(err) {
-                         console.log(err)
+                         await axios.post(
+                              "https://bom-location.herokuapp.com/user",
+                              {
+                                   username: user.displayName,
+                                   email: user.email,
+                                   profileImg: user.profileImg,
+                                   phone: "99999999",
+                              }
+                         );
+                    } catch (err) {
+                         console.log(err);
                     }
-                    router.push('/')
+                    router.push("/");
                }
           });
      };
