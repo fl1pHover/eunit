@@ -15,7 +15,7 @@ export default function Home() {
      const [products, setProducts] = useState("");
      const getData = async () => {
           try {
-               await fetch("http://localhost:5050/ad")
+               await fetch("https://bom-location.herokuapp.com/ad")
                     .then((r) => r.json())
                     .then((d) => setProducts(d));
           } catch (error) {
@@ -23,7 +23,9 @@ export default function Home() {
           }
      };
      const toLowerCase = (text) => {
-          return text.toLowerCase()
+          if(text) {
+               return text.toLowerCase()
+          }
      }
      useEffect(() => {
           getData();

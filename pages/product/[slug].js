@@ -139,13 +139,14 @@ const Product = () => {
      const getData = async () => {
           try {
                await fetch(
-                    `http://localhost:5050/ad/${router.query.slug}`
+                    `https://bom-location.herokuapp.com/ad/${router.query.slug}`
                )
                     .then((r) => r.json())
                     .then((d) => {
                          setData(d), console.log(d);
                     })
-                    .then((d) => console.log(data));
+
+
           } catch (error) {
                console.log(error);
           }
@@ -258,6 +259,80 @@ const Product = () => {
                                                   templateColumns="repeat(2, 1fr)"
                                                   gap={3}
                                              >
+                                                   {data &&
+                                                       data.positions && data.positions.location_id && data.positions.district_id && (
+                                                           
+                                                                      
+                                                                <>
+                                                                 <ProductInfo
+                                                                      key={
+                                                                           data.positions.district_id._id
+                                                                      }
+                                                                      title={
+                                                                           "Дүүрэг"
+                                                                      }
+                                                                      value={
+                                                                           data.positions.district_id.name
+                                                                      }
+                                                                 /> <ProductInfo
+                                                                 key={
+                                                                      data.positions.location_id._id
+                                                                 }
+                                                                 title={
+                                                                      "Хороолол"
+                                                                 }
+                                                                 value={
+                                                                      data.positions.location_id.name
+                                                                 }
+                                                            />
+                                                                </>
+                                                            
+                                                       )
+
+                                                                 //   return (
+                                                                 //        <ProductInfo
+                                                                 //             key={i}
+                                                                 //        >
+                                                                 //             <HStack
+                                                                 //                  p={2}
+                                                                 //                  justifyContent="center"
+                                                                 //                  gap={1}
+                                                                 //                  borderColor="bgGrey"
+                                                                 //                  borderWidth={
+                                                                 //                       2
+                                                                 //                  }
+                                                                 //                  borderRadius={
+                                                                 //                       5
+                                                                 //                  }
+                                                                 //             >
+                                                                 //                  {product
+                                                                 //                       .socials
+                                                                 //                       .facebook && (
+                                                                 //                       <Link
+                                                                 //                            target={
+                                                                 //                                 "_blank"
+                                                                 //                            }
+                                                                 //                            href={
+                                                                 //                                 product
+                                                                 //                                      .socials
+                                                                 //                                      .facebook
+                                                                 //                            }
+                                                                 //                       >
+                                                                 //                            <BsFacebook />
+                                                                 //                       </Link>
+                                                                 //                  )}
+                                                                 //                  {product
+                                                                 //                       .socials
+                                                                 //                       .instagram && (
+                                                                 //                       <Link>
+                                                                 //                            <BsInstagram />
+                                                                 //                       </Link>
+                                                                 //                  )}
+                                                                 //             </HStack>
+                                                                 //        </ProductInfo>
+                                                                 //   );
+                                                            
+                                                                 }
                                                   {data &&
                                                        data.filters.map(
                                                             (p, i) => {
@@ -324,6 +399,7 @@ const Product = () => {
                                                                  //   );
                                                             }
                                                        )}
+                                                 
                                              </Grid>
                                         </GridItem>
                                         {/*  //TODO  ENDING RIGHT SIDE INFOS */}
