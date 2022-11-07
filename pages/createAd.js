@@ -10,13 +10,13 @@ import {
   Select,
   Text,
   Textarea,
-  VStack,
+  VStack
 } from "@chakra-ui/react";
 import axios from "axios";
 import { initializeApp } from "firebase/app";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import MainContainer from "../layout/mainContainer";
 import Login from "./login";
@@ -422,7 +422,7 @@ export default function CreateAd() {
                       }
                       if (s.type == "inputText" && s.type) {
                         return (
-                          <Input
+                          <Input map={i}
                             onChange={(e) => setFilter(e, i)}
                             placeholder={capitalizeFirst(s.name)}
                           ></Input>
