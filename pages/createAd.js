@@ -422,7 +422,7 @@ export default function CreateAd() {
                       }
                       if (s.type == "inputText" && s.type) {
                         return (
-                          <Input map={i}
+                          <Input key={i}
                             onChange={(e) => setFilter(e, i)}
                             placeholder={capitalizeFirst(s.name)}
                           ></Input>
