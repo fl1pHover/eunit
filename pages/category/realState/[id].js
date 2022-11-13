@@ -1,8 +1,8 @@
 import { Box, Grid, Heading, Image, Stack } from "@chakra-ui/react";
 import React from "react";
-import MainContainer from "../../layout/mainContainer";
+import MainContainer from "../../../layout/mainContainer";
 
-import FilterLayout from "../../components/filter";
+import FilterLayout from "../../../components/filter";
 
 const RealState = () => {
      return (

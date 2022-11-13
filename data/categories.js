@@ -111,16 +111,12 @@ export const categories = [
           categoryName: "Цахилгаан бараа",
           id: "electronic",
           itemCount: "105",
-          // submenu: [
-          //      {
-          //           category: "Орон сууц",
-          //           href: "land",
-          //      },
-          //      {
-          //           category: "Газар",
-          //           href: "land",
-          //      },
-          // ],
+          submenu: [
+               {
+                    category: "дагалдах хэрэгсэл",
+                    href: "accessories",
+               },
+          ],
      },
      {
           image: "/images/category/home.jpg",
@@ -128,15 +124,11 @@ export const categories = [
           categoryName: "Гэр ахуйн бараа",
           id: "household-items",
           itemCount: "105",
-          // submenu: [
-          //      {
-          //           category: "Орон сууц",
-          //           href: "land",
-          //      },
-          //      {
-          //           category: "Газар",
-          //           href: "land",
-          //      },
-          // ],
+          submenu: [
+               {
+                    category: "дагалдах хэрэгсэл",
+                    href: "accessories",
+               },
+          ],
      },
 ];
