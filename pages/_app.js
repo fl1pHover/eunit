@@ -9,40 +9,6 @@ import Layout from "../layout/layout";
 import theme from "../lib/theme";
 import "../styles/globals.scss";
 
-// function Loading() {
-//      const router = useRouter();
-
-//      const [loading, setLoading] = useState(false);
-
-//      useEffect(() => {
-//           const handleStart = (url) =>
-//                url !== router.asPath && setLoading(true);
-//           const handleComplete = (url) =>
-//                url === router.asPath &&
-//                setTimeout(() => {
-//                     setLoading(false);
-//                }, 5000);
-
-//           router.events.on("routeChangeStart", handleStart);
-//           router.events.on("routeChangeComplete", handleComplete);
-//           router.events.on("routeChangeError", handleComplete);
-
-//           return () => {
-//                router.events.off("routeChangeStart", handleStart);
-//                router.events.off("routeChangeComplete", handleComplete);
-//                router.events.off("routeChangeError", handleComplete);
-//           };
-//      });
-
-//      return (
-//           loading && (
-//                <div className="spinner-wrapper">
-//                     <div className="spinner"></div>
-//                </div>
-//           )
-//      );
-//      console.log(loading);
-// }
 
 const firebaseConfig = {
      apiKey: "AIzaSyDrmzxc8MCm7PcO0Ood0MEvliD86e3RBEg",
@@ -62,17 +28,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 function MyApp({ Component, pageProps }) {
-     // if (typeof window !== "undefined") {
-     //      const spinner = document.getElementById("spinner");
-
-     //      if (spinner) {
-     //           setTimeout(() => {
-     //                spinner.style.display = "none";
-     //                setLoading(false);
-     //           }, 2000);
-     //      }
-
-     // }
 
      const auth = getAuth();
      const [user, setUser] = useState({
@@ -138,17 +93,7 @@ function MyApp({ Component, pageProps }) {
      }, []);
 
      return (
-          // <>
-          //      {playAnimation ? (
-          //           <PulseLoader
-          //                color={"#00000"}
-          //                loading={playAnimation}
-          //                size={150}
-          //                aria-label="Loading Spinner"
-          //                data-testid="loader"
-          //           />
-          //      ) : (
-          //           <>
+     
           <>
                {!loading ? (
                     <ChakraProvider theme={theme}>

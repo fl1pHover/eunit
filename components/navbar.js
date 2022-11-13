@@ -120,7 +120,7 @@ const Navbar = ({ user, logout }) => {
                               >
                                    <Link href="/">
                                         <Image
-                                             src="/images/logo/logo-blue.png"
+                                             src="/images/logo/bom_word.png"
                                              alt="BOM logo"
                                              // height={"75px"}
                                              width={"100%"}
