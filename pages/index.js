@@ -17,7 +17,7 @@ export default function Home() {
      const getData = async () => {
           setIsLoading(true);
           try {
-               await fetch("http://192.168.1.49:5050/ad")
+               await fetch("https://bom-location.herokuapp.com/ad")
                     .then((r) => r.json())
                     .then((d) => setProducts(d))
                     .then((a) => setIsLoading(false));
@@ -26,8 +26,10 @@ export default function Home() {
           }
      };
      const toLowerCase = (text) => {
-          return text.toLowerCase();
-     };
+          if(text) {
+               return text.toLowerCase()
+          }
+     }
      useEffect(() => {
           getData();
      }, []);
