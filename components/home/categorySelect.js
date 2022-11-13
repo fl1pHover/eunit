@@ -9,58 +9,9 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 
-import { AiOutlineCar } from "react-icons/ai";
-import { BsBuilding, BsPhone } from "react-icons/bs";
-import { CgSmartHomeWashMachine } from "react-icons/cg";
-import { MdComputer } from "react-icons/md";
-import { RiHomeSmile2Line } from "react-icons/ri";
 import MainContainer from "../../layout/mainContainer";
 
-const categoryCardData = [
-     {
-          image: "/images/HeaderSlider/1.jpg",
-          icon: <BsBuilding />,
-          categoryName: "Үл хөдлөх хөрөнгө",
-          href: "/category/realState",
-          itemCount: "105",
-     },
-     {
-          image: "/images/category/car.jpg",
-          icon: <AiOutlineCar />,
-          categoryName: "Тээврийн хэрэгсэл",
-          href: "/vehicle",
-
-          itemCount: "105",
-     },
-     {
-          image: "/images/category/computer.jpg",
-          icon: <MdComputer />,
-          categoryName: "Компьютер",
-          href: "/computer",
-          itemCount: "105",
-     },
-     {
-          image: "/images/category/phone.jpg",
-          icon: <BsPhone />,
-          categoryName: "Гар утас",
-          href: "phone",
-          itemCount: "105",
-     },
-     {
-          image: "/images/category/electronic.jpg",
-          icon: <CgSmartHomeWashMachine />,
-          categoryName: "Цахилгаан бараа",
-          href: "electronic",
-          itemCount: "105",
-     },
-     {
-          image: "/images/category/home.jpg",
-          icon: <RiHomeSmile2Line />,
-          categoryName: "Гэр ахуйн бараа",
-          href: "household-items",
-          itemCount: "105",
-     },
-];
+import { categories } from "../../data/categories";
 
 const CategorySelect = () => {
      return (
@@ -74,9 +25,12 @@ const CategorySelect = () => {
                          }}
                          gap={5}
                     >
-                         {categoryCardData.map(({ ...props }, index) => {
+                         {categories.map(({ ...props }, index) => {
                               return (
-                                   <Link key={index} href={props.href}>
+                                   <Link
+                                        key={index}
+                                        href={`/category/${props.id}`}
+                                   >
                                         <GridItem
                                              bgColor="white"
                                              py={8}

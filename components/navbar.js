@@ -429,12 +429,10 @@ const Navbar = ({ user, logout }) => {
                                                                  color={
                                                                       "inherit"
                                                                  }
-                                                                 href={
-                                                                      props.href
-                                                                 }
+                                                                 href={`/category/${props.id}`}
                                                             >
                                                                  {
-                                                                      props.category
+                                                                      props.categoryName
                                                                  }
                                                             </Link>
                                                             <Stack
@@ -460,9 +458,7 @@ const Navbar = ({ user, logout }) => {
                                                                                           key={
                                                                                                i
                                                                                           }
-                                                                                          href={
-                                                                                               sub.href
-                                                                                          }
+                                                                                          href={`/category/${props.id}/${sub.href}`}
                                                                                           p={
                                                                                                2
                                                                                           }

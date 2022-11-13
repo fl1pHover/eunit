@@ -11,6 +11,7 @@ import {
      VStack,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
+import { categories } from "../../data/categories";
 import FilterStack from "../../util/filterStack";
 
 const filters = {
@@ -36,92 +37,93 @@ const filters = {
      condition: ["Банкны лизингтэй", "Хувь лизингтэй", "Бэлэн"],
      barter: ["Байгаа", "Байхгүй"],
 };
-const categories = [
-     {
-          category: "Орон сууц",
-          categories: [
-               {
-                    category: "Газар",
-                    filters: [
-                         "Зарын гарчиг... 100 тэмдэгтэд багтаан бичнэ үү. ",
-                         "Газрын зориулалт",
-                         "Эзэмшлийн хэлбэр",
-                         "Утас",
-                         "Үнэ",
-                         "Талбай",
-                         "Нэгж талбайн үнэ",
-                         "Дүүрэг",
-                         "Хороо",
-                         "Байршил",
-                         "Гэрчилгээ олгосон он",
-                         "Хүчинтэй хугацаа (жил)",
-                         "Бартер",
-                         "Төлбөрийн нөхцөл",
-                         "Газрын зурагт байршил сонго",
-                         "Хөрөнгийн зураг",
-                         "Кадастрын зураг",
-                         "Зарын дэлгэрэнгүй... 10000 тэмдэгтэд багтаан бичнэ үү.",
-                    ],
-               },
-               {
-                    category: "Оффис",
 
-                    filters: [
-                         "Зарын гарчиг... 100 тэмдэгтэд багтаан бичнэ үү. ",
-                         "Утас",
-                         "Үнэ",
-                         "Талбай",
-                         "Нэгж талбайн үнэ",
-                         "Дүүрэг",
-                         "Хороо",
-                         "Байршил",
-                         "Оффисын нэр",
-                         "Ашиглалтад орсон он",
-                         "Барилгын давхар",
-                         "Хэдэн давхарт",
-                         "Бартер",
-                         "Төлбөрийн нөхцөл",
-                         "Газрын зурагт байршил сонго",
-                         "Хөрөнгийн зураг",
-                         "План зураг",
-                         "Зарын дэлгэрэнгүй... 10000 тэмдэгтэд багтаан бичнэ үү.",
-                    ],
-               },
-          ],
-     },
-     {
-          category: "Үл хөдлөх хөрөнгө",
-          categories: [{ category: "Газар" }, { category: "Оффис" }],
-     },
-     {
-          category: "Оффис",
-          categories: [{ category: "Газар" }, { category: "Оффис" }],
-     },
-     {
-          category: "Худалдаа үйлчилгээний талбай",
-          categories: [{ category: "Газар" }, { category: "Оффис" }],
-     },
-     {
-          category: "Үйлдвэр, агуулах",
-          categories: [{ category: "Газар" }, { category: "Оффис" }],
-     },
-     {
-          category: "Хашаа байшин",
-          categories: [{ category: "Газар" }, { category: "Оффис" }],
-     },
-     {
-          category: "Хаус, зуслангийн байшин",
-          categories: [{ category: "Газар" }, { category: "Оффис" }],
-     },
-     {
-          category: "Гараж",
-          categories: [{ category: "Газар" }, { category: "Оффис" }],
-     },
-     {
-          category: "Контейнер, зөөврийн сууц",
-          categories: [{ category: "Газар" }, { category: "Оффис" }],
-     },
-];
+// const categories = [
+//      {
+//           category: "Орон сууц",
+//           categories: [
+//                {
+//                     category: "Газар",
+//                     filters: [
+//                          "Зарын гарчиг... 100 тэмдэгтэд багтаан бичнэ үү. ",
+//                          "Газрын зориулалт",
+//                          "Эзэмшлийн хэлбэр",
+//                          "Утас",
+//                          "Үнэ",
+//                          "Талбай",
+//                          "Нэгж талбайн үнэ",
+//                          "Дүүрэг",
+//                          "Хороо",
+//                          "Байршил",
+//                          "Гэрчилгээ олгосон он",
+//                          "Хүчинтэй хугацаа (жил)",
+//                          "Бартер",
+//                          "Төлбөрийн нөхцөл",
+//                          "Газрын зурагт байршил сонго",
+//                          "Хөрөнгийн зураг",
+//                          "Кадастрын зураг",
+//                          "Зарын дэлгэрэнгүй... 10000 тэмдэгтэд багтаан бичнэ үү.",
+//                     ],
+//                },
+//                {
+//                     category: "Оффис",
+
+//                     filters: [
+//                          "Зарын гарчиг... 100 тэмдэгтэд багтаан бичнэ үү. ",
+//                          "Утас",
+//                          "Үнэ",
+//                          "Талбай",
+//                          "Нэгж талбайн үнэ",
+//                          "Дүүрэг",
+//                          "Хороо",
+//                          "Байршил",
+//                          "Оффисын нэр",
+//                          "Ашиглалтад орсон он",
+//                          "Барилгын давхар",
+//                          "Хэдэн давхарт",
+//                          "Бартер",
+//                          "Төлбөрийн нөхцөл",
+//                          "Газрын зурагт байршил сонго",
+//                          "Хөрөнгийн зураг",
+//                          "План зураг",
+//                          "Зарын дэлгэрэнгүй... 10000 тэмдэгтэд багтаан бичнэ үү.",
+//                     ],
+//                },
+//           ],
+//      },
+//      {
+//           category: "Үл хөдлөх хөрөнгө",
+//           categories: [{ category: "Газар" }, { category: "Оффис" }],
+//      },
+//      {
+//           category: "Оффис",
+//           categories: [{ category: "Газар" }, { category: "Оффис" }],
+//      },
+//      {
+//           category: "Худалдаа үйлчилгээний талбай",
+//           categories: [{ category: "Газар" }, { category: "Оффис" }],
+//      },
+//      {
+//           category: "Үйлдвэр, агуулах",
+//           categories: [{ category: "Газар" }, { category: "Оффис" }],
+//      },
+//      {
+//           category: "Хашаа байшин",
+//           categories: [{ category: "Газар" }, { category: "Оффис" }],
+//      },
+//      {
+//           category: "Хаус, зуслангийн байшин",
+//           categories: [{ category: "Газар" }, { category: "Оффис" }],
+//      },
+//      {
+//           category: "Гараж",
+//           categories: [{ category: "Газар" }, { category: "Оффис" }],
+//      },
+//      {
+//           category: "Контейнер, зөөврийн сууц",
+//           categories: [{ category: "Газар" }, { category: "Оффис" }],
+//      },
+// ];
 
 const FilterLayout = () => {
      const [filter, setFilter] = useState({
@@ -154,11 +156,29 @@ const FilterLayout = () => {
                          <Heading variant={"smallHeading"} mb={2}>
                               Үл хөдлах хөрөнгө
                          </Heading>
-                         {categories.map(({ ...props }, id) => {
+                         {categories.slice(0, 1).map(({ ...props }, id) => {
                               return (
-                                   <Link href={props.href} key={props.id}>
-                                        <Text>{props.category}</Text>
-                                   </Link>
+                                   <>
+                                        {props.submenu &&
+                                             props.submenu.map((sub, i) => {
+                                                  return (
+                                                       <Link
+                                                            key={i}
+                                                            href={`/category/${props.id}/${sub.href}`}
+                                                            p={1}
+                                                            mt={0}
+                                                       >
+                                                            <Text>
+                                                                 {sub.category}
+                                                            </Text>
+                                                       </Link>
+                                                  );
+                                             })}
+                                   </>
+
+                                   // <Link href={props.href} key={props.id}>
+                                   //      <Text>{props.category}</Text>
+                                   // </Link>
                               );
                          })}
                     </FilterStack>
@@ -333,7 +353,7 @@ const FilterLayout = () => {
                                              )}
                                         </Select>
                                    )}
-                                   {filters.window && (
+                                   {/* {filters.window && (
                                         <Select
                                              placeholder="Цонх"
                                              variant="outline"
@@ -491,7 +511,7 @@ const FilterLayout = () => {
                                                   );
                                              })}
                                         </Select>
-                                   )}
+                                   )} */}
                                    {filters.condition && (
                                         <Select
                                              placeholder="Төлбөрийн нөхцөл"
