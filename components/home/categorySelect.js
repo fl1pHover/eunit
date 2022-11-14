@@ -28,7 +28,7 @@ const CategorySelect = () => {
                          {categories.map(({ ...props }, index) => {
                               return (
                                    <>
-                                   {/* Categoryiin default menug ni hamgiin ehnii submenu eer avna */}
+                                        {/* Categoryiin default menug ni hamgiin ehnii submenu eer avna */}
                                         {props.submenu &&
                                              props.submenu
                                                   .slice(0, 1)
@@ -88,7 +88,6 @@ const CategorySelect = () => {
                                                                            }
                                                                            color="white"
                                                                       >
-                                                                       
                                                                            <Text
                                                                                 fontSize={
                                                                                      "50px"

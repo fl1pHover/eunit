@@ -2,13 +2,13 @@ import { Center, ChakraProvider } from "@chakra-ui/react";
 import axios from "axios";
 import { initializeApp } from "firebase/app";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import { AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import PulseLoader from "react-spinners/PulseLoader";
 import Navbar from "../components/navbar";
 import Layout from "../layout/layout";
 import theme from "../lib/theme";
 import "../styles/globals.scss";
-
 
 const firebaseConfig = {
      apiKey: "AIzaSyDrmzxc8MCm7PcO0Ood0MEvliD86e3RBEg",
@@ -28,7 +28,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 function MyApp({ Component, pageProps }) {
-
      const auth = getAuth();
      const [user, setUser] = useState({
           status: false,
@@ -69,7 +68,6 @@ function MyApp({ Component, pageProps }) {
      });
 
      const logout = () => {
-        
           signOut(auth)
                .then(() => {
                     setUser((user) => ({
@@ -93,14 +91,15 @@ function MyApp({ Component, pageProps }) {
      }, []);
 
      return (
-     
           <>
                {!loading ? (
                     <ChakraProvider theme={theme}>
-                         <Layout user={user}>
-                              <Navbar user={user} logout={logout} />
-                              <Component {...pageProps} />
-                         </Layout>
+                         <AnimatePresence>
+                              <Layout user={user}>
+                                   <Navbar user={user} logout={logout} />
+                                   <Component {...pageProps} />
+                              </Layout>
+                         </AnimatePresence>
                     </ChakraProvider>
                ) : (
                     <Center width={"100vw"} height="100vh" className="loader">

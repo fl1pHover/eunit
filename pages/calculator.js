@@ -77,8 +77,16 @@ function ECalculator() {
                          (Math.pow(1 + actualRate, n) - 1));
 
                // setPrincipal(price - pay);
-               setEmi(Math.round(calcemi).toFixed(2));
-               setAmount((calcemi * n).toFixed(2));
+               setEmi(
+                    Math.round(calcemi).toLocaleString("en-US", {
+                         maximumFractionDigits: 2,
+                    })
+               );
+               setAmount(
+                    (calcemi * n).toLocaleString("en-US", {
+                         maximumFractionDigits: 2,
+                    })
+               );
                // setTotalinterest((calcemi * n - p).toFixed(2));
           } else {
           }
