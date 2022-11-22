@@ -26,10 +26,10 @@ export default function Home() {
           }
      };
      const toLowerCase = (text) => {
-          if(text) {
-               return text.toLowerCase()
+          if (text) {
+               return text.toLowerCase();
           }
-     }
+     };
      useEffect(() => {
           getData();
      }, []);
@@ -45,18 +45,12 @@ export default function Home() {
      //      getData();
      // }, []);
 
-     // if (!isLoading) {
      return (
           <>
                <SwiperHeader />
                <CategorySelect />
                <AdContent data={products} tlc={toLowerCase} />
-               {/* <Loader /> */}
-
                <ScrollTop />
           </>
      );
-     // } else {
-     //      return <Loader />;
-     // }
 }

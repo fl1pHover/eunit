@@ -19,47 +19,7 @@ import { FiCamera } from "react-icons/fi";
 import { IoBedOutline } from "react-icons/io5";
 import { TbBath } from "react-icons/tb";
 
-const cardData = [
-     {
-          href: "/product",
-          image: "/images/HeaderSlider/1.jpg",
-          logo: "asdasd",
-          gallery: "5",
-          title: "Рокмон бюлдинг оффис",
-          address: "Баруун 4-н зам",
-          room: "5",
-          bedroom: "3",
-          bathroom: "2",
-          space: "5",
-          price: "₮15,000,000",
-     },
-     {
-          href: "/product",
-          image: "/images/HeaderSlider/1.jpg",
-          logo: "asdasd",
-          gallery: "5",
-          title: "Рокмон бюлдинг оффис",
-          address: "Баруун 4-н зам",
-          room: "5",
-          bedroom: "3",
-          bathroom: "2",
-          space: "5",
-          price: "₮15,000,000",
-     },
-     {
-          href: "/product",
-          image: "/images/HeaderSlider/1.jpg",
-          logo: "asdasd",
-          gallery: "5",
-          title: "Рокмон бюлдинг оффис",
-          address: "Баруун 4-н зам",
-          room: "5",
-          bedroom: "3",
-          bathroom: "2",
-          space: "5",
-          price: "₮15,000,000",
-     },
-];
+
 
 const ProductCard = ({data, tlc}) => {
      const toast = useToast();
