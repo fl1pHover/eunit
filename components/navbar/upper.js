@@ -56,7 +56,7 @@ const UpperNav = ({
                               <Link href="/">
                                    <a>
                                         <Image
-                                             src="/images/logo/bom_word.png"
+                                             src="/images/logo/bom-blue-text.png"
                                              alt="BOM logo"
                                              width={size.width}
                                              height={size.height}

@@ -12,9 +12,9 @@ import {
   Link,
   Stack,
   Text,
-  VStack,
+  VStack
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 //TODO Container
 import MainContainer from "../layout/mainContainer";
@@ -253,7 +253,7 @@ const Navbar = ({ user, logout }) => {
                         p={3}
                       >
                         <HStack alignItems={"center"}>
-                          <Avatar src={user.profileImg} size={"sm"} />
+                          {/* <Avatar src={user.profileImg} size={"sm"} /> */}
                           <VStack alignItems={"center"}>
                             <Avatar
                               src="https://bit.ly/dan-abramov"
@@ -273,13 +273,11 @@ const Navbar = ({ user, logout }) => {
                         <VStack textAlign="left" color={"grey"}>
                           <DownLink
                             href={"/account?profile"}
-                            text="Хувийн
-                                                                 мэдэээлэл"
+                            text="Хувийн мэдэээлэл"
                           />
                           <DownLink
                             href={"/account?ads"}
-                            text="  Миний
-                                                            зарууд"
+                            text="Миний зарууд"
                           />
 
                           <DownLink href={"/account?wallet"} text="Хэтэвч" />
