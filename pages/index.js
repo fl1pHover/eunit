@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import AdContent from "../components/home/adContent";
 import CategorySelect from "../components/home/categorySelect";
 import SwiperHeader from "../components/home/swiperHeader";
-import ScrollTop from "../lib/ScrollTop";
+import ScrollTop from "@/lib/ScrollTop";
 
 // import dynamic from "next/dynamic";
 // const SwiperHeader = dynamic(() => import("../components/home/swiperHeader"));
