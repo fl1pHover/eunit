@@ -22,7 +22,7 @@ import MainContainer from "../../layout/mainContainer";
 import ProductCard from "../../util/productCard";
 import ECalculator from "../calculator";
 
-import ScrollTop from "../../util/scrollTop";
+import ScrollTop from "../../lib/ScrollTop";
 
 // Icons
 
