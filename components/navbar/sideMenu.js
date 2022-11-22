@@ -10,6 +10,7 @@ import { BsBuilding, BsPhone } from "react-icons/bs";
 import { CgSmartHomeWashMachine } from "react-icons/cg";
 import { MdComputer } from "react-icons/md";
 import { RiHomeSmile2Line } from "react-icons/ri";
+import Footer from "@/components/footer/index";
 
 const Icon = ({ id, ...props }) => {
   switch (id) {
@@ -57,7 +58,7 @@ const SideMenu = ({
           "left right-0 top-0 bottom-0 h-screen"
         )}
       >
-        <div className="flex flex-col items-end h-screen">
+        <div className="flex flex-col items-end h-screen overflow-y-scroll">
           <div className="w-3/4 bg-slate-100 h-screen">
             <div
               className={mergeNames(
@@ -131,6 +132,7 @@ const SideMenu = ({
                   </div>
                 );
               })}
+              <Footer />
             </div>
           </div>
         </div>
