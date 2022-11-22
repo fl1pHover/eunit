@@ -2,162 +2,233 @@
 @use "component" as *;
 @import "node_modules/react-image-gallery/styles/scss/image-gallery.scss";
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 * {
-     margin: 0;
-     padding: 0;
-     box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 a {
-     text-decoration: none;
+  text-decoration: none;
 }
 
 .icon {
-     color: #676767;
-     transition: 0.3s ease;
+  color: #676767;
+  transition: 0.3s ease;
 }
 
 html {
-     scroll-behavior: smooth;
-     // user-select: none;
+  scroll-behavior: smooth;
+  // user-select: none;
 }
 
 .white__icon {
-     color: white;
+  color: white;
 }
 
 .wrap,
 .unwrap {
-     transition: 0.4s ease;
+  transition: 0.4s ease;
 }
 .wrap {
-     transform: translateY(-100%);
+  transform: translateY(-100%);
 }
 
 ::-webkit-scrollbar {
-     width: 3px;
+  width: 3px;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-     background: $bgGrey;
+  background: $bgGrey;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-     background: $mainBlossom;
+  background: $mainBlossom;
 }
 
 .product__image {
-     position: relative;
-     &::before {
-          content: "";
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background: $bgGrey;
-     }
+  position: relative;
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: $bgGrey;
+  }
 }
 
 .animated__icon {
-     background-size: cover;
-     width: 30px;
-     height: 30px;
+  background-size: cover;
+  width: 30px;
+  height: 30px;
 }
 
 .animated__wallet {
-     .animated__icon {
-          background-image: url(../public/utils/icons/wallet.png);
-          background-size: cover;
-          width: 30px;
-          height: 30px;
-     }
-     &:hover .animated__icon {
-          background-image: url(../public/utils/icons/wallet.gif);
-     }
+  .animated__icon {
+    background-image: url(../public/utils/icons/wallet.png);
+    background-size: cover;
+    width: 30px;
+    height: 30px;
+  }
+  &:hover .animated__icon {
+    background-image: url(../public/utils/icons/wallet.gif);
+  }
 }
 
 .animated__estimator {
-     .animated__icon {
-          background-image: url(../public/utils/icons/estimator.png);
-          background-size: cover;
-          width: 30px;
-          height: 30px;
-     }
-     &:hover .animated__icon {
-          background-image: url(../public/utils/icons/estimator.gif);
-     }
+  .animated__icon {
+    background-image: url(../public/utils/icons/estimator.png);
+    background-size: cover;
+    width: 30px;
+    height: 30px;
+  }
+  &:hover .animated__icon {
+    background-image: url(../public/utils/icons/estimator.gif);
+  }
 }
 
 .animated__heart {
-     .animated__icon {
-          background-image: url(../public/utils/icons/heart.png);
-          background-size: cover;
-          width: 30px;
-          height: 30px;
-     }
-     &:hover .animated__icon {
-          background-image: url(../public/utils/icons/heart.gif);
-     }
+  .animated__icon {
+    background-image: url(../public/utils/icons/heart.png);
+    background-size: cover;
+    width: 30px;
+    height: 30px;
+  }
+  &:hover .animated__icon {
+    background-image: url(../public/utils/icons/heart.gif);
+  }
 }
 
 .animated__account {
-     .animated__icon {
-          background-image: url(../public/utils/icons/account.png);
-          background-size: cover;
-          width: 30px;
-          height: 30px;
-     }
-     &:hover .animated__icon {
-          background-image: url(../public/utils/icons/account.gif);
-     }
+  .animated__icon {
+    background-image: url(../public/utils/icons/account.png);
+    background-size: cover;
+    width: 30px;
+    height: 30px;
+  }
+  &:hover .animated__icon {
+    background-image: url(../public/utils/icons/account.gif);
+  }
 }
 
 .info__icon {
-     font-size: 20px;
+  font-size: 20px;
 }
 
 .menu__item {
-     &:hover {
-          background: transparent !important;
-     }
+  &:hover {
+    background: transparent !important;
+  }
 }
 
 .profile__dropdown-menu {
-     margin-right: 10% !important;
-     transform: translate(600px, 70px) !important;
-     &::before {
-          content: "";
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 10px;
-          height: 10px;
-          background-color: red;
-     }
+  margin-right: 10% !important;
+  transform: translate(600px, 70px) !important;
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 10px;
+    height: 10px;
+    background-color: red;
+  }
 }
 
 .animated__account .asd {
-     display: none;
+  display: none;
 }
 
 .card {
-     position: relative;
-     // z-index: 3;
-     &::before {
-          content: "";
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background-color: $mainBlossom;
-          opacity: 0.7;
-          z-index: 1;
-     }
+  position: relative;
+  // z-index: 3;
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: $mainBlossom;
+    opacity: 0.7;
+    z-index: 1;
+  }
 }
 
 .file__upload {
+}
+
+/* Position and sizing of burger button */
+.bm-burger-button {
+  position: fixed;
+  width: 36px;
+  height: 30px;
+  left: 36px;
+  top: 36px;
+}
+
+/* Color/shape of burger icon bars */
+.bm-burger-bars {
+  background: #373a47;
+}
+
+/* Color/shape of burger icon bars on hover*/
+.bm-burger-bars-hover {
+  background: #a90000;
+}
+
+/* Position and sizing of clickable cross button */
+.bm-cross-button {
+  height: 24px;
+  width: 24px;
+}
+
+/* Color/shape of close button cross */
+.bm-cross {
+  background: #bdc3c7;
+}
+
+/*
+Sidebar wrapper styles
+Note: Beware of modifying this element as it can break the animations - you should not need to touch it in most cases
+*/
+.bm-menu-wrap {
+  position: fixed;
+  height: 100%;
+}
+
+/* General sidebar styles */
+.bm-menu {
+  background: #373a47;
+  padding: 2.5em 1.5em 0;
+  font-size: 1.15em;
+}
+
+/* Morph shape necessary with bubble or elastic */
+.bm-morph-shape {
+  fill: #373a47;
+}
+
+/* Wrapper for item list */
+.bm-item-list {
+  color: #b8b7ad;
+  padding: 0.8em;
+}
+
+/* Individual item */
+.bm-item {
+  display: inline-block;
+}
+
+/* Styling of overlay */
+.bm-overlay {
+  background: rgba(0, 0, 0, 0.3);
 }
