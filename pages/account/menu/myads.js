@@ -1,8 +1,9 @@
 import AdContent from "@/components/home/adContent";
-import { Heading, Stack, TabPanel } from "@chakra-ui/react";
+import { Stack } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-const MyAds = () => {
+const Myads = () => {
      const [products, setProducts] = useState("");
      const [isLoading, setIsLoading] = useState(false);
      const getData = async () => {
@@ -26,22 +27,14 @@ const MyAds = () => {
           getData();
      }, []);
 
+     const router = useRouter();
+
      return (
-          <>
-               <TabPanel display={{ base: "none", md: "block" }}>
-                    <Heading variant={"mediumHeading"}>
-                         <AdContent
-                              data={products}
-                              tlc={toLowerCase}
-                              title=" "
-                         />
-                    </Heading>
-               </TabPanel>
-               <Stack display={{ base: "flex", md: "none" }}>
-                    <AdContent data={products} tlc={toLowerCase} title=" " />
-               </Stack>
-          </>
+          <Stack display={{ base: "flex", md: "none" }} mx={5}>
+             
+               <AdContent data={products} tlc={toLowerCase} title=" " />
+          </Stack>
      );
 };
 
-export default MyAds;
+export default Myads;

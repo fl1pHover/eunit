@@ -1,10 +1,13 @@
-import { Heading, TabPanel } from "@chakra-ui/react";
+import { Heading, Stack, TabPanel } from "@chakra-ui/react";
 
 const Wallet = () => {
      return (
-          <TabPanel>
-               <Heading variant={"mediumHeading"}>Хэтэвч</Heading>
-          </TabPanel>
+          <>
+               <TabPanel display={{ base: "block", md: "none" }}>
+                    <Heading variant={"mediumHeading"}>Хэтэвч</Heading>
+               </TabPanel>
+               <Stack display={{ base: "none", md: "flex" }}>asd</Stack>
+          </>
      );
 };
 
