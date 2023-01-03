@@ -1,5 +1,5 @@
-import Text from "@/lib/Text";
-import mergeNames from "@/util/mergeNames";
+import Text from "../../lib/Text";
+import mergeNames from "../../util/mergeNames";
 
 const layout = "cursor-pointer flex flex-col items-center";
 

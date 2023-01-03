@@ -14,6 +14,7 @@ import {
      Tabs,
      Text,
 } from "@chakra-ui/react";
+import { useAuth } from "context/auth";
 
 import { useRouter } from "next/router";
 
@@ -76,6 +77,7 @@ const LinkSelecting = ({ title, tab, image }) => {
 };
 
 const Account = () => {
+     const {user, logout} = useAuth()
      return (
           <MainContainer>
                <Tabs
@@ -112,15 +114,15 @@ const Account = () => {
                                         m={2}
                                    >
                                         <Heading variant={"smallHeading"}>
-                                             Soko Bishu
+                                             {user?.username}
                                         </Heading>
                                         <Text color={"grey"}>
-                                             Email@email.com
+                                             {user?.email}
                                         </Text>
                                    </Stack>
                               </Stack>
                               <Box display={{ base: "block", md: "none" }}>
-                                   <Button rightIcon={<FiLogOut />}>
+                                   <Button rightIcon={<FiLogOut />} onClick={() => logout()}>
                                         <Text>Гарах</Text>
                                    </Button>
                               </Box>
@@ -143,7 +145,7 @@ const Account = () => {
                               display={{ base: "none", md: "flex" }}
                               my={3}
                          >
-                              <Button width={"60%"}>Гарах</Button>
+                              <Button width={"60%"} onClick={() => logout()}>Гарах</Button>
                          </Center>
                     </TabList>
 

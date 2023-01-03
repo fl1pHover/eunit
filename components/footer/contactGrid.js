@@ -1,9 +1,9 @@
 import React from "react";
 import Link from "next/link";
 
-import Title from "@/lib/Title";
+import Title from "../../lib/Title";
 import { FooterText } from "./footerLink";
-import footerIcon from "@/components/footer/footerIcons";
+import footerIcon from "./footerIcons";
 
 const ContactGrid = () => {
   return (

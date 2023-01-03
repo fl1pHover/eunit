@@ -13,6 +13,7 @@ import {
   VStack
 } from "@chakra-ui/react";
 import axios from "axios";
+import { useAuth } from "context/auth";
 import { initializeApp } from "firebase/app";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "next/router";
@@ -21,57 +22,11 @@ import { useState } from "react";
 import MainContainer from "../layout/mainContainer";
 import Login from "./login";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyDrmzxc8MCm7PcO0Ood0MEvliD86e3RBEg",
 
-  authDomain: "bomregistration.firebaseapp.com",
-
-  projectId: "bomregistration",
-
-  storageBucket: "bomregistration.appspot.com",
-
-  messagingSenderId: "567513313511",
-
-  appId: "1:567513313511:web:1d919d03c2334022667242",
-
-  measurementId: "G-T3VWESJ3PF",
-};
-
-const app = initializeApp(firebaseConfig);
 export default function CreateAd() {
-  const auth = getAuth();
-  const [user, setUser] = useState({
-    status: false,
-    profileImg: "",
-    username: "",
-    email: "",
-  });
+  const {user} = useAuth()
   const router = useRouter();
-  onAuthStateChanged(auth, async (u) => {
-    if (u && u.email) {
-      console.log(u);
-      let res;
-      try {
-        //     res = await axios.get(`https://bom-location.herokuapp.com/user/${u.email}`)
-      } catch (err) {
-        console.log(err);
-      }
 
-      if (res != undefined) {
-        setUser((user) => ({
-          ...user,
-          username: res.data.username,
-          profileImg: res.data.profileImg,
-          email: res.data.email,
-        }));
-        setUser((user) => ({ ...user, status: true }));
-      }
-    }
-    // else {
-    //      NextResponse.redirect('http://localhost:3000/login', 301)
-    //      setUser((user) => ({...user, username: '', profileImg: '', email: '', status: false}))
-    // }
-  });
 
   const [type, setType] = useState("");
   const [category, setCategory] = useState("");
@@ -216,7 +171,7 @@ export default function CreateAd() {
 
 
 
-  if (user.email == "") {
+  if (user ) {
     return (
       <Box as="section" m={5} id="add__ad">
         <MainContainer>
@@ -449,6 +404,6 @@ export default function CreateAd() {
       </Box>
     );
   } else {
-    return <Login />;
+    router.push('/login')
   }
 }

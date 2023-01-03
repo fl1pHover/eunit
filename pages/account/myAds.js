@@ -1,4 +1,4 @@
-import AdContent from "@/components/home/adContent";
+import AdContent from "../../components/home/adContent";
 import { Heading, Stack, TabPanel } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 

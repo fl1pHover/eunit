@@ -1,9 +1,9 @@
 import React from "react";
 import Head from "next/head";
 import { motion } from "framer-motion";
-import Footer from "@/components/footer/index";
+import Footer from "../components/footer/index";
 
-const Layout = ({ children, user }) => {
+const Layout = ({ children}) => {
   return (
     <>
       <Head>

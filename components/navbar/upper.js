@@ -3,8 +3,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-import useBreakpoints from "@/hooks/useBreakpoints";
-import { ContainerX } from "@/lib/Container";
+import useBreakpoints from "../../hooks/useBreakpoints";
+import { ContainerX } from "../../lib/Container";
 import { HiMenuAlt3 } from "react-icons/hi";
 
 import BottomMenu from "./bottomMenu";
@@ -12,6 +12,10 @@ import { EstimateIcon, HeartIcon, UserIcon, WalletIcon } from "./icons";
 import SearchBar from "./searchBar";
 import SideMenu from "./sideMenu";
 import UserDropdown from "./userDropdown";
+import Cookies from "js-cookie";
+import { useAuth } from "context/auth";
+
+
 
 const calcSize = (pt) => {
      switch (pt) {
@@ -33,8 +37,7 @@ const calcSize = (pt) => {
      }
 };
 const UpperNav = ({
-     user,
-     logout,
+
      //  openNav
 }) => {
      const router = useRouter();
@@ -43,9 +46,11 @@ const UpperNav = ({
      const [size, setSize] = useState(() => calcSize(pt));
      const [showSideMenu, setShowSideMenu] = useState(false);
      const [showBottomMenu, setShowBottomMenu] = useState(false);
-
+     const {user, logout} = useAuth()
+     
      useEffect(() => {
           setSize(calcSize(pt));
+          console.log(Cookies.get('currentUser'))
      }, [pt]);
 
      return (
@@ -79,13 +84,13 @@ const UpperNav = ({
                                    onClick={() => router.push("/bookmark")}
                               />
 
-                              {user.status == false ? (
+                              {user == undefined ? (
                                    <UserIcon
                                         text="Бүртгүүлэх"
                                         onClick={() => router.push("/login")}
                                    />
                               ) : (
-                                   <UserDropdown {...{ user }} />
+                                   <UserDropdown user={user} logout={logout} />
                               )}
                          </div>
                          <div className="md:hidden flex justify-center items-center gap-2">

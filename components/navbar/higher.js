@@ -1,8 +1,8 @@
 import { HStack } from "@chakra-ui/react";
 import React from "react";
 
-import Text from "@/lib/Text";
-import { ContainerX } from "@/lib/Container";
+import Text from "../../lib/Text";
+import { ContainerX } from "../../lib/Container";
 
 const Higher = () => {
   return (

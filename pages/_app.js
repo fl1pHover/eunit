@@ -1,8 +1,10 @@
 import { Center, ChakraProvider } from "@chakra-ui/react";
 import axios from "axios";
+import { AuthProvider } from "context/auth";
 import { initializeApp } from "firebase/app";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { AnimatePresence } from "framer-motion";
+import Head from "next/head";
 import { useEffect, useState } from "react";
 import PulseLoader from "react-spinners/PulseLoader";
 // import Navbar from "../components/navbar";
@@ -11,20 +13,10 @@ import Layout from "../layout/layout";
 import theme from "../lib/theme";
 import "../styles/globals.scss";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyDrmzxc8MCm7PcO0Ood0MEvliD86e3RBEg",
-  authDomain: "bomregistration.firebaseapp.com",
-  projectId: "bomregistration",
-  storageBucket: "bomregistration.appspot.com",
-  messagingSenderId: "567513313511",
-  appId: "1:567513313511:web:1d919d03c2334022667242",
-  measurementId: "G-T3VWESJ3PF",
-};
 
-const app = initializeApp(firebaseConfig);
 
 function MyApp({ Component, pageProps }) {
-  const auth = getAuth();
+  
   const [user, setUser] = useState({
     status: false,
     profileImg: "",
@@ -63,21 +55,7 @@ function MyApp({ Component, pageProps }) {
   //   }
   // });
 
-  const logout = () => {
-    signOut(auth)
-      .then(() => {
-        setUser((user) => ({
-          ...user,
-          status: false,
-          username: "",
-          email: "",
-          profileImg: "",
-        }));
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+
 
   let [loading, setLoading] = useState(true);
   let [color, setColor] = useState("#1d1e44");
@@ -87,22 +65,29 @@ function MyApp({ Component, pageProps }) {
   }, []);
 
   return (
-    <>
+    
+      <AuthProvider>
       {!loading ? (
         <ChakraProvider theme={theme}>
           <AnimatePresence>
-            <Layout user={user}>
-              <Navbar user={user} logout={logout} />
+            <Layout >
+              <Navbar />
               <Component {...pageProps} />
             </Layout>
           </AnimatePresence>
         </ChakraProvider>
       ) : (
         <Center width={"100vw"} height="100vh" className="loader">
+           <Head>
+        <title>BOM</title>
+        <meta name="description" content="Bom, zariin site" />
+        {/* <link rel="icon" href="/favicon.ico" /> */}
+      </Head>
           <PulseLoader color={color} loading={loading} size={30} />
         </Center>
       )}
-    </>
+      </AuthProvider>
+    
     //           </>
     //      )}
     // </>

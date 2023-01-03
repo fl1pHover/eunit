@@ -1,8 +1,8 @@
 import React from "react";
 
-import Title from "@/lib/Title";
-import footerData from "@/components/footer/footerData";
-import FooterLink from "@/components/footer/footerLink";
+import Title from "../../lib/Title";
+import footerData from "./footerData";
+import FooterLink from "./footerLink";
 
 const LinkGrid = () => {
   return (

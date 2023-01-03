@@ -2,10 +2,12 @@ import { Divider, Avatar } from "@chakra-ui/react";
 import React, { useState } from "react";
 
 //TODO Icons
-import Text from "@/lib/Text";
+import Text from '../../lib/Text' ;
 import { UserIcon } from "./icons";
-import mergeNames from "@/util/mergeNames";
+import mergeNames from "../../util/mergeNames";
 import { useRouter } from "next/router";
+import Cookies from "js-cookie";
+
 
 const DownLink = ({ href, text, onClick = () => {} }) => {
   return (
@@ -21,9 +23,10 @@ const DownLink = ({ href, text, onClick = () => {} }) => {
   );
 };
 
-const UserDropdown = ({ user = {}, logout = () => {} }) => {
+const UserDropdown = ({user, logout}) => {
   const router = useRouter();
   const [active, setActive] = useState(false);
+ 
 
   const handleClick = () => {
     setActive((current) => !current);

@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { BiPlusCircle } from "react-icons/bi";
 import React, { useState } from "react";
+import { categories } from "../../data/categories"
+import { ContainerX } from "../../lib/Container"
+import mergeNames from "../../util/mergeNames";
 
-import { categories } from "@/data/categories";
-import { ContainerX } from "@/lib/Container";
-import mergeNames from "@/util/mergeNames";
 
 const Bottom = ({ sticky }) => {
   const [isHoveringId, setIsHoveringId] = useState(false);

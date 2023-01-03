@@ -18,6 +18,7 @@ import {
      VStack,
 } from "@chakra-ui/react";
 import axios from "axios";
+import { useAuth } from "context/auth";
 import { initializeApp } from "firebase/app";
 
 import {
@@ -27,29 +28,15 @@ import {
      signInWithEmailAndPassword,
      signInWithPopup,
 } from "firebase/auth";
+import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import MainContainer from "../../layout/mainContainer";
 
-const firebaseConfig = {
-     apiKey: "AIzaSyDrmzxc8MCm7PcO0Ood0MEvliD86e3RBEg",
 
-     authDomain: "bomregistration.firebaseapp.com",
-
-     projectId: "bomregistration",
-
-     storageBucket: "bomregistration.appspot.com",
-
-     messagingSenderId: "567513313511",
-
-     appId: "1:567513313511:web:1d919d03c2334022667242",
-
-     measurementId: "G-T3VWESJ3PF",
-};
-
-const app = initializeApp(firebaseConfig);
 
 export default function Login() {
+     const {logout, login} = useAuth()
      const [signupCredential, setSignupcredential] = useState({
           email: "",
           phone: "",
@@ -60,99 +47,44 @@ export default function Login() {
      const router = useRouter();
      const [credential, setCredential] = useState({ email: "", password: "" });
      const signUp = () => {
-          const auth = getAuth();
           if (
                signupCredential.password == signupCredential.confirmPassword &&
                signupCredential.email != "" &&
                setSignupcredential.password != ""
           ) {
-               createUserWithEmailAndPassword(
-                    auth,
-                    signupCredential.email,
-                    signupCredential.password
-               )
-                    .then(async (u) => {
-                         const user = u.user;
-
-                         if (user) {
-                              try {
-                                   await axios
-                                        .post(
-                                             "https://bom-location.herokuapp.com/user",
-                                             {
-                                                  username:
-                                                       signupCredential.username,
-                                                  email: user.email,
-                                                  profileImg:
-                                                       "https://png.pngtree.com/png-clipart/20190629/original/pngtree-vector-edit-profile-icon-png-image_4101351.jpg",
-                                                  phone: signupCredential.phone,
-                                             }
-                                        )
-                                        .then((r) => console.log(r));
-                              } catch (err) {
-                                   console.log(err);
-                              }
-                              router.push("/");
-                              setSignupcredential((signupCredential) => ({
-                                   ...signupCredential,
-                                   email: "",
-                                   phone: "",
-                                   password: "",
-                                   confirmPassword: "",
-                              }));
-                         }
-                    })
-                    .catch((err) => {
-                         console.log(err);
-                    });
+              
           }
      };
-     const signByGoogle = () => {
-          const provider = new GoogleAuthProvider();
-          const auth = getAuth();
-          signInWithPopup(auth, provider).then(async (res) => {
-               const cre = GoogleAuthProvider.credentialFromResult(res);
-               const user = res.user;
-               if (user) {
-                    console.log(user);
-                    try {
-                         await axios.post(
-                              "https://bom-location.herokuapp.com/user",
-                              {
-                                   username: user.displayName,
-                                   email: user.email,
-                                   profileImg: user.profileImg,
-                                   phone: "99999999",
-                              }
-                         );
-                    } catch (err) {
-                         console.log(err);
-                    }
-                    router.push("/");
-               }
-          });
-     };
+     // const signByGoogle = () => {
+     //      const provider = new GoogleAuthProvider();
+     //      const auth = getAuth();
+     //      signInWithPopup(auth, provider).then(async (res) => {
+     //           const cre = GoogleAuthProvider.credentialFromResult(res);
+     //           const user = res.user;
+     //           if (user) {
+     //                console.log(user);
+     //                try {
+     //                     await axios.post(
+     //                          "https://bom-location.herokuapp.com/user",
+     //                          {
+     //                               username: user.displayName,
+     //                               email: user.email,
+     //                               profileImg: user.profileImg,
+     //                               phone: "99999999",
+     //                          }
+     //                     );
+     //                } catch (err) {
+     //                     console.log(err);
+     //                }
+     //                router.push("/");
+     //           }
+     //      });
+     // };
 
      const signIn = () => {
-          const auth = getAuth();
-          if (credential.email != "" && credential.password) {
-               signInWithEmailAndPassword(
-                    auth,
-                    credential.email,
-                    credential.password
-               )
-                    .then((r) => {
-                         const user = r.user;
-                         setCredential((credential) => ({
-                              ...credential,
-                              email: "",
-                              password: "",
-                         }));
-                         console.log(user);
-                    })
-                    .catch((err) => {
-                         console.log(err);
-                    });
+          if(credential.email && credential.password) {
+               login(credential.email, credential.password)
+          setCredential((credential) => ({...credential, email: '', password: ''}))
           }
      };
      return (
@@ -211,7 +143,6 @@ export default function Login() {
                                                   credential={credential}
                                                   setCredential={setCredential}
                                                   fc={signIn}
-                                                  google={signByGoogle}
                                              />
                                         </TabPanel>
                                         <TabPanel>
@@ -221,7 +152,6 @@ export default function Login() {
                                                        setSignupcredential
                                                   }
                                                   fc={signUp}
-                                                  google={signByGoogle}
                                              />
                                         </TabPanel>
                                    </TabPanels>
@@ -233,44 +163,11 @@ export default function Login() {
      );
 }
 
-export const LoginComp = ({ credential, setCredential, fc, google }) => {
+export const LoginComp = ({ credential, setCredential, fc,  }) => {
      return (
           <FormControl>
                <Box h={3} />
-               <Button
-                    bgColor={"mainBlue !important"}
-                    _hover={{
-                         // opacity: 0.8,
-                         bgColor: "mainBlossom !important",
-                    }}
-                    color={"white"}
-                    p={"12px"}
-                    borderRadius={"5px"}
-                    height="auto"
-                    w={"full"}
-                    onClick={() => google()}
-               >
-                    <HStack>
-                         <Image
-                              src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Gmail_icon_%282020%29.svg"
-                              height={"20px"}
-                         />
-                         <Text fontSize={"16px"}>Gmail - ээр нэвтрэх</Text>
-                    </HStack>
-               </Button>
-               <Box pos={"relative"} my={10} w="70%" mx={"auto"}>
-                    <Divider />
-                    <Text
-                         pos={"absolute"}
-                         top={"50%"}
-                         left={"50%"}
-                         transform={"translate(-50%, -50%)"}
-                         bg="white"
-                         p={4}
-                    >
-                         эсвэл
-                    </Text>
-               </Box>
+               
                <InputComp
                     lbl={"Та И-Мэйл хаягаа оруулна уу"}
                     type="email"
@@ -300,40 +197,11 @@ export const LoginComp = ({ credential, setCredential, fc, google }) => {
      );
 };
 
-export const SignUpComp = ({ credential, setCredential, fc, google }) => {
+export const SignUpComp = ({ credential, setCredential, fc }) => {
      return (
           <FormControl>
                <Box h={3} />
-               <Button
-                    bg="#4285F4"
-                    color={"white"}
-                    p={"12px"}
-                    borderRadius={"5px"}
-                    height="auto"
-                    w={"full"}
-                    onClick={() => google()}
-               >
-                    <HStack>
-                         <Image
-                              src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Gmail_icon_%282020%29.svg"
-                              height={"20px"}
-                         />
-                         <Text fontSize={"16px"}>Gmail - ээр нэвтрэх</Text>
-                    </HStack>
-               </Button>
-               <Box pos={"relative"} my={10} w="70%" mx={"auto"}>
-                    <Divider />
-                    <Text
-                         pos={"absolute"}
-                         top={"50%"}
-                         left={"50%"}
-                         transform={"translate(-50%, -50%)"}
-                         bg="white"
-                         p={4}
-                    >
-                         эсвэл
-                    </Text>
-               </Box>
+              
                <InputComp
                     lbl={"Та И-Мэйл хаягаа оруулна уу"}
                     type="email"

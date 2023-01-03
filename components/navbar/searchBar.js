@@ -1,5 +1,5 @@
 import { BsSearch } from "react-icons/bs";
-import mergeNames from "@/util/mergeNames";
+import mergeNames from "../../util/mergeNames"
 
 const SearchBar = () => {
   return (

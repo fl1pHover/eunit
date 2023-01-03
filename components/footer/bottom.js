@@ -1,8 +1,9 @@
 import React from "react";
 
-import Title from "@/lib/Title";
-import { ContainerX } from "@/lib/Container";
-import { FooterText } from "@/components/footer/footerLink";
+import Title from "../../lib/Title";
+import { ContainerX } from "../../lib/Container";
+import { FooterText } from "./footerLink";
+
 
 const Bottom = () => {
   return (
