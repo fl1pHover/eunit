@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import PulseLoader from "react-spinners/PulseLoader";
 // import Navbar from "../components/navbar";
 import Navbar from "../components/navbar/index";
+import urls from "../constants/api";
 import Layout from "../layout/layout";
 import theme from "../lib/theme";
 import "../styles/globals.scss";
@@ -17,51 +18,26 @@ import "../styles/globals.scss";
 
 function MyApp({ Component, pageProps }) {
   
-  const [user, setUser] = useState({
-    status: false,
-    profileImg: "",
-    username: "",
-    email: "",
-  });
-
-  // onAuthStateChanged(auth, async (user) => {
-  //   if (user && user.email) {
-  //     let res;
-  //     try {
-  //       res = await axios.get(
-  //         `https://bom-location.herokuapp.com/user/${user.email}`
-  //       );
-  //     } catch (err) {
-  //       console.log(err);
-  //     }
-
-  //     if (res != undefined) {
-  //       setUser((user) => ({
-  //         ...user,
-  //         username: res.data.username,
-  //         profileImg: res.data.profileImg,
-  //         email: res.data.email,
-  //       }));
-  //       setUser((user) => ({ ...user, status: true }));
-  //     }
-  //   } else {
-  //     setUser((user) => ({
-  //       ...user,
-  //       username: "",
-  //       profileImg: "",
-  //       email: "",
-  //       status: false,
-  //     }));
-  //   }
-  // });
-
 
 
   let [loading, setLoading] = useState(true);
   let [color, setColor] = useState("#1d1e44");
+  let [category, setCategory] = useState()
+  const getData = async () => {
+    try {
+      axios.get(`${urls['test']}/category`).then((d) => {
+        setCategory(d.data['categories'])
+      })
+      setLoading(false)
+    } catch(e) {
+      setLoading(false)
+      console.log(e)
+    }
+  }
   useEffect(() => {
     setLoading(true);
-    setTimeout(() => setLoading(false), 2000);
+    getData()
+    
   }, []);
 
   return (
@@ -71,7 +47,7 @@ function MyApp({ Component, pageProps }) {
         <ChakraProvider theme={theme}>
           <AnimatePresence>
             <Layout >
-              <Navbar />
+              <Navbar data = {category} />
               <Component {...pageProps} />
             </Layout>
           </AnimatePresence>

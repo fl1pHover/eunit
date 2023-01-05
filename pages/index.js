@@ -1,8 +1,9 @@
-import ScrollTop from "@/lib/ScrollTop";
+import ScrollTop from "../lib/ScrollTop";
 import { useEffect, useState } from "react";
 import AdContent from "../components/home/adContent";
 import CategorySelect from "../components/home/categorySelect";
 import SwiperHeader from "../components/home/swiperHeader";
+import urls from "../constants/api";
 
 export default function Home() {
      const [products, setProducts] = useState("");
@@ -10,7 +11,7 @@ export default function Home() {
      const getData = async () => {
           setIsLoading(true);
           try {
-               await fetch("https://bom-location.herokuapp.com/ad")
+               await fetch(`${urls['test']}/ad`)
                     .then((r) => r.json())
                     .then((d) => setProducts(d))
                     .then((a) => setIsLoading(false));

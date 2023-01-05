@@ -5,7 +5,7 @@ import UpperNav from "./upper";
 import Bottom from "./bottom";
 import Higher from "./higher";
 
-const Navbar = () => {
+const Navbar = ({data}) => {
   const [sticky, setSticky] = useState(false);
 
   useEffect(() => {
@@ -27,7 +27,7 @@ const Navbar = () => {
         pos={sticky ? "sticky" : "relative"}
       >
         <UpperNav  />
-        <Bottom {...{ sticky }} />
+        <Bottom {...{ sticky }} data ={data} />
       </Box>
     </>
   );
