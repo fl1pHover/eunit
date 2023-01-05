@@ -39,29 +39,17 @@ export default function Home() {
      //      getData();
      // }, []);
 
-     return (
-          <>
-               <SwiperHeader />
-               <CategorySelect />
-               <AdContent data={products} tlc={toLowerCase} />
-               <AdContent
-                    data={products}
-                    tlc={toLowerCase}
-                    title="Тээврийн хэрэгсэл"
-               />
-               <AdContent data={products} tlc={toLowerCase} title="Компьютер" />
-               <AdContent data={products} tlc={toLowerCase} title="Гар утас" />
-               <AdContent
-                    data={products}
-                    tlc={toLowerCase}
-                    title="Цахилгаан бараа"
-               />
-               <AdContent
-                    data={products}
-                    tlc={toLowerCase}
-                    title="Гэр ахуйн бараа"
-               />
-               <ScrollTop />
-          </>
-     );
+  return (
+    <>
+      <SwiperHeader />
+      <CategorySelect />
+      <AdContent data={products} tlc={toLowerCase} />
+      <AdContent data={products} tlc={toLowerCase} title="Тээврийн хэрэгсэл" />
+      <AdContent data={products} tlc={toLowerCase} title="Компьютер" />
+      <AdContent data={products} tlc={toLowerCase} title="Гар утас" />
+      <AdContent data={products} tlc={toLowerCase} title="Цахилгаан бараа" />
+      <AdContent data={products} tlc={toLowerCase} title="Гэр ахуйн бараа" />
+      <ScrollTop />
+    </>
+  );
 }
