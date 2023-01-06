@@ -8,170 +8,84 @@ import {
   HStack,
   Input,
   Select,
+  SelectField,
   Text,
   Textarea,
-  VStack
+  VStack,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useAuth } from "context/auth";
-import { initializeApp } from "firebase/app";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import urls from "../constants/api";
+import { AdTypes } from "../constants/enums";
 
 import MainContainer from "../layout/mainContainer";
-import Login from "./login";
-
 
 export default function CreateAd() {
-  const {user} = useAuth()
+  const { user, categories, districts, locations } = useAuth();
   const router = useRouter();
 
-
-  const [type, setType] = useState("");
-  const [category, setCategory] = useState("");
-  const [position, setPosition] = useState({
-    district: [],
-    committee: [],
-    location: [],
-    town: [],
-  });
-  const [subCategory, setSubCategory] = useState("");
   const [select, setSelect] = useState({
     category: "",
     subCategory: "",
-    type: "",
-    location: "",
-    
-    district: "",
-    committee: "",
   });
   const [selectStatic, setSelectStatic] = useState({
     title: "",
     description: "",
     position: "",
-  })
+  });
+  const [subCategory, setSubCategory] = useState();
   const [filters, setFilters] = useState([]);
+  const [adType, setAdType] = useState(AdTypes.sell);
 
-  const getData = async () => {
-    if (category == "") {
-      try {
-        await fetch("https://bom-location.herokuapp.com/category")
-          .then((d) => d.json())
-          .then((r) => setCategory(r));
-        await fetch("https://bom-location.herokuapp.com/district")
-          .then((d) => d.json())
-          .then((r) =>
-            setPosition((position) => ({ ...position, district: r }))
-          );
-      } catch (err) {
-        console.log(err);
-      }
-    }
-    if (position.district.length > 0 && select.district != "") {
-      try {
-        await fetch(
-          `https://bom-location.herokuapp.com/committee/${select.district}`
-        )
-          .then((d) => d.json())
-          .then((r) =>
-            setPosition((position) => ({ ...position, committee: r }))
-          );
-        await fetch(
-          `https://bom-location.herokuapp.com/location/${select.district}`
-        )
-          .then((d) => d.json())
-          .then((r) =>
-            setPosition((position) => ({ ...position, location: r }))
-          );
-      } catch (err) {
-        console.log(err);
-      }
-    }
-
-    if (category != "" && select.category != "") {
-      try {
-        await fetch(
-          `https://bom-location.herokuapp.com/category/${select.category}`
-        )
-          .then((r) => r.json())
-          .then((d) => setSubCategory(d))
-          .then((a) => console.log(subCategory));
-      } catch (error) {
-        console.log(error);
-      }
-    }
-
-    if (
-      select.type != "" &&
-      select.category != "" &&
-      category != "" &&
-      subCategory != ""
-    ) {
-      setFilters(subCategory[select.subCategory].filters);
-    }
-  };
   const createAd = async () => {
     try {
-      await axios
-        .post("https://bom-location.herokuapp.com/ad", {
-          title: selectStatic.title,
-          description: selectStatic.description,
-          location: selectStatic.position,
-          type: select.type,
-          filters: filters.map((f) => {
-            return { id: f._id, value: f.value };
-          }),
-          subCategory: subCategory[select.subCategory]._id,
-          positions: {
-           
-              district_id: select.district,
-          
-              location_id: select.location,
-              committee_id: select.committee,
-              town_id: select.town,
-            }
-        
-        })
-        .then((s) => {
-          setSelect((select) => ({
-            ...select,
-            category: "",
-            committee: "",
-            description: "",
-            district: "",
-            location: "",
-            position: "",
-            subCategory: "",
-            title: "",
-            type: "",
-          })),
-            setPosition((position) => ({
-              ...position,
-              committee: [],
-              district: [],
-              location: [],
-              town: [],
-            })),
-            setFilters([]);
-        });
-    } catch (error) {}
+      axios.post(`${urls['test']}/ad`, {
+        title: selectStatic.title,
+        description: selectStatic.description,
+        location: selectStatic.position,
+        types: [adType],
+        filters: filters,
+        subCategory: subCategory._id,
+      })
+    } catch (error) {
+      console.log(error)
+    }
   };
   const capitalizeFirst = (str) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
   };
-  const setFilter = (e, index) => {
+  const setFilter = (id, e) => {
     e.preventDefault();
-    let filter = [...filters];
-    let f = { ...filters[index] };
-    f.value = e.target.value;
-    filter[index] = f;
-    setFilters(filter);
+
+    filters.map((f) => {
+      if (f.id == id) {
+        f.value = e.target.value;
+      }
+    });
   };
 
+  useEffect(() => {
+    if (select.subCategory && select.category) {
+      try {
+        categories[select.category].subCategory.filter((f) => {
+          if (f.name == select.subCategory) {
+            axios
+              .get(`${urls["test"]}/category/filters/{id}?id=${f._id}`)
+              .then((d) => {
+                setSubCategory(d.data);
+                setFilters(d.data?.filters);
+              });
+          }
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }, [select]);
 
-
-  if (user ) {
+  if (user) {
     return (
       <Box as="section" m={5} id="add__ad">
         <MainContainer>
@@ -201,17 +115,16 @@ export default function CreateAd() {
                   }
                   value={select.category}
                 >
-                  {category &&
-                    category.map((c, i) => {
-                      return (
-                        <option value={`${c._id}`} key={i}>
-                          {capitalizeFirst(c.name)}
-                        </option>
-                      );
-                    })}
+                  {categories?.map((c, i) => {
+                    return (
+                      <option value={i} key={i}>
+                        {capitalizeFirst(c.name)}
+                      </option>
+                    );
+                  })}
                 </Select>
               </HStack>
-              {subCategory != "" && (
+              {categories[select.category]?.subCategory && (
                 <HStack>
                   <Text width={"100%"}>Дэд төрөл</Text>
                   <Select
@@ -224,97 +137,84 @@ export default function CreateAd() {
                     }
                     value={select.subCategory}
                   >
-                    {subCategory &&
-                      subCategory.map((t, i) => {
-                        return (
-                          <option value={i} key={i}>
-                            {capitalizeFirst(t.name)}
-                          </option>
-                        );
-                      })}
+                    {categories[select.category]?.subCategory?.map((t, i) => {
+                      return (
+                        <option value={t.name} key={i}>
+                          {capitalizeFirst(t.name)}
+                        </option>
+                      );
+                    })}
                   </Select>
                 </HStack>
               )}
-              {subCategory.length > 0 && select.subCategory && (
+              {select.subCategory && (
                 <HStack>
                   <Text width={"100%"}>Борлуулах төрөл</Text>
                   <Select
                     placeholder="Сонгох"
                     onChange={(e) =>
-                      setSelect((select) => ({
-                        ...select,
+                      setAdType((type) => ({
+                        ...type,
                         type: e.target.value,
                       }))
                     }
-                    value={select.type}
+                    value={adType}
                   >
-                    {subCategory[select.subCategory].types &&
-                      subCategory[select.subCategory].types.map((t, i) => {
-                        return (
-                          <option value={i} key={i}>
-                            {capitalizeFirst(t.name)}
-                          </option>
-                        );
-                      })}
+                    {Object.keys(AdTypes).map((type, key) => {
+                      return (
+                        <option key={key} value={AdTypes[type].id}>
+                          {AdTypes[type].name}
+                        </option>
+                      );
+                    })}
                   </Select>
                 </HStack>
               )}
             </Box>
             <VStack gap={5} mt={10}>
-              {select.type != "" && subCategory != "" && (
+              {select.type != "" && subCategory?.filters && (
                 <>
-                  <Select
-                    placeholder={"Дүүрэг"}
-                    onChange={(e) =>
-                      setSelect((select) => ({
-                        ...select,
-                        district: e.target.value,
-                      }))
-                    }
-                  >
-                    {position.district.length > 0 &&
-                      position.district.map((d, ind) => {
-                        return (
-                          <option key={ind} value={d._id}>
-                            {capitalizeFirst(d.name)}
-                          </option>
-                        );
-                      })}
-                  </Select>
-                  <Select
-                    placeholder={"Хороолол"}
-                    onChange={(e) =>
-                      setSelect((select) => ({
-                        ...select,
-                        location: e.target.value,
-                      }))
-                    }
-                  >
-                    {position.location.length > 0 &&
-                      position.location.map((d, ind) => {
-                        return (
-                          <option value={d._id} key={ind}>
-                            {capitalizeFirst(d.name)}
-                          </option>
-                        );
-                      })}
-                  </Select>
-                  <Select
-                    placeholder={"Хороо"}
-                    onChange={(e) =>
-                      setSelect((select) => ({
-                        ...select,
-                        committee: e.target.value,
-                      }))
-                    }
-                  >
-                    {position.committee.length > 0 &&
-                      position.committee.map((d, ind) => {
-                        return (
-                          <option key={ind}>{capitalizeFirst(d.name)}</option>
-                        );
-                      })}
-                  </Select>
+                  {subCategory.filters.map((f, i) => {
+                    return f.values.length == 0 &&
+                      f.name != "Дүүрэг" &&
+                      f.name != "Байршил" ? (
+                      <Input
+                        key={i}
+                        onChange={(e) => setFilter(f.id, e)}
+                        placeholder={capitalizeFirst(f.name)}
+                      ></Input>
+                    ) : (
+                      <Select
+                        placeholder={f.name}
+                        onChange={(e) => setFilter(f.id, e)}
+                      >
+                        {f.name == "Дүүрэг"
+                          ? districts?.map((d, ind) => {
+                              return (
+                                <option value={d._id} key={ind}>
+                                  {capitalizeFirst(d.name)}
+                                </option>
+                              );
+                            })
+                          : f.name == "Байршил"
+                          ? locations?.map((d, ind) => {
+                              return (
+                                <option value={d.name} key={ind}>
+                                  {capitalizeFirst(d.name)}
+                                </option>
+                              );
+                            })
+                          : f.values?.map((d, ind) => {
+                              return (
+                                <option value={d} key={ind}>
+                                  {capitalizeFirst(d)}
+                                </option>
+                              );
+                            })}
+                      </Select>
+                    );
+                  })}
+
                   <Textarea
                     placeholder={"Гарчиг"}
                     type="textarea"
@@ -352,38 +252,6 @@ export default function CreateAd() {
                       }))
                     }
                   />
-                  {subCategory.length > 0 &&
-                    subCategory[select.subCategory] &&
-                    subCategory[select.subCategory].filters &&
-                    subCategory[select.subCategory].filters.map((s, i) => {
-                      // console.log(filters)
-                      if (s.type == "dropdown" && s.type) {
-                        return (
-                          <Select
-                            placeholder={capitalizeFirst(s.name)}
-                            onChange={(e) => setFilter(e, i)}
-                            key={i}
-                          >
-                            {s.choices &&
-                              s.choices.map((c, ind) => {
-                                return (
-                                  <option key={ind}>
-                                    {capitalizeFirst(c.value)}
-                                  </option>
-                                );
-                              })}
-                          </Select>
-                        );
-                      }
-                      if (s.type == "inputText" && s.type) {
-                        return (
-                          <Input key={i}
-                            onChange={(e) => setFilter(e, i)}
-                            placeholder={capitalizeFirst(s.name)}
-                          ></Input>
-                        );
-                      }
-                    })}
 
                   {/* <Center>
                                                                   <Input
@@ -404,6 +272,6 @@ export default function CreateAd() {
       </Box>
     );
   } else {
-    router.push('/login')
+    router.push("/login");
   }
 }

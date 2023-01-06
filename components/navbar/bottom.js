@@ -6,8 +6,8 @@ import { ContainerX } from "../../lib/Container"
 import mergeNames from "../../util/mergeNames";
 
 
-const Bottom = ({ sticky }) => {
-  const [isHoveringId, setIsHoveringId] = useState(false);
+const Bottom = ({ sticky, data }) => {
+  const [isHoveringId, setIsHoveringId] = useState(null);
   // const pt = useBreakpoints();
 
   const handleMouseOver = (id) => {
@@ -15,7 +15,7 @@ const Bottom = ({ sticky }) => {
   };
 
   const handleMouseOut = () => {
-    setIsHoveringId(false);
+    setIsHoveringId(null);
   };
 
   return (
@@ -30,38 +30,38 @@ const Bottom = ({ sticky }) => {
       <ContainerX>
         <div className="flex flex-row items-center justify-between h-full gap-2">
           <div className="flex flex-row items-stretch h-full ">
-            {categories?.map(
-              ({ image, categoryName, id, itemCount, submenu }, key) => {
+            {data?.map(
+              (category, key) => {
                 return (
                   <div
                     key={key}
                     onMouseOut={handleMouseOut}
-                    onMouseOver={() => handleMouseOver(id)}
+                    onMouseOver={() => handleMouseOver(category)}
                     className={mergeNames(
                       "hover:bg-blue-900 transition-colors ease-in-out"
                     )}
                   >
                     <div className="relative h-full">
                       <div className="h-full lg:py-6 lg:px-4 px-2 py-4 flex flex-col justify-center">
-                        <Link href={`/category/${id}`}>
+                        <Link href={`/category/${category.name}`}>
                           <a className="text-white font-medium text-sm lg:text-base text-center">
-                            {categoryName}
+                           {category.name}
                           </a>
                         </Link>
                       </div>
                       <div className="absolute left-0 min-w-full bg-blue-900/[0.96] rounded-b-md flex flex-col overflow-hidden">
-                        {submenu &&
-                          isHoveringId &&
-                          isHoveringId === id &&
-                          submenu.map(({ category, href }, subkey) => {
+                        {category?.subCategory &&
+                          isHoveringId != null &&
+                          isHoveringId == category &&
+                          category.subCategory?.map(({name}, key) => {
                             return (
                               <Link
-                                key={subkey}
-                                href={`/category/${id}/${href}`}
+                                key={key}
+                                href={`/category/${name}/${name}`}
                                 // className="text-sm text-white font-medium px-4 py-3 hover:bg-blue-700 first-letter:uppercase transition-colors ease-in whitespace-nowrap"
                               >
                                 <a className="text-sm text-white font-medium px-4 py-3 hover:bg-blue-700 first-letter:uppercase transition-colors ease-in whitespace-nowrap">
-                                  {category}
+                                  {name}
                                 </a>
                               </Link>
                             );
