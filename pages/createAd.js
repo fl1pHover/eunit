@@ -140,6 +140,7 @@ export default function CreateAd() {
               <HStack>
                 <Text width={'100%'}>Зарах хөрөнгийн төрөл</Text>
                 <Select
+                  size="sm"
                   placeholder="Сонгох"
                   onChange={(e) =>
                     setSelect((select) => ({
@@ -162,6 +163,7 @@ export default function CreateAd() {
                 <HStack>
                   <Text width={'100%'}>Дэд төрөл</Text>
                   <Select
+                    size="sm"
                     placeholder="Сонгох"
                     onChange={(e) =>
                       setSelect((select) => ({
@@ -186,6 +188,7 @@ export default function CreateAd() {
                   <Text width={'100%'}>Борлуулах төрөл</Text>
                   <Select
                     placeholder="Сонгох"
+                    size="sm"
                     onChange={(e) =>
                       setAdType((type) => ({
                         ...type,
@@ -224,6 +227,7 @@ export default function CreateAd() {
                     ) : (
                       <GridItem>
                         <Select
+                          size="sm"
                           placeholder={f.name}
                           onChange={(e) => setFilter(f.id, e)}
                         >
