@@ -36,7 +36,7 @@ import MainContainer from "../../layout/mainContainer";
 
 
 export default function Login() {
-     const {logout, login} = useAuth()
+     const {logout, login, signup} = useAuth()
      const [signupCredential, setSignupcredential] = useState({
           email: "",
           phone: "",
@@ -52,7 +52,7 @@ export default function Login() {
                signupCredential.email != "" &&
                setSignupcredential.password != ""
           ) {
-              
+              signup(signupCredential.email, signupCredential.password, signupCredential.username, signupCredential.phone)
           }
      };
      // const signByGoogle = () => {

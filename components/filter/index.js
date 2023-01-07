@@ -17,139 +17,69 @@ import {
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
-import { useRef, useState } from 'react';
+import axios from 'axios';
+import { useRef, useState, useEffect } from 'react';
+import urls from '../../constants/api';
+import { useAuth } from '../../context/auth';
 import { categories } from '../../data/categories';
 import FilterStack from '../../util/filterStack';
 
-const filters = {
-  districts: [
-    {
-      district: 'Баянгол',
-      towns: ['10-р хороолол', '25-р эмийн сан', '3-р хороолол'],
-    },
-    {
-      district: 'Баянзүрх',
-      towns: ['1000 оюутны байр', '13-р хороолол', '1₮-р хороолол'],
-    },
-  ],
-  rooms: ['1', '2', '3', '4', '5', '5+'],
-  bathrooms: ['1', '2', '2+'],
-  masterBedrooms: ['0', '1', '2', '2+'],
-  window: ['Вакум', 'Модон', 'Төмөр вакум', 'Модон вакум'],
-  windows: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '10+'],
-  doors: ['Бүргэд', 'Төмөр', 'Мод'],
-  balconies: ['1', '2', '3', '4', '5', '5+'],
-  floor: ['Паркет', 'Ламинат', 'Плита', 'Мод', 'Чулуу', 'Бетон', 'Цемент'],
-  garage: ['Байгаа', 'Байхгүй'],
-  condition: ['Банкны лизингтэй', 'Хувь лизингтэй', 'Бэлэн'],
-  barter: ['Байгаа', 'Байхгүй'],
-};
 
-// const categories = [
-//      {
-//           category: "Орон сууц",
-//           categories: [
-//                {
-//                     category: "Газар",
-//                     filters: [
-//                          "Зарын гарчиг... 100 тэмдэгтэд багтаан бичнэ үү. ",
-//                          "Газрын зориулалт",
-//                          "Эзэмшлийн хэлбэр",
-//                          "Утас",
-//                          "Үнэ",
-//                          "Талбай",
-//                          "Нэгж талбайн үнэ",
-//                          "Дүүрэг",
-//                          "Хороо",
-//                          "Байршил",
-//                          "Гэрчилгээ олгосон он",
-//                          "Хүчинтэй хугацаа (жил)",
-//                          "Бартер",
-//                          "Төлбөрийн нөхцөл",
-//                          "Газрын зурагт байршил сонго",
-//                          "Хөрөнгийн зураг",
-//                          "Кадастрын зураг",
-//                          "Зарын дэлгэрэнгүй... 10000 тэмдэгтэд багтаан бичнэ үү.",
-//                     ],
-//                },
-//                {
-//                     category: "Оффис",
-
-//                     filters: [
-//                          "Зарын гарчиг... 100 тэмдэгтэд багтаан бичнэ үү. ",
-//                          "Утас",
-//                          "Үнэ",
-//                          "Талбай",
-//                          "Нэгж талбайн үнэ",
-//                          "Дүүрэг",
-//                          "Хороо",
-//                          "Байршил",
-//                          "Оффисын нэр",
-//                          "Ашиглалтад орсон он",
-//                          "Барилгын давхар",
-//                          "Хэдэн давхарт",
-//                          "Бартер",
-//                          "Төлбөрийн нөхцөл",
-//                          "Газрын зурагт байршил сонго",
-//                          "Хөрөнгийн зураг",
-//                          "План зураг",
-//                          "Зарын дэлгэрэнгүй... 10000 тэмдэгтэд багтаан бичнэ үү.",
-//                     ],
-//                },
-//           ],
-//      },
-//      {
-//           category: "Үл хөдлөх хөрөнгө",
-//           categories: [{ category: "Газар" }, { category: "Оффис" }],
-//      },
-//      {
-//           category: "Оффис",
-//           categories: [{ category: "Газар" }, { category: "Оффис" }],
-//      },
-//      {
-//           category: "Худалдаа үйлчилгээний талбай",
-//           categories: [{ category: "Газар" }, { category: "Оффис" }],
-//      },
-//      {
-//           category: "Үйлдвэр, агуулах",
-//           categories: [{ category: "Газар" }, { category: "Оффис" }],
-//      },
-//      {
-//           category: "Хашаа байшин",
-//           categories: [{ category: "Газар" }, { category: "Оффис" }],
-//      },
-//      {
-//           category: "Хаус, зуслангийн байшин",
-//           categories: [{ category: "Газар" }, { category: "Оффис" }],
-//      },
-//      {
-//           category: "Гараж",
-//           categories: [{ category: "Газар" }, { category: "Оффис" }],
-//      },
-//      {
-//           category: "Контейнер, зөөврийн сууц",
-//           categories: [{ category: "Газар" }, { category: "Оффис" }],
-//      },
-// ];
-
-const FilterLayout = () => {
-  const [filter, setFilter] = useState({
-    district: '',
-    location: '',
-    room: '',
-    barter: '',
-    condition: '',
-    garage: '',
-    floor: '',
-    balconies: '',
-    doors: '',
-    window: '',
-    windows: '',
-    bathroom: '',
-    masterBedroom: '',
-  });
+const FilterLayout = ({data}) => {
+  const [filter, setFilter] = useState();
+  const {districts, locations} = useAuth()
+  const [subCategory, setSubCategory] = useState()
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef();
+  useEffect(() => {
+   
+    if(data) {
+      try {
+
+            axios
+              .get(`${urls["test"]}/category/filters/{id}/false?id=${'63b2ba0ca0b0b2d7ed9d4684'}`, {
+
+              })
+              .then((d) => {
+                setSubCategory(d.data);
+                setFilter(d.data?.filters);
+                console.log(d.data?.filters)
+              });
+          
+  
+      } catch (e) {
+        console.log(e);
+      }
+    }
+   
+  }, [])
+  const filterAd = async () => {
+    try {
+
+    } catch(e) {
+      console.log(e)
+    }
+  }
+  const setFilters = (id, e, isMaxValue) => {
+    e.preventDefault();
+
+    filter.map((f) => {
+      if (f.id == id) {
+        if(f.values.length == 0 && f.name != 'Дүүрэг' && f.name != 'Байршил') {
+          if(isMaxValue) {
+
+            f.maxValue = e.target.value
+          }else {
+            
+            f.value = e.target.value;
+          }
+        } else {
+          f.value = e.target.value;
+        }
+      }
+    });
+    console.log(filter)
+  };
   return (
     <>
       <Box
@@ -210,342 +140,18 @@ const FilterLayout = () => {
 
         <FilterStack borderBottom={'2px solid '} borderColor="bgGrey">
           <Heading variant={'smallHeading'}>Нэмэлт хайлт</Heading>
-          {filters && (
-            <>
-              {filters.districts && (
-                <Select
-                  placeholder="Дүүрэг"
-                  variant="outline"
-                  borderWidth="2px"
-                  color={'mainBlossom'}
-                  onChange={(e) =>
-                    setFilter({
-                      ...filter,
-                      district: e.target.value,
-                    })
-                  }
-                  value={filter.district}
-                >
-                  {filters.districts.map((d, ind) => {
-                    return (
-                      <option key={ind} value={ind.toString()}>
-                        {d.district}
-                      </option>
-                    );
-                  })}
-                </Select>
-              )}
 
-              {filter.district != '' && (
-                <Select
-                  placeholder="Байршил"
-                  variant="outline"
-                  borderWidth="2px"
-                  color={'mainBlossom'}
-                  onChange={(e) =>
-                    setFilter({
-                      ...filter,
-                      location: e.target.value,
-                    })
-                  }
-                  value={filter.location}
-                >
-                  {filters.districts[parseInt(filter.district)].towns &&
-                    filters.districts[parseInt(filter.district)].towns.map(
-                      (d, i) => {
-                        return (
-                          <option key={i} value={`${i}`}>
-                            {d}
-                          </option>
-                        );
-                      }
-                    )}
-                </Select>
-              )}
-              {filters.rooms && (
-                <Select
-                  placeholder="Өрөөний тоо"
-                  variant="outline"
-                  borderWidth="2px"
-                  color={'mainBlossom'}
-                  onChange={(e) =>
-                    setFilter({
-                      ...filter,
-                      room: e.target.value,
-                    })
-                  }
-                  value={filter.room}
-                >
-                  {filters.rooms.map((d, ind) => {
-                    return (
-                      <option key={ind} value={ind.toString()}>
-                        {d}
-                      </option>
-                    );
-                  })}
-                </Select>
-              )}
-              {filters.masterBedrooms && (
-                <Select
-                  placeholder="Мастер унтлагийн өрөөний тоо"
-                  variant="outline"
-                  borderWidth="2px"
-                  color={'mainBlossom'}
-                  onChange={(e) =>
-                    setFilter({
-                      ...filter,
-                      masterBedroom: e.target.value,
-                    })
-                  }
-                  value={filter.masterBedroom}
-                >
-                  {filters.masterBedrooms.map((d, ind) => {
-                    return (
-                      <option key={ind} value={ind.toString()}>
-                        {d}
-                      </option>
-                    );
-                  })}
-                </Select>
-              )}
-              {filters.bathrooms && (
-                <Select
-                  placeholder="Угаалгын өрөөний тоо"
-                  variant="outline"
-                  borderWidth="2px"
-                  color={'mainBlossom'}
-                  onChange={(e) =>
-                    setFilter({
-                      ...filter,
-                      bathroom: e.target.value,
-                    })
-                  }
-                  value={filter.bathroom}
-                >
-                  {filters.bathrooms.map((d, ind) => {
-                    return (
-                      <option key={ind} value={ind.toString()}>
-                        {d}
-                      </option>
-                    );
-                  })}
-                </Select>
-              )}
-              {/* {filters.window && (
-                                        <Select
-                                             placeholder="Цонх"
-                                             variant="outline"
-                                             borderWidth="2px"
-                                             color={"mainBlossom"}
-                                             onChange={(e) =>
-                                                  setFilter({
-                                                       ...filter,
-                                                       window: e.target.value,
-                                                  })
-                                             }
-                                             value={filter.window}
-                                        >
-                                             {filters.window.map((d, ind) => {
-                                                  return (
-                                                       <option
-                                                            key={ind}
-                                                            value={ind.toString()}
-                                                       >
-                                                            {d}
-                                                       </option>
-                                                  );
-                                             })}
-                                        </Select>
-                                   )}
-                                   {filters.windows && (
-                                        <Select
-                                             placeholder="Цонхны тоо"
-                                             variant="outline"
-                                             borderWidth="2px"
-                                             color={"mainBlossom"}
-                                             onChange={(e) =>
-                                                  setFilter({
-                                                       ...filter,
-                                                       windows: e.target.value,
-                                                  })
-                                             }
-                                             value={filter.windows}
-                                        >
-                                             {filters.windows.map((d, ind) => {
-                                                  return (
-                                                       <option
-                                                            key={ind}
-                                                            value={ind.toString()}
-                                                       >
-                                                            {d}
-                                                       </option>
-                                                  );
-                                             })}
-                                        </Select>
-                                   )}
-                                   {filters.doors && (
-                                        <Select
-                                             placeholder="Хаалга"
-                                             variant="outline"
-                                             borderWidth="2px"
-                                             color={"mainBlossom"}
-                                             onChange={(e) =>
-                                                  setFilter({
-                                                       ...filter,
-                                                       doors: e.target.value,
-                                                  })
-                                             }
-                                             value={filter.doors}
-                                        >
-                                             {filters.doors.map((d, ind) => {
-                                                  return (
-                                                       <option
-                                                            key={ind}
-                                                            value={ind.toString()}
-                                                       >
-                                                            {d}
-                                                       </option>
-                                                  );
-                                             })}
-                                        </Select>
-                                   )}
-                                   {filters.balconies && (
-                                        <Select
-                                             placeholder="Тагтны тоо"
-                                             variant="outline"
-                                             borderWidth="2px"
-                                             color={"mainBlossom"}
-                                             onChange={(e) =>
-                                                  setFilter({
-                                                       ...filter,
-                                                       balconies:
-                                                            e.target.value,
-                                                  })
-                                             }
-                                             value={filter.balconies}
-                                        >
-                                             {filters.balconies.map(
-                                                  (d, ind) => {
-                                                       return (
-                                                            <option
-                                                                 key={ind}
-                                                                 value={ind.toString()}
-                                                            >
-                                                                 {d}
-                                                            </option>
-                                                       );
-                                                  }
-                                             )}
-                                        </Select>
-                                   )}
-                                   {filters.floor && (
-                                        <Select
-                                             placeholder="Шал"
-                                             variant="outline"
-                                             borderWidth="2px"
-                                             color={"mainBlossom"}
-                                             onChange={(e) =>
-                                                  setFilter({
-                                                       ...filter,
-                                                       floor: e.target.value,
-                                                  })
-                                             }
-                                             value={filter.floor}
-                                        >
-                                             {filters.floor.map((d, ind) => {
-                                                  return (
-                                                       <option
-                                                            key={ind}
-                                                            value={ind.toString()}
-                                                       >
-                                                            {d}
-                                                       </option>
-                                                  );
-                                             })}
-                                        </Select>
-                                   )}
-                                   {filters.garage && (
-                                        <Select
-                                             placeholder="Гараж"
-                                             variant="outline"
-                                             borderWidth="2px"
-                                             color={"mainBlossom"}
-                                             onChange={(e) =>
-                                                  setFilter({
-                                                       ...filter,
-                                                       garage: e.target.value,
-                                                  })
-                                             }
-                                             value={filter.garage}
-                                        >
-                                             {filters.garage.map((d, ind) => {
-                                                  return (
-                                                       <option
-                                                            key={ind}
-                                                            value={ind.toString()}
-                                                       >
-                                                            {d}
-                                                       </option>
-                                                  );
-                                             })}
-                                        </Select>
-                                   )} */}
-              {filters.condition && (
-                <Select
-                  placeholder="Төлбөрийн нөхцөл"
-                  variant="outline"
-                  borderWidth="2px"
-                  color={'mainBlossom'}
-                  onChange={(e) =>
-                    setFilter({
-                      ...filter,
-                      condition: e.target.value,
-                    })
-                  }
-                  value={filter.condition}
-                >
-                  {filters.condition.map((d, ind) => {
-                    return (
-                      <option key={ind} value={ind.toString()}>
-                        {d}
-                      </option>
-                    );
-                  })}
-                </Select>
-              )}
-              {filters.barter && (
-                <Select
-                  placeholder="Бартер"
-                  variant="outline"
-                  borderWidth="2px"
-                  color={'mainBlossom'}
-                  onChange={(e) =>
-                    setFilter({
-                      ...filter,
-                      barter: e.target.value,
-                    })
-                  }
-                  value={filter.barter}
-                >
-                  {filters.barter.map((d, ind) => {
-                    return (
-                      <option key={ind} value={ind.toString()}>
-                        {d}
-                      </option>
-                    );
-                  })}
-                </Select>
-              )}
-            </>
-          )}
-          <VStack>
-            <Heading variant={'smallHeading'}>Үнэ</Heading>
+              {filter?.map((f, i) => {
+                return (f.values.length == 0 && f.name != 'Дүүрэг' && f.name != 'Байршил') ? (
+                  <VStack flex>
+            <Heading variant={'smallHeading'}>{f.name}</Heading>
             <Flex alignItems={'center'} gap={2}>
               <Input
                 type="number"
                 placeholder="Доод"
                 variant="outline"
                 borderWidth="2px"
+                onChange={(e) => setFilters(f.id, e, false)}
               />
               <Text>-</Text>
               <Input
@@ -553,29 +159,50 @@ const FilterLayout = () => {
                 placeholder="Дээд"
                 variant="outline"
                 borderWidth="2px"
+                onChange={(e) => setFilters(f.id, e, true)}
               />
             </Flex>
           </VStack>
-          <VStack flex>
-            <Heading variant={'smallHeading'}>Талбайн хэмжээ</Heading>
-            <Flex alignItems={'center'} gap={2}>
-              <Input
-                type="number"
-                placeholder="Доод"
+                ) : (
+                  <Select
+                placeholder={f.name}
                 variant="outline"
                 borderWidth="2px"
-              />
-              <Text>-</Text>
-              <Input
-                type="number"
-                placeholder="Дээд"
-                variant="outline"
-                borderWidth="2px"
-              />
-            </Flex>
-          </VStack>
+                color={'mainBlossom'}
+                onChange={(e) => setFilters(f.id, e, true)}
+              >
+                
+                  (
+                     {f.name == 'Дүүрэг' ? districts.map((item, i) => {
+                       return (
+                        <option key={i} value={item._id}>
+                          {item.name}
+                    </option>
+                      )
+                     }) : f.name == 'Байршил' ?  locations?.map((item, i) => {
+                      return (
+                       <option key={i} value={item._id}>
+                         {item.name}
+                   </option>
+                     )
+                    }) : f.values.map((item, i) => {
+                      return (
+                       <option key={i} value={item}>
+                         {item}
+                   </option>
+                     )
+                    }) }
+                  );
+                
+              </Select>
+                ) 
+              })}
 
-          <Button variant={'blueButton'} mx={4}>
+
+        
+          
+
+          <Button variant={'blueButton'} mx={4} onClick={() => filterAd()}>
             Хайх
           </Button>
         </FilterStack>
@@ -612,370 +239,7 @@ const FilterLayout = () => {
 
             <FilterStack borderBottom={'2px solid '} borderColor="bgGrey">
               <Heading variant={'smallHeading'}>Нэмэлт хайлт</Heading>
-              {filters && (
-                <>
-                  {filters.districts && (
-                    <Select
-                      placeholder="Дүүрэг"
-                      variant="outline"
-                      borderWidth="2px"
-                      color={'mainBlossom'}
-                      onChange={(e) =>
-                        setFilter({
-                          ...filter,
-                          district: e.target.value,
-                        })
-                      }
-                      value={filter.district}
-                    >
-                      {filters.districts.map((d, ind) => {
-                        return (
-                          <option key={ind} value={ind.toString()}>
-                            {d.district}
-                          </option>
-                        );
-                      })}
-                    </Select>
-                  )}
-
-                  {filter.district != '' && (
-                    <Select
-                      placeholder="Байршил"
-                      variant="outline"
-                      borderWidth="2px"
-                      color={'mainBlossom'}
-                      onChange={(e) =>
-                        setFilter({
-                          ...filter,
-                          location: e.target.value,
-                        })
-                      }
-                      value={filter.location}
-                    >
-                      {filters.districts[parseInt(filter.district)].towns &&
-                        filters.districts[parseInt(filter.district)].towns.map(
-                          (d, i) => {
-                            return (
-                              <option key={i} value={`${i}`}>
-                                {d}
-                              </option>
-                            );
-                          }
-                        )}
-                    </Select>
-                  )}
-                  {filters.rooms && (
-                    <Select
-                      placeholder="Өрөөний тоо"
-                      variant="outline"
-                      borderWidth="2px"
-                      color={'mainBlossom'}
-                      onChange={(e) =>
-                        setFilter({
-                          ...filter,
-                          room: e.target.value,
-                        })
-                      }
-                      value={filter.room}
-                    >
-                      {filters.rooms.map((d, ind) => {
-                        return (
-                          <option key={ind} value={ind.toString()}>
-                            {d}
-                          </option>
-                        );
-                      })}
-                    </Select>
-                  )}
-                  {filters.masterBedrooms && (
-                    <Select
-                      placeholder="Мастер унтлагийн өрөөний тоо"
-                      variant="outline"
-                      borderWidth="2px"
-                      color={'mainBlossom'}
-                      onChange={(e) =>
-                        setFilter({
-                          ...filter,
-                          masterBedroom: e.target.value,
-                        })
-                      }
-                      value={filter.masterBedroom}
-                    >
-                      {filters.masterBedrooms.map((d, ind) => {
-                        return (
-                          <option key={ind} value={ind.toString()}>
-                            {d}
-                          </option>
-                        );
-                      })}
-                    </Select>
-                  )}
-                  {filters.bathrooms && (
-                    <Select
-                      placeholder="Угаалгын өрөөний тоо"
-                      variant="outline"
-                      borderWidth="2px"
-                      color={'mainBlossom'}
-                      onChange={(e) =>
-                        setFilter({
-                          ...filter,
-                          bathroom: e.target.value,
-                        })
-                      }
-                      value={filter.bathroom}
-                    >
-                      {filters.bathrooms.map((d, ind) => {
-                        return (
-                          <option key={ind} value={ind.toString()}>
-                            {d}
-                          </option>
-                        );
-                      })}
-                    </Select>
-                  )}
-                  {/* {filters.window && (
-                                        <Select
-                                             placeholder="Цонх"
-                                             variant="outline"
-                                             borderWidth="2px"
-                                             color={"mainBlossom"}
-                                             onChange={(e) =>
-                                                  setFilter({
-                                                       ...filter,
-                                                       window: e.target.value,
-                                                  })
-                                             }
-                                             value={filter.window}
-                                        >
-                                             {filters.window.map((d, ind) => {
-                                                  return (
-                                                       <option
-                                                            key={ind}
-                                                            value={ind.toString()}
-                                                       >
-                                                            {d}
-                                                       </option>
-                                                  );
-                                             })}
-                                        </Select>
-                                   )}
-                                   {filters.windows && (
-                                        <Select
-                                             placeholder="Цонхны тоо"
-                                             variant="outline"
-                                             borderWidth="2px"
-                                             color={"mainBlossom"}
-                                             onChange={(e) =>
-                                                  setFilter({
-                                                       ...filter,
-                                                       windows: e.target.value,
-                                                  })
-                                             }
-                                             value={filter.windows}
-                                        >
-                                             {filters.windows.map((d, ind) => {
-                                                  return (
-                                                       <option
-                                                            key={ind}
-                                                            value={ind.toString()}
-                                                       >
-                                                            {d}
-                                                       </option>
-                                                  );
-                                             })}
-                                        </Select>
-                                   )}
-                                   {filters.doors && (
-                                        <Select
-                                             placeholder="Хаалга"
-                                             variant="outline"
-                                             borderWidth="2px"
-                                             color={"mainBlossom"}
-                                             onChange={(e) =>
-                                                  setFilter({
-                                                       ...filter,
-                                                       doors: e.target.value,
-                                                  })
-                                             }
-                                             value={filter.doors}
-                                        >
-                                             {filters.doors.map((d, ind) => {
-                                                  return (
-                                                       <option
-                                                            key={ind}
-                                                            value={ind.toString()}
-                                                       >
-                                                            {d}
-                                                       </option>
-                                                  );
-                                             })}
-                                        </Select>
-                                   )}
-                                   {filters.balconies && (
-                                        <Select
-                                             placeholder="Тагтны тоо"
-                                             variant="outline"
-                                             borderWidth="2px"
-                                             color={"mainBlossom"}
-                                             onChange={(e) =>
-                                                  setFilter({
-                                                       ...filter,
-                                                       balconies:
-                                                            e.target.value,
-                                                  })
-                                             }
-                                             value={filter.balconies}
-                                        >
-                                             {filters.balconies.map(
-                                                  (d, ind) => {
-                                                       return (
-                                                            <option
-                                                                 key={ind}
-                                                                 value={ind.toString()}
-                                                            >
-                                                                 {d}
-                                                            </option>
-                                                       );
-                                                  }
-                                             )}
-                                        </Select>
-                                   )}
-                                   {filters.floor && (
-                                        <Select
-                                             placeholder="Шал"
-                                             variant="outline"
-                                             borderWidth="2px"
-                                             color={"mainBlossom"}
-                                             onChange={(e) =>
-                                                  setFilter({
-                                                       ...filter,
-                                                       floor: e.target.value,
-                                                  })
-                                             }
-                                             value={filter.floor}
-                                        >
-                                             {filters.floor.map((d, ind) => {
-                                                  return (
-                                                       <option
-                                                            key={ind}
-                                                            value={ind.toString()}
-                                                       >
-                                                            {d}
-                                                       </option>
-                                                  );
-                                             })}
-                                        </Select>
-                                   )}
-                                   {filters.garage && (
-                                        <Select
-                                             placeholder="Гараж"
-                                             variant="outline"
-                                             borderWidth="2px"
-                                             color={"mainBlossom"}
-                                             onChange={(e) =>
-                                                  setFilter({
-                                                       ...filter,
-                                                       garage: e.target.value,
-                                                  })
-                                             }
-                                             value={filter.garage}
-                                        >
-                                             {filters.garage.map((d, ind) => {
-                                                  return (
-                                                       <option
-                                                            key={ind}
-                                                            value={ind.toString()}
-                                                       >
-                                                            {d}
-                                                       </option>
-                                                  );
-                                             })}
-                                        </Select>
-                                   )} */}
-                  {filters.condition && (
-                    <Select
-                      placeholder="Төлбөрийн нөхцөл"
-                      variant="outline"
-                      borderWidth="2px"
-                      color={'mainBlossom'}
-                      onChange={(e) =>
-                        setFilter({
-                          ...filter,
-                          condition: e.target.value,
-                        })
-                      }
-                      value={filter.condition}
-                    >
-                      {filters.condition.map((d, ind) => {
-                        return (
-                          <option key={ind} value={ind.toString()}>
-                            {d}
-                          </option>
-                        );
-                      })}
-                    </Select>
-                  )}
-                  {filters.barter && (
-                    <Select
-                      placeholder="Бартер"
-                      variant="outline"
-                      borderWidth="2px"
-                      color={'mainBlossom'}
-                      onChange={(e) =>
-                        setFilter({
-                          ...filter,
-                          barter: e.target.value,
-                        })
-                      }
-                      value={filter.barter}
-                    >
-                      {filters.barter.map((d, ind) => {
-                        return (
-                          <option key={ind} value={ind.toString()}>
-                            {d}
-                          </option>
-                        );
-                      })}
-                    </Select>
-                  )}
-                </>
-              )}
-              <VStack>
-                <Heading variant={'smallHeading'}>Үнэ</Heading>
-                <Flex alignItems={'center'} gap={2}>
-                  <Input
-                    type="number"
-                    placeholder="Доод"
-                    variant="outline"
-                    borderWidth="2px"
-                  />
-                  <Text>-</Text>
-                  <Input
-                    type="number"
-                    placeholder="Дээд"
-                    variant="outline"
-                    borderWidth="2px"
-                  />
-                </Flex>
-              </VStack>
-              <VStack flex>
-                <Heading variant={'smallHeading'}>Талбайн хэмжээ</Heading>
-                <Flex alignItems={'center'} gap={2}>
-                  <Input
-                    type="number"
-                    placeholder="Доод"
-                    variant="outline"
-                    borderWidth="2px"
-                  />
-                  <Text>-</Text>
-                  <Input
-                    type="number"
-                    placeholder="Дээд"
-                    variant="outline"
-                    borderWidth="2px"
-                  />
-                </Flex>
-              </VStack>
+             
             </FilterStack>
           </DrawerBody>
 

@@ -57,6 +57,19 @@ export const AuthProvider = ({ children }) => {
             window.location.pathname = '/account'
         }}
     }
+    const signup = async (email, password, username, phone) => {
+        const token = Cookies.get('token')
+
+        if(!token ) {
+            const {data: data} = await axios.post(`${urls['test']}/auth/register`, { email, password , username, phone, isAdmin: false})
+        
+        if (data?.token) {
+            Cookies.set('token', data.token)
+            
+            setUser(data.user)
+            window.location.pathname = '/account'
+        }}
+    }
 
     const logout = () => {
         Cookies.remove('token')
@@ -66,7 +79,7 @@ export const AuthProvider = ({ children }) => {
 
 
     return (
-        <AuthContext.Provider value={{ isAuthenticated: !!user, user, login, loading, logout, categories, locations, districts }}>
+        <AuthContext.Provider value={{ isAuthenticated: !!user, user, login, loading, logout, categories, locations, districts, signup }}>
             {children}
         </AuthContext.Provider>
     )

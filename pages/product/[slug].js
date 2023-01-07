@@ -22,7 +22,7 @@ import MainContainer from "../../layout/mainContainer";
 import ProductCard from "../../util/productCard";
 import ECalculator from "../calculator";
 
-import ScrollTop from "@/lib/ScrollTop";
+import ScrollTop from "../../lib/ScrollTop";
 
 // Icons
 
@@ -30,6 +30,7 @@ import ScrollTop from "@/lib/ScrollTop";
 import moment from "moment/moment";
 import { useRouter } from "next/router";
 import ImageGallery from "react-image-gallery";
+import urls from "../../constants/api";
 
 const images = [
   {
@@ -137,7 +138,7 @@ const Product = () => {
   const [data, setData] = useState("");
   const getData = async () => {
     try {
-      await fetch(`https://bom-location.herokuapp.com/ad/${router.query.slug}`)
+      await fetch(`${urls['test']}/ad/{id}?id=${router.query.slug}`)
         .then((r) => r.json())
         .then((d) => {
           setData(d), console.log(d);
@@ -157,7 +158,7 @@ const Product = () => {
       <MainContainer>
         <Stack direction={"row"} py={2} gap={3}>
           {/* //TODO Filter Box */}
-          <FilterLayout />
+          {data?.subCategory && <FilterLayout data={data.subCategory}/>}
 
           {/* //TODO Filter box end */}
 
@@ -293,8 +294,8 @@ const Product = () => {
                       //        </ProductInfo>
                       //   );
                     }
-                    {data &&
-                      data.filters.map((p, i) => {
+                    {
+                      data?.filters?.map((p, i) => {
                         if (p.id != null) {
                           return (
                             <ProductInfo

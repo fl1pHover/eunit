@@ -72,7 +72,7 @@ export default function CreateAd() {
         categories[select.category].subCategory.filter((f) => {
           if (f.name == select.subCategory) {
             axios
-              .get(`${urls["test"]}/category/filters/{id}?id=${f._id}`)
+              .get(`${urls["test"]}/category/filters/{id}/true?id=${f._id}`)
               .then((d) => {
                 setSubCategory(d.data);
                 setFilters(d.data?.filters);
