@@ -9,70 +9,71 @@ import {
   Stack,
   Text,
   useToast,
-} from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+} from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
 
 // Import Swiper React components
 // Import Swiper styles
 // import "swiper/css";
 
-import { FaHeart } from "react-icons/fa";
-import FilterLayout from "../../components/filter";
-import MainContainer from "../../layout/mainContainer";
-import ProductCard from "../../util/productCard";
-import ECalculator from "../calculator";
+import { FaHeart } from 'react-icons/fa';
+import FilterLayout from '../../components/filter';
+import MainContainer from '../../layout/mainContainer';
+import ProductCard from '../../util/productCard';
+import ECalculator from '../calculator';
 
-import ScrollTop from "@/lib/ScrollTop";
+import ScrollTop from '../../lib/ScrollTop';
+
 
 // Icons
 
 // Image Swiper Gallery
-import moment from "moment/moment";
-import { useRouter } from "next/router";
-import ImageGallery from "react-image-gallery";
+import moment from 'moment/moment';
+import { useRouter } from 'next/router';
+import ImageGallery from 'react-image-gallery';
 
 const images = [
   {
-    original: "/images/HeaderSlider/1.jpg",
-    thumbnail: "/images/HeaderSlider/1.jpg",
+    original: '/images/HeaderSlider/1.jpg',
+    thumbnail: '/images/HeaderSlider/1.jpg',
   },
   {
-    original: "/images/404.png",
-    thumbnail: "/images/404.png",
+    original: '/images/404.png',
+    thumbnail: '/images/404.png',
   },
   {
-    original: "/images/HeaderSlider/1.jpg",
-    thumbnail: "/images/HeaderSlider/1.jpg",
+    original: '/images/HeaderSlider/1.jpg',
+    thumbnail: '/images/HeaderSlider/1.jpg',
   },
   {
-    original: "/images/HeaderSlider/1.jpg",
-    thumbnail: "/images/HeaderSlider/1.jpg",
-  },
-
-  {
-    original: "/images/HeaderSlider/1.jpg",
-    thumbnail: "/images/HeaderSlider/1.jpg",
-  },
-  {
-    original: "/images/HeaderSlider/1.jpg",
-    thumbnail: "/images/HeaderSlider/1.jpg",
-  },
-  {
-    original: "/images/HeaderSlider/1.jpg",
-    thumbnail: "/images/HeaderSlider/1.jpg",
-  },
-  {
-    original: "images/HeaderSlider/1.jpg",
-    thumbnail: "images/HeaderSlider/1.jpg",
+    original: '/images/HeaderSlider/1.jpg',
+    thumbnail: '/images/HeaderSlider/1.jpg',
   },
 
   {
-    original: "images/HeaderSlider/1.jpg",
-    thumbnail: "images/HeaderSlider/1.jpg",
+    original: '/images/HeaderSlider/1.jpg',
+    thumbnail: '/images/HeaderSlider/1.jpg',
   },
   {
-    original: "images/HeaderSlider/1.jpg",
-    thumbnail: "images/HeaderSlider/1.jpg",
+    original: '/images/HeaderSlider/1.jpg',
+    thumbnail: '/images/HeaderSlider/1.jpg',
+  },
+  {
+    original: '/images/HeaderSlider/1.jpg',
+    thumbnail: '/images/HeaderSlider/1.jpg',
+  },
+  {
+    original: 'images/HeaderSlider/1.jpg',
+    thumbnail: 'images/HeaderSlider/1.jpg',
+  },
+
+  {
+    original: 'images/HeaderSlider/1.jpg',
+    thumbnail: 'images/HeaderSlider/1.jpg',
+  },
+  {
+    original: 'images/HeaderSlider/1.jpg',
+    thumbnail: 'images/HeaderSlider/1.jpg',
   },
 ];
 
@@ -83,14 +84,14 @@ const ProductInfo = ({ title, value, children, key }) => {
         children
       ) : (
         <Stack
-          direction={"row"}
+          direction={'row'}
           p={2}
           borderColor="bgGrey"
           borderWidth={2}
           borderRadius={5}
         >
-          <Text textTransform={"capitalize"}>{title}: </Text>
-          <Text textTransform={"capitalize"} fontWeight={"bold"}>
+          <Text textTransform={'capitalize'}>{title}: </Text>
+          <Text textTransform={'capitalize'} fontWeight={'bold'}>
             {value}
           </Text>
         </Stack>
@@ -99,42 +100,42 @@ const ProductInfo = ({ title, value, children, key }) => {
   );
 };
 const product = {
-  title: "Академи хотхон 3 өрөө байр зарна.",
-  date: "2022.09.21 15:53",
-  description: "Академи 2 хотхонд 3-н өрөө бүрэн тавилгатай орон сууц зарна.",
+  title: 'Академи хотхон 3 өрөө байр зарна.',
+  date: '2022.09.21 15:53',
+  description: 'Академи 2 хотхонд 3-н өрөө бүрэн тавилгатай орон сууц зарна.',
   info: [
-    { Утас: "9599-2333" },
-    { "": "" },
-    { Үнэ: "350.0 сая" },
-    { Талбай: "70 м2" },
-    { "Нэгж талбайн үнэ": "5.0 сая" },
-    { Дүүрэг: "Хан-Уул" },
-    { Хороо: "4-р хороо" },
-    { Байршид: "Оргил" },
-    { Хотхон: "Академи 2" },
-    { "Ашиглалтад орсон он": "2021" },
-    { "Барилгын давхар": "25" },
-    { "Хэдэн давхар": "18" },
-    { Өрөө: "3" },
-    { "Угаалгын өрөө": "1" },
-    { "Mac/Унтлгаын өрөө": "Байхгүй" },
-    { Цонх: "Вакум" },
-    { "Цонхны тоо": "4" },
-    { Хаалга: "Бүргэд" },
-    { Шал: "Паркет" },
-    { Гараж: "Байгаа" },
-    { "Тагтны тоо": "1" },
-    { Бартер: "Байхгүй" },
-    { "Төлбөрийн нөхцөл": "Бэлэн" },
+    { Утас: '9599-2333' },
+    { '': '' },
+    { Үнэ: '350.0 сая' },
+    { Талбай: '70 м2' },
+    { 'Нэгж талбайн үнэ': '5.0 сая' },
+    { Дүүрэг: 'Хан-Уул' },
+    { Хороо: '4-р хороо' },
+    { Байршид: 'Оргил' },
+    { Хотхон: 'Академи 2' },
+    { 'Ашиглалтад орсон он': '2021' },
+    { 'Барилгын давхар': '25' },
+    { 'Хэдэн давхар': '18' },
+    { Өрөө: '3' },
+    { 'Угаалгын өрөө': '1' },
+    { 'Mac/Унтлгаын өрөө': 'Байхгүй' },
+    { Цонх: 'Вакум' },
+    { 'Цонхны тоо': '4' },
+    { Хаалга: 'Бүргэд' },
+    { Шал: 'Паркет' },
+    { Гараж: 'Байгаа' },
+    { 'Тагтны тоо': '1' },
+    { Бартер: 'Байхгүй' },
+    { 'Төлбөрийн нөхцөл': 'Бэлэн' },
   ],
   socials: {
-    facebook: "https://www.facebook.com/sokobishu",
+    facebook: 'https://www.facebook.com/sokobishu',
   },
 };
 const Product = () => {
   const toast = useToast();
   const router = useRouter();
-  const [data, setData] = useState("");
+  const [data, setData] = useState('');
   const getData = async () => {
     try {
       await fetch(`https://bom-location.herokuapp.com/ad/${router.query.slug}`)
@@ -155,18 +156,18 @@ const Product = () => {
     <Box my={5} as="section" id="main__product">
       <ScrollTop />
       <MainContainer>
-        <Stack direction={"row"} py={2} gap={3}>
+        <Stack direction={'row'} py={2} gap={3}>
           {/* //TODO Filter Box */}
           <FilterLayout />
 
           {/* //TODO Filter box end */}
 
           {/* //TODO Main product */}
-          <Box maxWidth={"75%"} flex="0 0 75%" borderRadius="5px">
-            <Box bgColor={"white"} p={10} rounded={10} boxShadow="base">
+          <Box maxWidth={'75%'} flex="0 0 75%" borderRadius="5px">
+            <Box bgColor={'white'} p={10} rounded={10} boxShadow="base">
               {/*Product */}
               {data.title && (
-                <Heading variant={"mediumHeading"} mb={5}>
+                <Heading variant={'mediumHeading'} mb={5}>
                   {data.title}
                 </Heading>
               )}
@@ -179,15 +180,15 @@ const Product = () => {
 
                 <GridItem className="product__image-wrapper">
                   <Stack
-                    direction={"row"}
+                    direction={'row'}
                     justifyContent="space-between"
-                    alignItems={"center"}
+                    alignItems={'center'}
                     mb={2}
                   >
-                    <Stack direction={"row"}>
+                    <Stack direction={'row'}>
                       <Text>
                         Зарын огноо:
-                        {moment(data.createdAt).format("lll")}
+                        {moment(data.createdAt).format('lll')}
                       </Text>
                       <Text>Зарын дугаар: 1</Text>
                     </Stack>
@@ -196,13 +197,13 @@ const Product = () => {
                         aria-label="Search database"
                         icon={<FaHeart />}
                         _hover={{
-                          color: "red",
+                          color: 'red',
                         }}
                         size="lg"
                         onClick={() =>
                           toast({
-                            title: "Зар хадгалагдлаа.",
-                            status: "success",
+                            title: 'Зар хадгалагдлаа.',
+                            status: 'success',
                             duration: 9000,
                             isClosable: true,
                           })
@@ -212,7 +213,7 @@ const Product = () => {
                     </Text>
                   </Stack>
                   <Box
-                    boxShadow={"xs"}
+                    boxShadow={'xs'}
                     borderWidth="2px"
                     rounded={4}
                     mb="120px"
@@ -239,12 +240,12 @@ const Product = () => {
                           <>
                             <ProductInfo
                               key={data.positions.district_id._id}
-                              title={"Дүүрэг"}
+                              title={'Дүүрэг'}
                               value={data.positions.district_id.name}
-                            />{" "}
+                            />{' '}
                             <ProductInfo
                               key={data.positions.location_id._id}
-                              title={"Хороолол"}
+                              title={'Хороолол'}
                               value={data.positions.location_id.name}
                             />
                           </>
@@ -361,11 +362,11 @@ const Product = () => {
           </Box>
         </Stack>
       </MainContainer>
-      <MainContainer py={"50px"}>
+      <MainContainer py={'50px'}>
         <Stack
-          direction={"row"}
-          display={"flex"}
-          justifyContent={"space-between"}
+          direction={'row'}
+          display={'flex'}
+          justifyContent={'space-between'}
         >
           <Heading variant="smallHeader" mb={5}>
             Санал болгох зарууд
@@ -375,7 +376,7 @@ const Product = () => {
               placeholder="Өрөөгөөр"
               variant="outline"
               borderWidth="2px"
-              color={"mainBlossom"}
+              color={'mainBlossom'}
             >
               <option value="option1">Байршлаар</option>
             </Select>
@@ -383,12 +384,12 @@ const Product = () => {
         </Stack>
 
         <Grid
-          direction={"row"}
+          direction={'row'}
           templateColumns="repeat(auto-fill, minmax(230px, 1fr))"
           rowGap={5}
           gap="5"
           width="100%"
-          justifyContent={"center"}
+          justifyContent={'center'}
         >
           <ProductCard />
           <ProductCard />
