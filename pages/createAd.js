@@ -4,36 +4,40 @@ import {
   Center,
   Code,
   Divider,
+  Grid,
+  GridItem,
   Heading,
   HStack,
+  IconButton,
   Input,
   Select,
-  SelectField,
   Text,
   Textarea,
   VStack,
-} from "@chakra-ui/react";
-import axios from "axios";
-import { useAuth } from "context/auth";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import urls from "../constants/api";
-import { AdTypes } from "../constants/enums";
+} from '@chakra-ui/react';
+import axios from 'axios';
+import { useAuth } from 'context/auth';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import { MdDeleteForever } from 'react-icons/md';
+import urls from '../constants/api';
+import { AdTypes } from '../constants/enums';
 
-import MainContainer from "../layout/mainContainer";
+import MainContainer from '../layout/mainContainer';
 
 export default function CreateAd() {
   const { user, categories, districts, locations } = useAuth();
   const router = useRouter();
 
   const [select, setSelect] = useState({
-    category: "",
-    subCategory: "",
+    category: '',
+    subCategory: '',
   });
   const [selectStatic, setSelectStatic] = useState({
-    title: "",
-    description: "",
-    position: "",
+    title: '',
+    description: '',
+    position: '',
   });
   const [subCategory, setSubCategory] = useState();
   const [filters, setFilters] = useState([]);
@@ -48,9 +52,9 @@ export default function CreateAd() {
         types: [adType],
         filters: filters,
         subCategory: subCategory._id,
-      })
+      });
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
   const capitalizeFirst = (str) => {
@@ -85,27 +89,58 @@ export default function CreateAd() {
     }
   }, [select]);
 
+  // image preview
+  const [selectedImages, setSelectedImages] = useState([]);
+
+  const onSelectFile = (event) => {
+    const selectedFiles = event.target.files;
+    const selectedFilesArray = Array.from(selectedFiles);
+
+    const imagesArray = selectedFilesArray.map((file) => {
+      return URL.createObjectURL(file);
+    });
+
+    setSelectedImages((previousImages) => previousImages.concat(imagesArray));
+
+    // FOR BUG IN CHROME
+    event.target.value = '';
+  };
+
+  function deleteHandler(image) {
+    setSelectedImages(selectedImages.filter((e) => e !== image));
+    URL.revokeObjectURL(image);
+  }
+
   if (user) {
     return (
-      <Box as="section" m={5} id="add__ad">
+      <Box
+        as="section"
+        px={{ base: 2, sm: 5 }}
+        my={{ base: 10, md: '50px' }}
+        id="add__ad"
+      >
         <MainContainer>
-          <Box bgColor={"white"} px={10} py={5} rounded={10}>
+          <Box bgColor={'white'} px={{ base: 2, sm: 10 }} py={5} rounded={10}>
             <Center>
-              <Heading variant={"bigHeading"}>Зар оруулах хэсэг</Heading>
+              <Heading variant={'bigHeading'}>Зар оруулах хэсэг</Heading>
             </Center>
             <Code mt={10} textAlign="center">
               Зар оруулах дараагийн хэсэг дараах сонголтыг сонгосны дараа гарч
               ирнэ.
             </Code>
             <Box
-              display={"grid"}
-              gridTemplateColumns={"repeat(3,1fr)"}
-              gap={10}
+              display={'grid'}
+              gridTemplateColumns={{
+                base: 'repeat(1,1fr)',
+                md: 'repeat(3,1fr)',
+              }}
+              gap={{ base: 5, md: 10 }}
               mt={4}
             >
               <HStack>
-                <Text width={"100%"}>Зарах хөрөнгийн төрөл</Text>
+                <Text width={'100%'}>Зарах хөрөнгийн төрөл</Text>
                 <Select
+                  size="sm"
                   placeholder="Сонгох"
                   onChange={(e) =>
                     setSelect((select) => ({
@@ -126,8 +161,9 @@ export default function CreateAd() {
               </HStack>
               {categories[select.category]?.subCategory && (
                 <HStack>
-                  <Text width={"100%"}>Дэд төрөл</Text>
+                  <Text width={'100%'}>Дэд төрөл</Text>
                   <Select
+                    size="sm"
                     placeholder="Сонгох"
                     onChange={(e) =>
                       setSelect((select) => ({
@@ -149,9 +185,10 @@ export default function CreateAd() {
               )}
               {select.subCategory && (
                 <HStack>
-                  <Text width={"100%"}>Борлуулах төрөл</Text>
+                  <Text width={'100%'}>Борлуулах төрөл</Text>
                   <Select
                     placeholder="Сонгох"
+                    size="sm"
                     onChange={(e) =>
                       setAdType((type) => ({
                         ...type,
@@ -171,55 +208,61 @@ export default function CreateAd() {
                 </HStack>
               )}
             </Box>
-            <VStack gap={5} mt={10}>
-              {select.type != "" && subCategory?.filters && (
+            <Grid
+              templateColumns={{ base: 'repeat(1,1fr)', md: 'repeat(3,1fr)' }}
+              gap={5}
+              mt={10}
+            >
+              {select.type != '' && subCategory?.filters && (
                 <>
                   {subCategory.filters.map((f, i) => {
                     return f.values.length == 0 &&
-                      f.name != "Дүүрэг" &&
-                      f.name != "Байршил" ? (
+                      f.name != 'Дүүрэг' &&
+                      f.name != 'Байршил' ? (
                       <Input
                         key={i}
                         onChange={(e) => setFilter(f.id, e)}
                         placeholder={capitalizeFirst(f.name)}
                       ></Input>
                     ) : (
-                      <Select
-                        placeholder={f.name}
-                        onChange={(e) => setFilter(f.id, e)}
-                      >
-                        {f.name == "Дүүрэг"
-                          ? districts?.map((d, ind) => {
-                              return (
-                                <option value={d._id} key={ind}>
-                                  {capitalizeFirst(d.name)}
-                                </option>
-                              );
-                            })
-                          : f.name == "Байршил"
-                          ? locations?.map((d, ind) => {
-                              return (
-                                <option value={d.name} key={ind}>
-                                  {capitalizeFirst(d.name)}
-                                </option>
-                              );
-                            })
-                          : f.values?.map((d, ind) => {
-                              return (
-                                <option value={d} key={ind}>
-                                  {capitalizeFirst(d)}
-                                </option>
-                              );
-                            })}
-                      </Select>
+                      <GridItem>
+                        <Select
+                          size="sm"
+                          placeholder={f.name}
+                          onChange={(e) => setFilter(f.id, e)}
+                        >
+                          {f.name == 'Дүүрэг'
+                            ? districts?.map((d, ind) => {
+                                return (
+                                  <option value={d._id} key={ind}>
+                                    {capitalizeFirst(d.name)}
+                                  </option>
+                                );
+                              })
+                            : f.name == 'Байршил'
+                            ? locations?.map((d, ind) => {
+                                return (
+                                  <option value={d.name} key={ind}>
+                                    {capitalizeFirst(d.name)}
+                                  </option>
+                                );
+                              })
+                            : f.values?.map((d, ind) => {
+                                return (
+                                  <option value={d} key={ind}>
+                                    {capitalizeFirst(d)}
+                                  </option>
+                                );
+                              })}
+                        </Select>
+                      </GridItem>
                     );
                   })}
-
                   <Textarea
-                    placeholder={"Гарчиг"}
+                    placeholder={'Гарчиг'}
                     type="textarea"
                     height="100px"
-                    whiteSpace={"nowrap"}
+                    whiteSpace={'nowrap'}
                     onChange={(e) =>
                       setSelectStatic((selectStatic) => ({
                         ...selectStatic,
@@ -229,10 +272,10 @@ export default function CreateAd() {
                     value={selectStatic.title}
                   />
                   <Textarea
-                    placeholder={"Дэлгэрэнгүй"}
+                    placeholder={'Дэлгэрэнгүй'}
                     type="textarea"
                     height="100px"
-                    whiteSpace={"nowrap"}
+                    whiteSpace={'nowrap'}
                     value={selectStatic.description}
                     onChange={(e) =>
                       setSelectStatic((selectStatic) => ({
@@ -241,9 +284,8 @@ export default function CreateAd() {
                       }))
                     }
                   />
-
                   <Input
-                    placeholder={"Хаяг"}
+                    placeholder={'Хаяг'}
                     value={selectStatic.position}
                     onChange={(e) =>
                       setSelectStatic((selectStatic) => ({
@@ -253,25 +295,130 @@ export default function CreateAd() {
                     }
                   />
 
-                  {/* <Center>
-                                                                  <Input
-                                                                       type={"file"}
-                                                                       height="100px"
-                                                                  />
-                                                             </Center>
-                                                       
-                                                             <Input type={"file"} /> */}
-                  <Button onClick={() => createAd()}>Илгээх</Button>
+                  {/* //Todo Thumbnail Photo */}
 
-                  <Divider />
+                  <GridItem colStart={1} colEnd={2}>
+                    <Code>
+                      Таны оруулсан эхний зураг зарны нүүр зураг болж харагдахыг
+                      анхаарна уу
+                    </Code>
+                  </GridItem>
+
+                  {/* //Todo: All Photo */}
+
+                  <GridItem
+                    colStart={{ base: 1, md: 2 }}
+                    colEnd={{ base: 2, md: 4 }}
+                  >
+                    <VStack
+                      rounded={10}
+                      minH="100px"
+                      // height={{
+                      //   base: '400px',
+                      //   base: '300px',
+                      //   lg: '250px',
+                      // }}
+                      border={'1px dashed grey'}
+                      overflow="hidden"
+                    >
+                      <Box
+                        width="100%"
+                        position={'relative'}
+                        bgColor={'bgGrey'}
+                        _hover={{
+                          Button: {
+                            bgColor: 'mainBlossom',
+                          },
+                        }}
+                        textAlign="center"
+                      >
+                        <Input
+                          type={'file'}
+                          position="absolute"
+                          height="100%"
+                          width={'100%'}
+                          left="0"
+                          accept="image/png, image/jpg, image/jpeg"
+                          borderStyle={'dashed'}
+                          multiple
+                          opacity="0"
+                          cursor="pointer"
+                          zIndex="10"
+                          onChange={onSelectFile}
+                        />
+
+                        <Text my={3}>
+                          Оруулж буй зарынхаа зурагнуудаа оруулна уу
+                        </Text>
+                      </Box>
+                      <HStack
+                        flexWrap={'wrap'}
+                        gap={{ base: 1, md: 3 }}
+                        justifyContent={'center'}
+                      >
+                        {selectedImages &&
+                          selectedImages.map((image, index) => {
+                            return (
+                              <Box
+                                position="relative"
+                                key={image}
+                                width={{
+                                  base: '50px',
+                                  md: '75px',
+                                  lg: '100px',
+                                }}
+                                height={{
+                                  base: '50px',
+                                  md: '75px',
+                                  lg: '100px',
+                                }}
+                                p={1}
+                                border="2px solid"
+                                borderColor={'bgGrey'}
+                              >
+                                <Image
+                                  src={image}
+                                  height="100%"
+                                  width="100%"
+                                  alt="upload"
+                                  objectFit="cover"
+                                />
+                                <IconButton
+                                  position="absolute"
+                                  top="-5px"
+                                  right="-5px"
+                                  colorScheme="red"
+                                  size="xs"
+                                  icon={<MdDeleteForever />}
+                                  p={2}
+                                  onClick={() => deleteHandler(image)}
+                                />
+                              </Box>
+                            );
+                          })}
+                      </HStack>
+                    </VStack>
+                  </GridItem>
+
+                  <GridItem colStart={1} colEnd={{ base: 2, md: 4 }}>
+                    <Divider my={1} />
+                  </GridItem>
+
+                  <GridItem colStart={1} colEnd={{ base: 2, md: 4 }}>
+                    <Center>
+                      <Button width="250px" onClick={() => createAd()}>
+                        Илгээх
+                      </Button>
+                    </Center>
+                  </GridItem>
                 </>
               )}
-            </VStack>
+            </Grid>
           </Box>
         </MainContainer>
       </Box>
     );
   } else {
-    router.push("/login");
+    router.push('/login');
   }
 }
