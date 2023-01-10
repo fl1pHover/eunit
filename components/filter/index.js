@@ -18,16 +18,18 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import axios from "axios";
+import { Router, useRouter } from "next/router";
 import { useRef, useState, useEffect } from "react";
 import urls from "../../constants/api";
 import { useAuth } from "../../context/auth";
-import { categories } from "../../data/categories";
+
 import FilterStack from "../../util/filterStack";
 
 const FilterLayout = ({ data }) => {
   const [filter, setFilter] = useState();
-  const { districts, locations } = useAuth();
+  const { districts, locations, categories } = useAuth();
   const [subCategory, setSubCategory] = useState();
+
   const [positions, setPositions] = useState({
     district_id: "",
     location_id: "",
@@ -103,29 +105,19 @@ const FilterLayout = ({ data }) => {
       >
         <FilterStack>
           <Heading variant={"smallHeading"} mb={2}>
-            Үл хөдлах хөрөнгө
+            Үл хөдлөх хөрөнгө
           </Heading>
-          {categories.slice(0, 1).map(({ ...props }, id) => {
+          {categories?.map((c) => {
             return (
               <>
-                {props.submenu &&
-                  props.submenu.map((sub, i) => {
-                    return (
-                      <Link
-                        key={i}
-                        href={`/category/${props.id}/${sub.href}`}
-                        p={1}
-                        mt={0}
-                      >
-                        <Text>{sub.category}</Text>
-                      </Link>
-                    );
-                  })}
+                {c.subCategory.map(({ href, name }, id) => {
+                  return (
+                    <Link key={id} href={`/category/${href}`} p={1} mt={0} fontWeight={data == href ? 'bold': 'medium'}>
+                      <Text>{name}</Text>
+                    </Link>
+                  );
+                })}
               </>
-
-              // <Link href={props.href} key={props.id}>
-              //      <Text>{props.category}</Text>
-              // </Link>
             );
           })}
         </FilterStack>

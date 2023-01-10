@@ -4,12 +4,14 @@ import React, { useState } from "react";
 import { categories } from "../../data/categories"
 import { ContainerX } from "../../lib/Container"
 import mergeNames from "../../util/mergeNames";
+import { useRouter } from "next/router";
+import { Button } from "@chakra-ui/react";
 
 
 const Bottom = ({ sticky, data }) => {
   const [isHoveringId, setIsHoveringId] = useState(null);
   // const pt = useBreakpoints();
-
+  const router = useRouter()
   const handleMouseOver = (id) => {
     setIsHoveringId(id);
   };
@@ -56,15 +58,18 @@ const Bottom = ({ sticky, data }) => {
                           category.subCategory?.map(({name, href}, key) => {
                             
                             return (
-                              <Link
+                              <Button
                                 key={key}
-                                href={`/category/${href}`}
+                              
+                                onClick={() => {
+                                  router.push(`/category/${href}`).then(() => router.reload())
+                                }}
                                 // className="text-sm text-white font-medium px-4 py-3 hover:bg-blue-700 first-letter:uppercase transition-colors ease-in whitespace-nowrap"
                               >
                                 <a className="text-sm text-white font-medium px-4 py-3 hover:bg-blue-700 first-letter:uppercase transition-colors ease-in whitespace-nowrap">
                                   {name}
                                 </a>
-                              </Link>
+                              </Button>
                             );
                           })}
                       </div>
