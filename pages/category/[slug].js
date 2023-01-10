@@ -1,11 +1,18 @@
-import { Box, Grid, GridItem, Heading, Image, Stack } from '@chakra-ui/react';
+import { Box, Grid, Heading, Image, Stack } from '@chakra-ui/react';
 import MainContainer from '../../layout/mainContainer';
 
 import { useRouter } from 'next/router';
+
 import FilterLayout from '../../components/filter';
+import AdContent from '../../components/home/adContent';
 
 const Category = () => {
   const router = useRouter();
+  const toLowerCase = (text) => {
+    if (text) {
+      return text.toLowerCase();
+    }
+  };
 
   return (
     <Box my={5} as="section" id="category">
@@ -50,29 +57,12 @@ const Category = () => {
             </Box>
 
             {/* //TODO Engiin zar */}
-            {/* //TODO Engiin zar */}
-            {/* //TODO Engiin zar */}
 
-            <Box>
-              <Heading variant={'mediumHeading'} my={3}>
-                Зарууд
-              </Heading>
-              <Grid
-                direction={'row'}
-                templateColumns="repeat(auto-fill, minmax(200px, 1fr))"
-                rowGap={5}
-                gap={3}
-                width="100%"
-                justifyContent={'center'}
-              >
-                <GridItem>asdasd</GridItem>
-                <GridItem>asdasd</GridItem>
-                <GridItem>asdasd</GridItem>
-                <GridItem>asdasd</GridItem>
-                <GridItem>asdasd</GridItem>
-                <GridItem>asdasd</GridItem>
-              </Grid>
-            </Box>
+            <AdContent
+              //     data={products}
+              tlc={toLowerCase}
+              title="Тээврийн хэрэгсэл"
+            />
           </Box>
         </Stack>
       </MainContainer>

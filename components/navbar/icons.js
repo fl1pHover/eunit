@@ -38,6 +38,15 @@ export const HeartIcon = ({ word = true, onClick = () => {} }) => {
   );
 };
 
+export const WhiteHeartIcon = ({ word = true, onClick = () => {} }) => {
+  return (
+    <button onClick={onClick} className={mergeNames("white__animated__heart", layout)}>
+      <div width={"25px"} height="25px" className="animated__icon" />
+      {word && <Text>Хүсэл</Text>}
+    </button>
+  );
+};
+
 export const UserIcon = ({
   text = "",
   classname = "",

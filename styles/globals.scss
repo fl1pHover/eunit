@@ -107,6 +107,18 @@ html {
   }
 }
 
+.white__animated__heart {
+  .animated__icon {
+    background-image: url(../public/utils/icons/static/heart-outline.png);
+    background-size: cover;
+    width: 30px;
+    height: 30px;
+  }
+  &:hover .animated__icon {
+    background-image: url(../public/utils/icons/heart-outline.gif);
+  }
+}
+
 .animated__account {
   .animated__icon {
     background-image: url(../public/utils/icons/static/account.png);
@@ -232,4 +244,3 @@ Note: Beware of modifying this element as it can break the animations - you shou
 .bm-overlay {
   background: rgba(0, 0, 0, 0.3);
 }
-
