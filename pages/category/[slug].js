@@ -2,17 +2,38 @@ import { Box, Grid, Heading, Image, Stack } from '@chakra-ui/react';
 import MainContainer from '../../layout/mainContainer';
 
 import { useRouter } from 'next/router';
-
+import {useEffect, useState} from 'react'
 import FilterLayout from '../../components/filter';
 import AdContent from '../../components/home/adContent';
+import { useAuth } from '../../context/auth';
+import axios from 'axios';
+import urls from '../../constants/api';
 
 const Category = () => {
+     const {categories, ads, setAds} = useAuth()
   const router = useRouter();
+  const [category, setCategory] = useState() 
   const toLowerCase = (text) => {
     if (text) {
       return text.toLowerCase();
     }
   };
+
+  useEffect(() => {
+       categories?.map((c) => {
+          c.subCategory?.map((s) => {
+      
+               if(s.href == router.query.slug) {
+                    setCategory(s.name)
+                    axios.get(`${urls["test"]}/ad/category/{id}?id=${s._id}`).then((data) => {
+                         setAds(data.data)
+                         
+                       })
+               }
+          })
+          
+     })
+  }, [router.query, categories,])
 
   return (
     <Box my={5} as="section" id="category">
@@ -58,11 +79,11 @@ const Category = () => {
 
             {/* //TODO Engiin zar */}
 
-            <AdContent
-              //     data={products}
+            {ads && <AdContent
+                  data={ads}
               tlc={toLowerCase}
-              title="Тээврийн хэрэгсэл"
-            />
+              title={category ?? ''}
+            />}
           </Box>
         </Stack>
       </MainContainer>

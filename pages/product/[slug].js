@@ -162,7 +162,7 @@ const Product = () => {
       <MainContainer>
         <Stack direction={'row'} py={2} gap={3}>
           {/* //TODO Filter Box */}
-          {data?.subCategory && <FilterLayout data={data.subCategory}/>}
+          {/* {data?.subCategory && <FilterLayout data={data.subCategory}/>} */}
 
           {/* //TODO Filter box end */}
 

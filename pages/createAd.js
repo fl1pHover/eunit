@@ -71,10 +71,11 @@ export default function CreateAd() {
         await uploadImage()
       } else {
 
+
     try {
       if (subCategory?.subCategory?._id && imageUrl.length > 0) {
         let token = Cookies.get('token')
-        console.log(filters)
+        console.log(subCategory)
         axios
           .post(
             `${urls["test"]}/ad`,
@@ -87,6 +88,7 @@ export default function CreateAd() {
               types: [adType],
               filters: filters,
               subCategory: subCategory.subCategory._id,
+              category: categories[select.category]._id
             },
             {
               headers: { Authorization: `Bearer ${token}` },
@@ -110,7 +112,7 @@ export default function CreateAd() {
         f.value = e.target.value;
       }
     });
-    console.log(filters)
+
   };
 
   useEffect(() => {

@@ -1,54 +1,46 @@
-import { useEffect, useState } from 'react';
-import AdContent from '../components/home/adContent';
-import CategorySelect from '../components/home/categorySelect';
-import SwiperHeader from '../components/home/swiperHeader';
-import urls from '../constants/api';
-import ScrollTop from '../lib/ScrollTop';
+import axios from "axios";
+import { useEffect, useState } from "react";
+import AdContent from "../components/home/adContent";
+import CategorySelect from "../components/home/categorySelect";
+import SwiperHeader from "../components/home/swiperHeader";
+import urls from "../constants/api";
+import { useAuth } from "../context/auth";
+import ScrollTop from "../lib/ScrollTop";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
-  const [products, setProducts] = useState('');
-  const getData = async () => {
-    setIsLoading(true);
-    try {
-      await fetch(`${urls['test']}/ad`)
-        .then((r) => r.json())
-        .then((d) => setProducts(d))
-        .then((a) => setIsLoading(false));
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const { ads, categories, setAds } = useAuth();
+
   const toLowerCase = (text) => {
     if (text) {
       return text.toLowerCase();
     }
   };
+
+  async function getData() {
+    await axios
+      .get(`${urls["test"]}/ad`)
+      .then((res) => {
+        setAds(res.data);
+      })
+      .catch((err) => console.log(err.message));
+  }
   useEffect(() => {
     getData();
   }, []);
-  // async function getData() {
-  //      const res = await fetch("http://192.168.1.49:3000/ad")
-  //           .then(async (r) => {
-  //                let rs = await r.json();
-  //                console.log(rs);
-  //           })
-  //           .catch((err) => console.log(err.message));
-  // }
-  // useEffect(() => {
-  //      getData();
-  // }, []);
 
   return (
     <>
       <SwiperHeader />
       <CategorySelect />
-      <AdContent data={products} tlc={toLowerCase} />
-      <AdContent data={products} tlc={toLowerCase} title="Тээврийн хэрэгсэл" />
-      <AdContent data={products} tlc={toLowerCase} title="Компьютер" />
-      <AdContent data={products} tlc={toLowerCase} title="Гар утас" />
-      <AdContent data={products} tlc={toLowerCase} title="Цахилгаан бараа" />
-      <AdContent data={products} tlc={toLowerCase} title="Гэр ахуйн бараа" />
+      {categories?.map((c, i) => {
+        let ad = ads?.filter((a) => a.category == c._id);
+
+        if (ad?.length > 0)
+          return (
+            <AdContent data={ad} key={i} tlc={toLowerCase} title={c.name} />
+          );
+      })}
       <ScrollTop />
     </>
   );

@@ -27,9 +27,9 @@ import FilterStack from "../../util/filterStack";
 
 const FilterLayout = ({ data }) => {
   const [filter, setFilter] = useState();
-  const { districts, locations, categories } = useAuth();
+  const { districts, locations, categories, setAds } = useAuth();
   const [subCategory, setSubCategory] = useState();
-
+  
   const [positions, setPositions] = useState({
     district_id: "",
     location_id: "",
@@ -42,13 +42,16 @@ const FilterLayout = ({ data }) => {
   const btnRef = useRef();
   useEffect(() => {
     if (data) {
+      console.log(data)
       try {
         axios
           .get(`${urls["test"]}/category/filters/{id}/false?id=${data}`, {})
           .then((d) => {
-            setSubCategory(d.data);
+            setSubCategory(d.data?.subCategory);
             setFilter(d.data?.filters);
             console.log(d.data?.filters);
+            console.log(d.data)
+            
           });
       } catch (e) {
         console.log(e);
@@ -68,8 +71,12 @@ const FilterLayout = ({ data }) => {
           filters: filter,
           adTypes: types,
           positions: positions,
+          subCategory: subCategory._id
         })
-        .then((d) => console.log(d));
+        .then((d) => {
+          setAds(d.data)
+          console.log(d.data)
+        });
     } catch (e) {
       console.log(e);
     }

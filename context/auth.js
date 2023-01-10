@@ -15,6 +15,7 @@ export const AuthProvider = ({ children }) => {
     const [categories, setCategories] = useState()
     const [districts, setDistricts] = useState()
     const [locations, setLocations] = useState()
+    const [ads, setAds] = useState()
     useEffect(() => {
 
         async function loadUserFromCookies() {
@@ -26,6 +27,7 @@ export const AuthProvider = ({ children }) => {
                 setDistricts(district)
                 const {data: location} = await axios.get(`${urls['test']}/location`)
                 setLocations(location)
+                
                 
             } catch(e) {
                 console.log(e)
@@ -79,7 +81,7 @@ export const AuthProvider = ({ children }) => {
 
 
     return (
-        <AuthContext.Provider value={{ isAuthenticated: !!user, user, login, loading, logout, categories, locations, districts, signup }}>
+        <AuthContext.Provider value={{ isAuthenticated: !!user, user, login, loading, logout, categories, locations, districts, signup, ads, setAds }}>
             {children}
         </AuthContext.Provider>
     )

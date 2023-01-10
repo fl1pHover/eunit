@@ -1,3 +1,9 @@
+import { AiOutlineCar } from "react-icons/ai";
+import { BsBuilding, BsPhone } from "react-icons/bs";
+import { CgSmartHomeWashMachine } from "react-icons/cg";
+import { MdComputer } from "react-icons/md";
+import { RiHomeSmile2Line } from "react-icons/ri";
+
 export const  AdTypes = {
     sell : {
       id: 'sell',
@@ -7,6 +13,33 @@ export const  AdTypes = {
       id: 'rent',
       name: 'Түрээслэх'
     }
+}
+
+export const Category = {
+  realState : 'realState',
+  vehicle : 'vehicle',
+  computer : 'computer',
+  phone : 'phone',
+  electronics : 'electronics',
+  householdItems : 'householdItems'
+}
+
+export const getIconCategory = ({item}) => {
+  switch(item) {
+    case Category.realState:
+      return <BsBuilding />;
+    case Category.vehicle:
+      return <AiOutlineCar />;
+    case Category.computer:
+      return <MdComputer />;
+    case Category.phone:
+      return <BsPhone />;
+    case Category.electronics:
+      return <CgSmartHomeWashMachine />;
+    case Category.householdItems:
+      return <RiHomeSmile2Line />;
+
+  }
 }
 
 export const Filters = {

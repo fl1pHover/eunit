@@ -8,12 +8,17 @@ import {
   Text,
 } from "@chakra-ui/react";
 import React from "react";
+import { AiOutlineCar } from "react-icons/ai";
+import { BsBuilding, BsPhone } from "react-icons/bs";
+import { CgSmartHomeWashMachine } from "react-icons/cg";
+import { MdComputer } from "react-icons/md";
+import { RiHomeSmile2Line } from "react-icons/ri";
+import { useAuth } from "../../context/auth";
 
 import MainContainer from "../../layout/mainContainer";
 
-import { categories } from "../../data/categories";
-
 const CategorySelect = () => {
+  const { categories } = useAuth();
   return (
     <Box py={"50px"}>
       <MainContainer>
@@ -25,60 +30,70 @@ const CategorySelect = () => {
           }}
           gap={5}
         >
-          {categories.map(({ ...props }, index) => {
+          {categories?.map(({ ...props }, index) => {
             return (
               <>
                 {/* Categoryiin default menug ni hamgiin ehnii submenu eer avna */}
-                {props.submenu &&
-                  props.submenu.slice(0, 1).map((sub, i) => {
-                    return (
-                      <Link
-                        key={i}
-                        href={`/category/${props.id}/${sub.href}`}
-                        p={1}
-                        mt={0}
+
+                <Link
+                  key={index}
+                  href={props.href == 'realState' ? `/category/apertment` : '/'}
+                  p={1}
+                  mt={0}
+                >
+                  <GridItem
+                    bgColor="white"
+                    py={8}
+                    rounded={20}
+                    boxShadow="md"
+                    transition={"0.3s ease"}
+                    _hover={{
+                      boxShadow: "xl",
+                    }}
+                    textAlign={"center"}
+                    backgroundImage={`/images/category/${props.href}.jpg`}
+                    backgroundPosition={"center"}
+                    backgroundSize="cover"
+                    className="card"
+                    overflow={"hidden"}
+                  >
+                    <Stack
+                      key={index}
+                      display={"flex"}
+                      alignItems={"center"}
+                      height="100%"
+                      position={"relative"}
+                      zIndex={"2"}
+                      color="white"
+                    >
+                      <Text fontSize={"50px"}>
+                        {props.href == "realState" ? (
+                          <BsBuilding />
+                        ) : props.href == "vehicle" ? (
+                          <AiOutlineCar />
+                        ) : props.href == "computer" ? (
+                          <MdComputer />
+                        ) : props.href == "phone" ? (
+                          <BsPhone />
+                        ) : props.href == "electronics" ? (
+                          <CgSmartHomeWashMachine />
+                        ) : (
+                          <RiHomeSmile2Line />
+                        )}
+                      </Text>
+                      <Stack
+                        mt={"15px !important"}
+                        direction="column"
+                        justifyContent={"space-between"}
+                        height={"100%"}
                       >
-                        <GridItem
-                          bgColor="white"
-                          py={8}
-                          rounded={20}
-                          boxShadow="md"
-                          transition={"0.3s ease"}
-                          _hover={{
-                            boxShadow: "xl",
-                          }}
-                          textAlign={"center"}
-                          backgroundImage={props.image}
-                          backgroundPosition={"center"}
-                          backgroundSize="cover"
-                          className="card"
-                          overflow={"hidden"}
-                        >
-                          <Stack
-                            key={index}
-                            display={"flex"}
-                            alignItems={"center"}
-                            height="100%"
-                            position={"relative"}
-                            zIndex={"2"}
-                            color="white"
-                          >
-                            <Text fontSize={"50px"}>{props.icon}</Text>
-                            <Stack
-                              mt={"15px !important"}
-                              direction="column"
-                              justifyContent={"space-between"}
-                              height={"100%"}
-                            >
-                              <Heading variant={"smallHeading"} height="40px">
-                                {props.categoryName}
-                              </Heading>
-                            </Stack>
-                          </Stack>
-                        </GridItem>
-                      </Link>
-                    );
-                  })}
+                        <Heading variant={"smallHeading"} height="40px">
+                          {props.name}
+                        </Heading>
+                      </Stack>
+                    </Stack>
+                  </GridItem>
+                </Link>
               </>
             );
           })}

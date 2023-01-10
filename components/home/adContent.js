@@ -9,9 +9,9 @@ import ProductCard from "../../util/productCard";
 // const Asd = <ProductCard />;
 // const array = [...Array(10)];
 
-const AdContent = ({ data, tlc, title = "Үл хөдлөх хөрөнгө" }) => {
+const AdContent = ({ data, key, tlc, title = "Үл хөдлөх хөрөнгө" }) => {
   return (
-    <MainContainer>
+    <MainContainer key={key}>
       <div className="pb-2 mt-8">
         <Heading>{title}</Heading>
       </div>
