@@ -313,6 +313,7 @@ const Navbar = ({ user, logout }) => {
           className={sticky ? 'wrap' : 'unwrap'}
           position="sticky"
           zIndex={'19'}
+          display="none"
         >
           <MainContainer>
             <Stack
@@ -328,7 +329,7 @@ const Navbar = ({ user, logout }) => {
                 borderWidth={1}
               >
                 {categories.map(({ ...props }, index) => {
-                  console.log(props)
+                  console.log(props);
                   return (
                     <Box
                       key={index}
@@ -354,7 +355,7 @@ const Navbar = ({ user, logout }) => {
                       >
                         {props.submenu &&
                           props.submenu.map((sub, i) => {
-                            console.log(props)
+                            console.log(props);
                             return (
                               <Link
                                 key={i}
