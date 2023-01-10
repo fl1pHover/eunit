@@ -31,6 +31,7 @@ import moment from "moment/moment";
 import { useRouter } from "next/router";
 import ImageGallery from "react-image-gallery";
 import urls from "../../constants/api";
+import { useAuth } from '../../context/auth';
 
 const images = [
   {
@@ -78,6 +79,7 @@ const images = [
 ];
 
 const ProductInfo = ({ title, value, children, key }) => {
+console.log(value)
   return (
     <GridItem className="product__info" key={key}>
       {children ? (
@@ -134,6 +136,7 @@ const product = {
 };
 const Product = () => {
   const toast = useToast();
+  const {districts, locations} = useAuth()
   const router = useRouter();
   const [data, setData] = useState('');
   const getData = async () => {
@@ -152,6 +155,7 @@ const Product = () => {
       getData();
     }
   }, [router.query]);
+
   return (
     <Box my={5} as="section" id="main__product">
       <ScrollTop />
@@ -233,23 +237,44 @@ const Product = () => {
                 <GridItem>
                   <Grid templateColumns="repeat(2, 1fr)" gap={3}>
                     {
-                      data &&
-                        data.positions &&
-                        data.positions.location_id &&
-                        data.positions.district_id && (
-                          <>
-                            <ProductInfo
-                              key={data.positions.district_id._id}
-                              title={'Дүүрэг'}
-                              value={data.positions.district_id.name}
-                            />{' '}
-                            <ProductInfo
-                              key={data.positions.location_id._id}
-                              title={'Хороолол'}
-                              value={data.positions.location_id.name}
-                            />
-                          </>
-                        )
+                      
+                        // data?.positions?.location_id  &&
+                        data?.positions?.district_id && districts?.map((d, i) => {
+                          return  d._id == data.positions.district_id ?  (
+                             
+                             <ProductInfo
+                               key={i}
+                               title={'Дүүрэг'}
+                               value={d.name}
+                             />
+                             
+                           
+                           ) : ''
+                         })  }
+
+
+                        {
+                          data?.positions?.location_id && locations?.map((l, i) => {
+                            return  l._id == data.positions.location_id ?  (
+                               
+                               <ProductInfo
+                                 key={i}
+                                 title={'Хороолол'}
+                                 value={l.name}
+                               />
+                               
+                             
+                             ) : ''
+                           }) 
+                        } 
+                          
+                         { 
+                        
+                        // <ProductInfo
+                        //       key={data.positions.location_id._id}
+                        //       title={'Хороолол'}
+                        //       value={data.positions.location_id.name}
+                        //     />
 
                       //   return (
                       //        <ProductInfo
@@ -297,10 +322,12 @@ const Product = () => {
                     {
                       data?.filters?.map((p, i) => {
                         if (p.id != null) {
+                          console.log(p)
+                          
                           return (
                             <ProductInfo
                               key={i}
-                              title={p.id.name}
+                              title={p.name}
                               value={p.value}
                             />
                           );

@@ -68,7 +68,7 @@ const ProductCard = ({ data, tlc }) => {
     <>
       {data &&
         data.map(({ ...props }, index) => {
-          // console.log(props)
+  
           if (index < 4)
             return (
               <Box
@@ -176,7 +176,7 @@ const ProductCard = ({ data, tlc }) => {
                       props.filters.map((p, i) => {
                         // console.log(p)
                         return (
-                          <>
+                          <Box key={i}>
                             {" "}
                             {p.id && tlc(p.id.name) == "өрөө" && p.value && (
                               <Flex alignItems={"center"} gap={1}>
@@ -226,7 +226,7 @@ const ProductCard = ({ data, tlc }) => {
                                 </Heading>
                               </Flex>
                             )}
-                          </>
+                          </Box>
                         );
                       })}
                   </Stack>
@@ -266,7 +266,7 @@ const ProductCard = ({ data, tlc }) => {
                 </Stack>
               </Box>
             );
-          return <></>;
+   
         })}
     </>
   );

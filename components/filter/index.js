@@ -16,61 +16,71 @@ import {
   Text,
   useDisclosure,
   VStack,
-} from '@chakra-ui/react';
-import axios from 'axios';
-import { useRef, useState, useEffect } from 'react';
-import urls from '../../constants/api';
-import { useAuth } from '../../context/auth';
-import { categories } from '../../data/categories';
-import FilterStack from '../../util/filterStack';
+} from "@chakra-ui/react";
+import axios from "axios";
+import { useRef, useState, useEffect } from "react";
+import urls from "../../constants/api";
+import { useAuth } from "../../context/auth";
+import { categories } from "../../data/categories";
+import FilterStack from "../../util/filterStack";
 
-
-const FilterLayout = ({data}) => {
+const FilterLayout = ({ data }) => {
   const [filter, setFilter] = useState();
-  const {districts, locations} = useAuth()
-  const [subCategory, setSubCategory] = useState()
+  const { districts, locations } = useAuth();
+  const [subCategory, setSubCategory] = useState();
+  const [positions, setPositions] = useState({
+    district_id: "",
+    location_id: "",
+  });
+  const [adType, setAdType] = useState({
+    rent: false,
+    sell: true,
+  });
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef();
   useEffect(() => {
-   
-    if(data) {
+    if (data) {
       try {
-
-            axios
-              .get(`${urls["test"]}/category/filters/{id}/false?id=${'63b2ba0ca0b0b2d7ed9d4684'}`, {
-
-              })
-              .then((d) => {
-                setSubCategory(d.data);
-                setFilter(d.data?.filters);
-                console.log(d.data?.filters)
-              });
-          
-  
+        axios
+          .get(`${urls["test"]}/category/filters/{id}/false?id=${data}`, {})
+          .then((d) => {
+            setSubCategory(d.data);
+            setFilter(d.data?.filters);
+            console.log(d.data?.filters);
+          });
       } catch (e) {
         console.log(e);
       }
     }
-   
-  }, [])
+  }, []);
   const filterAd = async () => {
     try {
+      let types = [];
+      if (adType.rent) {
+        types.push("rent");
+      }
+      if (adType.sell) types.push("sell");
 
-    } catch(e) {
-      console.log(e)
+      axios
+        .post(`${urls["test"]}/ad/filter`, {
+          filters: filter,
+          adTypes: types,
+          positions: positions,
+        })
+        .then((d) => console.log(d));
+    } catch (e) {
+      console.log(e);
     }
-  }
+  };
   const setFilters = (id, e, isMaxValue) => {
     e.preventDefault();
 
     filter.map((f) => {
       if (f.id == id) {
-        if(f.values.length == 0 && f.name != 'Дүүрэг' && f.name != 'Байршил') {
-          if(isMaxValue) {
-
-            f.maxValue = e.target.value
-          }else {
-            
+        if (f.values.length == 0) {
+          if (isMaxValue) {
+            f.maxValue = e.target.value;
+          } else {
             f.value = e.target.value;
           }
         } else {
@@ -78,21 +88,21 @@ const FilterLayout = ({data}) => {
         }
       }
     });
-    console.log(filter)
+    console.log(filter);
   };
   return (
     <>
       <Box
-        maxWidth={'20%'}
+        maxWidth={"20%"}
         flex="0 0 20%"
-        bgColor={'white'}
+        bgColor={"white"}
         p={5}
         rounded={10}
         boxShadow="base"
-        display={{ base: 'none', md: 'block' }}
+        display={{ base: "none", md: "block" }}
       >
         <FilterStack>
-          <Heading variant={'smallHeading'} mb={2}>
+          <Heading variant={"smallHeading"} mb={2}>
             Үл хөдлах хөрөнгө
           </Heading>
           {categories.slice(0, 1).map(({ ...props }, id) => {
@@ -121,16 +131,28 @@ const FilterLayout = ({data}) => {
         </FilterStack>
 
         <FilterStack>
-          <Heading variant={'smallHeading'} mb={2}>
+          <Heading variant={"smallHeading"} mb={2}>
             Зарах & Түрээслүүлэх
           </Heading>
-          <Checkbox borderColor={'mainBlue'} defaultChecked>
-            Зарна
+          <Checkbox
+            borderColor={"mainBlue"}
+            defaultChecked
+            onChange={(e) =>
+              setAdType((adType) => ({ ...adType, sell: e.target.checked }))
+            }
+          >
+            Зарна.
           </Checkbox>
-          <Checkbox>Түрээслүүлнэ</Checkbox>
+          <Checkbox
+            onChange={(e) =>
+              setAdType((adType) => ({ ...adType, rent: e.target.checked }))
+            }
+          >
+            Түрээслүүлнэ
+          </Checkbox>
         </FilterStack>
         <FilterStack>
-          <Heading variant={'smallHeading'} mb={2}>
+          <Heading variant={"smallHeading"} mb={2}>
             Байршлаар
           </Heading>
           {/* <AspectRatio ratio={16 / 9}>
@@ -138,76 +160,99 @@ const FilterLayout = ({data}) => {
                          </AspectRatio> */}
         </FilterStack>
 
-        <FilterStack borderBottom={'2px solid '} borderColor="bgGrey">
-          <Heading variant={'smallHeading'}>Нэмэлт хайлт</Heading>
-
-              {filter?.map((f, i) => {
-                return (f.values.length == 0 && f.name != 'Дүүрэг' && f.name != 'Байршил') ? (
-                  <VStack flex>
-            <Heading variant={'smallHeading'}>{f.name}</Heading>
-            <Flex alignItems={'center'} gap={2}>
-              <Input
-                type="number"
-                placeholder="Доод"
-                variant="outline"
-                borderWidth="2px"
-                onChange={(e) => setFilters(f.id, e, false)}
-              />
-              <Text>-</Text>
-              <Input
-                type="number"
-                placeholder="Дээд"
-                variant="outline"
-                borderWidth="2px"
-                onChange={(e) => setFilters(f.id, e, true)}
-              />
-            </Flex>
-          </VStack>
-                ) : (
-                  <Select
+        <FilterStack borderBottom={"2px solid "} borderColor="bgGrey">
+          <Heading variant={"smallHeading"}>Нэмэлт хайлт</Heading>
+          <Select
+            placeholder={"Дүүрэг"}
+            variant="outline"
+            borderWidth="2px"
+            color={"mainBlossom"}
+            onChange={(e) =>
+              setPositions((positions) => ({
+                ...positions,
+                district_id: e.target.value,
+              }))
+            }
+          >
+            {districts?.map((item, i) => {
+              return (
+                <option key={i} value={item._id}>
+                  {item.name}
+                </option>
+              );
+            })}
+          </Select>
+          {positions.district_id && (
+            <Select
+              placeholder={"Байршил"}
+              variant="outline"
+              borderWidth="2px"
+              color={"mainBlossom"}
+              onChange={(e) =>
+                setPositions((positions) => ({
+                  ...positions,
+                  location_id: e.target.value,
+                }))
+              }
+            >
+              {locations?.map((item, i) => {
+                if (positions.district_id == item.district_id)
+                  return (
+                    <option key={i} value={item._id}>
+                      {item.name}
+                    </option>
+                  );
+              })}
+            </Select>
+          )}
+          {filter?.map((f, i) => {
+            return f.values.length == 0 ? (
+              <VStack flex key={i}>
+                <Heading variant={"smallHeading"}>{f.name}</Heading>
+                <Flex alignItems={"center"} gap={2}>
+                  <Input
+                    type="number"
+                    placeholder="Доод"
+                    variant="outline"
+                    borderWidth="2px"
+                    onChange={(e) => setFilters(f.id, e, false)}
+                  />
+                  <Text>-</Text>
+                  <Input
+                    type="number"
+                    placeholder="Дээд"
+                    variant="outline"
+                    borderWidth="2px"
+                    onChange={(e) => setFilters(f.id, e, true)}
+                  />
+                </Flex>
+              </VStack>
+            ) : (
+              <Select
+                key={i}
                 placeholder={f.name}
                 variant="outline"
                 borderWidth="2px"
-                color={'mainBlossom'}
+                color={"mainBlossom"}
                 onChange={(e) => setFilters(f.id, e, true)}
               >
-                
-                  (
-                     {f.name == 'Дүүрэг' ? districts.map((item, i) => {
-                       return (
-                        <option key={i} value={item._id}>
-                          {item.name}
+                {f.values.map((item, i) => {
+                  return (
+                    <option key={i} value={item}>
+                      {item}
                     </option>
-                      )
-                     }) : f.name == 'Байршил' ?  locations?.map((item, i) => {
-                      return (
-                       <option key={i} value={item._id}>
-                         {item.name}
-                   </option>
-                     )
-                    }) : f.values.map((item, i) => {
-                      return (
-                       <option key={i} value={item}>
-                         {item}
-                   </option>
-                     )
-                    }) }
                   );
-                
+                })}
               </Select>
-                ) 
-              })}
+            );
+          })}
 
-
-        
-          
-
-          <Button variant={'blueButton'} mx={4} onClick={() => filterAd()}>
+          <Button variant={"blueButton"} mx={4} onClick={() => filterAd()}>
             Хайх
           </Button>
         </FilterStack>
       </Box>
-  
+
       <Drawer
         isOpen={isOpen}
         placement="bottom"
@@ -220,16 +265,16 @@ const FilterLayout = ({data}) => {
 
           <DrawerBody>
             <FilterStack>
-              <Heading variant={'smallHeading'} mb={2}>
+              <Heading variant={"smallHeading"} mb={2}>
                 Зарах & Түрээслүүлэх
               </Heading>
-              <Checkbox borderColor={'mainBlue'} defaultChecked>
+              <Checkbox borderColor={"mainBlue"} defaultChecked>
                 Зарна
               </Checkbox>
               <Checkbox>Түрээслүүлнэ</Checkbox>
             </FilterStack>
             <FilterStack>
-              <Heading variant={'smallHeading'} mb={2}>
+              <Heading variant={"smallHeading"} mb={2}>
                 Байршлаар
               </Heading>
               {/* <AspectRatio ratio={16 / 9}>
@@ -237,14 +282,13 @@ const FilterLayout = ({data}) => {
                          </AspectRatio> */}
             </FilterStack>
 
-            <FilterStack borderBottom={'2px solid '} borderColor="bgGrey">
-              <Heading variant={'smallHeading'}>Нэмэлт хайлт</Heading>
-             
+            <FilterStack borderBottom={"2px solid "} borderColor="bgGrey">
+              <Heading variant={"smallHeading"}>Нэмэлт хайлт</Heading>
             </FilterStack>
           </DrawerBody>
 
           <DrawerFooter>
-            <Button variant={'blueButton'} width="full" mx={4}>
+            <Button variant={"blueButton"} width="full" mx={4}>
               Хайх
             </Button>
           </DrawerFooter>

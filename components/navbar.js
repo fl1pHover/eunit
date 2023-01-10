@@ -328,6 +328,7 @@ const Navbar = ({ user, logout }) => {
                 borderWidth={1}
               >
                 {categories.map(({ ...props }, index) => {
+                  console.log(props)
                   return (
                     <Box
                       key={index}
@@ -353,6 +354,7 @@ const Navbar = ({ user, logout }) => {
                       >
                         {props.submenu &&
                           props.submenu.map((sub, i) => {
+                            console.log(props)
                             return (
                               <Link
                                 key={i}

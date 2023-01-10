@@ -1,16 +1,21 @@
 import { Box, Grid, Heading, Image, Stack } from "@chakra-ui/react";
-import React from "react";
-import MainContainer from "../../../layout/mainContainer";
+import React, { useEffect, useState } from "react";
+import MainContainer from "../../layout/mainContainer";
 
-import FilterLayout from "../../../components/filter";
+import FilterLayout from "../../components/filter";
+import { useRouter } from "next/router";
+import urls from "../../constants/api";
 
-const RealState = () => {
+const Category = () => {
+    
+     const router = useRouter()
+   
      return (
           <Box my={5} as="section" id="category">
                <MainContainer>
                     <Stack direction={"row"} py={2} gap={3}>
                          {/* //TODO Filter Box */}
-                         <FilterLayout />
+                         {router.query?.slug && <FilterLayout data={router.query.slug} />}
 
                          {/* //TODO Filter box end */}
 
@@ -46,4 +51,4 @@ const RealState = () => {
      );
 };
 
-export default RealState;
+export default Category;

@@ -1,7 +1,7 @@
 import Axios from 'axios';
 
 let urls = {
-  test: `http://bom-location.herokuapp.com`,
+  test: `http://localhost:5050`,
   production: ``,
 };
 

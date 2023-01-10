@@ -53,11 +53,12 @@ const Bottom = ({ sticky, data }) => {
                         {category?.subCategory &&
                           isHoveringId != null &&
                           isHoveringId == category &&
-                          category.subCategory?.map(({name}, key) => {
+                          category.subCategory?.map(({name, href}, key) => {
+                            
                             return (
                               <Link
                                 key={key}
-                                href={`/category/${name}/${name}`}
+                                href={`/category/${href}`}
                                 // className="text-sm text-white font-medium px-4 py-3 hover:bg-blue-700 first-letter:uppercase transition-colors ease-in whitespace-nowrap"
                               >
                                 <a className="text-sm text-white font-medium px-4 py-3 hover:bg-blue-700 first-letter:uppercase transition-colors ease-in whitespace-nowrap">

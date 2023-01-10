@@ -1,5 +1,5 @@
 
-import { authRoutes, protectedRoutes } from "constants/routes"
+import { authRoutes, protectedRoutes } from "../constants/routes"
 import { NextRequest, NextResponse } from "next/server"
 
 
@@ -11,12 +11,12 @@ export function middleware(req: NextRequest) {
     ) {
         req.cookies.delete('currentUser')
         const res = NextResponse.redirect(new URL('/login', req.url))
-        console.log(currentUser)
+
         res.cookies.delete('currentUser')
         return res
 }
 if(authRoutes.includes(req.nextUrl.pathname) && currentUser) {
-    console.log(currentUser)
+
         return NextResponse.redirect(new URL('/account', req.url))
     }
 }
