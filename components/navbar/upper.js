@@ -10,7 +10,13 @@ import { ContainerX } from '../../lib/Container';
 import { useAuth } from 'context/auth';
 import Cookies from 'js-cookie';
 import BottomMenu from './bottomMenu';
-import { EstimateIcon, HeartIcon, UserIcon, WalletIcon } from './icons';
+import {
+  EstimateIcon,
+  HeartIcon,
+  UserIcon,
+  WalletIcon,
+  WhiteHeartIcon,
+} from './icons';
 import SearchBar from './searchBar';
 import SideMenu from './sideMenu';
 import UserDropdown from './userDropdown';
@@ -88,7 +94,10 @@ const UpperNav = (
             )}
           </div>
           <div className="md:hidden flex justify-center items-center gap-2">
-            <HeartIcon word={false} onClick={() => router.push('/bookmark')} />
+            <WhiteHeartIcon
+              word={false}
+              onClick={() => router.push('/bookmark')}
+            />
             <button
               onClick={() => {
                 setShowSideMenu(true);

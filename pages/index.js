@@ -6,8 +6,8 @@ import urls from '../constants/api';
 import ScrollTop from '../lib/ScrollTop';
 
 export default function Home() {
-  const [products, setProducts] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [products, setProducts] = useState('');
   const getData = async () => {
     setIsLoading(true);
     try {
