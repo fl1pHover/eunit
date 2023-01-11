@@ -36,7 +36,7 @@ export default function Home() {
       {categories?.map((c, i) => {
         let ad = ads?.filter((a) => a.category == c._id);
 
-        if (ad?.length > 0 && i)
+        if (ad?.length > 0)
           return (
             <AdContent data={ad} key={i} tlc={toLowerCase} title={c.name} />
           );
