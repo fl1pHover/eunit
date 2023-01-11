@@ -50,7 +50,7 @@ const CategorySelect = () => {
                       boxShadow: 'xl',
                     }}
                     textAlign={'center'}
-                    backgroundImage={`/images/category/${props.href}.jpg`}
+                    backgroundImage={`/images/Category/${props.href}.jpg`}
                     backgroundPosition={'center'}
                     backgroundSize="cover"
                     className="card"
