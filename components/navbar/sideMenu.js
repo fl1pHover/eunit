@@ -1,8 +1,8 @@
-import mergeNames from "../../util/mergeNames";
 import React from "react";
 import { CgChevronRight, CgClose } from "react-icons/cg";
 
-import { categories } from "../../data/categories";
+import mergeNames from "@/util/mergeNames";
+import { categories } from "@/data/categories";
 import { useRouter } from "next/router";
 
 import { AiOutlineCar } from "react-icons/ai";
@@ -10,7 +10,7 @@ import { BsBuilding, BsPhone } from "react-icons/bs";
 import { CgSmartHomeWashMachine } from "react-icons/cg";
 import { MdComputer } from "react-icons/md";
 import { RiHomeSmile2Line } from "react-icons/ri";
-import Footer from "../footer";
+import Footer from "@/components/footer/index";
 
 const Icon = ({ id, ...props }) => {
   switch (id) {

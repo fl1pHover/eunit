@@ -2,10 +2,10 @@ import { Box } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 
 import UpperNav from "./upper";
-import Bottom from "./bottom";
+import CategoryBottom from "./bottom";
 import Higher from "./higher";
 
-const Navbar = ({data}) => {
+const Navbar = ({ data }) => {
   const [sticky, setSticky] = useState(false);
 
   useEffect(() => {
@@ -26,8 +26,8 @@ const Navbar = ({data}) => {
         as={"section"}
         pos={sticky ? "sticky" : "relative"}
       >
-        <UpperNav  />
-        <Bottom {...{ sticky }} data ={data} />
+        <UpperNav />
+        <CategoryBottom {...{ sticky }} data={data} />
       </Box>
     </>
   );

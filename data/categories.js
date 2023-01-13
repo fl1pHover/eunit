@@ -7,26 +7,26 @@ import { RiHomeSmile2Line } from "react-icons/ri";
 export const categories = [
   {
     image: "/images/HeaderSlider/1.jpg",
-    categoryName: "Үл хөдлөх хөрөнгө",
-    icon: <BsBuilding />,
+    categoryName: "Үл хөдлөх",
+    icon: ({ size, className = "" }) => <BsBuilding {...{ size, className }} />,
     id: "realState",
     itemCount: "105",
     submenu: [
       {
         category: "Орон сууц",
-        href: "/apartment",
+        href: "apartment",
       },
       {
         category: "Газар",
-        href: "/land",
+        href: "land",
       },
       {
         category: "Хашаа байшин",
-        href: "/fenceHouse",
+        href: "fenceHouse",
       },
       {
         category: "Худалдаа, үйлчилгээний талбай",
-        href: "/department",
+        href: "department",
       },
       {
         category: "АОС, хаус, зуслан",
@@ -47,8 +47,10 @@ export const categories = [
     ],
   },
   {
-    image: "/images/category/car.jpg",
-    icon: <AiOutlineCar />,
+    image: "/images/category/vehicle.jpg",
+    icon: ({ size, className = "" }) => (
+      <AiOutlineCar {...{ size, className }} />
+    ),
     categoryName: "Тээврийн хэрэгсэл",
     id: "vehicle",
     itemCount: "105",
@@ -69,7 +71,7 @@ export const categories = [
   },
   {
     image: "/images/category/computer.jpg",
-    icon: <MdComputer />,
+    icon: ({ size, className = "" }) => <MdComputer {...{ size, className }} />,
     categoryName: "Компьютер",
     id: "computer",
     itemCount: "105",
@@ -86,7 +88,7 @@ export const categories = [
   },
   {
     image: "/images/category/phone.jpg",
-    icon: <BsPhone />,
+    icon: () => <BsPhone />,
     categoryName: "Гар утас",
     id: "phone",
     itemCount: "105",
@@ -106,8 +108,10 @@ export const categories = [
     ],
   },
   {
-    image: "/images/category/electronic.jpg",
-    icon: <CgSmartHomeWashMachine />,
+    image: "/images/category/electronics.jpg",
+    icon: ({ size, className = "" }) => (
+      <CgSmartHomeWashMachine {...{ size, className }} />
+    ),
     categoryName: "Цахилгаан бараа",
     id: "electronic",
     itemCount: "105",
@@ -119,8 +123,11 @@ export const categories = [
     ],
   },
   {
-    image: "/images/category/home.jpg",
-    icon: <RiHomeSmile2Line />,
+    image: "/images/category/householditems.jpg",
+    icon: ({ size, className = "" }) => (
+      <RiHomeSmile2Line {...{ size, className }} />
+    ),
+
     categoryName: "Гэр ахуйн бараа",
     id: "household-items",
     itemCount: "105",
