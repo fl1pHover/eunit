@@ -4,6 +4,8 @@ import {
   Center,
   Code,
   Divider,
+  FormControl,
+  FormLabel,
   Grid,
   GridItem,
   Heading,
@@ -12,7 +14,6 @@ import {
   Input,
   Select,
   Text,
-  Textarea,
   VStack,
 } from '@chakra-ui/react';
 import axios from 'axios';
@@ -26,6 +27,8 @@ import urls from '../constants/api';
 import { AdTypes } from '../constants/enums';
 
 import MainContainer from '../layout/mainContainer';
+
+import { BomArea, BomSelect } from '../util/BomInput';
 
 export default function CreateAd() {
   const { user, categories, districts, locations, token } = useAuth();
@@ -197,15 +200,14 @@ export default function CreateAd() {
             >
               <HStack>
                 <Text width={'100%'}>Зарах хөрөнгийн төрөл</Text>
-                <Select
-                  size="sm"
-                  placeholder="Сонгох"
+                <BomSelect
                   onChange={(e) =>
                     setSelect((select) => ({
                       ...select,
                       category: e.target.value,
                     }))
                   }
+                  placeholder="Сонгох"
                   value={select.category}
                 >
                   {categories?.map((c, i) => {
@@ -215,20 +217,19 @@ export default function CreateAd() {
                       </option>
                     );
                   })}
-                </Select>
+                </BomSelect>
               </HStack>
               {categories[select.category]?.subCategory && (
                 <HStack>
                   <Text width={'100%'}>Дэд төрөл</Text>
-                  <Select
-                    size="sm"
-                    placeholder="Сонгох"
+                  <BomSelect
                     onChange={(e) =>
                       setSelect((select) => ({
                         ...select,
                         subCategory: e.target.value,
                       }))
                     }
+                    placeholder="Сонгох"
                     value={select.subCategory}
                   >
                     {categories[select.category]?.subCategory?.map((t, i) => {
@@ -238,15 +239,13 @@ export default function CreateAd() {
                         </option>
                       );
                     })}
-                  </Select>
+                  </BomSelect>
                 </HStack>
               )}
               {select.subCategory && (
                 <HStack>
                   <Text width={'100%'}>Борлуулах төрөл</Text>
-                  <Select
-                    placeholder="Сонгох"
-                    size="sm"
+                  <BomSelect
                     onChange={(e) => setAdType(e.target.value)}
                     value={adType}
                   >
@@ -257,7 +256,7 @@ export default function CreateAd() {
                         </option>
                       );
                     })}
-                  </Select>
+                  </BomSelect>
                 </HStack>
               )}
             </Box>
@@ -268,49 +267,45 @@ export default function CreateAd() {
             >
               {select.type != '' && subCategory?.filters && (
                 <>
-                  <GridItem>
-                    <Select
-                      size="sm"
-                      placeholder={'Дүүрэг'}
-                      onChange={(e) =>
-                        setPositions((positions) => ({
-                          ...positions,
-                          district_id: e.target.value,
-                        }))
-                      }
-                    >
-                      {districts?.map((d, ind) => {
+                  <BomSelect
+                    placeholder={'Дүүрэг'}
+                    onChange={(e) =>
+                      setPositions((positions) => ({
+                        ...positions,
+                        district_id: e.target.value,
+                      }))
+                    }
+                  >
+                    {districts?.map((d, ind) => {
+                      return (
+                        <option value={d._id} key={ind}>
+                          {capitalizeFirst(d.name)}
+                        </option>
+                      );
+                    })}
+                  </BomSelect>
+
+                  <BomSelect
+                    placeholder={'Байршил'}
+                    onChange={(e) =>
+                      setPositions((positions) => ({
+                        ...positions,
+                        location_id: e.target.value,
+                      }))
+                    }
+                  >
+                    {locations?.map((d, ind) => {
+                      if (positions?.district_id == d.district_id) {
                         return (
                           <option value={d._id} key={ind}>
                             {capitalizeFirst(d.name)}
                           </option>
                         );
-                      })}
-                    </Select>
-                  </GridItem>
-                  <GridItem>
-                    <Select
-                      size="sm"
-                      placeholder={'Байршил'}
-                      onChange={(e) =>
-                        setPositions((positions) => ({
-                          ...positions,
-                          location_id: e.target.value,
-                        }))
                       }
-                    >
-                      {locations?.map((d, ind) => {
-                        if (positions?.district_id == d.district_id) {
-                          return (
-                            <option value={d._id} key={ind}>
-                              {capitalizeFirst(d.name)}
-                            </option>
-                          );
-                        }
-                      })}
-                    </Select>
-                  </GridItem>
-                  <GridItem>
+                    })}
+                  </BomSelect>
+
+                  <FormControl variant="floating" isRequired>
                     <Input
                       onChange={(e) =>
                         setPositions((positions) => ({
@@ -318,10 +313,13 @@ export default function CreateAd() {
                           committee_id: e.target.value,
                         }))
                       }
-                      placeholder={capitalizeFirst('Хороо')}
-                    ></Input>
-                  </GridItem>
-                  <GridItem>
+                      // placeholder={capitalizeFirst('Хороо')}
+                      placeholder={capitalizeFirst(' ')}
+                    />
+                    <FormLabel>Хороо</FormLabel>
+                  </FormControl>
+
+                  <FormControl variant="floating" isRequired>
                     <Input
                       onChange={(e) =>
                         setPositions((positions) => ({
@@ -329,9 +327,12 @@ export default function CreateAd() {
                           town_id: e.target.value,
                         }))
                       }
-                      placeholder={capitalizeFirst('Хотхон')}
-                    ></Input>
-                  </GridItem>
+                      // placeholder={capitalizeFirst('Хороо')}
+                      placeholder={capitalizeFirst(' ')}
+                    />
+                    <FormLabel>Хотхон</FormLabel>
+                  </FormControl>
+
                   {subCategory.filters.map((f, i) => {
                     return f.values.length == 0 ? (
                       <Input
@@ -357,11 +358,23 @@ export default function CreateAd() {
                       </GridItem>
                     );
                   })}
-                  <Textarea
-                    placeholder={'Гарчиг'}
-                    type="textarea"
-                    height="100px"
-                    whiteSpace={'nowrap'}
+
+                  {/* <FormControl variant="floating" isRequired>
+                    <Input
+                      placeholder={' '}
+                      value={selectStatic.position}
+                      onChange={(e) =>
+                        setSelectStatic((selectStatic) => ({
+                          ...selectStatic,
+                          position: e.target.value,
+                        }))
+                      }
+                    />
+                    <FormLabel>Хаяг</FormLabel>
+                  </FormControl> */}
+
+                  <BomArea
+                    placeholder="Гарчиг"
                     onChange={(e) =>
                       setSelectStatic((selectStatic) => ({
                         ...selectStatic,
@@ -370,26 +383,13 @@ export default function CreateAd() {
                     }
                     value={selectStatic.title}
                   />
-                  <Textarea
-                    placeholder={'Дэлгэрэнгүй'}
-                    type="textarea"
-                    height="100px"
-                    whiteSpace={'nowrap'}
+                  <BomArea
+                    placeholder="Дэлгэрэнгүй"
                     value={selectStatic.description}
                     onChange={(e) =>
                       setSelectStatic((selectStatic) => ({
                         ...selectStatic,
                         description: e.target.value,
-                      }))
-                    }
-                  />
-                  <Input
-                    placeholder={'Хаяг'}
-                    value={selectStatic.position}
-                    onChange={(e) =>
-                      setSelectStatic((selectStatic) => ({
-                        ...selectStatic,
-                        position: e.target.value,
                       }))
                     }
                   />
@@ -412,11 +412,6 @@ export default function CreateAd() {
                     <VStack
                       rounded={10}
                       minH="100px"
-                      // height={{
-                      //   base: '400px',
-                      //   base: '300px',
-                      //   lg: '250px',
-                      // }}
                       border={'1px dashed grey'}
                       overflow="hidden"
                     >
@@ -431,7 +426,7 @@ export default function CreateAd() {
                         }}
                         textAlign="center"
                       >
-                        <Input
+                        <InputF:\Projects\NextJs\bom-vv\public\images\Category\computer.jpg
                           type={'file'}
                           position="absolute"
                           height="100%"
