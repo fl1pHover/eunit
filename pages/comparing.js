@@ -69,7 +69,7 @@ const Comparing = () => {
             <Image
               src="/images/logo/bom-blue-text.png"
               alt="asd"
-              className="object-contain h-full w-[150px] mx-auto p-5"
+              className="object-contain h-full w-[150px] mx-auto p-5 "
             />
           </div>
           <h2 className="relative font-bold bg-[#eef0f2] p-2 z-0 flex justify-around">
@@ -103,7 +103,7 @@ const Comparing = () => {
                 <Image
                   src="/images/Category/computer.jpg"
                   alt=""
-                  className="min-h-[100px] max-h-[200px] w-full aspect-[4/3] object-cover mx-auto"
+                  className="min-h-[100px] max-h-[200px] w-full aspect-[4/3] object-cover mx-auto rounded-xl"
                 />
                 <h1>
                   Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet
