@@ -425,8 +425,8 @@ export default function CreateAd() {
                           },
                         }}
                         textAlign="center"
-                      >
-                        <InputF:\Projects\NextJs\bom-vv\public\images\Category\computer.jpg
+                    >
+                        <Input
                           type={'file'}
                           position="absolute"
                           height="100%"
