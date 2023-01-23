@@ -119,7 +119,6 @@ const Comparing = () => {
                   <p
                     key={index}
                     className={`${
-                         
                       index % 2 == 0 ? '' : 'bg-gray-100  '
                     } whitespace-nowrap py-2 px-5`}
                   >
