@@ -185,7 +185,7 @@ export default function CreateAd() {
             <div className="text-center">
               <SectionTitle>Зар Нэмэх</SectionTitle>
             </div>
-            {/* category && subcategory && sell type */}
+            {/* category && subcategory && sell type  BIDNII HUVID BOL STEP 1*/}
             <Box
               display={"grid"}
               gridTemplateColumns={{
@@ -268,6 +268,7 @@ export default function CreateAd() {
             >
               {select.type != "" && subCategory?.filters && (
                 <>
+                  {/* duureg haruulj baigaa heseg */}
                   <GridItem>
                     <Select
                       size="sm"
@@ -288,6 +289,7 @@ export default function CreateAd() {
                       })}
                     </Select>
                   </GridItem>
+                  {/* BAIRSHIL HARUULJ BAIGAA HESEG */}
                   <GridItem>
                     <Select
                       size="sm"
@@ -310,6 +312,8 @@ export default function CreateAd() {
                       })}
                     </Select>
                   </GridItem>
+
+                  {/* position - khoroo esvel sum */}
                   <GridItem>
                     <Input
                       onChange={(e) =>
@@ -321,6 +325,7 @@ export default function CreateAd() {
                       placeholder={capitalizeFirst("Хороо")}
                     ></Input>
                   </GridItem>
+
                   <GridItem>
                     <Input
                       onChange={(e) =>
@@ -332,6 +337,7 @@ export default function CreateAd() {
                       placeholder={capitalizeFirst("Хотхон")}
                     ></Input>
                   </GridItem>
+
                   {subCategory.filters.map((f, i) => {
                     return f.values.length == 0 ? (
                       <Input
