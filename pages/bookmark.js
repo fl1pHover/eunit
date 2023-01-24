@@ -1,70 +1,45 @@
-import { Box, Grid, Heading, Select, Stack } from "@chakra-ui/react";
-import React from "react";
-import MainContainer from "../layout/mainContainer";
-import ProductCard from "../util/productCard";
+import { BomSelect } from '@/util/BomInput';
+import { Box, Heading } from '@chakra-ui/react';
+import MainContainer from '../layout/mainContainer';
+import ProductCard from '../util/productCard';
 
 const Bookmark = () => {
-     return (
-          <Box as="section" id="bookmark">
-               <MainContainer>
-                    <Stack direction={"row"} py={2} gap={3} position="relative">
-                         {/* //TODO Filter Box */}
-                         {/* <FilterLayout /> */}
-                         <Box
-                              maxWidth={"25%"}
-                              minHeight="600px"
-                              flex="0 0 25%"
-                              bgColor={"white"}
-                              p={5}
-                              rounded={10}
-                              boxShadow="base"
-                              position={"sticky"}
-                              top="0"
-                         >
-                              <Select
-                                   placeholder="Үл хөдлөх"
-                                   variant="outline"
-                                   borderWidth="2px"
-                                   color={"mainBlossom"}
-                              >
-                                   <option value={"option1"}>asd</option>
-                              </Select>
-                         </Box>
+  return (
+    <Box as="section" id="bookmark">
+      <MainContainer>
+        <div className="relative flex flex-row gap-3 py-2">
+          {/* //TODO Filter Box */}
+          {/* <FilterLayout /> */}
+          <div className="min-h-[600px] basis-1/4 p-5 bg-white rounded-xl shadow-md sticky ">
+            <BomSelect placeholder="Үл хөдлөх" onChange={null} value={null}>
+              <option value={'option1'}>coming</option>
+            </BomSelect>
+          </div>
 
-                         {/* //TODO Filter box end */}
+          {/* //TODO Filter box end */}
 
-                         {/* //TODO Main product */}
-                         <Box
-                              maxWidth={"75%"}
-                              flex="0 0 75%"
-                              borderRadius="5px"
-                         >
-                              {/* <SwiperHeader /> */}
+          {/* //TODO Main product */}
+          <div className="basis-3/4" maxWidth={'75%'}>
+            {/* <SwiperHeader /> */}
 
-                              <Heading variant={"mediumHeading"} my={3}>
-                                   Онцгой зар
-                              </Heading>
-                              <Grid
-                                   direction={"row"}
-                                   templateColumns="repeat(auto-fill, minmax(200px, 1fr))"
-                                   rowGap={5}
-                                   gap={3}
-                                   width="100%"
-                                   justifyContent={"center"}
-                              >
-                                   <ProductCard />
-                                   <ProductCard />
-                                   <ProductCard />
-                                   <ProductCard />
-                                   <ProductCard />
-                                   <ProductCard />
-                                   <ProductCard />
-                              </Grid>
-                         </Box>
-                    </Stack>
-               </MainContainer>
-          </Box>
-     );
+            <Heading variant={'mediumHeading'} my={3}>
+              Онцгой зар
+            </Heading>
+
+            <div className="grid justify-center w-full gap-3 grid-rows-layout">
+              <ProductCard />
+              <ProductCard />
+              <ProductCard />
+              <ProductCard />
+              <ProductCard />
+              <ProductCard />
+              <ProductCard />
+            </div>
+          </div>
+        </div>
+      </MainContainer>
+    </Box>
+  );
 };
 
 export default Bookmark;
