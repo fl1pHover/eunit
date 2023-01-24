@@ -65,7 +65,9 @@ const Comparing = () => {
       <div className="flex bg-white my-10 rounded-[20px] sm:text-[14px] md:text-[16px] text-[12px]">
         <div className="flex flex-col">
           {/* Zariin zurag garchig */}
-          <div className={`${styles.height} w-full border-r border-r-blue`}>
+          <div
+            className={`${styles.height} h-[250px] sm:h-[350px] w-full border-r border-r-blue`}
+          >
             <Image
               src="/images/logo/bom-blue-text.png"
               alt="asd"
