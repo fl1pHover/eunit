@@ -1,8 +1,8 @@
-import Input from '@/lib/Input';
-import { useState } from 'react';
-import { FiUploadCloud } from 'react-icons/fi';
-import { LilFormLabel } from './formLabel';
-import FormLine from './formLine';
+import Input from "@/lib/Input";
+import { useState } from "react";
+import { FiUploadCloud } from "react-icons/fi";
+import { LilFormLabel } from "./formLabel";
+import FormLine from "./formLine";
 
 const Step4 = ({ filter }) => {
   const [payment, setPayment] = useState(false);
@@ -11,7 +11,7 @@ const Step4 = ({ filter }) => {
       <div className="grid grid-cols-1 px-10 mt-4 md:grid-cols-3 md:px-0">
         {filter?.map((f, i) => {
           return (
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center" key={i}>
               <LilFormLabel title={f.name} />
               <Input
                 onChange={(e) => {

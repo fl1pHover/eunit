@@ -1,15 +1,9 @@
 import Axios from 'axios';
 
 let urls = {
-<<<<<<< HEAD
   test: `https://bom-location.herokuapp.com`,
 
   // test: `http://localhost:5050`,
-=======
-  // test: `https://bom-location.herokuapp.com`,
-
-  test: `http://localhost:5050`,
->>>>>>> af1da6b019e93ec5028c77d8b7ca82badc710e5c
 
   // test: `192.168.1.49:5050`,
   production: ``,
