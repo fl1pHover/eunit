@@ -1,61 +1,61 @@
-import { Image, Link } from '@chakra-ui/react';
-import MainContainer from '../layout/mainContainer';
-import { styles } from '../styles';
+import { Image, Link } from "@chakra-ui/react";
+import MainContainer from "../layout/mainContainer";
+import { STYLES as styles } from "../styles";
 
 const compareTitle = [
   {
-    title: 'Талбай',
+    title: "Талбай",
   },
   {
-    title: 'Нэгж талбайн үнэ',
+    title: "Нэгж талбайн үнэ",
   },
   {
-    title: 'Дүүрэг',
+    title: "Дүүрэг",
   },
   {
-    title: 'Хороо',
+    title: "Хороо",
   },
   {
-    title: 'Хотхон',
+    title: "Хотхон",
   },
   {
-    title: 'Ашиглалтад орсон он',
+    title: "Ашиглалтад орсон он",
   },
   {
-    title: 'Барилгын давхар',
+    title: "Барилгын давхар",
   },
   {
-    title: 'Хэдэн давхар',
+    title: "Хэдэн давхар",
   },
   {
-    title: 'Өрөө',
+    title: "Өрөө",
   },
   {
-    title: 'Угаалгын өрөө',
+    title: "Угаалгын өрөө",
   },
   {
-    title: 'Мас/унтлагын өрөө',
+    title: "Мас/унтлагын өрөө",
   },
   {
-    title: 'Цонх',
+    title: "Цонх",
   },
   {
-    title: 'Цонхны тоо',
+    title: "Цонхны тоо",
   },
   {
-    title: 'Хаалга',
+    title: "Хаалга",
   },
   {
-    title: 'Шал',
+    title: "Шал",
   },
   {
-    title: 'Гараж',
+    title: "Гараж",
   },
   {
-    title: 'Бартер',
+    title: "Бартер",
   },
   {
-    title: 'Төлбөрийн нөхцөл',
+    title: "Төлбөрийн нөхцөл",
   },
 ];
 
@@ -84,7 +84,7 @@ const Comparing = () => {
               <p
                 key={index}
                 className={`${
-                  index % 2 == 0 ? ' ' : 'bg-gray-100 '
+                  index % 2 == 0 ? " " : "bg-gray-100 "
                 } whitespace-nowrap py-2 px-5`}
               >
                 {title.title}
@@ -119,7 +119,7 @@ const Comparing = () => {
                   <p
                     key={index}
                     className={`${
-                      index % 2 == 0 ? '' : 'bg-gray-100  '
+                      index % 2 == 0 ? "" : "bg-gray-100  "
                     } whitespace-nowrap py-2 px-5`}
                   >
                     999

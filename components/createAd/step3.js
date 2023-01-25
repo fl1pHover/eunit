@@ -1,25 +1,66 @@
-import Counter from "@/lib/Counter";
-import { DateYearSelector } from "@/lib/DateSelector";
-import Input from "@/lib/Input";
-import Select from "@/lib/Select";
-import React, { useState } from "react";
-import ButtonSelectItem from "./formButtonSelectItem";
-import FormLabel from "./formLabel";
-import FormLine from "./formLine";
+import Counter from '@/lib/Counter';
+import { DateYearSelector } from '@/lib/DateSelector';
+import Select from '@/lib/Select';
+import { useState } from 'react';
+import ButtonSelectItem from './formButtonSelectItem';
+import FormLabel from './formLabel';
+import FormLine from './formLine';
 
-const Step3 = () => {
+const Step3 = ({ filter }) => {
   const [roomNumber, setRoomNumber] = useState(false);
   const [bedRoomNumber, setBedRoomNumber] = useState(false);
   const [bathroomNumber, setBathroomNumber] = useState(false);
   const [usedYear, setUsedYear] = useState(false);
   const [building, setBuilding] = useState({ allFloor: false, floor: false });
+  // const [filters, setFilters] = useState(filter)
 
   return (
     <div className="w-full">
+      {filter?.map((f, i) => {
+        console.log(f);
+        if (f.mark == 'year')
+          return (
+            <Col>
+              <FormLabel title={f.name} />
+              {/* <div className="flex items-center justify-center w-full"> */}
+              <DateYearSelector
+                defValue={usedYear}
+                placeholder={f.name}
+                onSelect={(num) => (f.value = num)}
+              />
+            </Col>
+          );
+        if (f.type == 'dropdown')
+          return (
+            <Col>
+              <FormLabel title={f.name} />
+              <Select
+                data={f.values}
+                label={f.value != '' ? f.value : f.name}
+                Item={({ data, onClick, id, ...props }) => {
+                  return (
+                    <button
+                      {...props}
+                      onClick={() => {
+                        console.log(f.value);
+                        console.log(f);
+                        onClick();
+                        f.value = data;
+                      }}
+                    >
+                      {id + 1}
+                      {props.children}
+                    </button>
+                  );
+                }}
+              />
+            </Col>
+          );
+      })}
       <Row>
         <Col>
           <FormLabel title="Өрөөний тоо" />
-          {/* <div className="w-full flex justify-center items-center"> */}
+          {/* <div className="flex items-center justify-center w-full"> */}
           <Counter
             limit={5}
             maxValue="5+"
@@ -29,7 +70,7 @@ const Step3 = () => {
         <Col>
           <FormLabel title="Мастер унтлагын өрөөний тоо" />
           <di className="flex flex-row justify-center gap-4">
-            {["Байхгүй", "1", "2", "2+"].map((text, id) => {
+            {['Байхгүй', '1', '2', '2+'].map((text, id) => {
               const isSelected = text === bedRoomNumber;
               return (
                 <ButtonSelectItem
@@ -85,7 +126,7 @@ const Step3 = () => {
             data={Array(30).fill()}
             label={
               (building?.allFloor && `${building?.allFloor} давхар`) ||
-              "Барилгын давхар"
+              'Барилгын давхар'
             }
             Item={({ data, onClick, id, ...props }) => {
               return (
@@ -108,7 +149,7 @@ const Step3 = () => {
           <Select
             data={Array(30).fill()}
             label={
-              (building?.floor && `${building?.floor} давхар`) || "Хэдэн давхар"
+              (building?.floor && `${building?.floor} давхар`) || 'Хэдэн давхар'
             }
             Item={({ data, onClick, id, ...props }) => {
               return (
@@ -133,7 +174,7 @@ const Step3 = () => {
 
 const Row = (props) => {
   return (
-    <div className="grid md:grid-cols-2 grid-cols-1 w-full gap-4 my-8">
+    <div className="grid w-full grid-cols-1 gap-4 my-8 md:grid-cols-2">
       {props.children}
     </div>
   );
