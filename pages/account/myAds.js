@@ -27,7 +27,7 @@ const MyAds = () => {
   }, []);
 
   return (
-    <>
+    <div id="#da">
       <Heading variant={'mediumHeading'}>
         <AdContent data={products} tlc={toLowerCase} title=" " />
       </Heading>
@@ -35,7 +35,7 @@ const MyAds = () => {
       <Stack display={{ base: 'flex', md: 'none' }}>
         <AdContent data={products} tlc={toLowerCase} title=" " />
       </Stack>
-    </>
+    </div>
   );
 };
 
