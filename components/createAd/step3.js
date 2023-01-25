@@ -1,11 +1,10 @@
-import Counter from "@/lib/Counter";
-import { DateYearSelector } from "@/lib/DateSelector";
-import Input from "@/lib/Input";
-import Select from "@/lib/Select";
-import React, { useState } from "react";
-import ButtonSelectItem from "./formButtonSelectItem";
-import FormLabel from "./formLabel";
-import FormLine from "./formLine";
+import Counter from '@/lib/Counter';
+import { DateYearSelector } from '@/lib/DateSelector';
+import Select from '@/lib/Select';
+import { useState } from 'react';
+import ButtonSelectItem from './formButtonSelectItem';
+import FormLabel from './formLabel';
+import FormLine from './formLine';
 
 const Step3 = () => {
   const [roomNumber, setRoomNumber] = useState(false);
@@ -19,7 +18,7 @@ const Step3 = () => {
       <Row>
         <Col>
           <FormLabel title="Өрөөний тоо" />
-          {/* <div className="w-full flex justify-center items-center"> */}
+          {/* <div className="flex items-center justify-center w-full"> */}
           <Counter
             limit={5}
             maxValue="5+"
@@ -28,8 +27,8 @@ const Step3 = () => {
         </Col>
         <Col>
           <FormLabel title="Мастер унтлагын өрөөний тоо" />
-          <di className="flex flex-row justify-center gap-4">
-            {["Байхгүй", "1", "2", "2+"].map((text, id) => {
+          <div className="flex flex-row justify-center gap-4">
+            {['Байхгүй', '1', '2', '2+'].map((text, id) => {
               const isSelected = text === bedRoomNumber;
               return (
                 <ButtonSelectItem
@@ -40,7 +39,7 @@ const Step3 = () => {
                 />
               );
             })}
-          </di>
+          </div>
         </Col>
       </Row>
       <FormLine />
@@ -85,7 +84,7 @@ const Step3 = () => {
             data={Array(30).fill()}
             label={
               (building?.allFloor && `${building?.allFloor} давхар`) ||
-              "Барилгын давхар"
+              'Барилгын давхар'
             }
             Item={({ data, onClick, id, ...props }) => {
               return (
@@ -108,7 +107,7 @@ const Step3 = () => {
           <Select
             data={Array(30).fill()}
             label={
-              (building?.floor && `${building?.floor} давхар`) || "Хэдэн давхар"
+              (building?.floor && `${building?.floor} давхар`) || 'Хэдэн давхар'
             }
             Item={({ data, onClick, id, ...props }) => {
               return (
@@ -133,7 +132,7 @@ const Step3 = () => {
 
 const Row = (props) => {
   return (
-    <div className="grid md:grid-cols-2 grid-cols-1 w-full gap-4 my-8">
+    <div className="grid w-full grid-cols-1 gap-4 my-8 md:grid-cols-2">
       {props.children}
     </div>
   );

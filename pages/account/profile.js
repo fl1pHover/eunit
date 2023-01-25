@@ -1,101 +1,68 @@
-import {
-  Heading,
-  Input,
-  InputGroup,
-  InputLeftAddon,
-  InputRightElement,
-  Radio,
-  RadioGroup,
-  Stack,
-} from '@chakra-ui/react';
-import { Tabs } from 'flowbite-react';
+import ButtonSelectItem from '@/components/createAd/formButtonSelectItem';
+import ProfileInput from '@/components/Profile/profileInput';
+import Input from '@/lib/Input';
+import mergeNames from '@/util/mergeNames';
 import { useState } from 'react';
 
-import { BiUser } from 'react-icons/bi';
-import { BsTelephone } from 'react-icons/bs';
-
-const GroupLayout = ({ title, children }) => (
-  <div className="flex flex-col gap-1">
-    <Heading variant="smallHeading">{title}</Heading>
-    {children}
+const GroupLayout = ({ title, children, icon, className = '' }) => (
+  <div className={mergeNames('flex flex-col justify-center gap-3', className)}>
+    <h2 className="text-[20px] font-bold">{title}</h2>
+    <div className="relative flex gap-1">
+      {children}
+      {icon}
+    </div>
   </div>
 );
 
-const Group = ({ placeholder, icon, phone }) => {
-  return (
-    <InputGroup>
-      {phone}
-      <Input
-        placeholder={placeholder}
-        variant="flushed"
-        focusBorderColor="mainBlossom"
-      />
-      <InputRightElement>
-        {/* <BiUser color="green.500" /> */}
-        {icon}
-      </InputRightElement>
-    </InputGroup>
-  );
-};
-
-const Item = ({ children, className }) => {
-  return (
-    <div className={`${className} grid grid-cols-2 py-5 gap-x-20 gap-y-10 `}>
-      {children}
-    </div>
-  );
-};
-
 const Profile = () => {
-  const [expand, setExpand] = useState(false);
-  console.log(expand);
+  const [agent, setAgent] = useState('Энгийн');
 
   return (
-    <div
-      className={`${
-        expand ? 'w-[100%]' : 'w-[50%]'
-      } flex rounded-xl bg-white p-5 shadow-md transition-all duration-200`}
-    >
-      <Tabs.Group
-        aria-label="Tabs with underline"
-        style="underline"
-        onClick={() => setExpand(!expand)}
-      >
-        <Tabs.Item active={true} title="Хувийн мэдээлэл" height="100%">
-          {/* <Heading variant={'mediumHeading'}>Хувийн мэдээлэл</Heading> */}
+    <div className="flex-col justify-between h-full ">
+      <div className="grid grid-cols-1 py-5 gap-x-20 gap-y-10">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
+          <GroupLayout title="Овог Нэр">
+            <Input ph="Lorem lorem" />
+            <ProfileInput item="username" />
+          </GroupLayout>
+          <GroupLayout title="Утас">
+            <Input type="number" ph="Lorem lorem" />
+            <ProfileInput item="phone" />
+          </GroupLayout>
+        </div>
 
-          <div className="items-end h-full flex-col-justify-between">
-            <Item>
-              <GroupLayout title="Овог Нэр">
-                <Group placeholder="Lorem lorem" icon={<BiUser />} />
-              </GroupLayout>
-              <GroupLayout title="Утас">
-                <Group
-                  placeholder="0000-0000"
-                  phone={<InputLeftAddon className="px-2">+976</InputLeftAddon>}
-                  icon={<BsTelephone />}
+        <GroupLayout title="Хэрэглэгчийн төрөл">
+          <div className="flex flex-row justify-center gap-4">
+            {['Энгийн', 'Агент', 'Байгууллага'].map((text, id) => {
+              const isSelected = text === agent;
+              return (
+                <ButtonSelectItem
+                  text={text}
+                  key={id}
+                  isSelected={isSelected}
+                  onClick={() => setAgent(text)}
                 />
-              </GroupLayout>
-
-              <GroupLayout title="Хэрэглэгчийн төрөл">
-                <RadioGroup>
-                  <Stack spacing={5} direction="row" height="40px">
-                    <Radio>Энгийн</Radio>
-                    <Radio>Байгууллага</Radio>
-                  </Stack>
-                </RadioGroup>
-              </GroupLayout>
-              <GroupLayout title="Төрсөн өдөр">
-                <Input type="date" />
-              </GroupLayout>
-            </Item>
+              );
+            })}
           </div>
-          <button className="float-right h-full">asd</button>
-        </Tabs.Item>
-        <Tabs.Item title="Миний зарууд">Миний зарууд</Tabs.Item>
-        <Tabs.Item title="Хүсэл">Хүсэл</Tabs.Item>
-        <Tabs.Item title="Хэтэвч">Хэтэвч</Tabs.Item>
-      </Tabs.Group>
+        </GroupLayout>
+        <GroupLayout title="Төрсөн өдөр">
+          <input
+            type="date"
+            className={mergeNames(
+              'flex items-center justify-between"',
+              'w-full px-4 py-2',
+              'font-medium text-black placeholder-slate-400',
+              'border-2 border-blue-400 rounded-full',
+              'md:w-2/3 bg-blue-100/10 outline-blue-400 '
+            )}
+          />
+          <ProfileInput item="date" />
+        </GroupLayout>
+      </div>
+      <button className="float-right px-5 py-2 font-bold text-white bg-mainBlue rounded-[30px]">
+        Хадгалах
+      </button>
     </div>
   );
 };
