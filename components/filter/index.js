@@ -16,23 +16,22 @@ import {
   Text,
   useDisclosure,
   VStack,
-} from "@chakra-ui/react";
-import axios from "axios";
-import { Router, useRouter } from "next/router";
-import { useRef, useState, useEffect } from "react";
-import urls from "../../constants/api";
-import { useAuth } from "../../context/auth";
+} from '@chakra-ui/react';
+import axios from 'axios';
+import { useEffect, useRef, useState } from 'react';
+import urls from '../../constants/api';
+import { useAuth } from '../../context/auth';
 
-import FilterStack from "../../util/filterStack";
+import FilterStack from '../../util/filterStack';
 
 const FilterLayout = ({ data }) => {
   const [filter, setFilter] = useState();
   const { districts, locations, categories, setAds } = useAuth();
   const [subCategory, setSubCategory] = useState();
-  
+
   const [positions, setPositions] = useState({
-    district_id: "",
-    location_id: "",
+    district_id: '',
+    location_id: '',
   });
   const [adType, setAdType] = useState({
     rent: false,
@@ -42,16 +41,15 @@ const FilterLayout = ({ data }) => {
   const btnRef = useRef();
   useEffect(() => {
     if (data) {
-      console.log(data)
+      console.log(data);
       try {
         axios
-          .get(`${urls["test"]}/category/filters/{id}/false?id=${data}`, {})
+          .get(`${urls['test']}/category/filters/{id}/true?id=${data}`, {})
           .then((d) => {
             setSubCategory(d.data?.subCategory);
             setFilter(d.data?.filters);
             console.log(d.data?.filters);
-            console.log(d.data)
-            
+            console.log(d.data);
           });
       } catch (e) {
         console.log(e);
@@ -62,20 +60,20 @@ const FilterLayout = ({ data }) => {
     try {
       let types = [];
       if (adType.rent) {
-        types.push("rent");
+        types.push('rent');
       }
-      if (adType.sell) types.push("sell");
+      if (adType.sell) types.push('sell');
 
       axios
-        .post(`${urls["test"]}/ad/filter`, {
+        .post(`${urls['test']}/ad/filter`, {
           filters: filter,
           adTypes: types,
           positions: positions,
-          subCategory: subCategory._id
+          subCategory: subCategory._id,
         })
         .then((d) => {
-          setAds(d.data)
-          console.log(d.data)
+          setAds(d.data);
+          console.log(d.data);
         });
     } catch (e) {
       console.log(e);
@@ -102,16 +100,16 @@ const FilterLayout = ({ data }) => {
   return (
     <>
       <Box
-        maxWidth={"20%"}
+        maxWidth={'20%'}
         flex="0 0 20%"
-        bgColor={"white"}
+        bgColor={'white'}
         p={5}
         rounded={10}
         boxShadow="base"
-        display={{ base: "none", md: "block" }}
+        display={{ base: 'none', md: 'block' }}
       >
         <FilterStack>
-          <Heading variant={"smallHeading"} mb={2}>
+          <Heading variant={'smallHeading'} mb={2}>
             Үл хөдлөх хөрөнгө
           </Heading>
           {categories?.map((c) => {
@@ -119,7 +117,13 @@ const FilterLayout = ({ data }) => {
               <>
                 {c.subCategory.map(({ href, name }, id) => {
                   return (
-                    <Link key={id} href={`/category/${href}`} p={1} mt={0} fontWeight={data == href ? 'bold': 'medium'}>
+                    <Link
+                      key={id}
+                      href={`/category/${href}`}
+                      p={1}
+                      mt={0}
+                      fontWeight={data == href ? 'bold' : 'medium'}
+                    >
                       <Text>{name}</Text>
                     </Link>
                   );
@@ -130,11 +134,11 @@ const FilterLayout = ({ data }) => {
         </FilterStack>
 
         <FilterStack>
-          <Heading variant={"smallHeading"} mb={2}>
+          <Heading variant={'smallHeading'} mb={2}>
             Зарах & Түрээслүүлэх
           </Heading>
           <Checkbox
-            borderColor={"mainBlue"}
+            borderColor={'mainBlue'}
             defaultChecked
             onChange={(e) =>
               setAdType((adType) => ({ ...adType, sell: e.target.checked }))
@@ -151,7 +155,7 @@ const FilterLayout = ({ data }) => {
           </Checkbox>
         </FilterStack>
         <FilterStack>
-          <Heading variant={"smallHeading"} mb={2}>
+          <Heading variant={'smallHeading'} mb={2}>
             Байршлаар
           </Heading>
           {/* <AspectRatio ratio={16 / 9}>
@@ -159,13 +163,13 @@ const FilterLayout = ({ data }) => {
                          </AspectRatio> */}
         </FilterStack>
 
-        <FilterStack borderBottom={"2px solid "} borderColor="bgGrey">
-          <Heading variant={"smallHeading"}>Нэмэлт хайлт</Heading>
+        <FilterStack borderBottom={'2px solid '} borderColor="bgGrey">
+          <Heading variant={'smallHeading'}>Нэмэлт хайлт</Heading>
           <Select
-            placeholder={"Дүүрэг"}
+            placeholder={'Дүүрэг'}
             variant="outline"
             borderWidth="2px"
-            color={"mainBlossom"}
+            color={'mainBlossom'}
             onChange={(e) =>
               setPositions((positions) => ({
                 ...positions,
@@ -183,10 +187,10 @@ const FilterLayout = ({ data }) => {
           </Select>
           {positions.district_id && (
             <Select
-              placeholder={"Байршил"}
+              placeholder={'Байршил'}
               variant="outline"
               borderWidth="2px"
-              color={"mainBlossom"}
+              color={'mainBlossom'}
               onChange={(e) =>
                 setPositions((positions) => ({
                   ...positions,
@@ -207,8 +211,8 @@ const FilterLayout = ({ data }) => {
           {filter?.map((f, i) => {
             return f.values.length == 0 ? (
               <VStack flex key={i}>
-                <Heading variant={"smallHeading"}>{f.name}</Heading>
-                <Flex alignItems={"center"} gap={2}>
+                <Heading variant={'smallHeading'}>{f.name}</Heading>
+                <Flex alignItems={'center'} gap={2}>
                   <Input
                     type="number"
                     placeholder="Доод"
@@ -232,7 +236,7 @@ const FilterLayout = ({ data }) => {
                 placeholder={f.name}
                 variant="outline"
                 borderWidth="2px"
-                color={"mainBlossom"}
+                color={'mainBlossom'}
                 onChange={(e) => setFilters(f.id, e, true)}
               >
                 {f.values.map((item, i) => {
@@ -246,7 +250,7 @@ const FilterLayout = ({ data }) => {
             );
           })}
 
-          <Button variant={"blueButton"} mx={4} onClick={() => filterAd()}>
+          <Button variant={'blueButton'} mx={4} onClick={() => filterAd()}>
             Хайх
           </Button>
         </FilterStack>
@@ -264,16 +268,16 @@ const FilterLayout = ({ data }) => {
 
           <DrawerBody>
             <FilterStack>
-              <Heading variant={"smallHeading"} mb={2}>
+              <Heading variant={'smallHeading'} mb={2}>
                 Зарах & Түрээслүүлэх
               </Heading>
-              <Checkbox borderColor={"mainBlue"} defaultChecked>
+              <Checkbox borderColor={'mainBlue'} defaultChecked>
                 Зарна
               </Checkbox>
               <Checkbox>Түрээслүүлнэ</Checkbox>
             </FilterStack>
             <FilterStack>
-              <Heading variant={"smallHeading"} mb={2}>
+              <Heading variant={'smallHeading'} mb={2}>
                 Байршлаар
               </Heading>
               {/* <AspectRatio ratio={16 / 9}>
@@ -281,13 +285,13 @@ const FilterLayout = ({ data }) => {
                          </AspectRatio> */}
             </FilterStack>
 
-            <FilterStack borderBottom={"2px solid "} borderColor="bgGrey">
-              <Heading variant={"smallHeading"}>Нэмэлт хайлт</Heading>
+            <FilterStack borderBottom={'2px solid '} borderColor="bgGrey">
+              <Heading variant={'smallHeading'}>Нэмэлт хайлт</Heading>
             </FilterStack>
           </DrawerBody>
 
           <DrawerFooter>
-            <Button variant={"blueButton"} width="full" mx={4}>
+            <Button variant={'blueButton'} width="full" mx={4}>
               Хайх
             </Button>
           </DrawerFooter>
