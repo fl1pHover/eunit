@@ -1,12 +1,9 @@
-import Input from "@/lib/Input";
-import Select from "@/lib/Select";
-import mergeNames from "@/util/mergeNames";
-import React, { useState } from "react";
-import { BiCheck } from "react-icons/bi";
-import { CgChevronDown } from "react-icons/cg";
-import ButtonSelectItem from "./formButtonSelectItem";
-import FormLabel from "./formLabel";
-import FormLine from "./formLine";
+import Input from '@/lib/Input';
+import Select from '@/lib/Select';
+import React, { useState } from 'react';
+import ButtonSelectItem from './formButtonSelectItem';
+import FormLabel from './formLabel';
+import FormLine from './formLine';
 
 const Step2 = ({
   subCategory = {},
@@ -56,7 +53,7 @@ const Step2 = ({
     <div className="w-full">
       <FormLabel title="Дүүрэг / Орон нутаг" num={3} />
       {/* DISTRICT CUSTOM SELECTION */}
-      <div className="flex flex-wrap md:space-x-4 md:gap-0 gap-2 justify-center">
+      <div className="flex flex-wrap justify-center gap-2 md:space-x-4 md:gap-0">
         {districts?.map((item, key) => {
           return (
             <ButtonSelectItem
@@ -65,11 +62,11 @@ const Step2 = ({
               isSelected={selectedLocalData?.district === item?.name}
               onClick={() => {
                 setDistrictId(item?._id);
-                setLocationId("");
+                setLocationId('');
                 setPositionNames((prev) => ({
                   ...prev,
                   district: item?.name,
-                  location: "",
+                  location: '',
                 }));
                 setSelectedLocalData((prev) => ({
                   ...prev,
@@ -83,68 +80,72 @@ const Step2 = ({
       </div>
 
       <FormLine />
-      <div className="mb-10 mt-4">
-        <FormLabel title="Байршил" num={4} />
-        <Select
-          data={locationData}
-          label={selectedLocalData?.location || "Байршил"}
-          Item={({ data, onClick, ...props }) => {
-            return (
-              <button
-                {...props}
-                onClick={() => {
-                  onClick();
-                  setLocationId(data?._id);
-                  setPositionNames((prev) => ({
-                    ...prev,
-                    location: data?.name,
-                  }));
-                  setSelectedLocalData((prev) => ({
-                    ...prev,
-                    location: data?.name,
-                  }));
-                }}
-              >
-                <p>{data?.name}</p>
-                {props.children}
-              </button>
-            );
-          }}
-        />
-      </div>
+      {selectedLocalData.district && (
+        <div className="mt-4 mb-10">
+          <FormLabel title="Байршил" num={4} />
+          <Select
+            data={locationData}
+            label={selectedLocalData?.location || 'Байршил'}
+            Item={({ data, onClick, ...props }) => {
+              return (
+                <button
+                  {...props}
+                  onClick={() => {
+                    onClick();
+                    setLocationId(data?._id);
+                    setPositionNames((prev) => ({
+                      ...prev,
+                      location: data?.name,
+                    }));
+                    setSelectedLocalData((prev) => ({
+                      ...prev,
+                      location: data?.name,
+                    }));
+                  }}
+                >
+                  <p>{data?.name}</p>
+                  {props.children}
+                </button>
+              );
+            }}
+          />
+        </div>
+      )}
 
       <FormLine />
-      <div className="flex md:flex-row flex-col md:gap-4 gap-8">
-        <InputContainer>
-          <FormLabel title="Хороо / Сум" />
-          <Input
-            value={selectedLocalData?.committee}
-            ph="Хороо / Сум"
-            onChange={(val) => {
-              setCommitteeId(val);
-              handleNamedata("committee", val);
-            }}
-          />
-        </InputContainer>
+      {selectedLocalData.location && (
+        <div className="flex flex-col gap-8 md:flex-row md:gap-4">
+          <InputContainer>
+            <FormLabel title="Хороо / Сум" />
+            <Input
+              value={selectedLocalData?.committee}
+              ph="Хороо / Сум"
+              onChange={(val) => {
+                setCommitteeId(val);
+                handleNamedata('committee', val);
+              }}
+            />
+          </InputContainer>
 
-        <InputContainer>
-          <FormLabel title="Хотхон" />
-          <Input
-            ph="Хотхон"
-            value={selectedLocalData?.town}
-            onChange={(val) => {
-              setCommitteeId(val);
-              handleNamedata("town", val);
-            }}
-          />
-        </InputContainer>
-      </div>
+          <InputContainer>
+            <FormLabel title="Хотхон" />
+            <Input
+              ph="Хотхон"
+              value={selectedLocalData?.town}
+              onChange={(val) => {
+                setCommitteeId(val);
+                handleNamedata('town', val);
+              }}
+            />
+          </InputContainer>
+        </div>
+      )}
     </div>
   );
 };
 
 const InputContainer = (props) => (
-  <div className="md:w-1/2 w-full flex flex-col items-center">
+  <div className="flex flex-col items-center w-full md:w-1/2">
     {props.children}
   </div>
 );
