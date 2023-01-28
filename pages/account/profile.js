@@ -1,6 +1,7 @@
 import ButtonSelectItem from '@/components/createAd/formButtonSelectItem';
 import ProfileInput from '@/components/Profile/profileInput';
 import mergeNames from '@/util/mergeNames';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 const GroupLayout = ({ title, children, className = '' }) => (
@@ -17,12 +18,12 @@ const GroupLayout = ({ title, children, className = '' }) => (
 
 const Profile = () => {
   const [agent, setAgent] = useState('Энгийн');
-
+  const router = useRouter();
   return (
     <div className="flex-col h-full">
       <div
         className={mergeNames(
-          'grid grid-cols-1 sm:grid-cols-2',
+          'grid grid-cols-1 xs:grid-cols-2',
           'gap-y-10 gap-x-10',
           'py-5'
         )}
@@ -32,7 +33,13 @@ const Profile = () => {
         </GroupLayout>
 
         <GroupLayout title="Утас">
-          <ProfileInput type="number" ph="0000-0000" item="phone" />
+          <ProfileInput
+            disabled
+            type="number"
+            ph="0000-0000"
+            item="phone"
+            // className="cursor-not-allowed invalid:border"
+          />
         </GroupLayout>
 
         <GroupLayout
@@ -70,7 +77,12 @@ const Profile = () => {
           />
         </GroupLayout>
       </div>
-      <button className="float-right px-5 py-2 font-bold text-white bg-mainBlue rounded-[30px]">
+      <button
+        className={mergeNames(
+          'hidden',
+          'float-right px-5 py-2 font-bold text-white bg-mainBlue rounded-[30px]'
+        )}
+      >
         Хадгалах
       </button>
     </div>

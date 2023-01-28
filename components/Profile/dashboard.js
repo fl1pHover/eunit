@@ -1,6 +1,7 @@
 import { STYLES } from '@/styles/index';
 import mergeNames from '@/util/mergeNames';
 import { Center, Flex, Image } from '@chakra-ui/react';
+import { useState } from 'react';
 import { AiOutlineEdit } from 'react-icons/ai';
 import { FiLogOut } from 'react-icons/fi';
 import DashStatus from './dashStatus';
@@ -9,6 +10,12 @@ import DashStatus from './dashStatus';
 // main dashboard layout
 
 const Dashboard = () => {
+  const [isDisabled, setIsDisabled] = useState(false);
+  
+  const handleClick = () => {
+    setIsDisabled(!isDisabled);
+  };
+
   return (
     <div
       className={mergeNames(
@@ -27,7 +34,11 @@ const Dashboard = () => {
           />
         </Center>
 
-        <button className="absolute top-2 right-2 p-2 text-[20px] text-white bg-teal-600 rounded-[10px]">
+        <button
+          onClick={handleClick}
+          disabled
+          className="absolute cursor-pointer top-2 right-2 p-2 text-[20px] text-white bg-teal-600 rounded-[10px]"
+        >
           <AiOutlineEdit />
         </button>
         <DashStatus

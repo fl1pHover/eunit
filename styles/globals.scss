@@ -27,6 +27,17 @@ input[type='date']::-webkit-calendar-picker-indicator {
   transition: 0.3s ease;
 }
 
+.delete {
+  @apply w-6 h-6 bg-blue-500 ring-4 shadow-xl;
+  &::before {
+    content: '';
+
+    @apply bg-white w-[13px] h-[2px] absolute top-[50%] left-[50%];
+
+    transform: translate(-50%, -50%);
+  }
+}
+
 html {
   scroll-behavior: smooth;
   // user-select: none;

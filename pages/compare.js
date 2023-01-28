@@ -1,5 +1,6 @@
-import { Box, Center, Divider, Heading, Image } from '@chakra-ui/react';
-import { RxLayers } from 'react-icons/rx';
+import { Image, Link } from '@chakra-ui/react';
+import { BiRightArrowAlt } from 'react-icons/bi';
+import MainContainer from '../layout/mainContainer';
 import { STYLES } from '../styles';
 
 const compareTitle = [
@@ -59,77 +60,82 @@ const compareTitle = [
   },
 ];
 
-const asd = [{ id: '1' }, { id: '2' }, { id: '3' }];
-
-const Compare = () => {
+const Comparing = () => {
   return (
-    <Box
-      as="section"
-      id="compare"
-      rounded={10}
-      // my={3}
-      mx={1}
-      // md:max-w-[75%]
-      className="max-w-full bg-white"
-    >
-      <div className="grid grid-cols-3 bg-white py-10 px-5 rounded-2xl gap-8 w-[70%] mx-auto">
-        {asd.map((a, i) => {
-          return (
-            <Center
-              className={`${STYLES.flexAround} flex-col`}
-              key={i}
-              id={a.id}
+    <div className="">
+      <MainContainer>
+        <div className="flex bg-white my-10 rounded-[20px] sm:text-[14px] md:text-[16px] text-[12px]">
+          <div className="flex flex-col">
+            {/* Zariin zurag garchig */}
+            <div
+              className={`${STYLES.height} h-[250px] sm:h-[350px] w-full border-r border-r-blue`}
             >
               <Image
-                src="/images/HeaderSlider/1.jpg"
-                alt="comparing image 1"
-                className="object-cover w-full aspect-square"
+                src="/images/logo/bom-blue-text.png"
+                alt="asd"
+                className="object-contain h-full w-[150px]  mx-auto p-5 "
               />
-              <Divider className="my-10" />{' '}
-              <Heading variant="smallHeading">
-                199,000,000
-                <span> ₮</span>
-              </Heading>
-            </Center>
-          );
-        })}
-
-        <Heading
-          variant="mainHeading"
-          className="col-span-3 pb-5 border-b border-b-bggrey"
-        >
-          Мэдээлэл
-        </Heading>
-
-        {asd.map((a, i) => {
-          return (
-            <>
-              <Center key={i} id={a.id} className="flex-col">
-                <RxLayers className="text-[40px]" />
-                <Center className={`${STYLES.flexAround}`}>asdasd</Center>
-              </Center>
-              <Center key={i} id={a.id} className="flex-col">
-                <RxLayers className="text-[40px]" />
-                <Center className={`${STYLES.flexAround}`}>asdasd</Center>
-              </Center>
-              <Center key={i} id={a.id} className="flex-col">
-                <RxLayers className="text-[40px]" />
-                <Center className={`${STYLES.flexAround}`}>asdasd</Center>
-              </Center>
-              <Center key={i} id={a.id} className="flex-col">
-                <RxLayers className="text-[40px]" />
-                <Center className={`${STYLES.flexAround}`}>asdasd</Center>
-              </Center>
-              <Center key={i} id={a.id} className="flex-col">
-                <RxLayers className="text-[40px]" />
-                <Center className={`${STYLES.flexAround}`}>asdasd</Center>
-              </Center>
-            </>
-          );
-        })}
-      </div>
-    </Box>
+            </div>
+            <h2 className="relative font-bold bg-[#eef0f2] p-2 z-0 flex justify-around">
+              <span className="bg-[#eef0f2] absolute top-0 left-0 w-screen h-full z-[-1]" />
+              <span>Мэдээлэл</span>
+              <span>\</span>
+              <span className="text-green-700">Үнэ</span>
+            </h2>
+            {/* Fixed information */}
+            <div className="border-r border-r-blue">
+              {compareTitle.map((title, index) => (
+                <p
+                  key={index}
+                  className={`${
+                    index % 2 == 0 ? ' ' : 'bg-gray-100 '
+                  } whitespace-nowrap py-2 px-5`}
+                >
+                  {title.title}
+                </p>
+              ))}
+            </div>
+          </div>
+          <div className="flex w-full overflow-x-scroll ">
+            {/* Product 1 */}
+            <Link href="/" target="_blank">
+              <div className="min-w-[150px] max-w-[350px] flex-1 border-r border-r-blue">
+                <div
+                  className={`${STYLES.height} ${STYLES.flexAround} px-5 py-5 flex-col`}
+                >
+                  <Image
+                    src="/images/Category/computer.jpg"
+                    alt=""
+                    className="min-h-[100px] max-h-[200px]  object-cover mx-auto rounded-xl"
+                  />
+                  <h1 className="font-bold">Lorem ipsum dolor sit amet.</h1>
+                  <button className="flex flex-row items-center gap-6 px-4 py-1 font-bold text-white bg-blue-500 rounded-2xl">
+                    Орох
+                    <BiRightArrowAlt className="text-blue-800 bg-white rounded-full" />
+                  </button>
+                </div>
+                <div className="text-center">
+                  <h2 className="relative p-2 font-bold text-green-700">
+                    200,000$
+                  </h2>
+                  {compareTitle.map((title, index) => (
+                    <p
+                      key={index}
+                      className={`${
+                        index % 2 == 0 ? '' : 'bg-gray-100  '
+                      } whitespace-nowrap py-2 px-5`}
+                    >
+                      999
+                    </p>
+                  ))}
+                </div>
+              </div>
+            </Link>
+          </div>
+        </div>
+      </MainContainer>
+    </div>
   );
 };
 
-export default Compare;
+export default Comparing;

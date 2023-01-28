@@ -13,11 +13,13 @@ const ProfileInput = ({ ph = '', props, type, className, item }) => {
     >
       <input
         {...props}
+        
         placeholder={ph}
         type={type}
+       
         // onChange={(e) => onChange(e.target.value)}
         className={mergeNames(
-          'px-4 py-2 w-full h-full flex items-center justify-between absolute top-0 left-0',
+          'px-4 cursor-not-allowed  py-2 w-full h-full disabled:focus flex items-center justify-between absolute top-0 left-0',
           STYLES.input,
           className
         )}
@@ -25,7 +27,7 @@ const ProfileInput = ({ ph = '', props, type, className, item }) => {
       />
       <div
         className={mergeNames(
-          'w-[40px] h-[40px] flex flex-row gap-2 items-center justify-center px-2 absolute right-0 top-0',
+          'w-[40px] h-[40px] pointer-events-none flex flex-row gap-2 items-center justify-center px-2 absolute right-0 top-0',
           'rounded-r-[30px]',
           'bg-blue-500 ring-blue-200'
         )}
