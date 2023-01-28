@@ -6,15 +6,57 @@ import ButtonSelectItem from './formButtonSelectItem';
 import FormLabel from './formLabel';
 import FormLine from './formLine';
 
-const Step3 = () => {
+const Step3 = ({ filter }) => {
   const [roomNumber, setRoomNumber] = useState(false);
   const [bedRoomNumber, setBedRoomNumber] = useState(false);
   const [bathroomNumber, setBathroomNumber] = useState(false);
   const [usedYear, setUsedYear] = useState(false);
   const [building, setBuilding] = useState({ allFloor: false, floor: false });
+  // const [filters, setFilters] = useState(filter)
 
   return (
     <div className="w-full">
+      {filter?.map((f, i) => {
+        console.log(f);
+        if (f.mark == 'year')
+          return (
+            <Col>
+              <FormLabel title={f.name} />
+              {/* <div className="flex items-center justify-center w-full"> */}
+              <DateYearSelector
+                defValue={usedYear}
+                placeholder={f.name}
+                onSelect={(num) => (f.value = num)}
+              />
+            </Col>
+          );
+        if (f.type == 'dropdown')
+          return (
+            <Col>
+              <FormLabel title={f.name} />
+              <Select
+                data={f.values}
+                label={f.value != '' ? f.value : f.name}
+                Item={({ data, onClick, id, ...props }) => {
+                  return (
+                    <button
+                      {...props}
+                      onClick={() => {
+                        console.log(f.value);
+                        console.log(f);
+                        onClick();
+                        f.value = data;
+                      }}
+                    >
+                      {id + 1}
+                      {props.children}
+                    </button>
+                  );
+                }}
+              />
+            </Col>
+          );
+      })}
       <Row>
         <Col>
           <FormLabel title="Өрөөний тоо" />

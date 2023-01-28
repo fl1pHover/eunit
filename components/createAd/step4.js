@@ -1,34 +1,33 @@
 import Input from "@/lib/Input";
-import React, { useState } from "react";
+import { useState } from "react";
 import { FiUploadCloud } from "react-icons/fi";
-import ButtonSelectItem from "./formButtonSelectItem";
-import FormLabel, { LilFormLabel } from "./formLabel";
+import { LilFormLabel } from "./formLabel";
 import FormLine from "./formLine";
 
-const Step4 = () => {
+const Step4 = ({ filter }) => {
   const [payment, setPayment] = useState(false);
   return (
     <div>
-      <div className="grid md:grid-cols-3 grid-cols-1 md:px-0 px-10 mt-4">
-        <div className="flex flex-col items-center">
-          <LilFormLabel title="Үнэ" />
-          <Input />
-        </div>
-        <div className="flex flex-col items-center">
-          <LilFormLabel title="Талбай" />
-          <Input />
-        </div>
-        <div className="flex flex-col items-center">
-          <LilFormLabel title="Нэгж талбай үнэ" />
-          <Input />
-        </div>
+      <div className="grid grid-cols-1 px-10 mt-4 md:grid-cols-3 md:px-0">
+        {filter?.map((f, i) => {
+          return (
+            <div className="flex flex-col items-center" key={i}>
+              <LilFormLabel title={f.name} />
+              <Input
+                onChange={(e) => {
+                  f.value = e;
+                }}
+              />
+            </div>
+          );
+        })}
       </div>
-      <FormLine />
-      <div className="flex md:flex-row flex-col justify-evenly items-center gap-4">
+      {/* <FormLine /> */}
+      {/* <div className="flex flex-col items-center gap-4 md:flex-row justify-evenly">
         <div>
           <LilFormLabel title="Төлбөрийн нөхцөл" />
           <div className="flex justify-center gap-4">
-            {["Банкны лизингтэй", "Хувь лизингтэй", "Бэлэн"].map(
+            {['Банкны лизингтэй', 'Хувь лизингтэй', 'Бэлэн'].map(
               (item, key) => {
                 const isSelected = item === payment;
                 return (
@@ -46,7 +45,7 @@ const Step4 = () => {
         <div>
           <LilFormLabel title="Бартер" />
           <div className="flex justify-center gap-4">
-            {["Байгаа", "Байхгүй"].map((item, key) => {
+            {['Байгаа', 'Байхгүй'].map((item, key) => {
               const isSelected = item === payment;
               return (
                 <ButtonSelectItem
@@ -59,10 +58,10 @@ const Step4 = () => {
             })}
           </div>
         </div>
-      </div>
+      </div> */}
       <FormLine />
-      <div className="flex flex-col items-center md:px-0 px-10 gap-8 mb-10">
-        <div className="w-1/2 flex flex-col items-center">
+      <div className="flex flex-col items-center gap-8 px-10 mb-10 md:px-0">
+        <div className="flex flex-col items-center w-1/2">
           <LilFormLabel title="Гарчиг" />
           <Input />
         </div>

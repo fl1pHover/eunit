@@ -57,7 +57,7 @@ const Bottom = ({ sticky }) => {
                             return (
                               <Link
                                 key={subkey}
-                                href={`/category/${id}/${href}`}
+                                href={`/category/${href}`}
                                 // className="px-4 py-3 text-sm font-medium text-white transition-colors ease-in hover:bg-blue-700 first-letter:uppercase whitespace-nowrap"
                               >
                                 <a className="px-4 py-3 text-sm font-medium text-white transition-colors ease-in hover:bg-blue-700 first-letter:uppercase whitespace-nowrap">
