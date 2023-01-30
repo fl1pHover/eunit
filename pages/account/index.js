@@ -1,6 +1,7 @@
 // import {
 
 import Dashboard from '@/components/Profile/dashboard';
+import { useAuth } from '@/context/auth';
 import MainContainer from '@/layout/mainContainer';
 import { STYLES } from '@/styles/index';
 import mergeNames from '@/util/mergeNames';
@@ -11,30 +12,30 @@ import Bookmark from './bookmark';
 import MyAds from './myAds';
 import Profile from './profile';
 
-const tabs = [
-  {
-    tabHeader: 'Хувийн мэдээлэл',
-    title: 'Profile',
-    comp: <Profile />,
-  },
-  {
-    tabHeader: 'Миний зарууд',
-    title: 'MyAds',
-    comp: <MyAds />,
-  },
-  {
-    tabHeader: 'Миний хүслүүд',
-    title: 'Bookmark',
-    comp: <Bookmark />,
-  },
-];
-
 // /account
 
 const Account = () => {
   const [content, setContent] = useState('Profile');
   const [active, setActive] = useState(false);
   const router = useRouter();
+  const { user } = useAuth();
+  const tabs = [
+    {
+      tabHeader: 'Хувийн мэдээлэл',
+      title: 'Profile',
+      comp: <Profile user={user} />,
+    },
+    {
+      tabHeader: 'Миний зарууд',
+      title: 'MyAds',
+      comp: <MyAds />,
+    },
+    {
+      tabHeader: 'Миний хүслүүд',
+      title: 'Bookmark',
+      comp: <Bookmark />,
+    },
+  ];
 
   return (
     <MainContainer py={5}>

@@ -16,8 +16,14 @@ const GroupLayout = ({ title, children, className = '' }) => (
   </div>
 );
 
-const Profile = () => {
-  const [agent, setAgent] = useState('Энгийн');
+const Profile = ({ user }) => {
+  const [agent, setAgent] = useState(
+    user?.userType == 'default'
+      ? 'Энгийн'
+      : user?.userType == 'agent'
+      ? 'Агент'
+      : 'Байгууллага' ?? 'Энгийн'
+  );
   const router = useRouter();
   return (
     <div className="flex-col h-full">
@@ -29,14 +35,14 @@ const Profile = () => {
         )}
       >
         <GroupLayout title="Овог Нэр">
-          <ProfileInput ph="Ганхуяг Баяр...." item="username" />
+          <ProfileInput ph={user?.username} item="username" />
         </GroupLayout>
 
         <GroupLayout title="Утас">
           <ProfileInput
             disabled
             type="number"
-            ph="0000-0000"
+            ph={user?.phone}
             item="phone"
             // className="cursor-not-allowed invalid:border"
           />
@@ -70,7 +76,7 @@ const Profile = () => {
         <GroupLayout title="Бүртгэлтэй Имэйл">
           <ProfileInput
             type="email"
-            ph="you@example.com"
+            ph={user?.email}
             item="email"
             className="disabled:"
             disabled

@@ -28,7 +28,7 @@ export default function CreateAd({ props }) {
 
   const [selectedIndex, setSelectedIndex] = React.useState({
     category: false,
-    subCategory: false,
+  subCategory: false,
   });
 
   const [subCategory, setSubCategory] = useState();
