@@ -1,3 +1,4 @@
+import mergeNames from '@/util/mergeNames';
 import {
   Button,
   Divider,
@@ -8,6 +9,7 @@ import {
   Textarea,
 } from '@chakra-ui/react';
 import { useState } from 'react';
+import { MdExpandMore } from 'react-icons/md';
 import { STYLES } from '../styles';
 
 const EstInput = (onChange, value) => {
@@ -39,13 +41,14 @@ const CalcInput = ({
         <Flex className="items-center gap-3">
           <NumberInput
             precision={2}
+
             // precision={pre}
           >
             <NumberInputField
               placeholder={placeholder}
-              width="200px"
               onChange={onChange}
               value={value}
+              className="border-2 border-blue-400 rounded-full w-full sm:w-[300px] text-mainBlossom font-semibold"
               required
             />
           </NumberInput>
@@ -126,19 +129,42 @@ function ECalculator() {
     }
   };
 
-  // const [value, setValue] = React.useState(0);
+  const [expand, setExpand] = useState(false);
   // const handleChange = (value) => setValue(value);
 
   return (
-    <div className="flex flex-col gap-3 p-10 mt-10 bg-white shadow-md rounded-10">
-      <div className="flex justify-between">
-        <Heading variant={'mediumHeading'} textTransform="uppercase">
+    <div className="relative flex flex-col gap-3 px-5 py-10 mt-10 bg-white shadow-md sm:p-10 rounded-xl">
+      <div className={mergeNames(STYLES.flexBetween)}>
+        <h1 className="text-sm font-bold uppercase md:text-lg">
           Зээлийн тооцоолуур
-        </Heading>
-        <Heading variant={'smallHeading'}>Тооцоог дэлгэрэнгүй харах</Heading>
+        </h1>
+        <button
+          onClick={() => setExpand(!expand)}
+          className="absolute bottom-0 left-0 w-full"
+        >
+          <MdExpandMore
+            className={mergeNames(
+              expand ? 'rotate-180' : 'rotate-0',
+              'text-[40px] text-mainBlossom transition-all ease-in-out mx-auto'
+            )}
+          />
+        </button>
+        <Flex gap={4}>
+          <Heading
+            variant={'smallHeading'}
+            className="text-blue-700 underline cursor-pointer"
+          >
+            Задаргаа
+          </Heading>
+        </Flex>
       </div>
       <Divider />
-      <div className="grid grid-cols-1 gap-3 lg:grid-cols-2 lg:gap-10">
+      <div
+        className={mergeNames(
+          'grid-cols-1 gap-3 lg:grid-cols-2 lg:gap-10 transition-all duration-500',
+          expand ? 'grid' : 'hidden'
+        )}
+      >
         <div>
           <CalcInput
             heading="Орон сууцны үнэ"
@@ -194,7 +220,12 @@ function ECalculator() {
           <div
             className={`${STYLES.flexBetween} flex-col gap-3 items-baseline xs:items-center xs:flex-row mt-6`}
           >
-            <Button onClick={calculateLoan}>Тооцоолох</Button>
+            <Button
+              onClick={calculateLoan}
+              className="text-white bg-blue-600 hover:bg-blue-800"
+            >
+              Тооцоолох
+            </Button>
             <Heading variant={'smallHeading'}>Нийт төлөгдөх хэмжээ</Heading>
             <Heading variant={'mediumHeading'} color="mainBlossom">
               {amount}₮

@@ -17,7 +17,6 @@ import { useEffect, useState } from 'react';
 // import "swiper/css";
 
 import { FaHeart } from 'react-icons/fa';
-import FilterLayout from '../../components/filter';
 import MainContainer from '../../layout/mainContainer';
 import ProductCard from '../../util/productCard';
 import ECalculator from '../calculator';
@@ -27,10 +26,12 @@ import ScrollTop from '../../lib/ScrollTop';
 // Icons
 
 // Image Swiper Gallery
-import moment from "moment/moment";
-import { useRouter } from "next/router";
-import ImageGallery from "react-image-gallery";
-import urls from "../../constants/api";
+import { STYLES } from '@/styles/index';
+import mergeNames from '@/util/mergeNames';
+import moment from 'moment/moment';
+import { useRouter } from 'next/router';
+import ImageGallery from 'react-image-gallery';
+import urls from '../../constants/api';
 import { useAuth } from '../../context/auth';
 
 const images = [
@@ -79,7 +80,7 @@ const images = [
 ];
 
 const ProductInfo = ({ title, value, children, key }) => {
-console.log(value)
+  console.log(value);
   return (
     <GridItem className="product__info" key={key}>
       {children ? (
@@ -136,7 +137,7 @@ const product = {
 };
 const Product = () => {
   const toast = useToast();
-  const {districts, locations} = useAuth()
+  const { districts, locations } = useAuth();
   const router = useRouter();
   const [data, setData] = useState('');
   const getData = async () => {
@@ -167,7 +168,8 @@ const Product = () => {
           {/* //TODO Filter box end */}
 
           {/* //TODO Main product */}
-          <Box maxWidth={'75%'} flex="0 0 75%" borderRadius="5px">
+          <Box maxWidth={'100%'} flex="0 0 100%" borderRadius="5px">
+            {/* <Box maxWidth={'75%'} flex="0 0 75%" borderRadius="5px"> */}
             <Box bgColor={'white'} p={10} rounded={10} boxShadow="base">
               {/*Product */}
               {data.title && (
@@ -175,19 +177,14 @@ const Product = () => {
                   {data.title}
                 </Heading>
               )}
-              <Grid
-                className="product__content-wrapper"
-                templateColumns="repeat(2,1fr)"
-                gap={10}
-              >
+
+              {/* product image and information */}
+              <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 product__content-wrapper">
                 {/*  //TODO LEFT SIDE IMAGES AND DESC */}
 
-                <GridItem className="product__image-wrapper">
+                <div className="product__image-wrapper">
                   <Stack
-                    direction={'row'}
-                    justifyContent="space-between"
-                    alignItems={'center'}
-                    mb={2}
+                    className={mergeNames(STYLES.flexBetween, 'flex-row mb-2')}
                   >
                     <Stack direction={'row'}>
                       <Text>
@@ -217,65 +214,59 @@ const Product = () => {
                     </Text>
                   </Stack>
                   <Box
-                    boxShadow={'xs'}
-                    borderWidth="2px"
-                    rounded={4}
-                    mb="120px"
-                    className="product__image"
+                    className={mergeNames(
+                      'product__image',
+                      'border-2 rounded-4 mb-[120px] shadow-md'
+                    )}
                   >
                     <AspectRatio ratio={1}>
                       <ImageGallery items={images} />
                     </AspectRatio>
                   </Box>
                   <Text mt={5}>{data.description}</Text>
-                </GridItem>
+                </div>
 
                 {/*  //TODO  ENDING LEFT SIDE IMAGES AND DESC */}
 
                 {/*  //TODO  STARTS RIGHT SIDE INFOS */}
 
-                <GridItem>
-                  <Grid templateColumns="repeat(2, 1fr)" gap={3}>
+                <div>
+                  <div className="grid-cols-2 gap-3">
                     {
-                      
-                        // data?.positions?.location_id  &&
-                        data?.positions?.district_id && districts?.map((d, i) => {
-                          return  d._id == data.positions.district_id ?  (
-                             
-                             <ProductInfo
-                               key={i}
-                               title={'Дүүрэг'}
-                               value={d.name}
-                             />
-                             
-                           
-                           ) : ''
-                         })  }
+                      // data?.positions?.location_id  &&
+                      data?.positions?.district_id &&
+                        districts?.map((d, i) => {
+                          return d._id == data.positions.district_id ? (
+                            <ProductInfo
+                              key={i}
+                              title={'Дүүрэг'}
+                              value={d.name}
+                            />
+                          ) : (
+                            ''
+                          );
+                        })
+                    }
 
+                    {data?.positions?.location_id &&
+                      locations?.map((l, i) => {
+                        return l._id == data.positions.location_id ? (
+                          <ProductInfo
+                            key={i}
+                            title={'Хороолол'}
+                            value={l.name}
+                          />
+                        ) : (
+                          ''
+                        );
+                      })}
 
-                        {
-                          data?.positions?.location_id && locations?.map((l, i) => {
-                            return  l._id == data.positions.location_id ?  (
-                               
-                               <ProductInfo
-                                 key={i}
-                                 title={'Хороолол'}
-                                 value={l.name}
-                               />
-                               
-                             
-                             ) : ''
-                           }) 
-                        } 
-                          
-                         { 
-                        
-                        // <ProductInfo
-                        //       key={data.positions.location_id._id}
-                        //       title={'Хороолол'}
-                        //       value={data.positions.location_id.name}
-                        //     />
-
+                    {
+                      // <ProductInfo
+                      //       key={data.positions.location_id._id}
+                      //       title={'Хороолол'}
+                      //       value={data.positions.location_id.name}
+                      //     />
                       //   return (
                       //        <ProductInfo
                       //             key={i}
@@ -319,67 +310,62 @@ const Product = () => {
                       //        </ProductInfo>
                       //   );
                     }
-                    {
-                      data?.filters?.map((p, i) => {
-                        if (p.id != null) {
-                          console.log(p)
-                          
-                          return (
-                            <ProductInfo
-                              key={i}
-                              title={p.name}
-                              value={p.value}
-                            />
-                          );
-                        }
+                    {data?.filters?.map((p, i) => {
+                      if (p.id != null) {
+                        console.log(p);
 
-                        //   return (
-                        //        <ProductInfo
-                        //             key={i}
-                        //        >
-                        //             <HStack
-                        //                  p={2}
-                        //                  justifyContent="center"
-                        //                  gap={1}
-                        //                  borderColor="bgGrey"
-                        //                  borderWidth={
-                        //                       2
-                        //                  }
-                        //                  borderRadius={
-                        //                       5
-                        //                  }
-                        //             >
-                        //                  {product
-                        //                       .socials
-                        //                       .facebook && (
-                        //                       <Link
-                        //                            target={
-                        //                                 "_blank"
-                        //                            }
-                        //                            href={
-                        //                                 product
-                        //                                      .socials
-                        //                                      .facebook
-                        //                            }
-                        //                       >
-                        //                            <BsFacebook />
-                        //                       </Link>
-                        //                  )}
-                        //                  {product
-                        //                       .socials
-                        //                       .instagram && (
-                        //                       <Link>
-                        //                            <BsInstagram />
-                        //                       </Link>
-                        //                  )}
-                        //             </HStack>
-                        //        </ProductInfo>
-                        //   );
-                      })}
-                  </Grid>
-                </GridItem>
+                        return (
+                          <ProductInfo key={i} title={p.name} value={p.value} />
+                        );
+                      }
+
+                      //   return (
+                      //        <ProductInfo
+                      //             key={i}
+                      //        >
+                      //             <HStack
+                      //                  p={2}
+                      //                  justifyContent="center"
+                      //                  gap={1}
+                      //                  borderColor="bgGrey"
+                      //                  borderWidth={
+                      //                       2
+                      //                  }
+                      //                  borderRadius={
+                      //                       5
+                      //                  }
+                      //             >
+                      //                  {product
+                      //                       .socials
+                      //                       .facebook && (
+                      //                       <Link
+                      //                            target={
+                      //                                 "_blank"
+                      //                            }
+                      //                            href={
+                      //                                 product
+                      //                                      .socials
+                      //                                      .facebook
+                      //                            }
+                      //                       >
+                      //                            <BsFacebook />
+                      //                       </Link>
+                      //                  )}
+                      //                  {product
+                      //                       .socials
+                      //                       .instagram && (
+                      //                       <Link>
+                      //                            <BsInstagram />
+                      //                       </Link>
+                      //                  )}
+                      //             </HStack>
+                      //        </ProductInfo>
+                      //   );
+                    })}
+                  </div>
+                </div>
                 {/*  //TODO  ENDING RIGHT SIDE INFOS */}
-              </Grid>
+              </div>
             </Box>
 
             <Box>
@@ -390,33 +376,27 @@ const Product = () => {
         </Stack>
       </MainContainer>
       <MainContainer py={'50px'}>
-        <Stack
-          direction={'row'}
-          display={'flex'}
-          justifyContent={'space-between'}
-        >
-          <Heading variant="smallHeader" mb={5}>
+        <div className={mergeNames(STYLES.flexBetween, 'flex-row')}>
+          <h1
+            variant={'mediumHeading'}
+            className="text-sm font-bold uppercase md:text-lg"
+          >
             Санал болгох зарууд
-          </Heading>
+          </h1>
           <Box>
             <Select
               placeholder="Өрөөгөөр"
-              variant="outline"
-              borderWidth="2px"
-              color={'mainBlossom'}
+              className="border-2 border-blue-400 rounded-full"
             >
               <option value="option1">Байршлаар</option>
             </Select>
           </Box>
-        </Stack>
+        </div>
 
         <Grid
           direction={'row'}
           templateColumns="repeat(auto-fill, minmax(230px, 1fr))"
-          rowGap={5}
-          gap="5"
-          width="100%"
-          justifyContent={'center'}
+          className="justify-center w-full gap-5"
         >
           <ProductCard />
           <ProductCard />

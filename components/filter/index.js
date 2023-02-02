@@ -1,3 +1,5 @@
+// import Input from '@/lib/Input';
+import mergeNames from '@/util/mergeNames';
 import {
   Box,
   Button,
@@ -21,7 +23,7 @@ import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import urls from '../../constants/api';
 import { useAuth } from '../../context/auth';
-
+// import Select from '@/lib/Select';
 import FilterStack from '../../util/filterStack';
 
 const FilterLayout = ({ data }) => {
@@ -100,13 +102,9 @@ const FilterLayout = ({ data }) => {
   return (
     <>
       <Box
-        maxWidth={'20%'}
-        flex="0 0 20%"
-        bgColor={'white'}
-        p={5}
-        rounded={10}
-        boxShadow="base"
-        display={{ base: 'none', md: 'block' }}
+        className={mergeNames(
+          'max-w-[20%] bg-white p-5 rounded-xl shadow-base hidden md:block'
+        )}
       >
         <FilterStack>
           <Heading variant={'smallHeading'} mb={2}>
@@ -120,7 +118,7 @@ const FilterLayout = ({ data }) => {
                     <Link
                       key={id}
                       href={`/category/${href}`}
-                      p={1}
+                      p="2px"
                       mt={0}
                       fontWeight={data == href ? 'bold' : 'medium'}
                     >
@@ -165,11 +163,10 @@ const FilterLayout = ({ data }) => {
 
         <FilterStack borderBottom={'2px solid '} borderColor="bgGrey">
           <Heading variant={'smallHeading'}>Нэмэлт хайлт</Heading>
+          {/* <Select></Select> */}
           <Select
             placeholder={'Дүүрэг'}
-            variant="outline"
-            borderWidth="2px"
-            color={'mainBlossom'}
+            className="border-2 border-blue-400 rounded-2xl"
             onChange={(e) =>
               setPositions((positions) => ({
                 ...positions,
@@ -188,9 +185,7 @@ const FilterLayout = ({ data }) => {
           {positions.district_id && (
             <Select
               placeholder={'Байршил'}
-              variant="outline"
-              borderWidth="2px"
-              color={'mainBlossom'}
+              className="border-2 border-blue-400 rounded-2xl"
               onChange={(e) =>
                 setPositions((positions) => ({
                   ...positions,
@@ -216,16 +211,14 @@ const FilterLayout = ({ data }) => {
                   <Input
                     type="number"
                     placeholder="Доод"
-                    variant="outline"
-                    borderWidth="2px"
+                    className="border-2 border-blue-400 rounded-2xl"
                     onChange={(e) => setFilters(f.id, e, false)}
                   />
                   <Text>-</Text>
                   <Input
                     type="number"
                     placeholder="Дээд"
-                    variant="outline"
-                    borderWidth="2px"
+                    className="border-2 border-blue-400 rounded-2xl focus:outline-none"
                     onChange={(e) => setFilters(f.id, e, true)}
                   />
                 </Flex>
@@ -234,9 +227,7 @@ const FilterLayout = ({ data }) => {
               <Select
                 key={i}
                 placeholder={f.name}
-                variant="outline"
-                borderWidth="2px"
-                color={'mainBlossom'}
+                className="border-2 border-blue-400 rounded-2xl"
                 onChange={(e) => setFilters(f.id, e, true)}
               >
                 {f.values.map((item, i) => {
