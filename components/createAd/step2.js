@@ -26,6 +26,7 @@ const Step2 = ({
     committee: positionNames?.committee ?? false,
     town: positionNames?.town ?? false,
   }); // saving local names
+
   // console.log("positionNames", positionNames, selectedLocalData);
   const [type, setType] = useState({
     location: true,
@@ -120,14 +121,23 @@ const Step2 = ({
             <Select
               className="w-full mx-auto rounded-full md:w-2/3"
               onChange={(e) => {
-                locationData[e.target.value].name != 'Бусад'
+                e.target.value != 'Бусад'
                   ? setLocationId(locationData[e.target.value].name)
                   : setType((prev) => ({ ...prev, location: false }));
               }}
               placeholder="Байршил"
             >
               {locationData.map((l, i) => {
-                return (
+                return i == locationData.length - 1 ? (
+                  <>
+                    <option key={i} value={i}>
+                      {l.name}
+                    </option>
+                    <option key={i} value={'Бусад'}>
+                      Бусад
+                    </option>
+                  </>
+                ) : (
                   <option key={i} value={i}>
                     {l.name}
                   </option>
@@ -154,14 +164,34 @@ const Step2 = ({
             <FormLabel title="Хороо / Сум" />
             {
               <>
-                <Select></Select>
+                <Select
+                  placeholder="Хороо / Сум"
+                  onChange={(e) =>
+                    e.target.value == 'Бусад'
+                      ? setType((prev) => ({ ...prev, committee: false }))
+                      : setCommitteeId(e.target.value)
+                  }
+                >
+                  {[...Array(30).keys()].map((c, i) => {
+                    return i != 29 ? (
+                      <option value={`${c + 1}-р хороо`}>
+                        {c + 1}-р хороо
+                      </option>
+                    ) : (
+                      <option value={`Бусад`}>Бусад</option>
+                    );
+                  })}
+                </Select>
                 {!type.committee && (
-                  <Input
-                    placeholder="Хороо / Сум"
-                    onChange={(val) => {
-                      setCommitteeId(val.target.value);
-                    }}
-                  />
+                  <>
+                    <Box h={4} />
+                    <Input
+                      placeholder="Хороо / Сум"
+                      onChange={(val) => {
+                        setCommitteeId(val.target.value);
+                      }}
+                    />
+                  </>
                 )}
               </>
             }
