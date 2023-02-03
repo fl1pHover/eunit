@@ -145,7 +145,7 @@ const Product = () => {
     if (data) {
       try {
         await axios
-          .post(`${urls['test']}/ad/suggestion`, {
+          .post(`${urls['test']}/ad/suggesstion`, {
             suggestion:
               suggestion == 'location'
                 ? data?.positions?.district_id
@@ -154,7 +154,11 @@ const Product = () => {
                 : null,
             type: suggestion,
           })
-          .then((d) => console.log(d));
+          .then((d) => {
+            setsData([]);
+
+            setsData(d.data.filter((sd) => sd._id != data._id));
+          });
       } catch (error) {
         console.log(error);
       }
@@ -420,7 +424,13 @@ const Product = () => {
             Санал болгох зарууд
           </h1>
           <Box>
-            <Select className="border-2 border-blue-400 rounded-full">
+            <Select
+              className="border-2 border-blue-400 rounded-full"
+              onChange={async (e) => {
+                setSuggestion(e.target.value);
+                await getSuggestion();
+              }}
+            >
               <option value="location">Байршлаар</option>
               <option value="room">Өрөөгөөр</option>
             </Select>
