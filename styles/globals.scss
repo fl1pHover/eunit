@@ -27,6 +27,20 @@ input[type='date']::-webkit-calendar-picker-indicator {
   transition: 0.3s ease;
 }
 
+.animate-pin {
+  animation: pin 0.8s ease-in-out infinite;
+}
+
+@keyframes pin {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
 .delete {
   @apply w-6 h-6 bg-blue-500 ring-4 shadow-xl;
   &::before {

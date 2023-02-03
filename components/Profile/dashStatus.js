@@ -8,7 +8,7 @@ import { FiHeart } from 'react-icons/fi';
 // Niit zar
 // niit bookmark
 
-const DashStatus = ({ agent, username, location, ads, marks }) => {
+const DashStatus = ({ agent, username, phone, ads, marks }) => {
   return (
     <div
       className={mergeNames(
@@ -23,8 +23,8 @@ const DashStatus = ({ agent, username, location, ads, marks }) => {
           <p className="">{agent}</p>
         </div>
         <div>
-          <p className="font-bold">Байршил</p>
-          <p className="">{location}</p>
+          <p className="font-bold">Утас</p>
+          <p className="">{phone}</p>
         </div>
       </div>
       <div className="flex flex-col gap-2">

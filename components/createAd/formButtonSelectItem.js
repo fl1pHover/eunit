@@ -1,12 +1,13 @@
-import mergeNames from "@/util/mergeNames";
-import React from "react";
+import mergeNames from '@/util/mergeNames';
 
 const ButtonSelectItem = ({
-  text = "",
+  text = '',
+  edit,
   onClick = () => {},
   isSelected = false,
   LeftItem = () => <></>,
   RightItem = () => <></>,
+  ...props
 }) => {
   return (
     <button
@@ -14,19 +15,22 @@ const ButtonSelectItem = ({
         onClick();
       }}
       className={mergeNames(
-        "transition-all ease-out",
-        "ring-[6px] ring-offset-0 rounded-full px-1 py-1 md:mb-3 mb-2",
-        "flex flex-row items-center",
+        'transition-all ease-out',
+        'ring-[6px] ring-offset-0 rounded-full px-1 py-1 md:mb-3 mb-2',
+        'flex flex-row items-center',
         isSelected
-          ? "bg-blue-500 ring-blue-200"
-          : "bg-blue-100 ring-transparent"
+          ? 'bg-blue-500 ring-blue-200'
+          : 'bg-blue-100 ring-transparent',
+        edit && 'animate-pin'
       )}
+      {...props}
     >
       <LeftItem />
       <p
         className={mergeNames(
-          "font-semibold md:px-4 md:py-2 px-2 py-1",
-          isSelected ? "text-white" : "text-blue-500/80"
+          'font-semibold md:px-4 md:py-2 px-2 py-1',
+          isSelected ? 'text-white' : 'text-blue-500/80',
+          edit ? '' : 'cursor-not-allowed'
         )}
       >
         {text}

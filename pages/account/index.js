@@ -5,7 +5,6 @@ import { useAuth } from '@/context/auth';
 import MainContainer from '@/layout/mainContainer';
 import { STYLES } from '@/styles/index';
 import mergeNames from '@/util/mergeNames';
-import { Center } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import Bookmark from './bookmark';
@@ -40,16 +39,17 @@ const Account = () => {
   return (
     <MainContainer py={5}>
       <div
-        className={mergeNames(STYLES.flexCenter, 'flex-col gap-3 md:flex-row')}
+        className={mergeNames(STYLES.flexCenter, 'flex-col gap-3 md:flex-row ')}
       >
-        <Center>
+        <div className="mx-auto md:mx-0">
           <Dashboard />
-        </Center>
+        </div>
 
         <div
           className={mergeNames(
             content === 'Profile' ? 'md:w-[800px] w-full' : 'w-[100%]',
-            'bg-white shadow-lg rounded-2xl w-full transition-all duration-500 p-5 md:p-10'
+            'relative bg-white shadow-lg rounded-2xl w-full p-5 md:p-10',
+            'transition-all duration-500'
           )}
         >
           <div className="flex flex-row gap-5 border-b cursor-pointer border-b-bgGrey lg:text-base text-[12px]">
@@ -62,9 +62,9 @@ const Account = () => {
                     () => {
                       setContent(tab.title);
 
-                      router.push(`account?${tab.title}`, undefined, {
-                        shallow: false,
-                      });
+                      // router.push(`account?${tab.title}`, undefined, {
+                      //   shallow: false,
+                      // });
                     }
                     // (() =>
 
