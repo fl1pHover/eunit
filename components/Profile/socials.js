@@ -3,7 +3,7 @@ import mergeNames from '@/util/mergeNames';
 import { Flex, Image } from '@chakra-ui/react';
 import Link from 'next/link';
 
-const Socials = (edit) => {
+const Socials = ({ edit }) => {
   const socials = [
     { social: 'Facebook', href: 'https://www.instagram.com/' },
     { social: 'Instagram', href: 'https://www.instagram.com/' },

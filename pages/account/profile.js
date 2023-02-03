@@ -72,7 +72,7 @@ const Profile = ({ user }) => {
           <ProfileInput type="date" item="date" edit={edit} />
         </GroupLayout>
 
-        <Socials />
+        <Socials edit={edit} />
 
         {/* //TODO: Burgteltei email ni haragdaj bdgaar ghde disabled eniig yahav hereggui gevel arilgachna */}
 
