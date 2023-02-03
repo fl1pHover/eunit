@@ -1,10 +1,8 @@
-import Counter from '@/lib/Counter';
 import { DateYearSelector } from '@/lib/DateSelector';
-import Select from '@/lib/Select';
+import { Input, Select } from '@chakra-ui/react';
+// import Select from '@/lib/Select';
 import { useState } from 'react';
-import ButtonSelectItem from './formButtonSelectItem';
 import FormLabel from './formLabel';
-import FormLine from './formLine';
 
 const Step3 = ({ filter }) => {
   const [roomNumber, setRoomNumber] = useState(false);
@@ -17,7 +15,6 @@ const Step3 = ({ filter }) => {
   return (
     <div className="w-full">
       {filter?.map((f, i) => {
-        console.log(f);
         if (f.mark == 'year')
           return (
             <Col>
@@ -26,7 +23,9 @@ const Step3 = ({ filter }) => {
               <DateYearSelector
                 defValue={usedYear}
                 placeholder={f.name}
-                onSelect={(num) => (f.value = num)}
+                onSelect={(num) => {
+                  f.value = num;
+                }}
               />
             </Col>
           );
@@ -35,32 +34,44 @@ const Step3 = ({ filter }) => {
             <Col>
               <FormLabel title={f.name} />
               <Select
-                data={f.values}
-                label={f.value != '' ? f.value : f.name}
-                Item={({ data, onClick, id, ...props }) => {
-                  return (
-                    <button
-                      {...props}
-                      onClick={() => {
-                        console.log(f.value);
-                        console.log(f);
-                        onClick();
-                        f.value = data;
-                      }}
-                    >
-                      {id + 1}
-                      {props.children}
-                    </button>
-                  );
+                placeholder={f.name}
+                onChange={(e) => {
+                  e.target.value == 'Бусад'
+                    ? f.type == 'text'
+                    : (f.value = e.target.value);
                 }}
-              />
+              >
+                {f.parentId == null
+                  ? f.values.map((v, i) => {
+                      return (
+                        <option key={i} value={v}>
+                          {v}
+                        </option>
+                      );
+                    })
+                  : filter
+                      .filter((fil) => fil.id == f.parentId)[0]
+                      ?.values.map((v, i) => {
+                        return (
+                          <option key={i} value={v}>
+                            {v}
+                          </option>
+                        );
+                      })}
+              </Select>
+            </Col>
+          );
+        if (f.type == 'text')
+          return (
+            <Col>
+              <Input />
             </Col>
           );
       })}
-      <Row>
+      {/* <div className="flex items-center justify-center w-full"> */}
+      {/* <Row>
         <Col>
           <FormLabel title="Өрөөний тоо" />
-          {/* <div className="flex items-center justify-center w-full"> */}
           <Counter
             limit={5}
             maxValue="5+"
@@ -88,8 +99,8 @@ const Step3 = ({ filter }) => {
 
       <Row>
         <Col>
-          <FormLabel title="Угаалгын өрөөний тоо" />
-          {/* <div className="flex flex-row justify-center gap-4">
+          <FormLabel title="Угаалгын өрөөний тоо" /> */}
+      {/* <div className="flex flex-row justify-center gap-4">
             {["1", "2", "3+"].map((text, id) => {
               const isSelected = text === bathroomNumber;
               return (
@@ -102,7 +113,7 @@ const Step3 = ({ filter }) => {
               );
             })}
           </div> */}
-          <Counter
+      {/* <Counter
             limit={3}
             maxValue="3+"
             setValue={(val) => setRoomNumber(val)}
@@ -110,7 +121,7 @@ const Step3 = ({ filter }) => {
         </Col>
         <Col>
           <FormLabel title="Ашиглалтанд орсон он" />
-          {/* <Input /> */}
+          <Input /> 
           <DateYearSelector
             defValue={usedYear}
             placeholder="Ашиглалтанд орсон он"
@@ -118,8 +129,8 @@ const Step3 = ({ filter }) => {
           />
         </Col>
       </Row>
-      <FormLine />
-      <Row>
+      <FormLine /> */}
+      {/* <Row>
         <Col>
           <FormLabel title="Барилгын давхар" />
           <Select
@@ -167,7 +178,7 @@ const Step3 = ({ filter }) => {
             }}
           />
         </Col>
-      </Row>
+      </Row> */}
     </div>
   );
 };

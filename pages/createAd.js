@@ -1,23 +1,35 @@
-import Step1 from "@/components/createAd/step1";
-import { API_URL } from "@/constants/api";
-import { AdTypes } from "@/constants/enums";
-import { ContainerX } from "@/lib/Container";
-import axios from "axios";
-import { useAuth } from "context/auth";
-import { useRouter } from "next/router";
-import React, { useMemo, useState } from "react";
+import Step1 from '@/components/createAd/step1';
 
-import Step2 from "@/components/createAd/step2";
-import Step3 from "@/components/createAd/step3";
-import Step4 from "@/components/createAd/step4";
-import StepButtons from "@/components/createAd/stepButtons";
-import StepProgress from "@/components/createAd/stepProgress";
-import FormTitle from "@/components/createAd/title";
-import { categories as localCategories } from "@/data/categories";
+import Step2 from '@/components/createAd/step2';
+import Step3 from '@/components/createAd/step3';
+import Step4 from '@/components/createAd/step4';
+import StepButtons from '@/components/createAd/stepButtons';
+import StepProgress from '@/components/createAd/stepProgress';
+import FormTitle from '@/components/createAd/title';
+import { AdTypes } from '@/constants/enums';
+import { categories as localCategories } from '@/data/categories';
+import { ContainerX } from '@/lib/Container';
+import axios from 'axios';
+import urls from 'constants/api';
+import { useAuth } from 'context/auth';
+import Cookies from 'js-cookie';
+import { useRouter } from 'next/router';
+import React, { useMemo, useState } from 'react';
 
 export default function CreateAd({ props }) {
-  const { user, districts, locations, token, categories } = useAuth();
+  const { user, districts, locations, categories } = useAuth();
   const router = useRouter();
+  const [gen, setGen] = useState({
+    area: '',
+    price: '',
+    phone: '',
+    unitPrice: '',
+  });
+  const [general, setGeneral] = useState({
+    title: '',
+    description: '',
+    adType: '',
+  });
   // // if (!user) router.push("/login");
 
   const [step, setStep] = useState(-1);
@@ -28,7 +40,7 @@ export default function CreateAd({ props }) {
 
   const [selectedIndex, setSelectedIndex] = React.useState({
     category: false,
-  subCategory: false,
+    subCategory: false,
   });
 
   const [subCategory, setSubCategory] = useState();
@@ -40,21 +52,21 @@ export default function CreateAd({ props }) {
   const [imageUrl, setImageUrl] = useState([]);
 
   const [positions, setPositions] = useState({
-    district_id: "",
-    committee_id: "",
-    location_id: "",
-    town_id: "",
+    district_id: '',
+    committee_id: '',
+    location_id: '',
+    town_id: '',
   });
 
   const [positionNames, setPositionNames] = useState({
-    district: "",
-    location: "",
-    committee: "",
-    town: "",
+    district: '',
+    location: '',
+    committee: '',
+    town: '',
   });
-
+  const token = Cookies.get('token');
   React.useEffect(() => {
-    console.log("calling it");
+    console.log('calling it');
     if (selectedIndex.subCategory && selectedIndex.category) {
       try {
         passcategory[selectedIndex.category].subCategory.filter((f) => {
@@ -62,7 +74,7 @@ export default function CreateAd({ props }) {
           // TAARJ BAIGAA BOLOHOOR F.NAME IIG F.HREF BOLGOJ UURCHILUV
           if (f.href == selectedIndex.subCategory) {
             axios
-              .get(`${API_URL}/category/filters/{id}/false?id=${f._id}`)
+              .get(`${urls['test']}/category/filters/{id}/false?id=${f._id}`)
               .then((d) => {
                 setSubCategory(d.data?.subCategory);
                 setFilters(d.data?.filters);
@@ -76,8 +88,54 @@ export default function CreateAd({ props }) {
     }
   }, [passcategory, selectedIndex]);
 
-  // console.log("subCategory", subCategory);
-  // console.log("positions", positions);
+  const createAd = async () => {
+    const f = new FormData();
+    const selectedFilters = filters[2];
+    selectedFilters.push({
+      id: 'price',
+      value: gen.price,
+    });
+    selectedFilters.push({
+      id: 'area',
+      value: gen.area,
+    });
+    selectedFilters.push({
+      id: 'phone',
+      value: gen.phone,
+    });
+    selectedFilters.push({
+      id: 'unitPrice',
+      value: Math.round(gen.price / gen.area),
+    });
+
+    f.append('title', general.title);
+    f.append('description', general.description);
+    f.append(
+      'positions',
+      JSON.stringify({
+        district_id: positions.district_id,
+        committee_id: positions.committee_id,
+        location_id: positions.location_id,
+        town: {
+          value: positions.town_id,
+          values: [],
+          name: 'town',
+        },
+      })
+    );
+    f.append('types', adType)
+    f.append('adTypes', general.adType);
+    f.append('filters', JSON.stringify(selectedFilters));
+    f.append('subCategory', subCategory._id);
+    f.append('category', categories[selectedIndex.category]._id);
+
+    let ad = await axios.post(`${urls['test']}/ad`, f, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(ad);
+  };
   const setFilter = (id, e) => {
     e.preventDefault();
 
@@ -129,7 +187,13 @@ export default function CreateAd({ props }) {
                   <FormTitle>Байршил</FormTitle>
                   <div className="bg-white min-h-[40vh] rounded-xl py-10 md:px-10 px-2">
                     <Step2
-                      {...{ subCategory, districts, locations, positions }}
+                      {...{
+                        subCategory,
+                        districts,
+                        locations,
+                        positions,
+                      }}
+                      town={f.filter((t) => t.id == 'town')}
                       setDistrictId={(disId) =>
                         setPositions((prev) => ({
                           ...prev,
@@ -162,7 +226,12 @@ export default function CreateAd({ props }) {
                 <>
                   <FormTitle>Дэлгэрэнгүй мэдээлэл</FormTitle>
                   <div className="bg-white min-h-[40vh] rounded-xl py-10 md:px-10 px-2">
-                    <Step4 filter={f} />
+                    <Step4
+                      filter={f}
+                      setGeneral={setGeneral}
+                      filters={gen}
+                      setFilters={setGen}
+                    />
                   </div>
                 </>
               );
@@ -179,8 +248,9 @@ export default function CreateAd({ props }) {
         })}
 
         <StepButtons
-          onNext={() => setStep((prev) => prev + 1)}
-          onPrev={() => setStep((prev) => (prev > 1 ? prev - 1 : prev))}
+          step={step}
+          onNext={() => (step == 2 ? createAd() : setStep((prev) => prev + 1))}
+          onPrev={() => setStep((prev) => (prev > -1 ? prev - 1 : prev))}
         />
       </ContainerX>
     </div>
@@ -188,7 +258,7 @@ export default function CreateAd({ props }) {
   // router.push("/login");
 }
 export async function getServerSideProps() {
-  const res = await fetch(`${API_URL}/category`);
+  const res = await fetch(`${urls['test']}/category`);
   const resjson = await res.json();
 
   const categories = resjson?.categories;

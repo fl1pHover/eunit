@@ -1,5 +1,4 @@
-import Input from '@/lib/Input';
-import Select from '@/lib/Select';
+import { Box, Input, Select } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import ButtonSelectItem from './formButtonSelectItem';
 import FormLabel from './formLabel';
@@ -10,6 +9,7 @@ const Step2 = ({
   districts = [],
   locations = [],
   positions = {},
+  town = {},
   positionNames = {},
   setPositionNames = () => {},
   setDistrictId = () => {},
@@ -23,9 +23,12 @@ const Step2 = ({
     committee: positionNames?.committee ?? false,
     town: positionNames?.town ?? false,
   }); // saving local names
-
   // console.log("positionNames", positionNames, selectedLocalData);
-
+  const [type, setType] = useState({
+    location: true,
+    town: true,
+    committee: true,
+  });
   const locationData = React.useMemo(
     () => {
       return (
@@ -83,51 +86,88 @@ const Step2 = ({
       {selectedLocalData.district && (
         <div className="mt-4 mb-10">
           <FormLabel title="Байршил" num={4} />
-          <Select
-            data={locationData}
-            label={selectedLocalData?.location || 'Байршил'}
-            Item={({ data, onClick, ...props }) => {
-              return (
-                <button
-                  {...props}
-                  onClick={() => {
-                    onClick();
-                    setLocationId(data?._id);
-                    setPositionNames((prev) => ({
-                      ...prev,
-                      location: data?.name,
-                    }));
-                    setSelectedLocalData((prev) => ({
-                      ...prev,
-                      location: data?.name,
-                    }));
-                  }}
-                >
-                  <p>{data?.name}</p>
-                  {props.children}
-                </button>
-              );
-            }}
-          />
+          <>
+            <Select
+              onChange={(e) => {
+                locationData[e.target.value].name != 'Бусад'
+                  ? setLocationId(locationData[e.target.value].name)
+                  : setType((prev) => ({ ...prev, location: false }));
+              }}
+              placeholder="Байршил"
+            >
+              {locationData.map((l, i) => {
+                return <option value={i}>{l.name}</option>;
+              })}
+            </Select>
+            {type.location == false && (
+              <>
+                <Box h={4} />
+                <Input
+                  placeholder="Байршил"
+                  onChange={(e) => setLocationId(e.target.value)}
+                />
+              </>
+            )}
+          </>
         </div>
       )}
 
       <FormLine />
-      {selectedLocalData.location && (
+      {positions.location_id && (
         <div className="flex flex-col gap-8 md:flex-row md:gap-4">
           <InputContainer>
             <FormLabel title="Хороо / Сум" />
-            <Input
-              value={selectedLocalData?.committee}
-              ph="Хороо / Сум"
-              onChange={(val) => {
-                setCommitteeId(val);
-                handleNamedata('committee', val);
-              }}
-            />
+            {
+              <>
+                <Select></Select>
+                {!type.committee && (
+                  <Input
+                    placeholder="Хороо / Сум"
+                    onChange={(val) => {
+                      setCommitteeId(val.target.value);
+                    }}
+                  />
+                )}
+              </>
+            }
           </InputContainer>
-
-          <InputContainer>
+          {town && (
+            <InputContainer>
+              <FormLabel title="Хотхон" />
+              {
+                <>
+                  <Select
+                    placeholder="Хотхон"
+                    onChange={(e) =>
+                      e.target.value == 'Бусад'
+                        ? setType((prev) => ({ ...prev, town: false }))
+                        : setTownId(e.target.value)
+                    }
+                  >
+                    {town[0]?.values.map((t, i) => {
+                      return (
+                        <option key={i} value={t}>
+                          {t}
+                        </option>
+                      );
+                    })}
+                  </Select>
+                  {!type.town && (
+                    <>
+                      <Box h={4} />
+                      <Input
+                        placeholder="Хотхон"
+                        onChange={(val) => {
+                          setTownId(val.target.value);
+                        }}
+                      />
+                    </>
+                  )}
+                </>
+              }
+            </InputContainer>
+          )}
+          {/* <InputContainer>
             <FormLabel title="Хотхон" />
             <Input
               ph="Хотхон"
@@ -137,7 +177,7 @@ const Step2 = ({
                 handleNamedata('town', val);
               }}
             />
-          </InputContainer>
+          </InputContainer> */}
         </div>
       )}
     </div>

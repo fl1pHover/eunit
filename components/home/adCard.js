@@ -47,20 +47,20 @@ const Card = ({ item }) => {
               <AdCardButton />
             </div>
             <div className="flex flex-wrap items-end justify-between gap-x-1">
-              {item.filters &&
-                item.filters.map((p, i) => {
-                  return (
-                    <React.Fragment key={i}>
-                      <ApartmentIconInfo p={p} />
-                      {p && p.id === 'area' && (
-                        <ItemContainer
-                          Icon={(props) => <BiArea {...props} text="" />}
-                          text={calcValue(p, 'байхгүй', 'м.кв')}
-                        />
-                      )}
-                    </React.Fragment>
-                  );
-                })}
+              {item?.filters?.map((p, i) => {
+                console.log(p);
+                return (
+                  <React.Fragment key={i}>
+                    <ApartmentIconInfo p={p} />
+                    {p && p.id === 'area' && (
+                      <ItemContainer
+                        Icon={(props) => <BiArea {...props} text="" />}
+                        text={calcValue(p, 'байхгүй', 'м.кв')}
+                      />
+                    )}
+                  </React.Fragment>
+                );
+              })}
             </div>
           </div>
         </div>
