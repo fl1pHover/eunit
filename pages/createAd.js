@@ -64,6 +64,7 @@ export default function CreateAd({ props }) {
     committee: '',
     town: '',
   });
+  const [map, setMap] = useState({});
   const token = Cookies.get('token');
   React.useEffect(() => {
     console.log('calling it');
@@ -94,18 +95,22 @@ export default function CreateAd({ props }) {
     selectedFilters.push({
       id: 'price',
       value: gen.price,
+      name: 'Үнэ',
     });
     selectedFilters.push({
       id: 'area',
       value: gen.area,
+      name: 'Талбай',
     });
     selectedFilters.push({
       id: 'phone',
       value: gen.phone,
+      name: 'Утас',
     });
     selectedFilters.push({
       id: 'unitPrice',
       value: Math.round(gen.price / gen.area),
+      name: 'Нэгж талбайн үнэ',
     });
 
     f.append('title', general.title);
@@ -123,7 +128,8 @@ export default function CreateAd({ props }) {
         },
       })
     );
-    f.append('types', adType)
+    f.append('types', adType);
+    f.append('location', JSON.stringify(map))
     f.append('adTypes', general.adType);
     f.append('filters', JSON.stringify(selectedFilters));
     f.append('subCategory', subCategory._id);
@@ -187,6 +193,8 @@ export default function CreateAd({ props }) {
                   <FormTitle>Байршил</FormTitle>
                   <div className="bg-white min-h-[40vh] rounded-xl py-10 md:px-10 px-2">
                     <Step2
+                    map={map}
+                    setMap={setMap}
                       {...{
                         subCategory,
                         districts,

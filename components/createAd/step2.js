@@ -1,12 +1,13 @@
-import Input from '@/lib/Input';
-// import Select from '@/lib/Select';
-import { Box, Select } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import { Box, Input, Select } from '@chakra-ui/react';
+import { GoogleMap, MarkerF, useLoadScript } from '@react-google-maps/api';
+import React, { useMemo, useState } from 'react';
 import ButtonSelectItem from './formButtonSelectItem';
 import FormLabel from './formLabel';
 import FormLine from './formLine';
 
 const Step2 = ({
+  map,
+  setMap,
   subCategory = {},
   districts = [],
   locations = [],
@@ -53,6 +54,33 @@ const Step2 = ({
       [name]: value,
     }));
   };
+
+  const libraries = useMemo(() => ['places'], []);
+  // const { categories, setAds } = useAuth();
+  const [markerActive, setMarkerActive] = useState(null);
+
+  const { isLoaded } = useLoadScript({
+    googleMapsApiKey: 'AIzaSyC2u2OzBNo53GxJJdN3Oc_W6Yc42OmdZcE',
+    libraries: libraries,
+  });
+  const mapOptions = useMemo(
+    () => ({
+      disableDefaultUI: true,
+      // clickableIcons: true,
+      scrollwheel: true,
+    }),
+    []
+  );
+  const mapCenter = useMemo(
+    () => ({
+      lat: 47.74604,
+      lng: 107.341515,
+    }),
+    []
+  );
+  if (!isLoaded) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <div className="w-full">
@@ -175,6 +203,24 @@ const Step2 = ({
               }
             </InputContainer>
           )}
+          <GoogleMap
+            options={mapOptions}
+            onClick={(e) => {
+              setMap(e.latLng.toJSON());
+            }}
+            zoom={14}
+            center={mapCenter}
+            mapTypeId={google.maps.MapTypeId.ROADMAP}
+            mapContainerStyle={{ width: '100%', height: '50vh' }}
+          >
+            {isLoaded && map && (
+              <MarkerF
+                position={map}
+                onClick={() => setMarkerActive(i)}
+                animation={google.maps.Animation.DROP}
+              />
+            )}
+          </GoogleMap>
           {/* <InputContainer>
             <FormLabel title="Хотхон" />
             <Input

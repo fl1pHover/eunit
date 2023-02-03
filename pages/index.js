@@ -2,8 +2,9 @@ import AdContent from '@/components/home/adContent';
 import CategorySelect from '@/components/home/categorySelect';
 import SwiperHeader from '@/components/home/swiperHeader';
 import urls from '@/constants/api';
+
 import { useAuth } from '@/context/auth';
-import { GoogleMap, MarkerF, useLoadScript } from '@react-google-maps/api';
+import { useLoadScript } from '@react-google-maps/api';
 import { useEffect, useMemo, useState } from 'react';
 
 export default function Home({ propAds }) {
@@ -27,8 +28,8 @@ export default function Home({ propAds }) {
   );
   const mapCenter = useMemo(
     () => ({
-      lat: parseFloat(propAds[0]?.location?.lat) ?? 46.022469,
-      lng: parseFloat(propAds[0]?.location?.lng) ?? 104.993857,
+      lat: parseFloat(propAds[0]?.location?.lat) ?? 104.993857,
+      lng: parseFloat(propAds[0]?.location?.lng) ?? 46.022469,
     }),
     []
   );
@@ -56,35 +57,6 @@ export default function Home({ propAds }) {
           );
       })} */}
       {propAds?.length > 0 && <AdContent data={propAds} />}
-      {propAds && (
-        <GoogleMap
-          options={mapOptions}
-          onClick={(e) => {
-            // setMap(e.latLng.toJSON());
-            console.log(e.latLng.toJSON());
-          }}
-          zoom={15}
-          center={mapCenter}
-          mapTypeId={google.maps.MapTypeId.ROADMAP}
-          mapContainerStyle={{ width: '100%', height: '30vh' }}
-        >
-          {isLoaded &&
-            propAds?.map((m, i) => {
-              return (
-                <MarkerF
-                  key={i}
-                  position={{
-                    lat: parseFloat(m.location?.lat) ?? 46.022469,
-                    lng: parseFloat(m.location?.lng) ?? 104.993857,
-                  }}
-                  onClick={() => setMarkerActive(i)}
-                  animation={google.maps.Animation.DROP}
-                  title={m.title}
-                />
-              );
-            })}
-        </GoogleMap>
-      )}
     </>
   );
 }

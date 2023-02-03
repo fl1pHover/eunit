@@ -18,16 +18,16 @@ import { useEffect, useState } from 'react';
 
 import { FaHeart } from 'react-icons/fa';
 import MainContainer from '../../layout/mainContainer';
-import ProductCard from '../../util/productCard';
 import ECalculator from '../calculator';
 
 import ScrollTop from '../../lib/ScrollTop';
-
 // Icons
 
 // Image Swiper Gallery
+import AdContent from '@/components/home/adContent';
 import { STYLES } from '@/styles/index';
 import mergeNames from '@/util/mergeNames';
+import axios from 'axios';
 import moment from 'moment/moment';
 import { useRouter } from 'next/router';
 import ImageGallery from 'react-image-gallery';
@@ -80,7 +80,6 @@ const images = [
 ];
 
 const ProductInfo = ({ title, value, children, key }) => {
-  console.log(value);
   return (
     <GridItem className="product__info" key={key}>
       {children ? (
@@ -140,12 +139,55 @@ const Product = () => {
   const { districts, locations } = useAuth();
   const router = useRouter();
   const [data, setData] = useState('');
+  const [suggestion, setSuggestion] = useState('location');
+  const [sData, setsData] = useState([]);
+  const getSuggestion = async () => {
+    if (data) {
+      try {
+        await axios
+          .post(`${urls['test']}/ad/suggesstion`, {
+            suggestion:
+              suggestion == 'location'
+                ? data?.positions?.district_id
+                : suggestion == 'room'
+                ? data?.filters.filter((f) => f.id == 'room')[0].value
+                : null,
+            type: suggestion,
+          })
+          .then((d) => {
+            setsData([]);
+
+            setsData(d.data.filter((sd) => sd._id != data._id));
+          });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
   const getData = async () => {
     try {
+      let district_id;
       await fetch(`${urls['test']}/ad/{id}?id=${router.query.slug}`)
         .then((r) => r.json())
-        .then((d) => {
-          setData(d), console.log(d);
+        .then(async (d) => {
+          setData(d), (district_id = d.positions.district_id);
+          try {
+            await axios
+              .post(`${urls['test']}/ad/suggesstion`, {
+                suggestion:
+                  suggestion == 'location'
+                    ? d?.positions?.district_id
+                    : suggestion == 'room'
+                    ? data?.filters.filter((f) => f.id == 'room')[0].value
+                    : null,
+                type: suggestion,
+              })
+              .then((s) => {
+                setsData(s.data);
+              });
+          } catch (error) {
+            console.log(error);
+          }
         });
     } catch (error) {
       console.log(error);
@@ -191,7 +233,7 @@ const Product = () => {
                         Зарын огноо:
                         {moment(data.createdAt).format('lll')}
                       </Text>
-                      <Text>Зарын дугаар: 1</Text>
+                      <Text>Зарын дугаар: {data.num}</Text>
                     </Stack>
                     <Text>
                       <IconButton
@@ -312,8 +354,6 @@ const Product = () => {
                     }
                     {data?.filters?.map((p, i) => {
                       if (p.id != null) {
-                        console.log(p);
-
                         return (
                           <ProductInfo key={i} title={p.name} value={p.value} />
                         );
@@ -385,10 +425,14 @@ const Product = () => {
           </h1>
           <Box>
             <Select
-              placeholder="Өрөөгөөр"
               className="border-2 border-blue-400 rounded-full"
+              onChange={async (e) => {
+                setSuggestion(e.target.value);
+                await getSuggestion();
+              }}
             >
-              <option value="option1">Байршлаар</option>
+              <option value="location">Байршлаар</option>
+              <option value="room">Өрөөгөөр</option>
             </Select>
           </Box>
         </div>
@@ -398,12 +442,7 @@ const Product = () => {
           templateColumns="repeat(auto-fill, minmax(230px, 1fr))"
           className="justify-center w-full gap-5"
         >
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
+          <AdContent data={sData} />
         </Grid>
       </MainContainer>
     </Box>
