@@ -94,18 +94,22 @@ export default function CreateAd({ props }) {
     selectedFilters.push({
       id: 'price',
       value: gen.price,
+      name: 'Үнэ',
     });
     selectedFilters.push({
       id: 'area',
       value: gen.area,
+      name: 'Талбай',
     });
     selectedFilters.push({
       id: 'phone',
       value: gen.phone,
+      name: 'Утас',
     });
     selectedFilters.push({
       id: 'unitPrice',
       value: Math.round(gen.price / gen.area),
+      name: 'Нэгж талбайн үнэ',
     });
 
     f.append('title', general.title);
@@ -123,7 +127,7 @@ export default function CreateAd({ props }) {
         },
       })
     );
-    f.append('types', adType)
+    f.append('types', adType);
     f.append('adTypes', general.adType);
     f.append('filters', JSON.stringify(selectedFilters));
     f.append('subCategory', subCategory._id);
