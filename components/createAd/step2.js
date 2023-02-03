@@ -27,6 +27,7 @@ const Step2 = ({
     committee: positionNames?.committee ?? false,
     town: positionNames?.town ?? false,
   }); // saving local names
+
   // console.log("positionNames", positionNames, selectedLocalData);
   const [type, setType] = useState({
     location: true,
@@ -121,14 +122,23 @@ const Step2 = ({
             <Select
               className="border-2 border-blue-400 rounded-full basis-1/2"
               onChange={(e) => {
-                locationData[e.target.value].name != 'Бусад'
+                e.target.value != 'Бусад'
                   ? setLocationId(locationData[e.target.value].name)
                   : setType((prev) => ({ ...prev, location: false }));
               }}
               placeholder="Байршил"
             >
               {locationData.map((l, i) => {
-                return (
+                return i == locationData.length - 1 ? (
+                  <>
+                    <option key={i} value={i}>
+                      {l.name}
+                    </option>
+                    <option key={i} value={'Бусад'}>
+                      Бусад
+                    </option>
+                  </>
+                ) : (
                   <option key={i} value={i}>
                     {l.name}
                   </option>

@@ -78,7 +78,13 @@ const images = [
   },
 ];
 
-const ProductInfo = ({ title, value, children, key }) => {
+const ProductInfo = ({
+  title,
+  value,
+  children,
+  key = 0,
+  tt = 'capitalize',
+}) => {
   return (
     <GridItem className="product__info" key={key}>
       {children ? (
@@ -92,7 +98,7 @@ const ProductInfo = ({ title, value, children, key }) => {
           borderRadius={5}
         >
           <Text textTransform={'capitalize'}>{title}: </Text>
-          <Text textTransform={'capitalize'} fontWeight={'bold'}>
+          <Text textTransform={tt} fontWeight={'bold'}>
             {value}
           </Text>
         </Stack>
@@ -169,6 +175,7 @@ const Product = () => {
       await fetch(`${urls['test']}/ad/{id}?id=${router.query.slug}`)
         .then((r) => r.json())
         .then(async (d) => {
+          console.log(d);
           setData(d), (district_id = d.positions.district_id);
           try {
             await axios
@@ -289,18 +296,25 @@ const Product = () => {
                         })
                     }
 
-                    {data?.positions?.location_id &&
-                      locations?.map((l, i) => {
-                        return l._id == data.positions.location_id ? (
-                          <ProductInfo
-                            key={i}
-                            title={'Хороолол'}
-                            value={l.name}
-                          />
-                        ) : (
-                          ''
-                        );
-                      })}
+                    {data?.positions?.location_id && (
+                      <ProductInfo
+                        title={'Хороолол'}
+                        value={data?.positions?.location_id}
+                      />
+                    )}
+                    {data?.positions?.committee_id && (
+                      <ProductInfo
+                        title={'Хороо'}
+                        tt="lowercase"
+                        value={data?.positions?.committee_id}
+                      />
+                    )}
+                    {data?.positions?.town && (
+                      <ProductInfo
+                        title={'Хотхон'}
+                        value={data?.positions?.town.value}
+                      />
+                    )}
 
                     {data?.filters?.map((p, i) => {
                       if (p.id != null) {
