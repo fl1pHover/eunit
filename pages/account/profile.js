@@ -46,7 +46,12 @@ const Profile = ({ user }) => {
         </GroupLayout>
 
         <GroupLayout title="Хэрэглэгчийн төрөл" className="">
-          <div className="flex flex-row justify-center gap-4">
+          <div
+            className={mergeNames(
+              'flex flex-row justify-center gap-4',
+              edit ? ' ' : 'cursor-not-allowed'
+            )}
+          >
             {['Энгийн', 'Агент', 'Байгууллага'].map((text, id) => {
               const isSelected = text === agent;
               return (

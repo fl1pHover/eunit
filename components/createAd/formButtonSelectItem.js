@@ -29,8 +29,8 @@ const ButtonSelectItem = ({
       <p
         className={mergeNames(
           'font-semibold md:px-4 md:py-2 px-2 py-1',
-          isSelected ? 'text-white' : 'text-blue-500/80',
-          edit ? '' : 'cursor-not-allowed'
+          isSelected ? 'text-white' : 'text-blue-500/80'
+          // edit ? '' : 'cursor-not-allowed'
         )}
       >
         {text}

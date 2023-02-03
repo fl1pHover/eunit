@@ -1,4 +1,6 @@
-import { Box, Input, Select } from '@chakra-ui/react';
+import Input from '@/lib/Input';
+// import Select from '@/lib/Select';
+import { Box, Select } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import ButtonSelectItem from './formButtonSelectItem';
 import FormLabel from './formLabel';
@@ -86,8 +88,9 @@ const Step2 = ({
       {selectedLocalData.district && (
         <div className="mt-4 mb-10">
           <FormLabel title="Байршил" num={4} />
-          <>
+          <div>
             <Select
+              className="w-full mx-auto rounded-full md:w-2/3"
               onChange={(e) => {
                 locationData[e.target.value].name != 'Бусад'
                   ? setLocationId(locationData[e.target.value].name)
@@ -96,7 +99,11 @@ const Step2 = ({
               placeholder="Байршил"
             >
               {locationData.map((l, i) => {
-                return <option value={i}>{l.name}</option>;
+                return (
+                  <option key={i} value={i}>
+                    {l.name}
+                  </option>
+                );
               })}
             </Select>
             {type.location == false && (
@@ -108,7 +115,7 @@ const Step2 = ({
                 />
               </>
             )}
-          </>
+          </div>
         </div>
       )}
 
@@ -137,6 +144,7 @@ const Step2 = ({
               {
                 <>
                   <Select
+                    className="rounded-md"
                     placeholder="Хотхон"
                     onChange={(e) =>
                       e.target.value == 'Бусад'

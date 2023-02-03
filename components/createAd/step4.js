@@ -1,4 +1,5 @@
-import { Input, Select } from '@chakra-ui/react';
+import Input from '@/lib/Input';
+import { Select } from '@chakra-ui/react';
 import { useState } from 'react';
 import { FiUploadCloud } from 'react-icons/fi';
 import { LilFormLabel } from './formLabel';
