@@ -1,8 +1,6 @@
 import {
   Box,
   Button,
-  Grid,
-  Heading,
   HStack,
   Image,
   Modal,
@@ -97,7 +95,7 @@ const Category = () => {
           {/* //TODO Filter box end */}
 
           {/* //TODO Main product */}
-          <Box maxWidth={'75%'} flex="0 0 75%" borderRadius="5px">
+          <Box className="max-w-[75%] w-full rounded-[5px]">
             {/* <SwiperHeader /> */}
             <Image
               src="/images/HeaderSlider/1.jpg"
@@ -111,24 +109,6 @@ const Category = () => {
             {/* //TODO Ontsgoi zar */}
             {/* //TODO Ontsgoi zar */}
 
-            <Box>
-              <Heading variant={'mediumHeading'} my={3}>
-                Онцгой зар
-              </Heading>
-              <Grid
-                direction={'row'}
-                templateColumns="repeat(auto-fill, minmax(200px, 1fr))"
-                rowGap={5}
-                gap={3}
-                width="100%"
-                justifyContent={'center'}
-              >
-                {/* йыбйыб */}
-                {/* йыбйыб */}
-                {/* йыбйыб */}
-              </Grid>
-            </Box>
-
             {/* //TODO Engiin zar */}
 
             {ads && (
@@ -138,7 +118,7 @@ const Category = () => {
         </Stack>
         <Modal onClose={onClose} isOpen={isOpen} isCentered size={'4xl'}>
           <ModalContent>
-            <ModalHeader>Maps</ModalHeader>
+            <ModalHeader>Зарын байршлууд</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
               {ads && (
@@ -156,7 +136,7 @@ const Category = () => {
                   {isLoaded &&
                     ads?.map((m, i) => {
                       return (
-                        <HStack>
+                        <HStack key={i}>
                           <MarkerF
                             position={{
                               lat: parseFloat(m.location?.lat ?? 47.74604),
@@ -187,7 +167,9 @@ const Category = () => {
               )}
             </ModalBody>
             <ModalFooter>
-              <Button onClick={onClose}>Close</Button>
+              <Button onClick={onClose} className="text-white bg-blue-600 ">
+                Хаах
+              </Button>
             </ModalFooter>
           </ModalContent>
         </Modal>

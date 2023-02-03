@@ -1,4 +1,5 @@
-import { Box, Input, Select } from '@chakra-ui/react';
+import Input from '@/lib/Input';
+import { Box, Select } from '@chakra-ui/react';
 import { GoogleMap, MarkerF, useLoadScript } from '@react-google-maps/api';
 import React, { useMemo, useState } from 'react';
 import ButtonSelectItem from './formButtonSelectItem';
@@ -114,11 +115,11 @@ const Step2 = ({
 
       <FormLine />
       {selectedLocalData.district && (
-        <div className="mt-4 mb-10">
+        <div className="px-4 mt-4 mb-10 ">
           <FormLabel title="Байршил" num={4} />
-          <div>
+          <div className="flex flex-col justify-center w-full mx-auto md:w-1/2 lg:w-1/3">
             <Select
-              className="w-full mx-auto rounded-full md:w-2/3"
+              className="border-2 border-blue-400 rounded-full basis-1/2"
               onChange={(e) => {
                 locationData[e.target.value].name != 'Бусад'
                   ? setLocationId(locationData[e.target.value].name)
@@ -135,13 +136,13 @@ const Step2 = ({
               })}
             </Select>
             {type.location == false && (
-              <>
+              <div className="basis-1/2">
                 <Box h={4} />
                 <Input
-                  placeholder="Байршил"
+                  ph="Байршил"
                   onChange={(e) => setLocationId(e.target.value)}
                 />
-              </>
+              </div>
             )}
           </div>
         </div>
@@ -149,61 +150,66 @@ const Step2 = ({
 
       <FormLine />
       {positions.location_id && (
-        <div className="flex flex-col gap-8 md:flex-row md:gap-4">
-          <InputContainer>
-            <FormLabel title="Хороо / Сум" />
-            {
-              <>
-                <Select></Select>
-                {!type.committee && (
-                  <Input
-                    placeholder="Хороо / Сум"
-                    onChange={(val) => {
-                      setCommitteeId(val.target.value);
-                    }}
-                  />
-                )}
-              </>
-            }
-          </InputContainer>
-          {town && (
-            <InputContainer>
-              <FormLabel title="Хотхон" />
+        <div className="grid grid-cols-1 gap-8 px-4 xl:px-20 md:grid-cols-2 md:gap-4">
+          <div className="flex flex-col w-full lg:w-2/3">
+            <div className="flex flex-col items-center">
+              <FormLabel title="Хороо / Сум" />
               {
                 <>
-                  <Select
-                    className="rounded-md"
-                    placeholder="Хотхон"
-                    onChange={(e) =>
-                      e.target.value == 'Бусад'
-                        ? setType((prev) => ({ ...prev, town: false }))
-                        : setTownId(e.target.value)
-                    }
-                  >
-                    {town[0]?.values.map((t, i) => {
-                      return (
-                        <option key={i} value={t}>
-                          {t}
-                        </option>
-                      );
-                    })}
-                  </Select>
-                  {!type.town && (
-                    <>
-                      <Box h={4} />
-                      <Input
-                        placeholder="Хотхон"
-                        onChange={(val) => {
-                          setTownId(val.target.value);
-                        }}
-                      />
-                    </>
+                  <Select className="w-full border-2 border-blue-400 rounded-full"></Select>
+                  {!type.committee && (
+                    <Input
+                      className="md:w-full"
+                      placeholder="Хороо / Сум"
+                      onChange={(val) => {
+                        setCommitteeId(val.target.value);
+                      }}
+                    />
                   )}
                 </>
               }
-            </InputContainer>
-          )}
+            </div>
+            {town && (
+              <div className="flex flex-col items-center">
+                <FormLabel title="Хотхон" />
+                {
+                  <>
+                    <Select
+                      className="w-full border-2 border-blue-400 rounded-full"
+                      placeholder="Хотхон"
+                      onChange={(e) =>
+                        e.target.value == 'Бусад'
+                          ? setType((prev) => ({ ...prev, town: false }))
+                          : setTownId(e.target.value)
+                      }
+                    >
+                      {town[0]?.values.map((t, i) => {
+                        return (
+                          <option key={i} value={t}>
+                            {t}
+                          </option>
+                        );
+                      })}
+                    </Select>
+                    {!type.town && (
+                      <>
+                        <Box h={4} />
+                        <Input
+                          className="w-full md:w-2/3"
+                          ph="Хотхон"
+                          onChange={(val) => {
+                            setTownId(val.target.value);
+                          }}
+                        />
+                      </>
+                    )}
+                  </>
+                }
+              </div>
+            )}
+          </div>
           <GoogleMap
+            className="aspect-video"
             options={mapOptions}
             onClick={(e) => {
               setMap(e.latLng.toJSON());
@@ -211,7 +217,7 @@ const Step2 = ({
             zoom={14}
             center={mapCenter}
             mapTypeId={google.maps.MapTypeId.ROADMAP}
-            mapContainerStyle={{ width: '100%', height: '50vh' }}
+            mapContainerStyle={{ width: '100%', height: '40vh' }}
           >
             {isLoaded && map && (
               <MarkerF

@@ -56,7 +56,14 @@ export default function Home({ propAds }) {
             <AdContent data={ad} key={i} tlc={toLowerCase} title={c.name} />
           );
       })} */}
-      {propAds?.length > 0 && <AdContent data={propAds} />}
+      <div className="px-4 xl:px-28 lg:px-20 md:px-12 sm:px-14 xs:px-6">
+        {propAds?.length > 0 && (
+          <AdContent
+            data={propAds}
+            className="xl:px-28 lg:px-20 md:px-12 sm:px-14 xs:px-6 px-"
+          />
+        )}
+      </div>
     </>
   );
 }

@@ -53,9 +53,10 @@ const Step4 = ({ filter, setFilters, filters, setGeneral }) => {
             <Input disabled={true} value={filters.price / filters.area} />
           </div>
         )}
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center col-span-1 col-start-1 md:col-start-2 ">
           <LilFormLabel title={'Зарын төрөл'} />
           <Select
+            className="border-2 border-blue-400 rounded-full "
             onChange={(e) =>
               setGeneral((prev) => ({ ...prev, adType: e.target.value }))
             }

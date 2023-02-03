@@ -1,7 +1,6 @@
 import {
   AspectRatio,
   Box,
-  Grid,
   GridItem,
   Heading,
   IconButton,
@@ -273,7 +272,7 @@ const Product = () => {
                 {/*  //TODO  STARTS RIGHT SIDE INFOS */}
 
                 <div>
-                  <div className="grid-cols-2 gap-3">
+                  <div className="grid grid-cols-2 gap-3">
                     {
                       // data?.positions?.location_id  &&
                       data?.positions?.district_id &&
@@ -303,104 +302,12 @@ const Product = () => {
                         );
                       })}
 
-                    {
-                      // <ProductInfo
-                      //       key={data.positions.location_id._id}
-                      //       title={'Хороолол'}
-                      //       value={data.positions.location_id.name}
-                      //     />
-                      //   return (
-                      //        <ProductInfo
-                      //             key={i}
-                      //        >
-                      //             <HStack
-                      //                  p={2}
-                      //                  justifyContent="center"
-                      //                  gap={1}
-                      //                  borderColor="bgGrey"
-                      //                  borderWidth={
-                      //                       2
-                      //                  }
-                      //                  borderRadius={
-                      //                       5
-                      //                  }
-                      //             >
-                      //                  {product
-                      //                       .socials
-                      //                       .facebook && (
-                      //                       <Link
-                      //                            target={
-                      //                                 "_blank"
-                      //                            }
-                      //                            href={
-                      //                                 product
-                      //                                      .socials
-                      //                                      .facebook
-                      //                            }
-                      //                       >
-                      //                            <BsFacebook />
-                      //                       </Link>
-                      //                  )}
-                      //                  {product
-                      //                       .socials
-                      //                       .instagram && (
-                      //                       <Link>
-                      //                            <BsInstagram />
-                      //                       </Link>
-                      //                  )}
-                      //             </HStack>
-                      //        </ProductInfo>
-                      //   );
-                    }
                     {data?.filters?.map((p, i) => {
                       if (p.id != null) {
                         return (
                           <ProductInfo key={i} title={p.name} value={p.value} />
                         );
                       }
-
-                      //   return (
-                      //        <ProductInfo
-                      //             key={i}
-                      //        >
-                      //             <HStack
-                      //                  p={2}
-                      //                  justifyContent="center"
-                      //                  gap={1}
-                      //                  borderColor="bgGrey"
-                      //                  borderWidth={
-                      //                       2
-                      //                  }
-                      //                  borderRadius={
-                      //                       5
-                      //                  }
-                      //             >
-                      //                  {product
-                      //                       .socials
-                      //                       .facebook && (
-                      //                       <Link
-                      //                            target={
-                      //                                 "_blank"
-                      //                            }
-                      //                            href={
-                      //                                 product
-                      //                                      .socials
-                      //                                      .facebook
-                      //                            }
-                      //                       >
-                      //                            <BsFacebook />
-                      //                       </Link>
-                      //                  )}
-                      //                  {product
-                      //                       .socials
-                      //                       .instagram && (
-                      //                       <Link>
-                      //                            <BsInstagram />
-                      //                       </Link>
-                      //                  )}
-                      //             </HStack>
-                      //        </ProductInfo>
-                      //   );
                     })}
                   </div>
                 </div>
@@ -437,13 +344,7 @@ const Product = () => {
           </Box>
         </div>
 
-        <Grid
-          direction={'row'}
-          templateColumns="repeat(auto-fill, minmax(230px, 1fr))"
-          className="justify-center w-full gap-5"
-        >
-          <AdContent data={sData} />
-        </Grid>
+        <AdContent data={sData} />
       </MainContainer>
     </Box>
   );
