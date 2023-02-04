@@ -1,9 +1,8 @@
-import { Image, useDisclosure } from '@chakra-ui/react';
+import { Image, Text, useDisclosure } from '@chakra-ui/react';
 import { useState } from 'react';
 
 //TODO Icons
 import { useRouter } from 'next/router';
-import Text from '../../lib/Text';
 import mergeNames from '../../util/mergeNames';
 import { UserIcon } from './icons';
 
@@ -89,7 +88,7 @@ const BodyDrawer = (onClose, ...props) => {
           </button>
           <button
             onClick={logout}
-            className="py-2 font-semibold text-white bg-red-400 rounded-md hover:bg-red-500 "
+            className="py-2 font-semibold text-white rounded-md bg-mainBlossom hover:bg-red-500 "
           >
             Гарах
           </button>
@@ -104,7 +103,7 @@ const DownLink = ({ href, text, className, icon, onClick = () => {} }) => {
     <button
       onClick={onClick}
       className={mergeNames(
-        'px-5 py-4 transition-all ease-in-out border rounded-lg h-[100px] group hover:bg-gray-100 text-mainBlossom text-bold',
+        'px-5 py-4 transition-all ease-in-out border-2 rounded-lg h-[100px] group hover:bg-gray-100 text-mainBlossom text-bold',
         STYLES.flexCenter,
         'flex-col items-center',
         className
@@ -113,7 +112,7 @@ const DownLink = ({ href, text, className, icon, onClick = () => {} }) => {
       {text && text?.length > 0 ? (
         <>
           <p className="text-[30px] mb-2">{icon}</p>
-          <Text className="font-bold">{text}</Text>
+          <Text className="font-semibold">{text}</Text>
         </>
       ) : (
         ''

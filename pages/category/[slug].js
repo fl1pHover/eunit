@@ -9,7 +9,6 @@ import FilterLayout from '../../components/filter';
 import AdContent from '../../components/home/adContent';
 import urls from '../../constants/api';
 import { useAuth } from '../../context/auth';
-import Maps from './maps';
 
 const Category = () => {
   const { categories, ads, setAds } = useAuth();
@@ -99,7 +98,6 @@ const Category = () => {
             )}
           </Box>
         </Stack>
-        <Maps />
       </MainContainer>
     </Box>
   );
