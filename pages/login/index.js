@@ -1,10 +1,10 @@
+import { STYLES } from '@/styles/index';
+import mergeNames from '@/util/mergeNames';
 import {
   Box,
   Button,
   FormControl,
   FormLabel,
-  Grid,
-  GridItem,
   Image,
   Input,
   Tab,
@@ -12,12 +12,12 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
-  VStack,
 } from '@chakra-ui/react';
 import { useAuth } from 'context/auth';
 
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { BiHide, BiShow } from 'react-icons/bi';
 import MainContainer from '../../layout/mainContainer';
 
 export default function Login() {
@@ -83,43 +83,23 @@ export default function Login() {
   };
   return (
     <MainContainer w={'450px'} className="asd">
-      <Grid
-        templateColumns={{
-          base: 'repeat(1,1fr)',
-          lg: 'repeat(2,1fr)',
-        }}
-        my={10}
-        position={'relative'}
-        height="65vh"
-      >
-        <GridItem>
+      <div className="relative grid grid-cols-1 my-10 lg:grid-cols-2 h-[65vh]">
+        <div>
           <Image
             src="/images/login.png"
             alt="login page side image"
-            position="absolute"
-            left={'0'}
-            height={'100%'}
-            objectFit="contain"
-            opacity={'80%'}
+            className="absolute left-0 object-contain h-full opacity-80"
           />
-        </GridItem>
-        <GridItem zIndex={'1'} display="flex" justifyContent={'center'}>
-          <VStack
-            px={'50px'}
-            py={'30px'}
-            bg="white"
-            width="500px"
-            borderRadius={'20px'}
-            justifyContent="center"
+        </div>
+        <div className="z-10 flex justify-center">
+          <div
+            className={mergeNames(
+              STYLES.flexCenter,
+              'flex-row bg-white px-[50px] py-[30px] w-[500px] rounded-xl items-center'
+            )}
           >
             <Tabs w="full">
-              <TabList
-                w={'80%'}
-                gap={4}
-                mx="auto"
-                border={'none'}
-                justifyContent="center"
-              >
+              <TabList className="w-[80%] gap-4 mx-auto border-none justify-center">
                 <Tab fontSize={'18px'} fontWeight={600}>
                   Нэвтрэх
                 </Tab>
@@ -144,9 +124,9 @@ export default function Login() {
                 </TabPanel>
               </TabPanels>
             </Tabs>
-          </VStack>
-        </GridItem>
-      </Grid>
+          </div>
+        </div>
+      </div>
     </MainContainer>
   );
 }
@@ -244,6 +224,9 @@ export const SignUpComp = ({ credential, setCredential, fc }) => {
 };
 
 export const InputComp = ({ lbl, type, value, setValue, v }) => {
+  const [show, setShow] = useState(false);
+  const handleClick = () => setShow(!show);
+
   return (
     <Box bg={'bg.input'} borderRadius={12} w="full">
       <FormControl variant="floating" id="first-name" isRequired>
@@ -251,8 +234,8 @@ export const InputComp = ({ lbl, type, value, setValue, v }) => {
           placeholder=" "
           border="1px solid #d9d9d9"
           //   _focusVisible={{ border: "none" }}
-          fontSize={14}
-          type={type}
+          className="text-[14px] relative"
+          type={type === 'password' ? (!show ? 'password' : 'text') : 'text'}
           value={value}
           onChange={(e) => {
             switch (v) {
@@ -291,6 +274,14 @@ export const InputComp = ({ lbl, type, value, setValue, v }) => {
             }
           }}
         />
+        {type === 'password' && (
+          <button
+            onClick={handleClick}
+            className="absolute top-[50%] -translate-y-[50%] right-0 w-[40px] h-[40px] z-10 grid place-items-center"
+          >
+            {show ? <BiHide /> : <BiShow />}
+          </button>
+        )}
         <FormLabel>{lbl}</FormLabel>
       </FormControl>
     </Box>

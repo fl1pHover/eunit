@@ -5,8 +5,10 @@ import { HiMenuAlt3 } from 'react-icons/hi';
 import useBreakpoints from '../../hooks/useBreakpoints';
 import { NavContainer } from '../../lib/Container';
 
+import { useDisclosure } from '@chakra-ui/react';
 import { useAuth } from 'context/auth';
 import Cookies from 'js-cookie';
+import { useRef } from 'react';
 import BottomMenu from './bottomMenu';
 import {
   EstimateIcon,
@@ -18,7 +20,8 @@ import {
 import NavLogo from './navLogo';
 import SearchBar from './searchBar';
 import SideMenu from './sideMenu';
-import UserDropdown from './userDropdown';
+import UserDropdown from './userDrawer';
+import UserDrawer from './userDrawer';
 
 const calcSize = (pt) => {
   switch (pt) {
@@ -39,7 +42,7 @@ const calcSize = (pt) => {
     }
   }
 };
-const UpperNav = ({}) => {
+const UpperNav = () => {
   const router = useRouter();
   const pt = useBreakpoints();
 
@@ -47,6 +50,9 @@ const UpperNav = ({}) => {
   const [showSideMenu, setShowSideMenu] = useState(false);
   const [showBottomMenu, setShowBottomMenu] = useState(false);
   const { user, logout } = useAuth();
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const btnRef = useRef();
 
   useEffect(() => {
     setSize(calcSize(pt));
@@ -73,7 +79,7 @@ const UpperNav = ({}) => {
                 onClick={() => router.push('/login')}
               />
             ) : (
-              <UserDropdown user={user} logout={logout} />
+              <UserDrawer user={user} logout={logout} />
             )}
           </div>
           <div className="flex items-center justify-center gap-2 md:hidden">
@@ -85,6 +91,7 @@ const UpperNav = ({}) => {
               onClick={() => {
                 setShowSideMenu(true);
               }}
+
               // onClick={openNav}
             >
               <HiMenuAlt3

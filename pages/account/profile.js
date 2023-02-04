@@ -77,7 +77,7 @@ const Profile = ({ user }) => {
         {/* //TODO: Burgteltei email ni haragdaj bdgaar ghde disabled eniig yahav hereggui gevel arilgachna */}
 
         <GroupLayout title="Бүртгэлтэй Имэйл" className="col-span-full">
-          <p className="italic ">{user?.email}soko-bishu@yahoo.com</p>
+          <p className="italic ">{user?.email}</p>
         </GroupLayout>
       </div>
 

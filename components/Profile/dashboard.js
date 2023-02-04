@@ -49,7 +49,7 @@ const Dashboard = () => {
               ? 'Агент'
               : 'Байгууллага'
           }
-          phone="9988-7766"
+          phone={user?.phone}
           username={user?.username}
           ads={user?.ads?.length}
           marks={user?.bookmarks?.length}
