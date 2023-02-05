@@ -1,5 +1,4 @@
-import Input from '@/lib/Input';
-import { Select } from '@chakra-ui/react';
+import { Input, Select } from '@chakra-ui/react';
 import { useState } from 'react';
 import { FiUploadCloud } from 'react-icons/fi';
 import { LilFormLabel } from './formLabel';
@@ -128,7 +127,7 @@ const Step4 = ({ filter, setFilters, filters, setGeneral }) => {
           <LilFormLabel title="Зураг оруулах" />
           <button className="border-2 border-dotted border-blue-400 bg-blue-100/50 rounded-xl outline-none p-4 min-h-[30vh] min-w-[40vw] flex flex-col justify-center items-center">
             <FiUploadCloud size={90} className="text-blue-400" />
-            <p>Зураг оруулах</p>
+            {/* <Input type={'file'} 'image'/> */}
           </button>
         </div>
       </div>

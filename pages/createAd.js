@@ -50,7 +50,7 @@ export default function CreateAd({ props }) {
   const [selectedImages, setSelectedImages] = useState([]);
   const [images, setImages] = useState([]);
   const [imageUrl, setImageUrl] = useState([]);
-
+  const [isLoading, setIsLoading] = useState(false)
   const [positions, setPositions] = useState({
     district_id: '',
     committee_id: '',
@@ -90,6 +90,7 @@ export default function CreateAd({ props }) {
   }, [passcategory, selectedIndex]);
 
   const createAd = async () => {
+    setIsLoading(true)
     const f = new FormData();
     const selectedFilters = filters[2];
     selectedFilters.push({
@@ -140,7 +141,7 @@ export default function CreateAd({ props }) {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(ad);
+    setIsLoading(false)
   };
   const setFilter = (id, e) => {
     e.preventDefault();
@@ -256,6 +257,7 @@ export default function CreateAd({ props }) {
         })}
 
         <StepButtons
+        isLoading={isLoading}
           step={step}
           onNext={() => (step == 2 ? createAd() : setStep((prev) => prev + 1))}
           onPrev={() => setStep((prev) => (prev > -1 ? prev - 1 : prev))}

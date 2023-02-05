@@ -166,7 +166,28 @@ const Step2 = ({
               <FormLabel title="Хороо / Сум" />
               {
                 <>
-                  <Select className="w-full border-2 border-blue-400 rounded-full"></Select>
+                  <Select
+                    className="w-full border-2 border-blue-400 rounded-full"
+                    placeholder="Хороо / Сум"
+                    onChange={(e) => {
+                      e.target.value == 'Бусад'
+                        ? setType((prev) => ({ ...prev, committee: false }))
+                        : setCommitteeId(e.target.value);
+                    }}
+                  >
+                    {[...Array(31).keys()].map((c, i) => {
+                      if (c == 30) {
+                        return <option value={`Бусад`}>Бусад</option>;
+                      } else {
+                        return (
+                          <option value={`${c + 1}-р хороо`}>
+                            {c + 1}-р хороо
+                          </option>
+                        );
+                      }
+                    })}
+                  </Select>
+                  <Box h={4} />
                   {!type.committee && (
                     <Input
                       className="md:w-full"

@@ -29,7 +29,7 @@ const Admin = () => {
   if (user?.userType == 'admin' || user?.userType == 'system') {
     return ads.map((a, i) => {
       return (
-        <HStack>
+        <HStack key={i}>
           <Text>{a.title}</Text>
           <Button onClick={() => verify(a._id)}>verify</Button>
           <Button onClick={() => deleteAd(a._id)}>delete</Button>

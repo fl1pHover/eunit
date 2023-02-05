@@ -146,22 +146,32 @@ const Product = () => {
   const [data, setData] = useState('');
   const [suggestion, setSuggestion] = useState('location');
   const [sData, setsData] = useState([]);
-  const getSuggestion = async () => {
+  const getSuggestion = async (suggest) => {
+    console.log(suggest, data?.positions?.district_id);
     if (data) {
       try {
         await axios
           .post(`${urls['test']}/ad/suggesstion`, {
             suggestion:
+              suggest == 'location'
+                ? data?.positions?.district_id
+                : suggest == 'room'
+                ? data?.filters.filter((f) => f.id == 'room')[0].value
+                : null,
+            type: suggest,
+          })
+          .then((d) => {
+            setsData([]);
+            console.log(
               suggestion == 'location'
                 ? data?.positions?.district_id
                 : suggestion == 'room'
                 ? data?.filters.filter((f) => f.id == 'room')[0].value
-                : null,
-            type: suggestion,
-          })
-          .then((d) => {
-            setsData([]);
-
+                : null
+            );
+            console.log(data?.positions?.district_id);
+            console.log(data?.filters.filter((f) => f.id == 'room')[0].value);
+            console.log(d.data);
             setsData(d.data.filter((sd) => sd._id != data._id));
           });
       } catch (error) {
@@ -190,6 +200,7 @@ const Product = () => {
               })
               .then((s) => {
                 setsData(s.data);
+                console.log(s.data);
               });
           } catch (error) {
             console.log(error);
@@ -349,11 +360,12 @@ const Product = () => {
               className="border-2 border-blue-400 rounded-full"
               onChange={async (e) => {
                 setSuggestion(e.target.value);
-                await getSuggestion();
+                getSuggestion(e.target.value);
               }}
             >
               <option value="location">Байршлаар</option>
               <option value="room">Өрөөгөөр</option>
+              <option value="map">Газрын зургаар</option>
             </Select>
           </Box>
         </div>

@@ -39,7 +39,7 @@ const Step3 = ({ filter }) => {
                   e.target.value == 'Бусад'
                     ? f.type == 'text'
                     : (f.value = e.target.value);
-                }}
+              }}
               >
                 {f.parentId == null
                   ? f.values.map((v, i) => {
