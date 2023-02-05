@@ -27,7 +27,7 @@ const Card = ({ item }) => {
         <div className="flex flex-col w-full h-full px-3 py-2 bg-gradient-to-b from-slate-700/0 via-slate-700/30 to-slate-900/100 ">
           <button
             onClick={() =>
-              item && item._id && router.push(`product/${item.num}`)
+              item && item._id && router.push(`/product/${item.num}`)
             }
             className="flex items-start justify-between flex-1"
           >

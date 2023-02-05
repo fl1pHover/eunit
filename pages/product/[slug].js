@@ -1,15 +1,17 @@
 import {
   AspectRatio,
   Box,
+  Button,
   GridItem,
   Heading,
+  HStack,
   IconButton,
   Select,
   Stack,
   Text,
   useToast,
 } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 // Import Swiper React components
 // Import Swiper styles
@@ -26,6 +28,12 @@ import ScrollTop from '../../lib/ScrollTop';
 import AdContent from '@/components/home/adContent';
 import { STYLES } from '@/styles/index';
 import mergeNames from '@/util/mergeNames';
+import {
+  GoogleMap,
+  InfoWindow,
+  MarkerF,
+  useLoadScript,
+} from '@react-google-maps/api';
 import axios from 'axios';
 import moment from 'moment/moment';
 import { useRouter } from 'next/router';
@@ -146,9 +154,24 @@ const Product = () => {
   const [data, setData] = useState('');
   const [suggestion, setSuggestion] = useState('location');
   const [sData, setsData] = useState([]);
+  const libraries = useMemo(() => ['places'], []);
+  const [markerActive, setMarkerActive] = useState(null);
+
+  const { isLoaded } = useLoadScript({
+    googleMapsApiKey: 'AIzaSyC2u2OzBNo53GxJJdN3Oc_W6Yc42OmdZcE',
+    libraries: libraries,
+  });
+  const mapOptions = useMemo(
+    () => ({
+      disableDefaultUI: true,
+      // clickableIcons: true,
+      scrollwheel: true,
+    }),
+    []
+  );
+  const mapCenter = useMemo(() => data?.location, [data]);
   const getSuggestion = async (suggest) => {
-    console.log(suggest, data?.positions?.district_id);
-    if (data) {
+    if (data && suggestion != 'map') {
       try {
         await axios
           .post(`${urls['test']}/ad/suggesstion`, {
@@ -162,16 +185,6 @@ const Product = () => {
           })
           .then((d) => {
             setsData([]);
-            console.log(
-              suggestion == 'location'
-                ? data?.positions?.district_id
-                : suggestion == 'room'
-                ? data?.filters.filter((f) => f.id == 'room')[0].value
-                : null
-            );
-            console.log(data?.positions?.district_id);
-            console.log(data?.filters.filter((f) => f.id == 'room')[0].value);
-            console.log(d.data);
             setsData(d.data.filter((sd) => sd._id != data._id));
           });
       } catch (error) {
@@ -187,23 +200,24 @@ const Product = () => {
         .then(async (d) => {
           console.log(d);
           setData(d), (district_id = d.positions.district_id);
-          try {
-            await axios
-              .post(`${urls['test']}/ad/suggesstion`, {
-                suggestion:
-                  suggestion == 'location'
-                    ? d?.positions?.district_id
-                    : suggestion == 'room'
-                    ? data?.filters.filter((f) => f.id == 'room')[0].value
-                    : null,
-                type: suggestion,
-              })
-              .then((s) => {
-                setsData(s.data);
-                console.log(s.data);
-              });
-          } catch (error) {
-            console.log(error);
+          if (suggestion != 'map') {
+            try {
+              await axios
+                .post(`${urls['test']}/ad/suggesstion`, {
+                  suggestion:
+                    suggestion == 'location'
+                      ? d?.positions?.district_id
+                      : suggestion == 'room'
+                      ? data?.filters.filter((f) => f.id == 'room')[0].value
+                      : null,
+                  type: suggestion,
+                })
+                .then((s) => {
+                  setsData(s.data);
+                });
+            } catch (error) {
+              console.log(error);
+            }
           }
         });
     } catch (error) {
@@ -360,7 +374,11 @@ const Product = () => {
               className="border-2 border-blue-400 rounded-full"
               onChange={async (e) => {
                 setSuggestion(e.target.value);
-                getSuggestion(e.target.value);
+                {
+                  suggestion != 'map'
+                    ? getSuggestion(e.target.value)
+                    : console.log(data);
+                }
               }}
             >
               <option value="location">Байршлаар</option>
@@ -369,8 +387,52 @@ const Product = () => {
             </Select>
           </Box>
         </div>
-
-        <AdContent data={sData} />
+        {suggestion == 'map' ? (
+          <GoogleMap
+            options={mapOptions}
+            onClick={(e) => {
+              // setMap(e.latLng.toJSON());
+              console.log(e.latLng.toJSON());
+            }}
+            zoom={14}
+            center={mapCenter}
+            mapTypeId={google.maps.MapTypeId.ROADMAP}
+            mapContainerStyle={{ width: '100%', height: '50vh' }}
+          >
+            {isLoaded &&
+              sData?.map((m, i) => {
+                return (
+                  <HStack>
+                    <MarkerF
+                      position={{
+                        lat: parseFloat(m.location?.lat ?? 47.74604),
+                        lng: parseFloat(m.location?.lng ?? 107.341515),
+                      }}
+                      onClick={() => setMarkerActive(i)}
+                      animation={google.maps.Animation.DROP}
+                    >
+                      <InfoWindow
+                        position={{
+                          lat: parseFloat(m.location?.lat ?? 47.74604),
+                          lng: parseFloat(m.location?.lng ?? 107.341515),
+                        }}
+                        // onLoad={(info) => console.log(info)}
+                      >
+                        {/* end zasna */}
+                        <Button
+                          onClick={() => router.push(`/product/${m.num}`)}
+                        >
+                          <div>{m.title}</div>
+                        </Button>
+                      </InfoWindow>
+                    </MarkerF>
+                  </HStack>
+                );
+              })}
+          </GoogleMap>
+        ) : (
+          <AdContent data={sData} />
+        )}
       </MainContainer>
     </Box>
   );
