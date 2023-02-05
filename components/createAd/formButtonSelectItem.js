@@ -15,7 +15,6 @@ const ButtonSelectItem = ({
       onClick={() => {
         onClick();
       }}
-   
       className={mergeNames(
         'transition-all ease-out',
         'ring-[6px] ring-offset-0 rounded-full px-1 py-1 md:mb-3 mb-2',
@@ -32,7 +31,7 @@ const ButtonSelectItem = ({
         className={mergeNames(
           'font-semibold md:px-4 md:py-2 px-2 py-1',
           isSelected ? 'text-white' : 'text-blue-500/80',
-          edit ? '' : 'cursor-not-allowed'
+          edit && 'cursor-not-allowed'
         )}
       >
         {text}

@@ -1,21 +1,30 @@
+import { STYLES } from '@/styles/index';
+import mergeNames from '@/util/mergeNames';
 import { Input, Select } from '@chakra-ui/react';
 import { useState } from 'react';
-import { FiUploadCloud } from 'react-icons/fi';
 import { LilFormLabel } from './formLabel';
 import FormLine from './formLine';
+import ImageUploader from './imageUplaoder';
 
 const Step4 = ({ filter, setFilters, filters, setGeneral }) => {
   const [payment, setPayment] = useState(false);
-
+  const [positions, setPositions] = useState({
+    district_id: '',
+    committee_id: '',
+    location_id: '',
+    town_id: '',
+  });
+  
   return (
     <div>
-      <div className="grid grid-cols-1 px-10 mt-4 md:grid-cols-3 md:px-0">
+      <div className="grid grid-cols-1 px-5 mt-4 md:px-10 gap-x-5 md:grid-cols-3 ">
         {filter?.map((f, i) => {
           return (
             f.id != 'unitPrice' && (
               <div className="flex flex-col items-center" key={i}>
                 <LilFormLabel title={f.name} />
                 <Input
+                  className={mergeNames(STYLES.input)}
                   onChange={(e) => {
                     switch (f.id) {
                       case 'phone':
@@ -46,12 +55,12 @@ const Step4 = ({ filter, setFilters, filters, setGeneral }) => {
             )
           );
         })}
-        {filters.area != '' && filters.price && (
-          <div className="flex flex-col items-center">
-            <LilFormLabel title={'Нэгж талбайн үнэ'} />
-            <Input disabled={true} value={filters.price / filters.area} />
-          </div>
-        )}
+        {/* {filters.area != '' && filters.price && ( */}
+        <div className="flex flex-col items-center">
+          <LilFormLabel title={'Нэгж талбайн үнэ'} />
+          <Input disabled={true} value={filters.price / filters.area} />
+        </div>
+        {/* )} */}
         <div className="flex flex-col items-center col-span-1 col-start-1 md:col-start-2 ">
           <LilFormLabel title={'Зарын төрөл'} />
           <Select
@@ -105,10 +114,11 @@ const Step4 = ({ filter, setFilters, filters, setGeneral }) => {
         </div>
       </div> */}
       <FormLine />
-      <div className="flex flex-col items-center gap-8 px-10 mb-10 md:px-0">
-        <div className="flex flex-col items-center w-1/2">
+      <div className="flex flex-col items-center gap-8 px-4 mb-10 md:px-0">
+        <div className="flex flex-col items-center w-full sm:w-1/2">
           <LilFormLabel title="Гарчиг" />
           <Input
+            className={mergeNames(STYLES.input)}
             onChange={(e) =>
               setGeneral((prev) => ({ ...prev, title: e.target.value }))
             }
@@ -117,7 +127,7 @@ const Step4 = ({ filter, setFilters, filters, setGeneral }) => {
         <div>
           <LilFormLabel title="Дэлгэрэнгүй" />
           <textarea
-            className="border-2 border-blue-500 rounded-xl outline-none p-4 min-h-[30vh] min-w-[40vw]"
+            className="border-2 border-blue-500 rounded-xl outline-none p-2 min-h-[30vh] min-w-[40vw]"
             onChange={(e) =>
               setGeneral((prev) => ({ ...prev, description: e.target.value }))
             }
@@ -125,10 +135,7 @@ const Step4 = ({ filter, setFilters, filters, setGeneral }) => {
         </div>
         <div>
           <LilFormLabel title="Зураг оруулах" />
-          <button className="border-2 border-dotted border-blue-400 bg-blue-100/50 rounded-xl outline-none p-4 min-h-[30vh] min-w-[40vw] flex flex-col justify-center items-center">
-            <FiUploadCloud size={90} className="text-blue-400" />
-            {/* <Input type={'file'} 'image'/> */}
-          </button>
+          <ImageUploader />
         </div>
       </div>
     </div>

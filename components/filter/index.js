@@ -1,7 +1,5 @@
 // import Input from '@/lib/Input';
-import mergeNames from '@/util/mergeNames';
 import {
-  Box,
   Button,
   Checkbox,
   Drawer,
@@ -23,6 +21,9 @@ import { useEffect, useRef, useState } from 'react';
 import urls from '../../constants/api';
 import { useAuth } from '../../context/auth';
 // import Select from '@/lib/Select';
+import { STYLES } from '@/styles/index';
+import mergeNames from '@/util/mergeNames';
+import { MdFilterList } from 'react-icons/md';
 import FilterStack from '../../util/filterStack';
 
 const FilterLayout = ({ data, isOpenMap }) => {
@@ -98,19 +99,29 @@ const FilterLayout = ({ data, isOpenMap }) => {
     });
     console.log(filter);
   };
+
   return (
     <>
-      <Box
+      <button
+        ref={btnRef}
+        colorScheme="teal"
+        onClick={onOpen}
         className={mergeNames(
-          'max-w-[20%] bg-white p-5 rounded-xl shadow-base hidden md:block absolute left-0 top-0'
+          ' bg-blue-600 rounded-md text-white font-bold h-[50px]',
+          STYLES.flexCenter,
+          'relative ',
+          // 'sticky top-[100px] left-[0] z-30',
+          'px-5 ',
+          'flex gap-2 items-center'
         )}
-      ></Box>
-      <Button ref={btnRef} colorScheme="teal" onClick={onOpen}>
-        Open
-      </Button>
+      >
+        Шүүлтүүр
+        <MdFilterList />
+      </button>
+
       <Drawer
         isOpen={isOpen}
-        placement="bottom"
+        placement="left"
         onClose={onClose}
         finalFocusRef={btnRef}
       >

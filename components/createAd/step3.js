@@ -1,4 +1,6 @@
 import { DateYearSelector } from '@/lib/DateSelector';
+import { STYLES } from '@/styles/index';
+import mergeNames from '@/util/mergeNames';
 import { Input, Select } from '@chakra-ui/react';
 // import Select from '@/lib/Select';
 import { useState } from 'react';
@@ -13,11 +15,11 @@ const Step3 = ({ filter }) => {
   // const [filters, setFilters] = useState(filter)
 
   return (
-    <div className="w-full">
+    <div className="grid w-full grid-cols-1 gap-5 lg:grid-cols-2">
       {filter?.map((f, i) => {
         if (f.mark == 'year')
           return (
-            <Col>
+            <div className="col-span-2">
               <FormLabel title={f.name} />
               {/* <div className="flex items-center justify-center w-full"> */}
               <DateYearSelector
@@ -27,19 +29,20 @@ const Step3 = ({ filter }) => {
                   f.value = num;
                 }}
               />
-            </Col>
+            </div>
           );
         if (f.type == 'dropdown')
           return (
             <Col>
               <FormLabel title={f.name} />
               <Select
+                className={mergeNames(STYLES.input)}
                 placeholder={f.name}
                 onChange={(e) => {
                   e.target.value == 'Бусад'
                     ? f.type == 'text'
                     : (f.value = e.target.value);
-              }}
+                }}
               >
                 {f.parentId == null
                   ? f.values.map((v, i) => {

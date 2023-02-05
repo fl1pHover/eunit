@@ -75,8 +75,8 @@ const Step2 = ({
   );
   const mapCenter = useMemo(
     () => ({
-      lat: 47.74604,
-      lng: 107.341515,
+      lat: 47.9186367,
+      lng: 106.9164856,
     }),
     []
   );
@@ -120,7 +120,7 @@ const Step2 = ({
           <FormLabel title="Байршил" num={4} />
           <div className="flex flex-col justify-center w-full mx-auto md:w-1/2 lg:w-1/3">
             <Select
-              className="border-2 border-blue-400 rounded-full basis-1/2"
+              className="border-2 border-blue-400 rounded-full "
               onChange={(e) => {
                 e.target.value != 'Бусад'
                   ? setLocationId(locationData[e.target.value].name)
@@ -146,13 +146,14 @@ const Step2 = ({
               })}
             </Select>
             {type.location == false && (
-              <div className="basis-1/2">
+              <>
                 <Box h={4} />
                 <Input
                   ph="Байршил"
                   onChange={(e) => setLocationId(e.target.value)}
+                  className="mx-auto"
                 />
-              </div>
+              </>
             )}
           </div>
         </div>
@@ -177,10 +178,14 @@ const Step2 = ({
                   >
                     {[...Array(31).keys()].map((c, i) => {
                       if (c == 30) {
-                        return <option value={`Бусад`}>Бусад</option>;
+                        return (
+                          <option value={`Бусад`} key={i}>
+                            Бусад
+                          </option>
+                        );
                       } else {
                         return (
-                          <option value={`${c + 1}-р хороо`}>
+                          <option value={`${c + 1}-р хороо`} key={i}>
                             {c + 1}-р хороо
                           </option>
                         );

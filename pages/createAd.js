@@ -50,7 +50,7 @@ export default function CreateAd({ props }) {
   const [selectedImages, setSelectedImages] = useState([]);
   const [images, setImages] = useState([]);
   const [imageUrl, setImageUrl] = useState([]);
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
   const [positions, setPositions] = useState({
     district_id: '',
     committee_id: '',
@@ -90,7 +90,7 @@ export default function CreateAd({ props }) {
   }, [passcategory, selectedIndex]);
 
   const createAd = async () => {
-    setIsLoading(true)
+    setIsLoading(true);
     const f = new FormData();
     const selectedFilters = filters[2];
     selectedFilters.push({
@@ -130,7 +130,7 @@ export default function CreateAd({ props }) {
       })
     );
     f.append('types', adType);
-    f.append('location', JSON.stringify(map))
+    f.append('location', JSON.stringify(map));
     f.append('adTypes', general.adType);
     f.append('filters', JSON.stringify(selectedFilters));
     f.append('subCategory', subCategory._id);
@@ -141,7 +141,7 @@ export default function CreateAd({ props }) {
         Authorization: `Bearer ${token}`,
       },
     });
-    setIsLoading(false)
+    setIsLoading(false);
   };
   const setFilter = (id, e) => {
     e.preventDefault();
@@ -194,8 +194,8 @@ export default function CreateAd({ props }) {
                   <FormTitle>Байршил</FormTitle>
                   <div className="bg-white min-h-[40vh] rounded-xl py-10 md:px-10 px-2">
                     <Step2
-                    map={map}
-                    setMap={setMap}
+                      map={map}
+                      setMap={setMap}
                       {...{
                         subCategory,
                         districts,
@@ -257,7 +257,7 @@ export default function CreateAd({ props }) {
         })}
 
         <StepButtons
-        isLoading={isLoading}
+          isLoading={isLoading}
           step={step}
           onNext={() => (step == 2 ? createAd() : setStep((prev) => prev + 1))}
           onPrev={() => setStep((prev) => (prev > -1 ? prev - 1 : prev))}

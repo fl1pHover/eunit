@@ -1,10 +1,10 @@
+import AdCard from '@/components/home/adCard';
 import { STYLES } from '@/styles/index';
 import mergeNames from '@/util/mergeNames';
-import { Heading, Image, Stack } from '@chakra-ui/react';
+import { Image } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { MdCompareArrows } from 'react-icons/md';
-import AdContent from '../../components/home/adContent';
 
 const CompareItem = () => {
   return (
@@ -31,7 +31,7 @@ const CompareSelect = () => {
       )}
     >
       <button
-        className="h-[50px] gap-2 px-5 bg-secondary/90 absolute -top-[65px] rounded-2xl left-[15px] flex place-items-center text-white"
+        className="h-[50px] gap-2 px-5 bg-secondary/90 absolute -top-[65px] rounded-2xl left-[15px] flex place-items-center text-white  z-30"
         onClick={() => setExpand(!expand)}
       >
         <MdCompareArrows
@@ -88,13 +88,17 @@ const MyAds = () => {
   return (
     <>
       <CompareSelect />
-      <Heading variant={'mediumHeading'}>
-        <AdContent data={products} tlc={toLowerCase} title=" " />
-      </Heading>
 
-      <Stack display={{ base: 'flex', md: 'none' }}>
-        <AdContent data={products} tlc={toLowerCase} title=" " />
-      </Stack>
+      {/* <AdContent
+        data={products}
+        tlc={toLowerCase}
+        title=" "
+        showLink="hidden"
+      /> */}
+      <div className="grid grid-cols-2 gap-5 mt-5 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-3">
+        {products &&
+          products.map((item, key) => <AdCard key={key} item={item || {}} />)}
+      </div>
     </>
   );
 };

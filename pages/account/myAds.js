@@ -1,5 +1,4 @@
 import urls from '@/constants/api';
-import { Heading, Stack } from '@chakra-ui/react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { useEffect, useState } from 'react';
@@ -41,13 +40,12 @@ const MyAds = () => {
 
   return (
     <>
-      <Heading variant={'mediumHeading'}>
-        <AdContent data={products} tlc={toLowerCase} title=" " />
-      </Heading>
-
-      <Stack display={{ base: 'flex', md: 'none' }}>
-        <AdContent data={products} tlc={toLowerCase} title=" " />
-      </Stack>
+      <AdContent
+        data={products}
+        tlc={toLowerCase}
+        title=" "
+        showLink="hidden"
+      />
     </>
   );
 };

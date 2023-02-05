@@ -1,14 +1,13 @@
-import React from "react";
-import { BiCheck } from "react-icons/bi";
+import React from 'react';
+import { BiCheck } from 'react-icons/bi';
 
-import mergeNames from "@/util/mergeNames";
-import { categories as localCategory } from "@/data/categories";
+import { categories as localCategory } from '@/data/categories';
+import mergeNames from '@/util/mergeNames';
 
-import Line from "@/components/createAd/formLine";
-import FormLabel from "@/components/createAd/formLabel";
-import ButtonSelectItem from "@/components/createAd/formButtonSelectItem";
-import CategoryButtonSelect from "@/components/createAd/categoryButtonSelect";
-import FormTitle from "./title";
+import CategoryButtonSelect from '@/components/createAd/categoryButtonSelect';
+import ButtonSelectItem from '@/components/createAd/formButtonSelectItem';
+import FormLabel from '@/components/createAd/formLabel';
+import Line from '@/components/createAd/formLine';
 
 const Step1 = ({
   categories = localCategory,
@@ -23,7 +22,7 @@ const Step1 = ({
     <div className="w-full">
       <FormLabel num="1" title="Таны зарах хөрөнгийн төрөл?" />
       <div className="flex justify-center">
-        <div className="grid lg:grid-cols-6 grid-cols-3 py-4 lg:gap-4 gap-4 auto-rows-fr md:w-4/5 w-full">
+        <div className="grid w-full grid-cols-3 gap-4 py-4 lg:grid-cols-6 lg:gap-4 auto-rows-fr md:w-4/5">
           {categories?.map((item, key) => {
             const isSelected =
               key.toString() === selectedIndex.category.toString();
@@ -44,12 +43,13 @@ const Step1 = ({
         <div>
           <Line />
           <FormLabel title="Дэд төрөл" />
-          <div className="flex flex-wrap md:gap-4 gap-1 md:px-10 justify-center mb-6">
+          <div className="flex flex-wrap justify-center gap-1 mb-6 md:gap-4 md:px-10">
             {localCategory?.[selectedIndex.category]?.submenu?.map(
               (item, key) => {
                 const isSelected = selectedIndex.subCategory === item.href;
                 return (
                   <ButtonSelectItem
+                    edit={false}
                     key={key}
                     isSelected={isSelected}
                     text={item?.name ?? item?.category}
@@ -80,14 +80,14 @@ const Step1 = ({
                   LeftItem={() => (
                     <div
                       className={mergeNames(
-                        "rounded-full w-[40px] h-[40px] flex justify-center items-center",
-                        isSelected ? "bg-white" : ""
+                        'rounded-full w-[40px] h-[40px] flex justify-center items-center',
+                        isSelected ? 'bg-white' : ''
                       )}
                     >
                       <BiCheck
                         size={30}
                         className={mergeNames(
-                          isSelected ? "text-blue-500" : "text-blue-200"
+                          isSelected ? 'text-blue-500' : 'text-blue-200'
                         )}
                       />
                     </div>

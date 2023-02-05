@@ -1,4 +1,4 @@
-import { Box, Image, Stack, useDisclosure } from '@chakra-ui/react';
+import { Box, Image, useDisclosure } from '@chakra-ui/react';
 import MainContainer from '../../layout/mainContainer';
 
 import { useLoadScript } from '@react-google-maps/api';
@@ -68,7 +68,7 @@ const Category = () => {
   return (
     <Box my={5} as="section" id="category">
       <MainContainer>
-        <Stack direction={'row'} py={2} gap={3} position="relative">
+        <div className="relative flex flex-col gap-3 p-2">
           {/* //TODO Filter Box */}
           {router.query?.slug && (
             <FilterLayout data={router.query.slug} isOpenMap={onOpen} />
@@ -94,10 +94,15 @@ const Category = () => {
             {/* //TODO Engiin zar */}
 
             {ads && (
-              <AdContent data={ads} tlc={toLowerCase} title={category ?? ''} />
+              <AdContent
+                data={ads}
+                tlc={toLowerCase}
+                title={category ?? ''}
+                showLink="hidden"
+              />
             )}
           </Box>
-        </Stack>
+        </div>
       </MainContainer>
     </Box>
   );

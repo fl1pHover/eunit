@@ -150,7 +150,7 @@ const UserDrawer = ({ user, logout }) => {
       >
         <DrawerOverlay />
         <DrawerContent className="bg-transparent">
-          <DrawerCloseButton />
+          <DrawerCloseButton className="text-white" />
 
           <BodyDrawer />
         </DrawerContent>
