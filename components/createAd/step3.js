@@ -22,7 +22,7 @@ const Step3 = ({ filter }) => {
       {filter?.map((f, i) => {
         if (f.mark == 'year')
           return (
-            <div className="col-span-2">
+            <div className="col-span-1 lg:col-span-2">
               <FormLabel title={f.name} />
               {/* <div className="flex items-center justify-center w-full"> */}
               <DateYearSelector

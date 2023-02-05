@@ -22,10 +22,10 @@ import urls from '../../constants/api';
 import { useAuth } from '../../context/auth';
 // import Select from '@/lib/Select';
 import { STYLES } from '@/styles/index';
+import CustomModal from '@/util/CustomModal';
 import mergeNames from '@/util/mergeNames';
 import { MdFilterList } from 'react-icons/md';
 import FilterStack from '../../util/filterStack';
-import CustomModal from '@/util/CustomModal';
 
 const FilterLayout = ({ data, isOpenMap }) => {
   const [filter, setFilter] = useState();
@@ -122,6 +122,7 @@ const FilterLayout = ({ data, isOpenMap }) => {
 
       <Drawer
         isOpen={isOpen}
+        // placement={{ base: 'bottom', md: 'left' }}
         placement="left"
         onClose={onClose}
         finalFocusRef={btnRef}
@@ -130,7 +131,9 @@ const FilterLayout = ({ data, isOpenMap }) => {
         <DrawerContent>
           <DrawerCloseButton />
 
-          <DrawerBody>
+          <DrawerBody
+          // className="text-white bg-mainBlossom"
+          >
             <FilterStack>
               <Heading variant={'smallHeading'} mb={2}>
                 Үл хөдлөх хөрөнгө
@@ -191,9 +194,7 @@ const FilterLayout = ({ data, isOpenMap }) => {
                   disabled
                 />
               </button>
-              <CustomModal>
-                
-              </CustomModal>
+              <CustomModal></CustomModal>
             </FilterStack>
 
             <FilterStack borderBottom={'2px solid '} borderColor="bgGrey">
@@ -201,7 +202,7 @@ const FilterLayout = ({ data, isOpenMap }) => {
               {/* <Select></Select> */}
               <Select
                 placeholder={'Дүүрэг'}
-                className="border-2 border-blue-400 rounded-2xl"
+                className="border-2 border-blue-400 rounded-2xl text-[14px]"
                 onChange={(e) =>
                   setPositions((positions) => ({
                     ...positions,

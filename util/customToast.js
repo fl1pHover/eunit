@@ -34,6 +34,7 @@ const CustomToast = ({ toastBtn, onclick, toastH, toastP }) => {
         }),
           onclick;
       }}
+      className="flex items-center gap-1"
     >
       {toastBtn}
     </button>

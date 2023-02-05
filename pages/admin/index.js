@@ -1,6 +1,6 @@
 import urls from '@/constants/api';
 import { useAuth } from '@/context/auth';
-import { Button, HStack, Text } from '@chakra-ui/react';
+import { Button, Text } from '@chakra-ui/react';
 import Cookies from 'js-cookie';
 import { useEffect, useState } from 'react';
 
@@ -29,11 +29,11 @@ const Admin = () => {
   if (user?.userType == 'admin' || user?.userType == 'system') {
     return ads.map((a, i) => {
       return (
-        <HStack key={i}>
-          <Text>{a.title}</Text>
+        <div className="flex p-4" key={i}>
+          <Text>Zariin dugaar: {a.title}</Text>
           <Button onClick={() => verify(a._id)}>verify</Button>
           <Button onClick={() => deleteAd(a._id)}>delete</Button>
-        </HStack>
+        </div>
       );
     });
   }

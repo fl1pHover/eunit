@@ -31,21 +31,32 @@ const StepButtons = ({
           Буцах
         </button>
         {step == 2 ? (
-          <CustomModal
-            btnOpen="Илгээх"
-            btnClose={
-              <CustomToast
-                toastBtn="Оруулах"
-                onclick={() => {}}
-                toastH="Амжилттай зар байршлаа"
-                toastP="Та өөрийн оруулсан зараа Миний зар цэсээс харах боломжтой"
-              />
-            }
-            btnClose2="Буцах"
-            header="Та оруулах гэж буй зарын мэдээллээ баталгаажуулан харна уу"
-          >
-            Ad preview conten
-          </CustomModal>
+          <>
+            <CustomModal
+              btnOpen={
+                <>
+                  Илгээх <FiArrowRight size={20} />
+                </>
+              }
+              btnClose={
+                <CustomToast
+                  toastBtn={
+                    <>
+                      Оруулах
+                      {/* <HiPlusCircle /> */}
+                    </>
+                  }
+                  onclick={() => {}}
+                  toastH="Амжилттай зар байршлаа"
+                  toastP="Та өөрийн оруулсан зараа Миний зар цэсээс харах боломжтой"
+                />
+              }
+              btnClose2="Буцах"
+              header="Та оруулах гэж буй зарын мэдээллээ баталгаажуулан харна уу"
+            >
+              Ad preview conten
+            </CustomModal>
+          </>
         ) : (
           <button
             onClick={onNext}

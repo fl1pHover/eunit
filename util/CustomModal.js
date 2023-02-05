@@ -23,17 +23,28 @@ const CustomModal = ({
     <>
       <button
         onClick={onOpen}
-        className="px-4 py-2 text-white bg-blue-500 rounded-full"
+        className="flex items-center gap-1 px-4 py-2 text-white bg-blue-500 rounded-full"
       >
         {btnOpen}
       </button>
-      <Modal onClose={onClose} isOpen={isOpen} isCentered size={'4xl'}>
+      <Modal
+        onClose={onClose}
+        isOpen={isOpen}
+        isCentered
+        size={{ base: 'sm', sm: 'xl', md: '2xl', lg: '4xl' }}
+        className="overflow-hidden "
+      >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>{header}</ModalHeader>
+          <ModalHeader
+            className="mb-5 w-[90%] "
+            fontSize={{ base: '15px', lg: '22px' }}
+          >
+            {header}
+          </ModalHeader>
           <ModalCloseButton />
           <ModalBody>{children}</ModalBody>
-          <ModalFooter className="gap-2">
+          <ModalFooter className="gap-2 font-bold bg-gray-200 rounded-b-md">
             <div onClick={(onClose, alert)}>
               <button className="px-4 py-2 text-white bg-green-400 rounded-full">
                 {btnClose}
