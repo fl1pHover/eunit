@@ -29,6 +29,7 @@ module.exports = {
         dark: '#181818',
         mainBlossom: '#1d1e44',
         mainBlue: '#4b65f6',
+        lightGreen: '#41d888',
       },
       gridTemplateRows: {
         layout: 'repeat(auto-fill, minmax(0, 1fr))',

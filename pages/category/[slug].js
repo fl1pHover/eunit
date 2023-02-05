@@ -1,7 +1,25 @@
-import { Box, Image, useDisclosure } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  HStack,
+  Image,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  useDisclosure,
+} from '@chakra-ui/react';
 import MainContainer from '../../layout/mainContainer';
 
-import { useLoadScript } from '@react-google-maps/api';
+import CustomModal from '@/util/CustomModal';
+import {
+  GoogleMap,
+  InfoWindow,
+  MarkerF,
+  useLoadScript,
+} from '@react-google-maps/api';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect, useMemo, useState } from 'react';
@@ -103,6 +121,62 @@ const Category = () => {
             )}
           </Box>
         </div>
+  
+        <Modal onClose={onClose} isOpen={isOpen} isCentered size={'4xl'}>
+          <ModalContent>
+            <ModalHeader>Maps</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              {ads && (
+                <GoogleMap
+                  options={mapOptions}
+                  onClick={(e) => {
+                    // setMap(e.latLng.toJSON());
+                    console.log(e.latLng.toJSON());
+                  }}
+                  zoom={14}
+                  center={mapCenter}
+                  mapTypeId={google.maps.MapTypeId.ROADMAP}
+                  mapContainerStyle={{ width: '100%', height: '50vh' }}
+                >
+                  {isLoaded &&
+                    ads?.map((m, i) => {
+                      return (
+                        <HStack key={i}>
+                          <MarkerF
+                            position={{
+                              lat: parseFloat(m.location?.lat ?? 47.74604),
+                              lng: parseFloat(m.location?.lng ?? 107.341515),
+                            }}
+                            onClick={() => setMarkerActive(i)}
+                            animation={google.maps.Animation.DROP}
+                          >
+                            <InfoWindow
+                              position={{
+                                lat: parseFloat(m.location?.lat ?? 47.74604),
+                                lng: parseFloat(m.location?.lng ?? 107.341515),
+                              }}
+                              onLoad={(info) => console.log(info)}
+                            >
+                              {/* end zasna */}
+                              <Button
+                                onClick={() => router.push(`/product/${m.num}`)}
+                              >
+                                <div>{m.title}</div>
+                              </Button>
+                            </InfoWindow>
+                          </MarkerF>
+                        </HStack>
+                      );
+                    })}
+                </GoogleMap>
+              )}
+            </ModalBody>
+            <ModalFooter>
+              <Button onClick={onClose}>Close</Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
       </MainContainer>
     </Box>
   );

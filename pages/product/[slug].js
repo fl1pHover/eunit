@@ -402,7 +402,7 @@ const Product = () => {
             {isLoaded &&
               sData?.map((m, i) => {
                 return (
-                  <HStack>
+                  <HStack key={i}>
                     <MarkerF
                       position={{
                         lat: parseFloat(m.location?.lat ?? 47.74604),
