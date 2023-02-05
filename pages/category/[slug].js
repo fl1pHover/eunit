@@ -28,11 +28,13 @@ import AdContent from '../../components/home/adContent';
 import urls from '../../constants/api';
 import { useAuth } from '../../context/auth';
 
+
+
 const Category = () => {
-  const { categories, ads, setAds } = useAuth();
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const router = useRouter();
+  const { categories, ads, setAds } = useAuth();
   const [category, setCategory] = useState();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const toLowerCase = (text) => {
     if (text) {
       return text.toLowerCase();
@@ -83,6 +85,10 @@ const Category = () => {
   function createKey(location) {
     return location.lat + location.lng;
   }
+
+  
+
+  
   return (
     <Box my={5} as="section" id="category">
       <MainContainer>
@@ -121,12 +127,13 @@ const Category = () => {
             )}
           </Box>
         </div>
-  
+        <CustomModal></CustomModal>
         <Modal onClose={onClose} isOpen={isOpen} isCentered size={'4xl'}>
           <ModalContent>
             <ModalHeader>Maps</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
+              {' '}
               {ads && (
                 <GoogleMap
                   options={mapOptions}

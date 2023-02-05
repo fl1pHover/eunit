@@ -8,7 +8,6 @@ import {
   ModalOverlay,
   useDisclosure,
 } from '@chakra-ui/react';
-import { Button } from 'flowbite-react';
 
 const CustomModal = ({
   children,
@@ -22,7 +21,12 @@ const CustomModal = ({
 
   return (
     <>
-      <Button onClick={onOpen}>{btnOpen}</Button>
+      <button
+        onClick={onOpen}
+        className="px-4 py-2 text-white bg-blue-500 rounded-full"
+      >
+        {btnOpen}
+      </button>
       <Modal onClose={onClose} isOpen={isOpen} isCentered size={'4xl'}>
         <ModalOverlay />
         <ModalContent>

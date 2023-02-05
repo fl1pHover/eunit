@@ -1,7 +1,5 @@
 import { DateYearSelector } from '@/lib/DateSelector';
 import { STYLES } from '@/styles/index';
-import CustomModal from '@/util/CustomModal';
-import CustomToast from '@/util/customToast';
 import mergeNames from '@/util/mergeNames';
 import { Input, Select, useToast } from '@chakra-ui/react';
 // import Select from '@/lib/Select';
@@ -77,21 +75,7 @@ const Step3 = ({ filter }) => {
           );
       })}
       {/* <div className="bg-red-500 w-[50vw] h-[50vh] fixed top-[50%] left-1/2 -translate-x-1/2 -translate-y-1/2" ></div> */}
-      <CustomModal
-        btnOpen="Илгээх"
-        btnClose={
-          <CustomToast
-            toastBtn="Оруулах"
-            onclick={() => {}}
-            toastH="Амжилттай зар байршлаа"
-            toastP="Та өөрийн оруулсан зараа Миний зар цэсээс харах боломжтой"
-          />
-        }
-        btnClose2="Буцах"
-        header="Та оруулах гэж буй зарын мэдээллээ баталгаажуулан харна уу"
-      >
-        Ad preview conten
-      </CustomModal>
+
       {/* <div className="flex items-center justify-center w-full"> */}
       {/* <Row>
         <Col>
