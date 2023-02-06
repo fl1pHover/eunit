@@ -4,11 +4,10 @@ import { Image, Input, VStack } from '@chakra-ui/react';
 import { useState } from 'react';
 import { FiUploadCloud } from 'react-icons/fi';
 
-const ImageUploader = () => {
+const ImageUploader = ({images, setImages}) => {
   const onSelectFile = (event) => {
     const selectedFiles = event.target.files;
     const selectedFilesArray = Array.from(selectedFiles);
-
     const imagesArray = selectedFilesArray.map((file) => {
       return URL.createObjectURL(file);
     });
@@ -16,6 +15,7 @@ const ImageUploader = () => {
     setSelectedImages((previousImages) => previousImages.concat(imagesArray));
     setImages((images) => [...images, selectedFiles[0]]);
     // FOR BUG IN CHROME
+    console.log(images);
     event.target.value = '';
   };
 
@@ -25,23 +25,7 @@ const ImageUploader = () => {
   }
 
   const [selectedImages, setSelectedImages] = useState([]);
-  const [images, setImages] = useState([]);
   const [imageUrl, setImageUrl] = useState([]);
-
-  const uploadImage = async () => {
-    images.map(async (i) => {
-      const formData = new FormData();
-      formData.append('file', i);
-      formData.append('upload_preset', 'lubtonkg');
-
-      await axios
-        .post('http://api.cloudinary.com/v1_1/dosvc4rce/image/upload', formData)
-        .then((res) => {
-          setImageUrl((imageUrl) => [...imageUrl, res.data['secure_url']]);
-        });
-    });
-    await createAd(false);
-  };
 
   return (
     <VStack

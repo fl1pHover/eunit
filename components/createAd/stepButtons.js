@@ -18,6 +18,7 @@ const StepButtons = ({
   step,
   onNext = () => {},
   isLoading,
+  alert,
 }) => {
   return (
     <div className="mt-4">
@@ -39,18 +40,20 @@ const StepButtons = ({
                 </>
               }
               btnClose={
-                <CustomToast
-                  toastBtn={
-                    <>
-                      Оруулах
-                      {/* <HiPlusCircle /> */}
-                    </>
-                  }
-                  onclick={() => {}}
-                  toastH="Амжилттай зар байршлаа"
-                  toastP="Та өөрийн оруулсан зараа Миний зар цэсээс харах боломжтой"
-                />
+                alert != '' ? (
+                  <CustomToast
+                    toastBtn={
+                      <>
+                        Оруулах
+                        {/* <HiPlusCircle /> */}
+                      </>
+                    }
+                    toastH="Амжилттай зар байршлаа"
+                    toastP="Та өөрийн оруулсан зараа Миний зар цэсээс харах боломжтой"
+                  />
+                ) : null
               }
+              func={onNext}
               btnClose2="Буцах"
               header="Та оруулах гэж буй зарын мэдээллээ баталгаажуулан харна уу"
             >

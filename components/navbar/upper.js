@@ -5,6 +5,7 @@ import { HiMenuAlt3 } from 'react-icons/hi';
 import useBreakpoints from '../../hooks/useBreakpoints';
 import { NavContainer } from '../../lib/Container';
 
+import urls from '@/constants/api';
 import { useDisclosure } from '@chakra-ui/react';
 import { useAuth } from 'context/auth';
 import Cookies from 'js-cookie';
@@ -20,7 +21,6 @@ import {
 import NavLogo from './navLogo';
 import SearchBar from './searchBar';
 import SideMenu from './sideMenu';
-import UserDropdown from './userDrawer';
 import UserDrawer from './userDrawer';
 
 const calcSize = (pt) => {
@@ -49,7 +49,7 @@ const UpperNav = () => {
   const [size, setSize] = useState(() => calcSize(pt));
   const [showSideMenu, setShowSideMenu] = useState(false);
   const [showBottomMenu, setShowBottomMenu] = useState(false);
-  const { user, logout } = useAuth();
+  const { user, logout, setAds } = useAuth();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef();
@@ -59,6 +59,15 @@ const UpperNav = () => {
     console.log(Cookies.get('currentUser'));
   }, [pt]);
 
+  const searchAds = async (value) => {
+    try {
+      await fetch(`${urls['test']}/ad/search/{value}?value=${value}`)
+        .then((d) => d.json())
+        .then((d) => setAds(d));
+    } catch (err) {
+      console.log(err.response.data.message);
+    }
+  };
   return (
     <div className="sticky z-30 shadow-lg md:bg-white bg-mainBlossom">
       {/* <div className="sticky z-30 overflow-y-visible shadow-lg md:bg-white bg-mainBlossom md:overflow-hidden overflow-clip"> */}
@@ -66,7 +75,7 @@ const UpperNav = () => {
         <div className="flex flex-row items-center justify-between w-full py-2">
           <NavLogo {...{ size }} />
           <div className="md:block hidden lg:w-[55vw] w-[50vw] px-4 lg:px-8">
-            <SearchBar />
+            <SearchBar func={searchAds} />
           </div>
           <div className="flex-row items-center hidden gap-4 md:flex lg:gap-8">
             <WalletIcon onClick={() => router.push('/wallet')} />

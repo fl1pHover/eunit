@@ -2,6 +2,7 @@ import AdCard from '@/components/home/adCard';
 import { STYLES } from '@/styles/index';
 import mergeNames from '@/util/mergeNames';
 import { Image } from '@chakra-ui/react';
+import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { MdCompareArrows } from 'react-icons/md';
@@ -104,3 +105,17 @@ const MyAds = () => {
 };
 
 export default MyAds;
+
+export async function getServerSideProps() {
+  // const res = await fetch(`${urls['test']}/category`);
+  // const resjson = await res.json();
+  const token = Cookies.get('token');
+  // const categories = resjson?.categories;
+  if (!token)
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+}

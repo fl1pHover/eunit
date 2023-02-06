@@ -13,6 +13,7 @@ import axios from 'axios';
 import urls from 'constants/api';
 import { useAuth } from 'context/auth';
 import Cookies from 'js-cookie';
+import { getCookieParser } from 'next/dist/server/api-utils';
 import { useRouter } from 'next/router';
 import React, { useMemo, useState } from 'react';
 
@@ -46,10 +47,7 @@ export default function CreateAd({ props }) {
   const [subCategory, setSubCategory] = useState();
   const [filters, setFilters] = useState([]);
   const [adType, setAdType] = useState(AdTypes.sell.id); // yr ni bol zarah gsn utga "sell"
-
-  const [selectedImages, setSelectedImages] = useState([]);
   const [images, setImages] = useState([]);
-  const [imageUrl, setImageUrl] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [positions, setPositions] = useState({
     district_id: '',
@@ -67,7 +65,6 @@ export default function CreateAd({ props }) {
   const [map, setMap] = useState({});
   const token = Cookies.get('token');
   React.useEffect(() => {
-    console.log('calling it');
     if (selectedIndex.subCategory && selectedIndex.category) {
       try {
         passcategory[selectedIndex.category].subCategory.filter((f) => {
@@ -75,7 +72,7 @@ export default function CreateAd({ props }) {
           // TAARJ BAIGAA BOLOHOOR F.NAME IIG F.HREF BOLGOJ UURCHILUV
           if (f.href == selectedIndex.subCategory) {
             axios
-              .get(`${urls['test']}/category/filters/{id}/false?id=${f._id}`)
+              .get(`${urls['test']}/category/filters/${f._id}/false`)
               .then((d) => {
                 setSubCategory(d.data?.subCategory);
                 setFilters(d.data?.filters);
@@ -88,7 +85,7 @@ export default function CreateAd({ props }) {
     } else {
     }
   }, [passcategory, selectedIndex]);
-
+  const [alert, setAlert] = useState('');
   const createAd = async () => {
     setIsLoading(true);
     const f = new FormData();
@@ -136,11 +133,16 @@ export default function CreateAd({ props }) {
     f.append('subCategory', subCategory._id);
     f.append('category', categories[selectedIndex.category]._id);
 
+    images.map((prev) => {
+      f.append('images', prev);
+    });
+    console.log(f);
     let ad = await axios.post(`${urls['test']}/ad`, f, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
+    setAlert(ad);
     setIsLoading(false);
   };
   const setFilter = (id, e) => {
@@ -202,7 +204,7 @@ export default function CreateAd({ props }) {
                         locations,
                         positions,
                       }}
-                      town={f.filter((t) => t.id == 'town')}
+                      town={f?.filter((t) => t?.id == 'town') ?? false}
                       setDistrictId={(disId) =>
                         setPositions((prev) => ({
                           ...prev,
@@ -236,6 +238,8 @@ export default function CreateAd({ props }) {
                   <FormTitle>Дэлгэрэнгүй мэдээлэл</FormTitle>
                   <div className="bg-white min-h-[40vh] rounded-xl py-10 md:px-10 px-2">
                     <Step4
+                      images={images}
+                      setImages={setImages}
                       filter={f}
                       setGeneral={setGeneral}
                       filters={gen}
@@ -257,6 +261,7 @@ export default function CreateAd({ props }) {
         })}
 
         <StepButtons
+          alert={alert}
           isLoading={isLoading}
           step={step}
           onNext={() => (step == 2 ? createAd() : setStep((prev) => prev + 1))}
@@ -267,11 +272,18 @@ export default function CreateAd({ props }) {
   );
   // router.push("/login");
 }
-export async function getServerSideProps() {
-  const res = await fetch(`${urls['test']}/category`);
-  const resjson = await res.json();
-
+export async function getServerSideProps({ req, res }) {
+  const response = await fetch(`${urls['test']}/category`);
+  const resjson = await response.json();
+  const token = getCookieParser('token', { req, res });
   const categories = resjson?.categories;
+  if (!token)
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
   return {
     props: { categories },
   };

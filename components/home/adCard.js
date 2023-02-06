@@ -11,7 +11,6 @@ import AdCardButton from './adCardButton';
 
 const Card = ({ item }) => {
   const router = useRouter();
-
   return (
     <div className="relative overflow-hidden rounded-md shadow-md bg-zinc-200 group ">
       <div className="md:min-h-[35vh] min-h-[30vh] h-full w-full relative">
@@ -44,7 +43,7 @@ const Card = ({ item }) => {
                 title={item.title}
                 description={item.description}
               />
-              <AdCardButton />
+              <AdCardButton id={item?.num} />
             </div>
             <div className="flex flex-wrap items-end justify-between gap-x-1">
               {item?.filters?.map((p, i) => {

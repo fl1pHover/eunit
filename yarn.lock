@@ -1980,6 +1980,11 @@
   "resolved" "https://registry.npmjs.org/@tsconfig/node16/-/node16-1.0.3.tgz"
   "version" "1.0.3"
 
+"@types/cookie@^0.4.1":
+  "integrity" "sha512-XW/Aa8APYr6jSVVA1y/DEIZX0/GMKLEVekNG727R8cs56ahETkRAy/3DR7+fJyh7oUgGwNQaRfXCun0+KbWY7Q=="
+  "resolved" "https://registry.npmjs.org/@types/cookie/-/cookie-0.4.1.tgz"
+  "version" "0.4.1"
+
 "@types/google.maps@3.50.5":
   "integrity" "sha512-RuZf1MJtctGlpW+Gd4a/eGtAufUDjMf+eyN1l+B3fbe2YLScJbg8KEljJfb+6vnSPFAeM1/48geVIEg3vqOkxw=="
   "resolved" "https://registry.npmjs.org/@types/google.maps/-/google.maps-3.50.5.tgz"
@@ -2030,6 +2035,11 @@
   "integrity" "sha512-FXKWbsJ6a1hIrRxv+FoukuHnGTgEzKYGi7kilfMae96AL9UNkPFNWJEEYWzdRI9ooIkbr4AKldyuSTLql06vLQ=="
   "resolved" "https://registry.npmjs.org/@types/node/-/node-14.18.36.tgz"
   "version" "14.18.36"
+
+"@types/node@^16.10.2":
+  "integrity" "sha512-vzLe5NaNMjIE3mcddFVGlAXN1LEWueUsMsOJWaT6wWMJGyljHAWHznqfnKUQWGzu7TLPrGvWdNAsvQYW+C0xtw=="
+  "resolved" "https://registry.npmjs.org/@types/node/-/node-16.18.12.tgz"
+  "version" "16.18.12"
 
 "@types/parse-json@^4.0.0":
   "integrity" "sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA=="
@@ -2668,6 +2678,20 @@
   "version" "1.8.0"
   dependencies:
     "safe-buffer" "~5.1.1"
+
+"cookie@^0.4.0":
+  "integrity" "sha512-aSWTXFzaKWkvHO1Ny/s+ePFpvKsPnjc551iI41v3ny/ow6tBG5Vd+FuqGNhh1LxOmVzOlGUriIlOaokOvhaStA=="
+  "resolved" "https://registry.npmjs.org/cookie/-/cookie-0.4.2.tgz"
+  "version" "0.4.2"
+
+"cookies-next@^2.1.1":
+  "integrity" "sha512-AZGZPdL1hU3jCjN2UMJTGhLOYzNUN9Gm+v8BdptYIHUdwz397Et1p+sZRfvAl8pKnnmMdX2Pk9xDRKCGBum6GA=="
+  "resolved" "https://registry.npmjs.org/cookies-next/-/cookies-next-2.1.1.tgz"
+  "version" "2.1.1"
+  dependencies:
+    "@types/cookie" "^0.4.1"
+    "@types/node" "^16.10.2"
+    "cookie" "^0.4.0"
 
 "copy-to-clipboard@3.3.1":
   "integrity" "sha512-i13qo6kIHTTpCm8/Wup+0b1mVWETvu2kIMzKoK8FpkLkFxlt0znUAHcMzox+T8sPlqtZXq3CulEjQHsYiGFJUw=="

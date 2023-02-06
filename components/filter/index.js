@@ -47,7 +47,7 @@ const FilterLayout = ({ data, isOpenMap }) => {
       console.log(data);
       try {
         axios
-          .get(`${urls['test']}/category/filters/{id}/true?id=${data}`, {})
+          .get(`${urls['test']}/category/filters/${data}/true`, {})
           .then((d) => {
             setSubCategory(d.data?.subCategory);
             setFilter(d.data?.filters);
@@ -58,7 +58,7 @@ const FilterLayout = ({ data, isOpenMap }) => {
         console.log(e);
       }
     }
-  }, []);
+  }, [data]);
   const filterAd = async () => {
     try {
       let types = [];
@@ -85,7 +85,7 @@ const FilterLayout = ({ data, isOpenMap }) => {
   const setFilters = (id, e, isMaxValue) => {
     e.preventDefault();
 
-    filter.map((f) => {
+    filter.map((f, i) => {
       if (f.id == id) {
         if (f.values.length == 0) {
           if (isMaxValue) {
@@ -105,7 +105,7 @@ const FilterLayout = ({ data, isOpenMap }) => {
     <>
       <button
         ref={btnRef}
-        colorScheme="teal"
+        colorscheme="teal"
         onClick={onOpen}
         className={mergeNames(
           ' bg-blue-600 rounded-md text-white font-bold h-[50px]',
@@ -138,9 +138,9 @@ const FilterLayout = ({ data, isOpenMap }) => {
               <Heading variant={'smallHeading'} mb={2}>
                 Үл хөдлөх хөрөнгө
               </Heading>
-              {categories?.map((c) => {
+              {categories?.map((c, i) => {
                 return (
-                  <>
+                  <div key={i}>
                     {c.subCategory.map(({ href, name }, id) => {
                       return (
                         <Link
@@ -154,7 +154,7 @@ const FilterLayout = ({ data, isOpenMap }) => {
                         </Link>
                       );
                     })}
-                  </>
+                  </div>
                 );
               })}
             </FilterStack>

@@ -1,10 +1,11 @@
 // import {
 
 import Dashboard from '@/components/Profile/dashboard';
-import { useAuth } from '@/context/auth';
+import urls from '@/constants/api';
 import MainContainer from '@/layout/mainContainer';
 import { STYLES } from '@/styles/index';
 import mergeNames from '@/util/mergeNames';
+import { getCookie } from 'cookies-next';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import Bookmark from './bookmark';
@@ -13,11 +14,10 @@ import Profile from './profile';
 
 // /account
 
-const Account = () => {
+const Account = ({ user }) => {
   const [content, setContent] = useState('Profile');
   const [active, setActive] = useState(false);
   const router = useRouter();
-  const { user } = useAuth();
   const tabs = [
     {
       tabHeader: 'Хувийн мэдээлэл',
@@ -92,3 +92,29 @@ const Account = () => {
 };
 
 export default Account;
+export async function getServerSideProps({ req, res }) {
+  // const res = await fetch(`${urls['test']}/category`);
+  // const resjson = await res.json();
+  const token = getCookie('token', { req, res });
+  // const categories = resjson?.categories;
+  if (!token)
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  else {
+    const user = await fetch(`${urls['test']}/user/me`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const userJson = await user.json();
+    return {
+      props: {
+        user: userJson,
+      },
+    };
+  }
+}

@@ -3,6 +3,7 @@ import { useAuth } from '@/context/auth';
 import { categories } from '@/data/categories';
 import mergeNames from '@/util/mergeNames';
 import { Button, Text } from '@chakra-ui/react';
+import { getCookie } from 'cookies-next';
 import Cookies from 'js-cookie';
 import { useEffect, useState } from 'react';
 import { CgChevronRight } from 'react-icons/cg';
@@ -25,7 +26,7 @@ const Tab = ({ num, children }) => {
   );
 };
 
-const Admin = () => {
+const Admin = ({ propAds }) => {
   const [ads, setAds] = useState([]);
   const { user } = useAuth();
   const token = Cookies.get('token');
@@ -39,15 +40,15 @@ const Admin = () => {
       .then((d) => setAds(d));
   };
   useEffect(() => {
-    getData();
-  }, []);
+    setAds(propAds)
+  }, [propAds]);
   const verify = async (id) => {
-    fetch(`${urls['test']}/ad/check/{id}?id=${id}`).then((d) => getData());
+    fetch(`${urls['test']}/ad/check/${id}`).then((d) => getData());
   };
   const deleteAd = async (id) => {
-    fetch(`${urls['test']}/ad/delete/{id}?id=${id}`).then((d) => getData());
+    fetch(`${urls['test']}/ad/delete/${id}`).then((d) => getData());
   };
-  const [content, setContent] = useState('');
+const [content, setContent] = useState('');
 
   const [collapsedId, setCollapsed] = useState(false);
 
@@ -261,3 +262,53 @@ const Admin = () => {
   }
 };
 export default Admin;
+
+export async function getServerSideProps({ req, res }) {
+  const token = getCookie('token', { req, res });
+
+  if (token) {
+    try {
+      const response = await fetch(`${urls['test']}/user/me`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const user = await response.json();
+      // const adRes = await
+      if (user?.userType == 'admin' || user?.userType == 'system') {
+        const ads = await fetch(`${urls['test']}/ad/notVerify`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        const adsJson = await ads.json()
+        return {
+          props: {
+            propAds: adsJson,
+          },
+        };
+      } else {
+        return {
+          redirect: {
+            destination: '/',
+            permanent: false,
+          },
+        };
+      }
+    } catch (err) {
+      return {
+        redirect: {
+          destination: '/login',
+          permanent: false,
+        },
+      };
+    }
+  } else {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+}

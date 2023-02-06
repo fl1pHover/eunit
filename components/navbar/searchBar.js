@@ -1,14 +1,17 @@
+import { useState } from "react";
 import { BsSearch } from "react-icons/bs";
 import mergeNames from "../../util/mergeNames"
 
-const SearchBar = () => {
+const SearchBar = ({func}) => {
+  const [search, setSearch] = useState('')
   return (
-    <div className="group bg-slate-200 w-full flex flex-row rounded-md overflow-hidden">
+    <div className="flex flex-row w-full overflow-hidden rounded-md group bg-slate-200">
       <input
         placeholder="Хайх.."
-        className="outline-none flex-1 bg-transparent lg:py-2 py-1 px-4"
+        className="flex-1 px-4 py-1 bg-transparent outline-none lg:py-2"
+        onChange={(e) => setSearch(e.target.value)}
       />
-      <button className="lg:py-2 py-1 bg-mainBlossom px-4 group-hover:bg-teal-600 transition-all ease-in-out">
+      <button className="px-4 py-1 transition-all ease-in-out lg:py-2 bg-mainBlossom group-hover:bg-teal-600" onClick={() => func(search)}>
         <BsSearch
           className={mergeNames(
             "white__icon",

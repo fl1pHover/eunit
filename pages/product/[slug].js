@@ -41,51 +41,6 @@ import ImageGallery from 'react-image-gallery';
 import urls from '../../constants/api';
 import { useAuth } from '../../context/auth';
 
-const images = [
-  {
-    original: '/images/HeaderSlider/1.jpg',
-    thumbnail: '/images/HeaderSlider/1.jpg',
-  },
-  {
-    original: '/images/404.png',
-    thumbnail: '/images/404.png',
-  },
-  {
-    original: '/images/HeaderSlider/1.jpg',
-    thumbnail: '/images/HeaderSlider/1.jpg',
-  },
-  {
-    original: '/images/HeaderSlider/1.jpg',
-    thumbnail: '/images/HeaderSlider/1.jpg',
-  },
-
-  {
-    original: '/images/HeaderSlider/1.jpg',
-    thumbnail: '/images/HeaderSlider/1.jpg',
-  },
-  {
-    original: '/images/HeaderSlider/1.jpg',
-    thumbnail: '/images/HeaderSlider/1.jpg',
-  },
-  {
-    original: '/images/HeaderSlider/1.jpg',
-    thumbnail: '/images/HeaderSlider/1.jpg',
-  },
-  {
-    original: 'images/HeaderSlider/1.jpg',
-    thumbnail: 'images/HeaderSlider/1.jpg',
-  },
-
-  {
-    original: 'images/HeaderSlider/1.jpg',
-    thumbnail: 'images/HeaderSlider/1.jpg',
-  },
-  {
-    original: 'images/HeaderSlider/1.jpg',
-    thumbnail: 'images/HeaderSlider/1.jpg',
-  },
-];
-
 const ProductInfo = ({
   title,
   value,
@@ -113,39 +68,6 @@ const ProductInfo = ({
       )}
     </GridItem>
   );
-};
-const product = {
-  title: 'Академи хотхон 3 өрөө байр зарна.',
-  date: '2022.09.21 15:53',
-  description: 'Академи 2 хотхонд 3-н өрөө бүрэн тавилгатай орон сууц зарна.',
-  info: [
-    { Утас: '9599-2333' },
-    { '': '' },
-    { Үнэ: '350.0 сая' },
-    { Талбай: '70 м2' },
-    { 'Нэгж талбайн үнэ': '5.0 сая' },
-    { Дүүрэг: 'Хан-Уул' },
-    { Хороо: '4-р хороо' },
-    { Байршид: 'Оргил' },
-    { Хотхон: 'Академи 2' },
-    { 'Ашиглалтад орсон он': '2021' },
-    { 'Барилгын давхар': '25' },
-    { 'Хэдэн давхар': '18' },
-    { Өрөө: '3' },
-    { 'Угаалгын өрөө': '1' },
-    { 'Mac/Унтлгаын өрөө': 'Байхгүй' },
-    { Цонх: 'Вакум' },
-    { 'Цонхны тоо': '4' },
-    { Хаалга: 'Бүргэд' },
-    { Шал: 'Паркет' },
-    { Гараж: 'Байгаа' },
-    { 'Тагтны тоо': '1' },
-    { Бартер: 'Байхгүй' },
-    { 'Төлбөрийн нөхцөл': 'Бэлэн' },
-  ],
-  socials: {
-    facebook: 'https://www.facebook.com/sokobishu',
-  },
 };
 const Product = () => {
   const toast = useToast();

@@ -6,7 +6,7 @@ import { LilFormLabel } from './formLabel';
 import FormLine from './formLine';
 import ImageUploader from './imageUplaoder';
 
-const Step4 = ({ filter, setFilters, filters, setGeneral }) => {
+const Step4 = ({ filter, setFilters, filters, setGeneral, images, setImages }) => {
   const [payment, setPayment] = useState(false);
   const [positions, setPositions] = useState({
     district_id: '',
@@ -14,7 +14,7 @@ const Step4 = ({ filter, setFilters, filters, setGeneral }) => {
     location_id: '',
     town_id: '',
   });
-  
+
   return (
     <div>
       <div className="grid grid-cols-1 px-5 mt-4 md:px-10 gap-x-5 md:grid-cols-3 ">
@@ -58,7 +58,7 @@ const Step4 = ({ filter, setFilters, filters, setGeneral }) => {
         {/* {filters.area != '' && filters.price && ( */}
         <div className="flex flex-col items-center">
           <LilFormLabel title={'Нэгж талбайн үнэ'} />
-          <Input disabled={true} value={filters.price / filters.area} />
+          <Input disabled={true} value={filters?.price / filters?.area || 0} />
         </div>
         {/* )} */}
         <div className="flex flex-col items-center col-span-1 col-start-1 md:col-start-2 ">
@@ -135,7 +135,7 @@ const Step4 = ({ filter, setFilters, filters, setGeneral }) => {
         </div>
         <div>
           <LilFormLabel title="Зураг оруулах" />
-          <ImageUploader />
+          <ImageUploader images={images} setImages={setImages}/>
         </div>
       </div>
     </div>

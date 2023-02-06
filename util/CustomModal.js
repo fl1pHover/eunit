@@ -16,6 +16,7 @@ const CustomModal = ({
   btnClose2,
   btnOpen,
   alert,
+  func,
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -46,7 +47,10 @@ const CustomModal = ({
           <ModalBody>{children}</ModalBody>
           <ModalFooter className="gap-2 font-bold bg-gray-200 rounded-b-md">
             <div onClick={(onClose, alert)}>
-              <button className="px-4 py-2 text-white bg-green-400 rounded-full">
+              <button
+                className="px-4 py-2 text-white bg-green-400 rounded-full"
+                onClick={async () => await func()}
+              >
                 {btnClose}
               </button>
             </div>

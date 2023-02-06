@@ -205,7 +205,7 @@ const Step2 = ({
                 </>
               }
             </div>
-            {town && (
+            {town != '' && (
               <div className="flex flex-col items-center">
                 <FormLabel title="Хотхон" />
                 {

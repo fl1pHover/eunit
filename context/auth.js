@@ -28,12 +28,17 @@ export const AuthProvider = ({ children }) => {
       console.log(e);
     }
     if (token && token != undefined) {
-      const { data: data } = await axios.get(`${urls['test']}/user/me`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setUser(data);
+      try {
+        const { data: data } = await axios.get(`${urls['test']}/user/me`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setUser(data);
+      } catch (error) {
+        console.log(error.response.data.message);
+        logout();
+      }
     }
     setLoading(false);
   }
@@ -46,18 +51,21 @@ export const AuthProvider = ({ children }) => {
     const token = Cookies.get('token');
 
     if (!token) {
-      const { data: data } = await axios.post(`${urls['test']}/auth/login`, {
-        email,
-        password,
-      });
+      try {
+        const { data: data } = await axios.post(`${urls['test']}/auth/login`, {
+          email,
+          password,
+        });
+        if (data?.token) {
+          Cookies.set('token', data.token);
 
-      if (data?.token) {
-        Cookies.set('token', data.token);
-
-        setUser(data.user);
-        if (data.user.userType == 'admin' || data.user.userType == 'system')
-          window.location.pathname = '/admin';
-        else window.location.pathname = '/account';
+          setUser(data.user);
+          if (data.user.userType == 'admin' || data.user.userType == 'system')
+            window.location.pathname = '/admin';
+          else window.location.pathname = '/account';
+        }
+      } catch (error) {
+        console.log(error.response.data.message);
       }
     }
   };
@@ -65,19 +73,26 @@ export const AuthProvider = ({ children }) => {
     const token = Cookies.get('token');
 
     if (!token) {
-      const { data: data } = await axios.post(`${urls['test']}/auth/register`, {
-        email,
-        password,
-        username,
-        phone,
-        isAdmin: false,
-      });
+      try {
+        const { data: data } = await axios.post(
+          `${urls['test']}/auth/register`,
+          {
+            email,
+            password,
+            username,
+            phone,
+            isAdmin: false,
+          }
+        );
 
-      if (data?.token) {
-        Cookies.set('token', data.token);
+        if (data?.token) {
+          Cookies.set('token', data.token);
 
-        setUser(data.user);
-        window.location.pathname = '/account';
+          setUser(data.user);
+          window.location.pathname = '/account';
+        }
+      } catch (err) {
+        console.log(err.response.data.message);
       }
     }
   };
