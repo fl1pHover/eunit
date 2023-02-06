@@ -1,7 +1,7 @@
 import mergeNames from '@/util/mergeNames';
 
 // const NumberText = (props) => {
-//   return <p className="text-blue-500 font-semibold">{props.children}</p>;
+//   return <p className="font-semibold text-blue-500">{props.children}</p>;
 // };
 
 const StepItem = ({ stepId = 1, activeStep = 1 }) => {
@@ -27,7 +27,7 @@ const StepItem = ({ stepId = 1, activeStep = 1 }) => {
 
 const StepProgress = ({ activeStep = -1 }) => {
   return (
-    <div className="w-full relative md:mb-8 mb-4">
+    <div className="relative w-full mb-4 md:mb-8">
       <div className="h-1 w-full bg-blue-500/50 absolute top-4 z-[-1] rounded-md" />
       <div className="flex w-full justify-evenly">
         <StepItem stepId={-1} {...{ activeStep }} />
