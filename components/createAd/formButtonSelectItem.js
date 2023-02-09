@@ -2,13 +2,10 @@ import mergeNames from '@/util/mergeNames';
 
 const ButtonSelectItem = ({
   text = '',
-  edit,
   onClick = () => {},
   isSelected = false,
   LeftItem = () => <></>,
   RightItem = () => <></>,
-
-  ...props
 }) => {
   return (
     <button
@@ -21,17 +18,14 @@ const ButtonSelectItem = ({
         'flex flex-row items-center',
         isSelected
           ? 'bg-blue-500 ring-blue-200'
-          : 'bg-blue-100 ring-transparent',
-        edit && 'animate-pin'
+          : 'bg-blue-100 ring-transparent'
       )}
-      {...props}
     >
       <LeftItem />
       <p
         className={mergeNames(
           'font-semibold md:px-4 md:py-2 px-2 py-1',
-          isSelected ? 'text-white' : 'text-blue-500/80',
-          edit && 'cursor-not-allowed'
+          isSelected ? 'text-white' : 'text-blue-500/80'
         )}
       >
         {text}

@@ -1,31 +1,40 @@
-import { AiOutlineCar } from "react-icons/ai";
-import { BsBuilding, BsPhone } from "react-icons/bs";
-import { CgSmartHomeWashMachine } from "react-icons/cg";
-import { MdComputer } from "react-icons/md";
-import { RiHomeSmile2Line } from "react-icons/ri";
-
-export const  AdTypes = {
-    sell : {
-      id: 'sell',
-      name: 'Зарах'
-    },
-    rent : {
-      id: 'rent',
-      name: 'Түрээслэх'
-    }
-}
+import { AiOutlineCar } from 'react-icons/ai';
+import { BsBuilding, BsPhone } from 'react-icons/bs';
+import { CgSmartHomeWashMachine } from 'react-icons/cg';
+import { MdComputer } from 'react-icons/md';
+import { RiHomeSmile2Line } from 'react-icons/ri';
+export const SellTypes = {
+  sell: {
+    id: 'sell',
+    name: 'Зарах',
+  },
+  rent: {
+    id: 'rent',
+    name: 'Түрээслэх',
+  },
+};
+export const AdTypes = {
+  sell: {
+    id: 'sell',
+    name: 'Зарах',
+  },
+  rent: {
+    id: 'rent',
+    name: 'Түрээслэх',
+  },
+};
 
 export const Category = {
-  realState : 'realState',
-  vehicle : 'vehicle',
-  computer : 'computer',
-  phone : 'phone',
-  electronics : 'electronics',
-  householdItems : 'householdItems'
-}
+  realState: 'realState',
+  vehicle: 'vehicle',
+  computer: 'computer',
+  phone: 'phone',
+  electronics: 'electronics',
+  householdItems: 'householdItems',
+};
 
-export const getIconCategory = ({item}) => {
-  switch(item) {
+export const getIconCategory = ({ item }) => {
+  switch (item) {
     case Category.realState:
       return <BsBuilding />;
     case Category.vehicle:
@@ -38,113 +47,112 @@ export const getIconCategory = ({item}) => {
       return <CgSmartHomeWashMachine />;
     case Category.householdItems:
       return <RiHomeSmile2Line />;
-
   }
-}
+};
 
 export const Filters = {
-    floor : {
-      id: 'floor',
-      name: 'Шал'
-    },
-  room : {
+  floor: {
+    id: 'floor',
+    name: 'Шал',
+  },
+  room: {
     id: 'room',
-    name: 'Өрөөний тоо'
+    name: 'Өрөөний тоо',
   },
-  bathroom : {
+  bathroom: {
     id: 'bathroom',
-    name: 'Угаалгын өрөөний тоо'
+    name: 'Угаалгын өрөөний тоо',
   },
-  masterBedroom : {
+  masterBedroom: {
     id: 'masterBedroom',
-    name: 'Мастер өрөөний тоо'
+    name: 'Мастер өрөөний тоо',
   },
-  window : {
+  window: {
     id: 'window',
-    name: 'Цонх'
+    name: 'Цонх',
   },
-  windowUnit : {
+  windowUnit: {
     id: 'windowUnit',
-    name: 'Цонхны тоо'
+    name: 'Цонхны тоо',
   },
-  door : {
+  door: {
     id: 'door',
-    name: 'Хаалга'
+    name: 'Хаалга',
   },
-  balconyUnit : {
+  balconyUnit: {
     id: 'balconyUnit',
-    name: 'Тагтны тоо'
+    name: 'Тагтны тоо',
   },
-  buildingFloor : {
+  buildingFloor: {
     id: 'buildingFloor',
-    name: "Барилгын давхар"
+    name: 'Барилгын давхар',
   },
-  garage : {
+  garage: {
     id: 'garage',
-    name: 'Гараж'
+    name: 'Гараж',
   },
-  paymentMethod : {
+  paymentMethod: {
     id: 'paymentMethod',
-    name: 'Төлбөрийн хэлбэр'
+    name: 'Төлбөрийн хэлбэр',
   },
-  barter : {
+  barter: {
     id: 'barter',
-    name: 'Бартер'
+    name: 'Бартер',
   },
-  landLicense : {
+  landLicense: {
     id: 'landLicense',
-    name: 'Газрын эзэмшлийн хэлбэр'
+    name: 'Газрын эзэмшлийн хэлбэр',
   },
-  landUsage : {
+  landUsage: {
     id: 'landUsage',
-    name: 'Газрын зориулалт'
+    name: 'Газрын зориулалт',
   },
-  objectType : {
+  objectType: {
     id: 'objectType',
-    name: 'Объектын төрөл'
+    name: 'Объектын төрөл',
   },
-  serviceType : {
+  serviceType: {
     id: 'serviceType',
-    name: 'Үйл ажиллагааны хэлбэр'
+    name: 'Үйл ажиллагааны хэлбэр',
   },
-  phone : {
+  phone: {
     id: 'phone',
-    name: 'Утас'
+    name: 'Утас',
   },
-  price : {
+  price: {
     id: 'price',
-    name: 'Үнэ'
+    name: 'Үнэ',
   },
-  unitPrice : {
+  unitPrice: {
     id: 'unitPrice',
-    name: 'Нэгжийн үнэ'
+    name: 'Нэгжийн үнэ',
   },
-  area : {
+  area: {
     id: 'area',
-    name: 'Талбай'
+    name: 'Талбай',
   },
-  operation : {
+  operation: {
     id: 'operation',
-    name: 'Ашиглалтанд орсон он'
+    name: 'Ашиглалтанд орсон он',
   },
-  district : {
+  district: {
     id: 'district',
-    name: 'Дүүрэг'
+    name: 'Дүүрэг',
   },
-  committee : {
+  committee: {
     id: 'committee',
-    name: "Хороо"
+    name: 'Хороо',
   },
-  location : {
+  location: {
     id: 'location',
-    name: "Байршил"
+    name: 'Байршил',
   },
-  town : {
+  town: {
     id: 'town',
-    name: "Хотхон"
+    name: 'Хотхон',
   },
-  howFloor : {
+  howFloor: {
     id: 'howFloor',
-    name: "Хэдэн давхарт"
+    name: 'Хэдэн давхарт',
   },
-}
+};

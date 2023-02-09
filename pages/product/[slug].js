@@ -1,5 +1,4 @@
 import {
-  AspectRatio,
   Box,
   Button,
   GridItem,
@@ -37,10 +36,8 @@ import {
 import axios from 'axios';
 import moment from 'moment/moment';
 import { useRouter } from 'next/router';
-import ImageGallery from 'react-image-gallery';
 import urls from '../../constants/api';
 import { useAuth } from '../../context/auth';
-
 const ProductInfo = ({
   title,
   value,
@@ -69,7 +66,7 @@ const ProductInfo = ({
     </GridItem>
   );
 };
-const Product = () => {
+const Product = ({ propAds }) => {
   const toast = useToast();
   const { districts, locations } = useAuth();
   const router = useRouter();
@@ -93,7 +90,7 @@ const Product = () => {
   );
   const mapCenter = useMemo(() => data?.location, [data]);
   const getSuggestion = async (suggest) => {
-    if (data && suggestion != 'map') {
+    if (data && suggest != 'map') {
       try {
         await axios
           .post(`${urls['test']}/ad/suggesstion`, {
@@ -115,42 +112,33 @@ const Product = () => {
     }
   };
   const getData = async () => {
-    try {
-      let district_id;
-      await fetch(`${urls['test']}/ad/{id}?id=${router.query.slug}`)
-        .then((r) => r.json())
-        .then(async (d) => {
-          console.log(d);
-          setData(d), (district_id = d.positions.district_id);
-          if (suggestion != 'map') {
-            try {
-              await axios
-                .post(`${urls['test']}/ad/suggesstion`, {
-                  suggestion:
-                    suggestion == 'location'
-                      ? d?.positions?.district_id
-                      : suggestion == 'room'
-                      ? data?.filters.filter((f) => f.id == 'room')[0].value
-                      : null,
-                  type: suggestion,
-                })
-                .then((s) => {
-                  setsData(s.data);
-                });
-            } catch (error) {
-              console.log(error);
-            }
-          }
-        });
-    } catch (error) {
-      console.log(error);
+    setData(propAds);
+    console.log(propAds);
+    if (suggestion != 'map') {
+      try {
+        await axios
+          .post(`${urls['test']}/ad/suggesstion`, {
+            suggestion:
+              suggestion == 'location'
+                ? propAds?.positions?.district_id
+                : suggestion == 'room'
+                ? `${data?.filters.filter((f) => f.id == 'room')[0].value}`
+                : null,
+            type: suggestion,
+          })
+          .then((s) => {
+            setsData(s.data);
+          });
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
   useEffect(() => {
-    if (router.query.slug) {
+    if (propAds) {
       getData();
     }
-  }, [router.query]);
+  }, [propAds]);
 
   return (
     <Box my={5} as="section" id="main__product">
@@ -214,9 +202,13 @@ const Product = () => {
                       'border-2 rounded-4 mb-[120px] shadow-md'
                     )}
                   >
-                    <AspectRatio ratio={1}>
-                      <ImageGallery items={images} />
-                    </AspectRatio>
+                    {/* {data?.images && (
+                      <AspectRatio ratio={1}>
+                       <ImageGallery items={
+                          
+                        } /> 
+                      </AspectRatio>
+                    )} */}
                   </Box>
                   <Text mt={5}>{data.description}</Text>
                 </div>
@@ -303,9 +295,40 @@ const Product = () => {
                 }
               }}
             >
-              <option value="location">Байршлаар</option>
-              <option value="room">Өрөөгөөр</option>
-              <option value="map">Газрын зургаар</option>
+              {data?.subCategory?.suggessionType?.map((sug, i) => {
+                switch (sug) {
+                  case 'location':
+                    return i !=
+                      data?.subCategory?.suggessionType?.length - 1 ? (
+                      <option value="location" key={i}>
+                        Байршлаар
+                      </option>
+                    ) : (
+                      <>
+                        <option value="location" key={i}>
+                          Байршлаар
+                        </option>
+
+                        <option value={'map'}>Газрын зургаар</option>
+                      </>
+                    );
+                  case 'room':
+                    return i !=
+                      data?.subCategory?.suggessionType?.length - 1 ? (
+                      <option value="room" key={i}>
+                        Өрөөгөөр
+                      </option>
+                    ) : (
+                      <>
+                        <option value="room" key={i}>
+                          Өрөөгөөр
+                        </option>
+
+                        <option value={'map'}>Газрын зургаар</option>
+                      </>
+                    );
+                }
+              })}
             </Select>
           </Box>
         </div>
@@ -361,3 +384,15 @@ const Product = () => {
 };
 
 export default Product;
+
+export async function getServerSideProps(ctx) {
+  const { params } = ctx;
+  const { slug } = params;
+  const res = await fetch(`${urls['test']}/ad/${slug}`);
+  const ads = await res.json();
+  return {
+    props: {
+      propAds: ads,
+    },
+  };
+}

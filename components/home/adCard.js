@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import React from 'react';
 import { BiArea, BiDoorOpen } from 'react-icons/bi';
 
@@ -6,16 +5,18 @@ import { FiCamera } from 'react-icons/fi';
 import { IoBedOutline } from 'react-icons/io5';
 import { TbBath } from 'react-icons/tb';
 
+import { Image } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import AdCardButton from './adCardButton';
 
 const Card = ({ item }) => {
   const router = useRouter();
+  console.log(item);
   return (
     <div className="relative overflow-hidden rounded-md shadow-md bg-zinc-200 group ">
       <div className="md:min-h-[35vh] min-h-[30vh] h-full w-full relative">
         <Image
-          src={item?.image ?? '/images/HeaderSlider/1.jpg'}
+          src={item?.images[0] ?? '/images/HeaderSlider/1.jpg'}
           alt="product image"
           layout="fill"
           objectFit="cover"
@@ -41,7 +42,7 @@ const Card = ({ item }) => {
             <div className="flex flex-row justify-between w-full">
               <TextContainer
                 title={item.title}
-                description={item.description}
+                description={item.positions.location}
               />
               <AdCardButton id={item?.num} />
             </div>
@@ -50,10 +51,10 @@ const Card = ({ item }) => {
                 return (
                   <React.Fragment key={i}>
                     <ApartmentIconInfo p={p} />
-                    {p && p.id === 'area' && (
+                    {p.id === 'area' && (
                       <ItemContainer
                         Icon={(props) => <BiArea {...props} text="" />}
-                        text={calcValue(p, 'байхгүй', 'м.кв')}
+                        text={calcValue(p.value, 'байхгүй', 'м.кв')}
                       />
                     )}
                   </React.Fragment>
@@ -72,20 +73,20 @@ const ApartmentIconInfo = ({ p }) => {
     <React.Fragment>
       {p && p.id === 'room' && (
         <ItemContainer
-          text={calcValue(p, 'байхгүй')}
+          text={calcValue(p.value, 'байхгүй')}
           Icon={(props) => <BiDoorOpen {...props} text="" />}
         />
       )}
       {p && p.id === 'masterBedroom' && (
         <ItemContainer
           Icon={(props) => <IoBedOutline {...props} text="" />}
-          text={calcValue(p, 'байхгүй')}
+          text={calcValue(p.value, 'байхгүй')}
         />
       )}
       {p && p.id === 'bathroom' && (
         <ItemContainer
           Icon={(props) => <TbBath {...props} text="" />}
-          text={calcValue(p, 'байхгүй')}
+          text={calcValue(p.value, 'байхгүй')}
         />
       )}
     </React.Fragment>
@@ -117,12 +118,13 @@ const typeCheck = (id, propmt) => {
   // return id && id.name && id.name.toLowerCase() === propmt;
 };
 
-const calcValue = (props, checker = 'байхгүй', suffix) => {
+const calcValue = (props, checker = 'Байхгүй', suffix) => {
   // p?.value?.toLowerCase() === "байхгүй"
-  if (props && props.value && props.value.toLowerCase() === checker) return 0;
-  if (props && props.value && props.value) {
-    if (suffix) return `${props.value} ${suffix}`;
-    return props.value;
+
+  if (props.toString().toLowerCase() === checker) return 0;
+  if (props) {
+    if (suffix) return `${props} ${suffix}`;
+    return props;
   }
   return '-';
 };

@@ -1,5 +1,3 @@
-import CustomModal from '@/util/CustomModal';
-import CustomToast from '@/util/customToast';
 import { FiArrowLeft, FiArrowRight } from 'react-icons/fi';
 
 const ButtonProcess = () => {
@@ -15,10 +13,9 @@ const ButtonProcess = () => {
 
 const StepButtons = ({
   onPrev = () => {},
-  step,
+  loading = false,
   onNext = () => {},
-  isLoading,
-  alert,
+  txt = 'Дараах',
 }) => {
   return (
     <div className="mt-4">
@@ -31,50 +28,14 @@ const StepButtons = ({
           <FiArrowLeft size={20} />
           Буцах
         </button>
-        {step == 2 ? (
-          <>
-            <CustomModal
-              btnOpen={
-                <>
-                  Илгээх <FiArrowRight size={20} />
-                </>
-              }
-              btnClose={
-                alert != '' ? (
-                  <CustomToast
-                    toastBtn={
-                      <>
-                        Оруулах
-                        {/* <HiPlusCircle /> */}
-                      </>
-                    }
-                    toastH="Амжилттай зар байршлаа"
-                    toastP="Та өөрийн оруулсан зараа Миний зар цэсээс харах боломжтой"
-                  />
-                ) : null
-              }
-              func={onNext}
-              btnClose2="Буцах"
-              header="Та оруулах гэж буй зарын мэдээллээ баталгаажуулан харна уу"
-            >
-              Ad preview conten
-            </CustomModal>
-          </>
-        ) : (
-          <button
-            onClick={onNext}
-            className="flex flex-row items-center gap-1 px-4 py-2 font-bold text-white bg-blue-500 rounded-full"
-          >
-            {isLoading ? (
-              <>Loading</>
-            ) : (
-              <>
-                {step == 2 ? 'Илгээх' : 'Дараах'}
-                <FiArrowRight size={20} />
-              </>
-            )}
-          </button>
-        )}
+        <button
+          disabled={loading}
+          onClick={onNext}
+          className="flex flex-row items-center gap-1 px-4 py-2 font-bold text-white bg-blue-500 rounded-full"
+        >
+          {txt}
+          <FiArrowRight size={20} />
+        </button>
       </div>
     </div>
   );

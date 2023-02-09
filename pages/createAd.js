@@ -1,36 +1,27 @@
-import Step1 from '@/components/createAd/step1';
-
-import Step2 from '@/components/createAd/step2';
-import Step3 from '@/components/createAd/step3';
-import Step4 from '@/components/createAd/step4';
-import StepButtons from '@/components/createAd/stepButtons';
-import StepProgress from '@/components/createAd/stepProgress';
-import FormTitle from '@/components/createAd/title';
-import { AdTypes } from '@/constants/enums';
-import { categories as localCategories } from '@/data/categories';
-import { ContainerX } from '@/lib/Container';
+import { useToast } from '@chakra-ui/react';
 import axios from 'axios';
-import urls from 'constants/api';
-import { useAuth } from 'context/auth';
-import Cookies from 'js-cookie';
-import { getCookieParser } from 'next/dist/server/api-utils';
 import { useRouter } from 'next/router';
 import React, { useMemo, useState } from 'react';
 
-export default function CreateAd({ props }) {
-  const { user, districts, locations, categories } = useAuth();
+import { useAuth } from 'context/auth';
+
+import Step1 from '@/components/createAd/step1';
+import Step2 from '@/components/createAd/step2';
+import Step4 from '@/components/createAd/step4';
+
+import StepButtons from '@/components/createAd/stepButtons';
+import StepProgress from '@/components/createAd/stepProgress';
+import FormTitle from '@/components/createAd/title';
+import { ContainerX } from '@/lib/Container';
+
+import Step3 from '@/components/createAd/step3';
+import urls from '@/constants/api';
+import { getCookie } from 'cookies-next';
+export default function CreateAd({ categories }) {
+  const toast = useToast();
+  const { districts, locations } = useAuth(); // TODOs: user: 403 BAD REQUEST
+
   const router = useRouter();
-  const [gen, setGen] = useState({
-    area: '',
-    price: '',
-    phone: '',
-    unitPrice: '',
-  });
-  const [general, setGeneral] = useState({
-    title: '',
-    description: '',
-    adType: '',
-  });
   // // if (!user) router.push("/login");
 
   const [step, setStep] = useState(-1);
@@ -39,23 +30,22 @@ export default function CreateAd({ props }) {
     [categories]
   );
 
-  const [selectedIndex, setSelectedIndex] = React.useState({
-    category: false,
-    subCategory: false,
+  //  STEP 1 DATA => HURUHNGIIN TURUL, DED TURUL, ZARIIN TURUL, ZARAH TURUL
+  const [types, setTypes] = useState({
+    categoryId: false,
+    categoryName: false,
+    subCategoryId: false,
+    sellType: false,
+    adType: false,
   });
-
-  const [subCategory, setSubCategory] = useState();
-  const [filters, setFilters] = useState([]);
-  const [adType, setAdType] = useState(AdTypes.sell.id); // yr ni bol zarah gsn utga "sell"
-  const [images, setImages] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  // STEP-2 DATA => ID HADGALJ BAIGAA
   const [positions, setPositions] = useState({
     district_id: '',
     committee_id: '',
     location_id: '',
     town_id: '',
   });
-
+  // STEP2 DATA => NAME (NER) HADGALJ BAIGA
   const [positionNames, setPositionNames] = useState({
     district: '',
     location: '',
@@ -63,19 +53,35 @@ export default function CreateAd({ props }) {
     town: '',
   });
   const [map, setMap] = useState({});
-  const token = Cookies.get('token');
+  // FILTER INFORMATION - FOR WHICH DATA TO DISPLAY
+  const [filters, setFilters] = useState([]);
+  const [subCategory, setSubCategory] = useState([]);
+  // STEP3 IIN DATA - PRICE, AREA, UNITPRICE, TITLE, DESC, IMAGE
+  const [generalData, setGeneralData] = useState({
+    price: false,
+    area: false,
+    unitPrice: false,
+    title: false,
+    desc: false,
+    imgSelected: false,
+    images: [],
+  });
+  // STEP 3IIN RAW IMAGE FILES
+  const [images, setImages] = useState([]);
+  const [imageUrl, setImageUrl] = useState([]);
+
+  // THIS EFFECT IS FOR FETCHING FILTER DATA FOR STEP2,STEP3,STEP4
   React.useEffect(() => {
-    if (selectedIndex.subCategory && selectedIndex.category) {
+    console.log('CALLING FILTER FUNCTION...');
+    if (types.categoryName && types.subCategoryId) {
       try {
-        passcategory[selectedIndex.category].subCategory.filter((f) => {
-          //  MONGOLOOR HEREGLEH BISH ENGLISH IIG AVJ BN, HREF NI YG LOWERCASE TAI GOY
-          // TAARJ BAIGAA BOLOHOOR F.NAME IIG F.HREF BOLGOJ UURCHILUV
-          if (f.href == selectedIndex.subCategory) {
+        passcategory[types.categoryId].subCategory.filter((item) => {
+          if (item.href == types.subCategoryId) {
             axios
-              .get(`${urls['test']}/category/filters/${f._id}/false`)
-              .then((d) => {
-                setSubCategory(d.data?.subCategory);
-                setFilters(d.data?.filters);
+              .get(`${urls['test']}/category/filters/${item._id}/false`)
+              .then((res) => {
+                setSubCategory(res.data?.subCategory);
+                setFilters(res.data?.filters);
               });
           }
         });
@@ -84,188 +90,210 @@ export default function CreateAd({ props }) {
       }
     } else {
     }
-  }, [passcategory, selectedIndex]);
-  const [alert, setAlert] = useState('');
-  const createAd = async () => {
+  }, [passcategory, types.categoryId, types.subCategoryId, types.categoryName]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [selectedLocalData, setSelectedLocalData] = useState({
+    district: positionNames?.district ?? false,
+    location: positionNames?.location ?? false,
+    committee: positionNames?.committee ?? false,
+    town: positionNames?.town ?? false,
+  });
+  // checking validation of steps in here
+  const handleNextStep = () => {
+    if (step === -1)
+      return checkConditionOnNextStep(
+        types?.categoryName &&
+          types?.subCategoryId &&
+          types?.sellType &&
+          types?.adType
+      );
+    if (step === 0) return validateStep2();
+    if (step === 1)
+      return checkConditionOnNextStep(
+        generalData.price &&
+          generalData.area &&
+          generalData.unitPrice &&
+          generalData.title &&
+          generalData.desc &&
+          generalData.imgSelected
+      );
+    if (step === 2) return validateStep4();
+  };
+
+  const checkConditionOnNextStep = (booleanValue) => {
+    return booleanValue
+      ? setStep((prev) => prev + 1)
+      : toast({
+          title: 'Та бүх талбарыг бөглөнө үү.',
+          status: 'error',
+          duration: 1000,
+          isClosable: true,
+        });
+  };
+
+  const validateStep2 = () => {
+    // CHECKING IF IT IS REALSTATE => IT HAS FOUR STEPS
+    if (types?.categoryName === 'realState') {
+      // console.table(positions);
+      // THIS CONDITION IS FOR WHETHER IT HAS TOWN_ID -> LAND & OFFICE DEER XOTXOH NII ID GEJ BAIHGUI
+      const hasTownId =
+        types?.subCategoryId !== 'land' && types?.subCategoryId !== 'office';
+
+      const mainValidation =
+        positions?.location_id &&
+        positions?.district_id &&
+        positions?.committee_id;
+
+      if (hasTownId) {
+        console.log(positions);
+        return checkConditionOnNextStep(mainValidation && positions?.town_id);
+      }
+      return checkConditionOnNextStep(mainValidation);
+    } else {
+      // TODOs: IF IT IS NOT REALSTATE -> MEANING IT HAS 3 STEPS
+    }
+  };
+  const validateStep4 = async () => {
     setIsLoading(true);
+    const token = getCookie('token');
     const f = new FormData();
+    console.log(map);
     const selectedFilters = filters[2];
     selectedFilters.push({
       id: 'price',
-      value: gen.price,
+      value: generalData.price,
       name: 'Үнэ',
     });
     selectedFilters.push({
       id: 'area',
-      value: gen.area,
+      value: generalData.area,
       name: 'Талбай',
     });
     selectedFilters.push({
-      id: 'phone',
-      value: gen.phone,
-      name: 'Утас',
-    });
-    selectedFilters.push({
       id: 'unitPrice',
-      value: Math.round(gen.price / gen.area),
+      value: generalData.unitPrice,
       name: 'Нэгж талбайн үнэ',
     });
-
-    f.append('title', general.title);
-    f.append('description', general.description);
+    f.append('title', generalData.title);
+    f.append('description', generalData.desc);
     f.append(
       'positions',
       JSON.stringify({
-        district_id: positions.district_id,
-        committee_id: positions.committee_id,
-        location_id: positions.location_id,
+        district_id: selectedLocalData.district,
+        committee_id: selectedLocalData.committee,
+        location_id: selectedLocalData.location,
         town: {
-          value: positions.town_id,
+          value: selectedLocalData.town,
           values: [],
           name: 'town',
         },
       })
     );
-    f.append('types', adType);
     f.append('location', JSON.stringify(map));
-    f.append('adTypes', general.adType);
-    f.append('filters', JSON.stringify(selectedFilters));
+    f.append('types', types.adType);
+    f.append('adTypes', types.sellType);
     f.append('subCategory', subCategory._id);
-    f.append('category', categories[selectedIndex.category]._id);
-
-    images.map((prev) => {
+    f.append('category', categories[types.categoryId]._id);
+    f.append('filters', JSON.stringify(selectedFilters));
+    images?.map((prev) => {
       f.append('images', prev);
     });
-    console.log(f);
-    let ad = await axios.post(`${urls['test']}/ad`, f, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    setAlert(ad);
-    setIsLoading(false);
+    let ad;
+    try {
+      ad = await axios
+        .post(`${urls['test']}/ad`, f, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Access-Control-Allow-Headers': '*',
+          },
+        })
+        .then((d) => router.push('/'));
+      console.log(ad);
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+    }
   };
-  const setFilter = (id, e) => {
-    e.preventDefault();
 
-    filters.map((f) => {
-      if (f.id == id) {
-        f.value = e.target.value;
-      }
+  const handlePrevStep = () => {
+    setStep((prev) => {
+      return prev > -1 ? prev - 1 : prev;
     });
   };
-  // if (user)
+
+  // console.log("filters", filters);
+  // console.log("subCategory", subCategory);
+  // console.log("positions", positions);
+  // console.table(types);
+  // console.log("images", images);
+  // console.table(generalData);
+
   return (
     <div className="min-h-[80vh] py-10">
       <ContainerX>
-        {/* <div className="px-10 py-5 text-center">
-            <SectionTitle>Зар Нэмэх</SectionTitle>
-          </div> */}
-        <StepProgress activeStep={step} />
+        <StepProgress
+          activeStep={step}
+          handleClick={(stepId) => setStep(stepId)}
+          hasFourStep={types?.categoryName === 'realState'}
+        />
+        {
+          // STEP1 TYPES: CATEGORY, SUBCATEGORY, ADTYPE, SELLTYPE
+          step === -1 && (
+            <Step1 {...{ types, setTypes }} categories={passcategory} />
+          )
+        }
 
-        {step === -1 && (
-          <>
-            <FormTitle>Төрөл</FormTitle>
-            <div className="bg-white min-h-[40vh] rounded-xl py-10 md:px-10 px-2">
-              <Step1
-                AdTypes={AdTypes}
-                categories={passcategory}
-                selectedIndex={selectedIndex}
-                assignCategoryIdx={(id) => {
-                  setSelectedIndex((prev) => ({
-                    ...prev,
-                    category: id.toString(),
-                  }));
-                }}
-                assignSubCategoryIdx={(id) => {
-                  setSelectedIndex((prev) => ({
-                    ...prev,
-                    subCategory: id.toString(),
-                  }));
-                }}
-              />
-            </div>
-          </>
-        )}
-
-        {filters?.map((f, i) => {
-          if (step == i) {
-            if (i == 0)
+        {filters?.map((filter, index) => {
+          if (step == index) {
+            if (index == 0)
+              //STEP2: LOCATIONS - DISTRICT, LOCATION, COMMITTEE, TOWN
               return (
-                <>
-                  <FormTitle>Байршил</FormTitle>
-                  <div className="bg-white min-h-[40vh] rounded-xl py-10 md:px-10 px-2">
-                    <Step2
-                      map={map}
-                      setMap={setMap}
-                      {...{
-                        subCategory,
-                        districts,
-                        locations,
-                        positions,
-                      }}
-                      town={f?.filter((t) => t?.id == 'town') ?? false}
-                      setDistrictId={(disId) =>
-                        setPositions((prev) => ({
-                          ...prev,
-                          district_id: disId,
-                        }))
-                      }
-                      setLocationId={(locId) =>
-                        setPositions((prev) => ({
-                          ...prev,
-                          location_id: locId,
-                        }))
-                      }
-                      setCommitteeId={(comId) =>
-                        setPositions((prev) => ({
-                          ...prev,
-                          committee_id: comId,
-                        }))
-                      }
-                      setTownId={(townId) =>
-                        setPositions((prev) => ({ ...prev, town_id: townId }))
-                      }
-                      setPositionNames={setPositionNames}
-                      positionNames={positionNames}
-                    />
-                  </div>
-                </>
+                <Step2
+                  selectedLocalData={selectedLocalData}
+                  setSelectedLocalData={setSelectedLocalData}
+                  key={index}
+                  setMap={setMap}
+                  map={map}
+                  {...{
+                    types,
+                    districts,
+                    locations,
+                    positions,
+                    setPositions,
+                    positionNames,
+                    setPositionNames,
+                  }}
+                />
               );
-            if (i == 1)
+            if (index == 1)
               return (
-                <>
+                <Step3
+                  key={index}
+                  filter={filter}
+                  images={images}
+                  setImages={setImages}
+                  generalData={generalData}
+                  setGeneralData={setGeneralData}
+                />
+              );
+
+            if (index == 2)
+              return (
+                <div key={index}>
                   <FormTitle>Дэлгэрэнгүй мэдээлэл</FormTitle>
                   <div className="bg-white min-h-[40vh] rounded-xl py-10 md:px-10 px-2">
-                    <Step4
-                      images={images}
-                      setImages={setImages}
-                      filter={f}
-                      setGeneral={setGeneral}
-                      filters={gen}
-                      setFilters={setGen}
-                    />
+                    <Step4 filter={filter} />
                   </div>
-                </>
-              );
-            if (i == 2)
-              return (
-                <>
-                  <FormTitle>Ерөнхий мэдээлэл</FormTitle>
-                  <div className="bg-white min-h-[40vh] rounded-xl py-10 md:px-10 px-2">
-                    <Step3 filter={f} />
-                  </div>
-                </>
+                </div>
               );
           }
         })}
 
         <StepButtons
-          alert={alert}
-          isLoading={isLoading}
-          step={step}
-          onNext={() => (step == 2 ? createAd() : setStep((prev) => prev + 1))}
-          onPrev={() => setStep((prev) => (prev > -1 ? prev - 1 : prev))}
+          onNext={handleNextStep}
+          onPrev={handlePrevStep}
+          loading={isLoading}
+          txt={step == 2 ? 'Илгээх' : 'Дараах'}
         />
       </ContainerX>
     </div>
@@ -275,7 +303,7 @@ export default function CreateAd({ props }) {
 export async function getServerSideProps({ req, res }) {
   const response = await fetch(`${urls['test']}/category`);
   const resjson = await response.json();
-  const token = getCookieParser('token', { req, res });
+  const token = getCookie('token', { req, res });
   const categories = resjson?.categories;
   if (!token)
     return {

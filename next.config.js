@@ -2,7 +2,7 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: ["res.cloudinary.com"],
+    domains: ['https://bom-file.s3.us-east-1.amazonaws.com'],
   },
 
   //  webpack: (config, { isServer }) => {

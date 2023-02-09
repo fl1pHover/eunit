@@ -44,15 +44,12 @@ const FilterLayout = ({ data, isOpenMap }) => {
   const btnRef = useRef();
   useEffect(() => {
     if (data) {
-      console.log(data);
       try {
         axios
           .get(`${urls['test']}/category/filters/${data}/true`, {})
           .then((d) => {
             setSubCategory(d.data?.subCategory);
             setFilter(d.data?.filters);
-            console.log(d.data?.filters);
-            console.log(d.data);
           });
       } catch (e) {
         console.log(e);

@@ -32,6 +32,7 @@ export const AuthProvider = ({ children }) => {
         const { data: data } = await axios.get(`${urls['test']}/user/me`, {
           headers: {
             Authorization: `Bearer ${token}`,
+            'Access-Control-Allow-Headers': '*',
           },
         });
         setUser(data);
