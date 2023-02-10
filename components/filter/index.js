@@ -22,7 +22,6 @@ import urls from '../../constants/api';
 import { useAuth } from '../../context/auth';
 // import Select from '@/lib/Select';
 import { STYLES } from '@/styles/index';
-import CustomModal from '@/util/CustomModal';
 import mergeNames from '@/util/mergeNames';
 import { MdFilterList } from 'react-icons/md';
 import FilterStack from '../../util/filterStack';
@@ -191,7 +190,6 @@ const FilterLayout = ({ data, isOpenMap }) => {
                   disabled
                 />
               </button>
-              <CustomModal></CustomModal>
             </FilterStack>
 
             <FilterStack borderBottom={'2px solid '} borderColor="bgGrey">
