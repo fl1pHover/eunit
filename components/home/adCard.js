@@ -20,7 +20,7 @@ const Card = ({ item }) => {
           alt="product image"
           layout="fill"
           objectFit="cover"
-          className="group-hover:scale-125 transition-all ease-in-out duration-400 aspect-[4/5]"
+          className="group-hover:scale-125 transition-all h-full ease-in-out duration-400 aspect-[4/5] object-cover"
         />
       </div>
       <div className="absolute top-0 bottom-0 left-0 right-0 w-full h-full">

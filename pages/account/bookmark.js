@@ -62,7 +62,7 @@ const CompareSelect = () => {
   );
 };
 
-const MyAds = () => {
+const Bookmark = () => {
   const [products, setProducts] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const getData = async () => {
@@ -104,7 +104,7 @@ const MyAds = () => {
   );
 };
 
-export default MyAds;
+export default Bookmark;
 
 export async function getServerSideProps() {
   // const res = await fetch(`${urls['test']}/category`);
