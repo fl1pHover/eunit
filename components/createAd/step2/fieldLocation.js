@@ -1,7 +1,6 @@
-import React from "react";
-import Select from "@/lib/Select";
-import FormLabel from "../formLabel";
-import FormLine from "../formLine";
+import Select from '@/lib/Select';
+import FormLabel from '../formLabel';
+import FormLine from '../formLine';
 
 const FieldLocation = ({
   locationData,
@@ -19,7 +18,8 @@ const FieldLocation = ({
         <FormLabel title="Байршил" num={4} />
         <Select
           data={locationData}
-          label={selectedLocalData?.location || "Байршил"}
+          width="long"
+          label={selectedLocalData?.location || 'Байршил'}
           Item={({ data, onClick, ...props }) => {
             return (
               <button
@@ -32,7 +32,7 @@ const FieldLocation = ({
                     committee_id: false,
                     town_id: false,
                   }));
-                  handleNamedata("location", data?.name);
+                  handleNamedata('location', data?.name);
                 }}
               >
                 <p>{data?.name}</p>

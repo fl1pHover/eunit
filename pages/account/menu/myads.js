@@ -1,16 +1,27 @@
+import urls from '@/constants/api';
 import { Stack } from '@chakra-ui/react';
+import { getCookie } from 'cookies-next';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import AdContent from '../../../components/home/adContent';
 
 const Myads = () => {
   const [products, setProducts] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const getData = async () => {
     setIsLoading(true);
+    const token = getCookie('token');
     try {
-      await fetch('https://bom-location.herokuapp.com/ad')
+      await fetch(`${urls['test']}/ad/ads`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
         .then((r) => r.json())
-        .then((d) => setProducts(d))
+        .then((d) => {
+          console.log(d);
+          setProducts(d);
+        })
         .then((a) => setIsLoading(false));
     } catch (error) {
       console.log(error);
@@ -30,11 +41,7 @@ const Myads = () => {
 
   return (
     <Stack display={{ base: 'flex', md: 'none' }} mx={5}>
-      <div className="grid grid-cols-2 gap-5 mt-5 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-3">
-        {products &&
-          products.map((item, key) => <AdCard key={key} item={item || {}} />)}
-      </div>
-      {/* <AdContent data={products} tlc={toLowerCase} title=" " /> */}
+      <AdContent data={products} tlc={toLowerCase} title=" " />
     </Stack>
   );
 };

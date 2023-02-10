@@ -9,7 +9,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 
-const CustomModal = ({
+function CustomModal({
   children,
   header,
   btnClose = <></>,
@@ -17,7 +17,7 @@ const CustomModal = ({
   btnOpen,
   alert,
   func,
-}) => {
+}) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -65,6 +65,6 @@ const CustomModal = ({
       </Modal>
     </>
   );
-};
+}
 
 export default CustomModal;

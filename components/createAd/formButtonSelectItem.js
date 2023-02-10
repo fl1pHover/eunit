@@ -24,7 +24,7 @@ const ButtonSelectItem = ({
       <LeftItem />
       <p
         className={mergeNames(
-          'font-semibold md:px-4 md:py-2 px-2 py-1',
+          'font-semibold md:px-4 md:py-2 px-2 py-1 ',
           isSelected ? 'text-white' : 'text-blue-500/80'
         )}
       >

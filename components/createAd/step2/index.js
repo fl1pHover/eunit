@@ -12,7 +12,8 @@ const Step2 = ({
   types,
   districts = [],
   locations = [],
-  map, setMap,
+  map,
+  setMap,
   positions = {},
   setPositions = () => {},
   positionNames = {},
@@ -21,7 +22,6 @@ const Step2 = ({
   setPositionNames = () => {},
 }) => {
   // SAVING LOCAL NAMES -> AUTOSAVING INFORMARION LOCALLY
-  
 
   const locationData = React.useMemo(
     () => {
@@ -55,7 +55,7 @@ const Step2 = ({
     handleNamedata('committee', val);
   };
   const libraries = useMemo(() => ['places'], []);
-  // const { categories, setAds } = useAuth();
+
   const [markerActive, setMarkerActive] = useState(null);
 
   const { isLoaded } = useLoadScript({
@@ -90,7 +90,6 @@ const Step2 = ({
         <FieldDistrict
           {...{ selectedLocalData, districts, setPositions, handleNamedata }}
         />
-
         {/* LOCATION - BAIRSHIL */}
         {selectedLocalData.district && (
           <FieldLocation
@@ -102,10 +101,9 @@ const Step2 = ({
             }}
           />
         )}
-
         {/* KHOROO SUM(COMMITTEE) and HOTHON TOWN*/}
         {selectedLocalData.location && (
-          <div className="flex flex-col gap-8 md:flex-row md:justify-evenly md:gap-4">
+          <div className="flex flex-col gap-8 mb-10 md:flex-row md:justify-evenly md:gap-4">
             <FieldCommittee
               {...{
                 setPositions,
@@ -123,6 +121,7 @@ const Step2 = ({
               )}
           </div>
         )}
+
         <GoogleMap
           className="aspect-video"
           options={mapOptions}

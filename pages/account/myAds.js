@@ -1,16 +1,18 @@
 import urls from '@/constants/api';
 import axios from 'axios';
-import Cookies from 'js-cookie';
+import { getCookie } from 'cookies-next';
+
 import { useEffect, useState } from 'react';
 import AdContent from '../../components/home/adContent';
 
 const MyAds = () => {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const token = Cookies.get('token');
+
   const getData = async () => {
     setIsLoading(true);
     try {
+      const token = getCookie('token');
       console.log(token);
       if (token)
         await axios
@@ -23,7 +25,10 @@ const MyAds = () => {
               },
             }
           )
-          .then((d) => setProducts(d.data));
+          .then((d) => {
+            setProducts(d.data);
+          })
+          .then((a) => setIsLoading(false));
     } catch (error) {
       console.log(error);
     }
@@ -36,7 +41,7 @@ const MyAds = () => {
   };
   useEffect(() => {
     getData();
-  }, [token]);
+  }, []);
 
   return (
     <>

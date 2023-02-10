@@ -1,19 +1,12 @@
-import React from "react";
-import { categories as localCategory } from "@/data/categories";
+import FormLabel from '@/components/createAd/formLabel';
+import Title from '@/components/createAd/title';
 
-import Title from "@/components/createAd/title";
-import FormLabel from "@/components/createAd/formLabel";
+import FieldAdType from './fieldAdType';
+import FieldCategory from './fieldCategory';
+import FieldSellType from './fieldSellType';
+import FieldSubCategory from './fieldSubCategory';
 
-import FieldCategory from "./fieldCategory";
-import FieldSubCategory from "./fieldSubCategory";
-import FieldSellType from "./fieldSellType";
-import FieldAdType from "./fieldAdType";
-
-const Step1 = ({
-  types = {},
-  setTypes = () => {},
-  categories = localCategory,
-}) => {
+const Step1 = ({ types = {}, setTypes = () => {}, categories = [] }) => {
   return (
     <>
       <Title>Төрөл</Title>
@@ -28,7 +21,13 @@ const Step1 = ({
           // SUBCATEGORY
           <>
             <FormLabel title="Дэд төрөл" />
-            <FieldSubCategory {...{ localCategory, types, setTypes }} />
+            <FieldSubCategory
+              {...{ types, setTypes }}
+              localCategory={
+                categories.filter((c) => c.href == types.categoryName)[0]
+                  .subCategory
+              }
+            />
           </>
         )}
 

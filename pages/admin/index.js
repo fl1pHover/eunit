@@ -1,6 +1,5 @@
 import urls from '@/constants/api';
 import { useAuth } from '@/context/auth';
-import { categories } from '@/data/categories';
 import mergeNames from '@/util/mergeNames';
 import { Button, Text } from '@chakra-ui/react';
 import { getCookie } from 'cookies-next';
@@ -40,7 +39,7 @@ const Admin = ({ propAds }) => {
       .then((d) => setAds(d));
   };
   useEffect(() => {
-    setAds(propAds)
+    setAds(propAds);
   }, [propAds]);
   const verify = async (id) => {
     fetch(`${urls['test']}/ad/check/${id}`).then((d) => getData());
@@ -48,10 +47,10 @@ const Admin = ({ propAds }) => {
   const deleteAd = async (id) => {
     fetch(`${urls['test']}/ad/delete/${id}`).then((d) => getData());
   };
-const [content, setContent] = useState('');
+  const [content, setContent] = useState('');
 
   const [collapsedId, setCollapsed] = useState(false);
-
+  const { categories } = useAuth();
   if (user?.userType == 'admin' || user?.userType == 'system') {
     return ads.map((a, i) => {
       return (
@@ -181,7 +180,7 @@ const [content, setContent] = useState('');
                     )}
                   >
                     <div className="flex flex-row items-center gap-2">
-                      <p className="font-semibold ">{tab?.categoryName}</p>
+                      <p className="font-semibold ">{tab?.name}</p>
                     </div>
                     <CgChevronRight
                       size={20}
@@ -196,7 +195,7 @@ const [content, setContent] = useState('');
                   // className="bg-gray-200"
                   >
                     {collapsedId === tab.id &&
-                      tab?.submenu?.map((sub, key) => {
+                      tab?.subCategory?.map((sub, key) => {
                         return (
                           <button
                             key={key}
@@ -206,13 +205,13 @@ const [content, setContent] = useState('');
                             // }}
                             onClick={() => {
                               setContent(() => {
-                                tab.submenu;
+                                tab.subCategory;
                               });
-                              console.log(tab.submenu);
+                              console.log(tab.subCategory);
                             }}
                           >
                             <p className="text-xs font-medium text-left text-[#b8cde9]">
-                              {sub.category}
+                              {sub.name}
                             </p>
                           </button>
                         );
@@ -229,10 +228,10 @@ const [content, setContent] = useState('');
             {/* {content && <> {content} </>} */}
             {categories?.map((c, i) => {
               return (
-                <table class="table-auto" key={i}>
+                <table className="table-auto" key={i}>
                   <thead>
                     <tr>
-                      <th>{c.submenu.category}</th>
+                      <th>{c.subCategory.name}</th>
                     </tr>
                   </thead>
                   {/* <tbody>
@@ -280,8 +279,8 @@ export async function getServerSideProps({ req, res }) {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        })
-        const adsJson = await ads.json()
+        });
+        const adsJson = await ads.json();
         return {
           props: {
             propAds: adsJson,

@@ -1,39 +1,20 @@
-import { Center, ChakraProvider } from "@chakra-ui/react";
-import axios from "axios";
-import { AuthProvider } from "context/auth";
-import { AnimatePresence } from "framer-motion";
-import Head from "next/head";
-import { useEffect, useState } from "react";
-import PulseLoader from "react-spinners/PulseLoader";
+import { Center, ChakraProvider } from '@chakra-ui/react';
+import { AuthProvider, useAuth } from 'context/auth';
+import { AnimatePresence } from 'framer-motion';
+import Head from 'next/head';
+import { useState } from 'react';
+import PulseLoader from 'react-spinners/PulseLoader';
 
-import Navbar from "@/components/navbar/index";
-import urls from "@/constants/api";
-import Layout from "@/layout/layout";
-import theme from "@/lib/theme";
-import ScrollTop from "@/lib/ScrollTop";
-import "@/styles/globals.scss";
+import Navbar from '@/components/navbar/index';
+import Layout from '@/layout/layout';
+import ScrollTop from '@/lib/ScrollTop';
+import theme from '@/lib/theme';
+import '@/styles/globals.scss';
 
 function MyApp({ Component, pageProps }) {
-  let [loading, setLoading] = useState(true);
-  let [color, setColor] = useState("#1d1e44");
+  let { loading } = useAuth();
+  let [color, setColor] = useState('#1d1e44');
   let [category, setCategory] = useState();
-
-  const getData = async () => {
-    try {
-      axios.get(`${urls["test"]}/category`).then((d) => {
-        setCategory(d.data["categories"]);
-      });
-      setLoading(false);
-    } catch (e) {
-      setLoading(false);
-      console.log(e);
-    }
-  };
-
-  useEffect(() => {
-    setLoading(true);
-    getData();
-  }, []);
 
   return (
     <AuthProvider>
@@ -41,14 +22,14 @@ function MyApp({ Component, pageProps }) {
         <ChakraProvider theme={theme}>
           <AnimatePresence>
             <Layout>
-              <Navbar data={category} />
+              <Navbar />
               <Component {...pageProps} />
               <ScrollTop />
             </Layout>
           </AnimatePresence>
         </ChakraProvider>
       ) : (
-        <Center width={"100vw"} height="100vh" className="loader">
+        <Center width={'100vw'} height="100vh" className="loader">
           <Head>
             <title>BOM</title>
             <meta name="description" content="Bom, zariin site" />

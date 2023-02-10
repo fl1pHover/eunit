@@ -16,6 +16,7 @@ import { ContainerX } from '@/lib/Container';
 
 import Step3 from '@/components/createAd/step3';
 import urls from '@/constants/api';
+import CustomModal from '@/util/CustomModal';
 import { getCookie } from 'cookies-next';
 export default function CreateAd({ categories }) {
   const toast = useToast();
@@ -25,10 +26,7 @@ export default function CreateAd({ categories }) {
   // // if (!user) router.push("/login");
 
   const [step, setStep] = useState(-1);
-  const passcategory = useMemo(
-    () => (categories?.length > 0 ? categories : localCategories),
-    [categories]
-  );
+  const passcategory = useMemo(() => categories, [categories]);
 
   //  STEP 1 DATA => HURUHNGIIN TURUL, DED TURUL, ZARIIN TURUL, ZARAH TURUL
   const [types, setTypes] = useState({
@@ -72,16 +70,17 @@ export default function CreateAd({ categories }) {
 
   // THIS EFFECT IS FOR FETCHING FILTER DATA FOR STEP2,STEP3,STEP4
   React.useEffect(() => {
-    console.log('CALLING FILTER FUNCTION...');
     if (types.categoryName && types.subCategoryId) {
       try {
         passcategory[types.categoryId].subCategory.filter((item) => {
+          console.log(types.subCategoryId, item.href);
           if (item.href == types.subCategoryId) {
             axios
               .get(`${urls['test']}/category/filters/${item._id}/false`)
               .then((res) => {
                 setSubCategory(res.data?.subCategory);
                 setFilters(res.data?.filters);
+                console.log(res.data);
               });
           }
         });
@@ -117,7 +116,8 @@ export default function CreateAd({ categories }) {
           generalData.desc &&
           generalData.imgSelected
       );
-    if (step === 2) return validateStep4();
+    if (step === 2) return <CustomModal />;
+    // return validateStep4();
   };
 
   const checkConditionOnNextStep = (booleanValue) => {
@@ -157,7 +157,6 @@ export default function CreateAd({ categories }) {
     setIsLoading(true);
     const token = getCookie('token');
     const f = new FormData();
-    console.log(map);
     const selectedFilters = filters[2];
     selectedFilters.push({
       id: 'price',
@@ -190,8 +189,8 @@ export default function CreateAd({ categories }) {
       })
     );
     f.append('location', JSON.stringify(map));
-    f.append('types', types.adType);
-    f.append('adTypes', types.sellType);
+    f.append('types', types.sellType);
+    f.append('adTypes', types.adType);
     f.append('subCategory', subCategory._id);
     f.append('category', categories[types.categoryId]._id);
     f.append('filters', JSON.stringify(selectedFilters));
@@ -220,13 +219,6 @@ export default function CreateAd({ categories }) {
       return prev > -1 ? prev - 1 : prev;
     });
   };
-
-  // console.log("filters", filters);
-  // console.log("subCategory", subCategory);
-  // console.log("positions", positions);
-  // console.table(types);
-  // console.log("images", images);
-  // console.table(generalData);
 
   return (
     <div className="min-h-[80vh] py-10">
@@ -294,6 +286,7 @@ export default function CreateAd({ categories }) {
           onPrev={handlePrevStep}
           loading={isLoading}
           txt={step == 2 ? 'Илгээх' : 'Дараах'}
+          onClick={() => step == 2 && <CustomModal />}
         />
       </ContainerX>
     </div>

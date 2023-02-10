@@ -1,3 +1,4 @@
+import { FormattedNumberInput } from '@/lib/Input';
 import mergeNames from '@/util/mergeNames';
 import {
   Button,
@@ -5,13 +6,11 @@ import {
   Flex,
   Heading,
   NumberInput,
-  NumberInputField,
   Textarea,
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import { MdExpandMore } from 'react-icons/md';
 import { STYLES } from '../styles';
-
 const EstInput = (onChange, value) => {
   return (
     <Textarea
@@ -44,10 +43,10 @@ const CalcInput = ({
 
             // precision={pre}
           >
-            <NumberInputField
-              placeholder={placeholder}
+            <FormattedNumberInput // placeholder={placeholder}
               onChange={onChange}
-              value={value}
+              value={value == 0 ? '' : value}
+              placeholder={placeholder}
               className="border-2 border-blue-400 rounded-full w-full sm:w-[300px] text-mainBlossom font-semibold"
               required
             />
@@ -61,8 +60,8 @@ const CalcInput = ({
   );
 };
 
-function ECalculator() {
-  const [price, setPrice] = useState();
+function ECalculator({ data }) {
+  const [price, setPrice] = useState(parseInt(data[0]?.value ?? 0));
 
   // Zeeliin hemjee
   const [principal, setPrincipal] = useState(0);
@@ -77,28 +76,28 @@ function ECalculator() {
   const [time, setTime] = useState(0);
 
   // Uridchilgaa
-  const [pay, setPay] = useState(9);
+  const [pay, setPay] = useState(0);
 
   const [emi, setEmi] = useState(0);
   // const [totalinterest, setTotalinterest] = useState(0);
 
   const handlePriceChange = (event) => {
-    setPrice(event.target.value);
+    setPrice(event);
   };
 
   const handlePrincipalchange = (event) => {
-    setPrincipal(event.target.value);
+    setPrincipal(event);
   };
 
   const handlePayChange = (event) => {
-    setPay(event.target.value);
+    setPay(event);
   };
 
   const handleInterestchange = (event) => {
-    setInterest(event.target.value);
+    setInterest(event);
   };
   const handleTimechange = (event) => {
-    setTime(event.target.value);
+    setTime(event);
   };
 
   const calculateLoan = () => {
@@ -168,7 +167,7 @@ function ECalculator() {
         <div>
           <CalcInput
             heading="Орон сууцны үнэ"
-            placeholder="0.00₮"
+            placeholder={price ?? '0.00₮'}
             onChange={handlePriceChange}
             value={price}
             className=""

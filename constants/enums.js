@@ -14,13 +14,17 @@ export const SellTypes = {
   },
 };
 export const AdTypes = {
-  sell: {
-    id: 'sell',
-    name: 'Зарах',
+  default: {
+    id: 'default',
+    name: 'Энгийн',
   },
-  rent: {
-    id: 'rent',
-    name: 'Түрээслэх',
+  special: {
+    id: 'special',
+    name: 'Онцгой',
+  },
+  poster: {
+    id: 'poster',
+    name: 'Постэр',
   },
 };
 

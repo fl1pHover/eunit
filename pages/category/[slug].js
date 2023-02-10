@@ -2,11 +2,11 @@ import FilterLayout from '@/components/filter';
 import AdContent from '@/components/home/adContent';
 import urls from '@/constants/api';
 import MainContainer from '@/layout/mainContainer';
-import CustomModal from '@/util/CustomModal';
+import mergeNames from '@/util/mergeNames';
 import {
   Box,
   Button,
-  HStack,
+  Image,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -22,7 +22,6 @@ import {
   MarkerF,
   useLoadScript,
 } from '@react-google-maps/api';
-import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useMemo, useState } from 'react';
 import { useAuth } from '../../context/auth';
@@ -88,7 +87,6 @@ const Category = ({ propAds }) => {
             <Box className="max-w-[100%] w-full rounded-[5px]">
               {/* <SwiperHeader /> */}
 
-
               {/* //TODO Ontsgoi zar */}
               {/* //TODO Ontsgoi zar */}
               {/* //TODO Ontsgoi zar */}
@@ -103,13 +101,12 @@ const Category = ({ propAds }) => {
               />
             </Box>
           </div>
-          <CustomModal></CustomModal>
+          {/* <CustomModal></CustomModal> */}
           <Modal onClose={onClose} isOpen={isOpen} isCentered size={'4xl'}>
             <ModalContent>
               <ModalHeader>Maps</ModalHeader>
               <ModalCloseButton />
               <ModalBody>
-                {' '}
                 <GoogleMap
                   options={mapOptions}
                   onClick={(e) => {
@@ -124,7 +121,7 @@ const Category = ({ propAds }) => {
                   {isLoaded &&
                     ads?.map((m, i) => {
                       return (
-                        <HStack key={i}>
+                        <div className="" key={i}>
                           <MarkerF
                             position={{
                               lat: parseFloat(m.location?.lat ?? 47.74604),
@@ -132,23 +129,39 @@ const Category = ({ propAds }) => {
                             }}
                             onClick={() => setMarkerActive(i)}
                             animation={google.maps.Animation.DROP}
+                            className={mergeNames('group')}
                           >
                             <InfoWindow
                               position={{
                                 lat: parseFloat(m.location?.lat ?? 47.74604),
                                 lng: parseFloat(m.location?.lng ?? 107.341515),
                               }}
-                              onLoad={(info) => console.log(info)}
+                              onLoad={(info) => {}}
                             >
                               {/* end zasna */}
-                              <Button
+
+                              <div
                                 onClick={() => router.push(`/product/${m.num}`)}
+                                className={mergeNames(
+                                  ' h-[100px] aspect-video flex flex-col cursor-pointer justify-end',
+                                  'group-hover:block'
+                                )}
                               >
-                                <div>{m.title}</div>
-                              </Button>
+                                <Image
+                                  src="/images/404.png"
+                                  alt="map image"
+                                  className={mergeNames(
+                                    'absolute top-0 left-0 object-cover w-full h-full ',
+                                    'bg-gradient-to-b from-slate-700/0 via-slate-700/80 to-slate-900/100'
+                                  )}
+                                />
+                                <p className="z-10 text-base font-bold text-white">
+                                  {m.title}
+                                </p>
+                              </div>
                             </InfoWindow>
                           </MarkerF>
-                        </HStack>
+                        </div>
                       );
                     })}
                 </GoogleMap>

@@ -16,6 +16,7 @@ const StepButtons = ({
   loading = false,
   onNext = () => {},
   txt = 'Дараах',
+  onClick = () => {},
 }) => {
   return (
     <div className="mt-4">

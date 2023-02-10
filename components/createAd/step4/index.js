@@ -23,7 +23,7 @@ const Step3 = ({ filter }) => {
       {filter?.map((f, i) => {
         // console.log(f.id)
         // console.table(f);
-        if (f.mark == 'year')
+        if (f.type == 'date' || f.mark == 'year')
           return (
             <ItemContainer>
               <FormLabel title={f.name} />

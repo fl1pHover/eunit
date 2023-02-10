@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   GridItem,
   Heading,
   HStack,
@@ -34,6 +33,7 @@ import {
   useLoadScript,
 } from '@react-google-maps/api';
 import axios from 'axios';
+import currency from 'currency.js';
 import moment from 'moment/moment';
 import { useRouter } from 'next/router';
 import urls from '../../constants/api';
@@ -41,6 +41,7 @@ import { useAuth } from '../../context/auth';
 const ProductInfo = ({
   title,
   value,
+  id,
   children,
   key = 0,
   tt = 'capitalize',
@@ -59,7 +60,11 @@ const ProductInfo = ({
         >
           <Text textTransform={'capitalize'}>{title}: </Text>
           <Text textTransform={tt} fontWeight={'bold'}>
-            {value}
+            {id === 'price' || id === 'unitPrice'
+              ? currency(value, { separator: ',', symbol: '' })
+                  .format()
+                  .toString()
+              : value}
           </Text>
         </Stack>
       )}
@@ -258,7 +263,12 @@ const Product = ({ propAds }) => {
                     {data?.filters?.map((p, i) => {
                       if (p.id != null) {
                         return (
-                          <ProductInfo key={i} title={p.name} value={p.value} />
+                          <ProductInfo
+                            key={i}
+                            title={p.name}
+                            id={p.id}
+                            value={p.value}
+                          />
                         );
                       }
                     })}
@@ -270,7 +280,11 @@ const Product = ({ propAds }) => {
 
             <Box>
               {/* <Estimator /> */}
-              <ECalculator />
+              {data && (
+                <ECalculator
+                  data={data?.filters?.filter((f) => f.id === 'price')}
+                />
+              )}
             </Box>
           </Box>
         </Stack>
@@ -364,11 +378,16 @@ const Product = ({ propAds }) => {
                         // onLoad={(info) => console.log(info)}
                       >
                         {/* end zasna */}
-                        <Button
+                        {/* <Image
+                          src="/images/logo/404.pmg"
+                          alt="map image"
+                          className="w-full h-[100px]"
+                        /> */}
+                        <button
                           onClick={() => router.push(`/product/${m.num}`)}
                         >
                           <div>{m.title}</div>
-                        </Button>
+                        </button>
                       </InfoWindow>
                     </MarkerF>
                   </HStack>
