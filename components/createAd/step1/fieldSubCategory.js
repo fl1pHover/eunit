@@ -1,6 +1,5 @@
-import React from "react";
-import Line from "@/components/createAd/formLine";
-import ButtonSelectItem from "@/components/createAd/formButtonSelectItem";
+import ButtonSelectItem from '@/components/createAd/formButtonSelectItem';
+import Line from '@/components/createAd/formLine';
 
 const FieldSubCategory = ({
   types = {},
@@ -10,7 +9,7 @@ const FieldSubCategory = ({
   return (
     <>
       <div className="flex flex-wrap md:gap-4 gap-1 md:px-10 justify-center mb-6">
-        {localCategory?.[types.categoryId]?.submenu?.map((item, key) => {
+        {localCategory?.map((item, key) => {
           const isSelected = types.subCategoryId === item.href;
           return (
             <ButtonSelectItem

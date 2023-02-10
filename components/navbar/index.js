@@ -1,3 +1,4 @@
+import { useAuth } from '@/context/auth';
 import { Box } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 
@@ -5,9 +6,9 @@ import CategoryBottom from './bottom';
 import Higher from './higher';
 import UpperNav from './upper';
 
-const Navbar = ({ data }) => {
+const Navbar = () => {
   const [sticky, setSticky] = useState(false);
-
+  const { categories } = useAuth();
   useEffect(() => {
     const handleScroll = () => {
       setSticky(window.scrollY > 0);
@@ -27,7 +28,7 @@ const Navbar = ({ data }) => {
         pos={sticky ? 'sticky' : 'relative'}
       >
         <UpperNav />
-        <CategoryBottom {...{ sticky }} data={data} />
+        <CategoryBottom {...{ sticky }} data={categories} />
       </Box>
     </>
   );

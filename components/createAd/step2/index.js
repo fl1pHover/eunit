@@ -55,7 +55,7 @@ const Step2 = ({
     handleNamedata('committee', val);
   };
   const libraries = useMemo(() => ['places'], []);
-  // const { categories, setAds } = useAuth();
+
   const [markerActive, setMarkerActive] = useState(null);
 
   const { isLoaded } = useLoadScript({

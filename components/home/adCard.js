@@ -11,7 +11,6 @@ import AdCardButton from './adCardButton';
 
 const Card = ({ item }) => {
   const router = useRouter();
-  console.log(item);
   return (
     <div className="relative overflow-hidden rounded-md shadow-md bg-zinc-200 group ">
       <div className="md:min-h-[35vh] min-h-[30vh] h-full w-full relative">
@@ -32,7 +31,13 @@ const Card = ({ item }) => {
             className="flex items-start justify-between flex-1"
           >
             <div className="px-2 py-1 rounded-md bg-mainBlossom w-fit">
-              <p className="text-sm font-semibold text-white">Logo</p>
+              <p className="text-sm font-semibold text-white">
+                <Image
+                  src="/images/logo/bom-white-text.png"
+                  alt="BOM logo"
+                  objectFit="contain"
+                />
+              </p>
             </div>
             <button className="flex items-center justify-center w-8 h-8 bg-gray-600 rounded-full">
               <FiCamera size={16} className="text-white" />
@@ -42,7 +47,7 @@ const Card = ({ item }) => {
             <div className="flex flex-row justify-between w-full">
               <TextContainer
                 title={item.title}
-                description={item.positions.location}
+                description={item.positions?.location_id ?? ''}
               />
               <AdCardButton id={item?.num} />
             </div>

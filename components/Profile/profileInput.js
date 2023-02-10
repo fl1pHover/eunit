@@ -3,7 +3,15 @@ import mergeNames from '@/util/mergeNames';
 import InputIcon from './InputIcon';
 
 // Account deer ashiglasan input
-const ProfileInput = ({ ph = '', type, className, item, edit, ...props }) => {
+const ProfileInput = ({
+  ph = '',
+  type,
+  className,
+  item,
+  edit,
+  onChange,
+  ...props
+}) => {
   return (
     <div
       className={mergeNames(
@@ -15,7 +23,7 @@ const ProfileInput = ({ ph = '', type, className, item, edit, ...props }) => {
       <input
         placeholder={ph}
         type={type}
-        // onChange={(e) => onChange(e.target.value)}
+        onChange={onChange}
         className={mergeNames(
           'px-4  py-2 w-full h-full disabled:focus flex items-center justify-between absolute top-0 left-0',
           STYLES.input,

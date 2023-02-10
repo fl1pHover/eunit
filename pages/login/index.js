@@ -45,31 +45,6 @@ export default function Login() {
       );
     }
   };
-  // const signByGoogle = () => {
-  //      const provider = new GoogleAuthProvider();
-  //      const auth = getAuth();
-  //      signInWithPopup(auth, provider).then(async (res) => {
-  //           const cre = GoogleAuthProvider.credentialFromResult(res);
-  //           const user = res.user;
-  //           if (user) {
-  //                console.log(user);
-  //                try {
-  //                     await axios.post(
-  //                          "https://bom-location.herokuapp.com/user",
-  //                          {
-  //                               username: user.displayName,
-  //                               email: user.email,
-  //                               profileImg: user.profileImg,
-  //                               phone: "99999999",
-  //                          }
-  //                     );
-  //                } catch (err) {
-  //                     console.log(err);
-  //                }
-  //                router.push("/");
-  //           }
-  //      });
-  // };
 
   const signIn = () => {
     if (credential.email && credential.password) {

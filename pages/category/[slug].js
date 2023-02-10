@@ -2,7 +2,6 @@ import FilterLayout from '@/components/filter';
 import AdContent from '@/components/home/adContent';
 import urls from '@/constants/api';
 import MainContainer from '@/layout/mainContainer';
-import CustomModal from '@/util/CustomModal';
 import {
   Box,
   Button,
@@ -22,7 +21,6 @@ import {
   MarkerF,
   useLoadScript,
 } from '@react-google-maps/api';
-import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useMemo, useState } from 'react';
 import { useAuth } from '../../context/auth';
@@ -88,7 +86,6 @@ const Category = ({ propAds }) => {
             <Box className="max-w-[100%] w-full rounded-[5px]">
               {/* <SwiperHeader /> */}
 
-
               {/* //TODO Ontsgoi zar */}
               {/* //TODO Ontsgoi zar */}
               {/* //TODO Ontsgoi zar */}
@@ -103,7 +100,7 @@ const Category = ({ propAds }) => {
               />
             </Box>
           </div>
-          <CustomModal></CustomModal>
+          {/* <CustomModal></CustomModal> */}
           <Modal onClose={onClose} isOpen={isOpen} isCentered size={'4xl'}>
             <ModalContent>
               <ModalHeader>Maps</ModalHeader>
@@ -138,7 +135,7 @@ const Category = ({ propAds }) => {
                                 lat: parseFloat(m.location?.lat ?? 47.74604),
                                 lng: parseFloat(m.location?.lng ?? 107.341515),
                               }}
-                              onLoad={(info) => console.log(info)}
+                              onLoad={(info) => {}}
                             >
                               {/* end zasna */}
                               <Button

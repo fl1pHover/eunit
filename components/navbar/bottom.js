@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { BiPlusCircle } from 'react-icons/bi';
 
-import { categories } from '@/data/categories';
+import { useAuth } from '@/context/auth';
 import { NavContainer } from '@/lib/Container';
 import mergeNames from '@/util/mergeNames';
 
@@ -17,7 +17,7 @@ const Bottom = ({ sticky }) => {
   const handleMouseOut = () => {
     setIsHoveringId(false);
   };
-
+  const { categories } = useAuth();
   return (
     <div
       className={mergeNames(

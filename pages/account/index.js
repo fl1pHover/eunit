@@ -82,7 +82,9 @@ const Account = ({ user }) => {
 
           {tabs.map((tab, index) => {
             return (
-              <>{tab.title && <div>{content === tab.title && tab.comp}</div>}</>
+              tab.title && (
+                <div key={index}>{content === tab.title && tab.comp}</div>
+              )
             );
           })}
         </div>
