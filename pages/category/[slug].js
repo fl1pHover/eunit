@@ -53,7 +53,7 @@ const Category = ({ propAds }) => {
   const mapOptions = useMemo(
     () => ({
       disableDefaultUI: true,
-      // clickableIcons: true,
+      clickableIcons: true,
       scrollwheel: true,
     }),
     []

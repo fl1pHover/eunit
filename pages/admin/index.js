@@ -226,34 +226,34 @@ const Admin = ({ propAds }) => {
             <Button onClick={() => verify(a._id)}>verify</Button>
             <Button onClick={() => deleteAd(a._id)}>delete</Button>
             {/* {content && <> {content} </>} */}
-            {categories?.map((c, i) => {
-              return (
-                <table className="table-auto" key={i}>
-                  <thead>
-                    <tr>
-                      <th>{c.subCategory.name}</th>
-                    </tr>
-                  </thead>
-                  {/* <tbody>
-                    <tr>
-                      <td>The Sliding Mr. Bones (Next Stop, Pottersville)</td>
-                      <td>Malcolm Lockyer</td>
-                      <td>1961</td>
-                    </tr>
-                    <tr>
-                      <td>Witchy Woman</td>
-                      <td>The Eagles</td>
-                      <td>1972</td>
-                    </tr>
-                    <tr>
-                      <td>Shining Star</td>
-                      <td>Earth, Wind, and Fire</td>
-                      <td>1975</td>
-                    </tr>
-                  </tbody> */}
-                </table>
-              );
-            })}
+
+            <div className="w-full overflow-scroll">
+              <table
+                className="w-full p-2 text-sm text-left border border-collapse border-gray-400 table-fixed"
+                key={i}
+              >
+                <thead>
+                  <tr>
+                    <th>title lorem</th>
+                    <th>title</th>
+                    <th>title</th>
+                    <th>title</th>
+                    <th>title</th>
+                    <th>title</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>info</td>
+                    <td>info</td>
+                    <td>info</td>
+                    <td>info</td>
+                    <td>info</td>
+                    <td>info</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       );

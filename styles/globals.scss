@@ -27,6 +27,14 @@ input[type='date']::-webkit-calendar-picker-indicator {
   transition: 0.3s ease;
 }
 
+thead {
+  @apply border-b border-gray-400;
+}
+
+th,
+td {
+  @apply p-2 border-r border-gray-400 min-w-[125px] w-[150px];
+}
 
 .animate-pin {
   animation: pin 0.8s ease-in-out infinite;

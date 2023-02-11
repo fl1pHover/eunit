@@ -4,7 +4,10 @@ export const STYLES = {
   flexBetween: 'flex justify-between items-center',
   flexCenter: 'flex justify-center',
   input:
-    'px-4 py-2 rounded-full border-2 border-blue-400 bg-blue-100/10  text-black font-medium placeholder-slate-400 ',
+    'px-4 py-2 rounded-full border-2 border-blue-400 bg-blue-100/10  text-black font-medium placeholder-slate-400',
+  loginWidth: 'flex flex-col bg-white md:px-[3em] px-5 py-[30px] w-full ',
+  blueButton:
+    'font-bold text-white bg-blue-600 hover:bg-blue-700 transition-all easeIn rounded-full ',
 };
 
 export const fade = () => ({
