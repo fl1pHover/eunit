@@ -117,7 +117,7 @@ export default function CreateAd({ categories }) {
           generalData.imgSelected
       );
     // if (step === 2) return <CustomModal />;
-    if (step === 2) return alidateStep4();
+    if (step === 2) return validateStep4();
   };
 
   const checkConditionOnNextStep = (booleanValue) => {
@@ -290,7 +290,7 @@ export default function CreateAd({ categories }) {
           onPrev={handlePrevStep}
           loading={isLoading}
           txt={step == 2 ? 'Илгээх' : 'Дараах'}
-          onClick={() => step == 2 && <CustomModal />}
+          // onClick={() => step == 2 && <CustomModal />}
         />
       </ContainerX>
     </div>

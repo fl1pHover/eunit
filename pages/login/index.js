@@ -5,7 +5,6 @@ import {
   Box,
   FormControl,
   FormLabel,
-  Image,
   Input,
   Tab,
   TabList,
@@ -58,7 +57,7 @@ export default function Login() {
   };
   return (
     <MainContainer w={'450px'} className="asd">
-      <div className="relative grid  grid-cols-1 md:my-10 my-5 lg:grid-cols-2 h-[65vh]">
+      {/* <div className="relative grid  grid-cols-1 md:my-10 my-5 lg:grid-cols-2 h-[65vh]">
         <div>
           <Image
             src="/images/login.png"
@@ -75,6 +74,44 @@ export default function Login() {
           >
             <Tabs w="full">
               <TabList className="w-[80%] gap-4 mx-auto border-none justify-center">
+                <Tab fontSize={'18px'} fontWeight={600}>
+                  Нэвтрэх
+                </Tab>
+                <Tab fontSize={'18px'} fontWeight={600}>
+                  Бүртгүүлэх
+                </Tab>
+              </TabList>
+              <TabPanels w={'full'} className="h-[450px]">
+                <TabPanel>
+                  <LoginComp
+                    credential={credential}
+                    setCredential={setCredential}
+                    fc={signIn}
+                  />
+                </TabPanel>
+                <TabPanel>
+                  <SignUpComp
+                    credential={signupCredential}
+                    setCredential={setSignupcredential}
+                    fc={signUp}
+                  />
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
+          </div>
+        </div>
+      </div> */}
+      <div className="relative grid grid-cols-1 md:my-10 my-5 lg:grid-cols-2 h-[65vh]">
+        <div className="bg-blue-500"></div>
+        <div className="z-10 flex justify-center">
+          <div
+            className={mergeNames(
+              STYLES.flexCenter,
+              'flex-row bg-white px-3 md:px-[50px] py-[30px] w-[500px] rounded-xl items-center'
+            )}
+          >
+            <Tabs w="full">
+              <TabList className="justify-center w-full gap-4 mx-auto border-none">
                 <Tab fontSize={'18px'} fontWeight={600}>
                   Нэвтрэх
                 </Tab>
@@ -126,21 +163,21 @@ export const LoginComp = ({ credential, setCredential, fc }) => {
         v="password"
       />
       <Box h={10}></Box>
-      <CustomToast
+      {/* <CustomToast
         onclick={() => fc()}
         className="justify-center w-full h-auto py-4 font-bold text-white bg-blue-600 rounded-md"
         toastBtn="Нэвтрэх"
         stats="success"
         toastH="Амжилттай нэвтэрлээ"
-      />
-      {/* <button
+      /> */}
+      <button
         className="w-full h-auto py-4 font-bold text-white bg-blue-600 rounded-md"
         onClick={() => {
           fc(), (<CustomToast />);
         }}
       >
         Нэвтрэх
-      </button> */}
+      </button>
     </FormControl>
   );
 };
@@ -191,21 +228,21 @@ export const SignUpComp = ({ credential, setCredential, fc }) => {
       />
 
       <Box h={10} />
-      <CustomToast
+      {/* <CustomToast
         onclick={() => fc()}
         className="justify-center w-full h-auto py-4 font-bold text-white bg-blue-600 rounded-md"
         toastBtn="Бүртүүлэх"
         stats="success"
         toastH="Амжилттай бүртгэгдлээ"
-      />
-      {/* <button
+      /> */}
+      <button
         className="w-full h-auto py-4 font-bold text-white bg-blue-600 rounded-md"
         onClick={() => {
           fc(), (<CustomToast />);
         }}
       >
         Нэвтрэх
-      </button> */}
+      </button>
     </FormControl>
   );
 };
