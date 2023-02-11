@@ -172,9 +172,7 @@ export const LoginComp = ({ credential, setCredential, fc }) => {
       /> */}
       <button
         className="w-full h-auto py-4 font-bold text-white bg-blue-600 rounded-md"
-        onClick={() => {
-          fc(), (<CustomToast />);
-        }}
+        onClick={() => fc()}
       >
         Нэвтрэх
       </button>
