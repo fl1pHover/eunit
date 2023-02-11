@@ -1,4 +1,5 @@
 import { STYLES } from '@/styles/index';
+import CustomToast from '@/util/customToast';
 import mergeNames from '@/util/mergeNames';
 import {
   Box,
@@ -81,7 +82,7 @@ export default function Login() {
                   Бүртгүүлэх
                 </Tab>
               </TabList>
-              <TabPanels w={'full'}>
+              <TabPanels w={'full'} className="h-[450px]">
                 <TabPanel>
                   <LoginComp
                     credential={credential}
@@ -109,7 +110,6 @@ export const LoginComp = ({ credential, setCredential, fc }) => {
   return (
     <FormControl>
       <Box h={3} />
-
       <InputComp
         lbl={'Та И-Мэйл хаягаа оруулна уу'}
         type="email"
@@ -125,13 +125,22 @@ export const LoginComp = ({ credential, setCredential, fc }) => {
         setValue={setCredential}
         v="password"
       />
-      <Box h={10} />
-      <button
+      <Box h={10}></Box>
+      <CustomToast
+        onclick={() => fc()}
+        className="justify-center w-full h-auto py-4 font-bold text-white bg-blue-600 rounded-md"
+        toastBtn="Нэвтрэх"
+        stats="success"
+        toastH="Амжилттай нэвтэрлээ"
+      />
+      {/* <button
         className="w-full h-auto py-4 font-bold text-white bg-blue-600 rounded-md"
-        onClick={() => fc()}
+        onClick={() => {
+          fc(), (<CustomToast />);
+        }}
       >
         Нэвтрэх
-      </button>
+      </button> */}
     </FormControl>
   );
 };
@@ -180,13 +189,23 @@ export const SignUpComp = ({ credential, setCredential, fc }) => {
         setValue={setCredential}
         v="confirmPassword"
       />
+
       <Box h={10} />
-      <button
+      <CustomToast
+        onclick={() => fc()}
+        className="justify-center w-full h-auto py-4 font-bold text-white bg-blue-600 rounded-md"
+        toastBtn="Бүртүүлэх"
+        stats="success"
+        toastH="Амжилттай бүртгэгдлээ"
+      />
+      {/* <button
         className="w-full h-auto py-4 font-bold text-white bg-blue-600 rounded-md"
-        onClick={() => fc()}
+        onClick={() => {
+          fc(), (<CustomToast />);
+        }}
       >
         Нэвтрэх
-      </button>
+      </button> */}
     </FormControl>
   );
 };
