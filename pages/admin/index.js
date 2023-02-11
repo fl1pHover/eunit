@@ -54,102 +54,6 @@ const Admin = ({ propAds }) => {
   if (user?.userType == 'admin' || user?.userType == 'system') {
     return ads.map((a, i) => {
       return (
-        // <div className="flex flex-row p-5" key={i}>
-        //   {/* Dashboard */}
-        //   <div className="flex flex-col  text-white bg-mainBlossom w-[20%] p-4 rounded-xl">
-        //     <div className="flex flex-col">
-        //       <Tab
-        //         num={1}
-        //         className={mergeNames(
-        //           'flex justify-between py-2 font-bold cursor-pointer'
-        //         )}
-        //       >
-        //         Verify
-        //       </Tab>
-        //     </div>
-        //     {categories?.map(({ categoryName, submenu }, key) => {
-        //       return (
-        //         <div className="flex flex-col" key={key}>
-        //           <Tab
-        //             num={2}
-        //             className={mergeNames(
-        //               'flex justify-between py-2 font-bold cursor-pointer'
-        //             )}
-        //           >
-        //             {categoryName}
-        //             <button
-        //               // onClick={handleExpand}
-        //               onClick={() => {
-        //                 setCollapsed((prev) => {
-        //                   if (prev === categoryName.id) return false;
-        //                   return categoryName.id;
-        //                 });
-        //               }}
-        //             >
-        //               <AiFillCaretDown />
-        //             </button>
-        //           </Tab>
-        //           <ul
-        //             className={mergeNames(
-        //               'cursor-pointer ml-10',
-        //               expand ? 'block' : 'hidden'
-        //             )}
-        //           >
-        //             {collapsedId &&
-        //               collapsedId === categoryName.id &&
-        //               submenu?.map(({ category, href }, key) => {
-        //                 return (
-        //                   <li
-        //                     key={key}
-
-        //                     // className="px-4 py-3 text-sm font-medium text-white transition-colors ease-in hover:bg-blue-700 first-letter:uppercase whitespace-nowrap"
-        //                   >
-        //                     {category}
-        //                   </li>
-        //                 );
-        //               })}
-
-        //             {/* {submenu && (
-        //               <li onClick={() => setContent(a + 1)}>{submenu}</li>
-        //             )} */}
-        //           </ul>
-        //         </div>
-        //       );
-        //     })}
-        //     {/* <div className="flex flex-col">
-        //       <Tab
-        //         num={2}
-        //         className={mergeNames(
-        //           'flex justify-between py-2 font-bold cursor-pointer'
-        //         )}
-        //       >
-        //         Realstate
-        //         <button onClick={handleExpand}>
-        //           <AiFillCaretDown />
-        //         </button>
-        //       </Tab>
-        //       <ul
-        //         className={mergeNames(
-        //           'cursor-pointer ml-10',
-        //           expand ? 'block' : 'hidden'
-        //         )}
-        //       >
-        //         {categories?.map(({ categoryName, submenu }, i) => {
-        //           return (
-        //             <>
-
-        //               <li onClick={() => setContent(a + 1)}>{categoryName}</li>
-        //             </>
-        //           );
-        //         })}
-        //       </ul>
-        //     </div> */}
-        //   </div>
-        //   <div>
-        //     {content == 2 && <p>adasd</p>}
-        //     {content == 3 && <p>adafgdfgsd</p>}
-        //   </div>
-        // </div>
         <div key={i} className="flex flex-row p-5">
           <div className="w-[20%] text-[#b8cde9] rounded-md bg-mainBlossom">
             <div>
@@ -226,15 +130,15 @@ const Admin = ({ propAds }) => {
             <Button onClick={() => verify(a._id)}>verify</Button>
             <Button onClick={() => deleteAd(a._id)}>delete</Button>
             {/* {content && <> {content} </>} */}
-            {categories?.map((c, i) => {
+            {categories?.map((tab, key) => {
               return (
                 <table className="table-auto" key={i}>
                   <thead>
                     <tr>
-                      <th>{c.subCategory.name}</th>
+                      <th>{tab.subCategory.name}</th>
                     </tr>
                   </thead>
-                  {/* <tbody>
+                  <tbody className="gap-3">
                     <tr>
                       <td>The Sliding Mr. Bones (Next Stop, Pottersville)</td>
                       <td>Malcolm Lockyer</td>
@@ -245,12 +149,7 @@ const Admin = ({ propAds }) => {
                       <td>The Eagles</td>
                       <td>1972</td>
                     </tr>
-                    <tr>
-                      <td>Shining Star</td>
-                      <td>Earth, Wind, and Fire</td>
-                      <td>1975</td>
-                    </tr>
-                  </tbody> */}
+                  </tbody>
                 </table>
               );
             })}

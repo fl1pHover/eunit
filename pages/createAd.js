@@ -117,7 +117,7 @@ export default function CreateAd({ categories }) {
           generalData.imgSelected
       );
     // if (step === 2) return <CustomModal />;
-    if (step === 2) return alidateStep4();
+    if (step === 2) return validateStep4();
   };
 
   const checkConditionOnNextStep = (booleanValue) => {
