@@ -10,7 +10,8 @@ import {
   Flex,
   Heading,
   Input,
-  Link,
+  Radio,
+  RadioGroup,
   Select,
   Text,
   useDisclosure,
@@ -96,7 +97,7 @@ const FilterLayout = ({ data, isOpenMap }) => {
     });
     console.log(filter);
   };
-
+  const [value, setValue] = useState('');
   return (
     <>
       <button
@@ -136,21 +137,35 @@ const FilterLayout = ({ data, isOpenMap }) => {
               </Heading>
               {categories?.map((c, i) => {
                 return (
-                  <div key={i}>
+                  <RadioGroup
+                    onChange={setValue}
+                    value={value}
+                    key={i}
+                    className="flex flex-col gap-2"
+                  >
                     {c.subCategory.map(({ href, name }, id) => {
                       return (
-                        <Link
+                        // <Link
+                        //   key={id}
+                        //   href={`/category/${href}`}
+                        //   p="2px"
+                        //   mt={0}
+                        //   fontWeight={data == href ? 'bold' : 'medium'}
+                        // >
+                        //   <Text>{name}</Text>
+                        // </Link>
+
+                        // Eniig inspectdeer neg haraarai aldaatai bolood bn
+                        <Radio
+                          value={name}
                           key={id}
-                          href={`/category/${href}`}
-                          p="2px"
-                          mt={0}
-                          fontWeight={data == href ? 'bold' : 'medium'}
+                          _selected={{ font: 'bold' }}
                         >
                           <Text>{name}</Text>
-                        </Link>
+                        </Radio>
                       );
                     })}
-                  </div>
+                  </RadioGroup>
                 );
               })}
             </FilterStack>
@@ -181,7 +196,7 @@ const FilterLayout = ({ data, isOpenMap }) => {
                 Байршлаар
               </Heading>
 
-              <button className="relative z-10 w-full h-32 overflow-hidden border-2 border-gray-200 rounded-2xl">
+              <button className="relative z-10 w-full h-32 overflow-hidden border-g ray-200 border-1 rounded-2xl">
                 {/* end map gargana */}
                 <div onClick={isOpenMap} className="relative z-0 h-full" />
                 <iframe
@@ -197,7 +212,7 @@ const FilterLayout = ({ data, isOpenMap }) => {
               {/* <Select></Select> */}
               <Select
                 placeholder={'Дүүрэг'}
-                className="border-2 border-blue-400 rounded-2xl text-[14px]"
+                className="border-1  border-blue-400 rounded-full text-[14px]"
                 onChange={(e) =>
                   setPositions((positions) => ({
                     ...positions,
@@ -216,7 +231,7 @@ const FilterLayout = ({ data, isOpenMap }) => {
               {positions.district_id && (
                 <Select
                   placeholder={'Байршил'}
-                  className="border-2 border-blue-400 rounded-2xl"
+                  className="border-b rounded-full lue-400 border-1"
                   onChange={(e) =>
                     setPositions((positions) => ({
                       ...positions,
@@ -242,14 +257,14 @@ const FilterLayout = ({ data, isOpenMap }) => {
                       <Input
                         type="number"
                         placeholder="Доод"
-                        className="border-2 border-blue-400 rounded-2xl"
+                        className="border-b rounded-full lue-400 border-1"
                         onChange={(e) => setFilters(f.id, e, false)}
                       />
                       <Text>-</Text>
                       <Input
                         type="number"
                         placeholder="Дээд"
-                        className="border-2 border-blue-400 rounded-2xl focus:outline-none"
+                        className="border-b rounded-full lue-400 border-1 focus:outline-none"
                         onChange={(e) => setFilters(f.id, e, true)}
                       />
                     </Flex>
@@ -258,7 +273,7 @@ const FilterLayout = ({ data, isOpenMap }) => {
                   <Select
                     key={i}
                     placeholder={f.name}
-                    className="border-2 border-blue-400 rounded-2xl"
+                    className="border-b rounded-full lue-400 border-1"
                     onChange={(e) => setFilters(f.id, e, true)}
                   >
                     {f.values.map((item, i) => {

@@ -18,7 +18,7 @@ const FieldLocation = ({
         <FormLabel title="Байршил" num={4} />
         <Select
           data={locationData}
-          width="long"
+          width=""
           label={selectedLocalData?.location || 'Байршил'}
           Item={({ data, onClick, ...props }) => {
             return (

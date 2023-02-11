@@ -153,8 +153,8 @@ export default function CreateAd({ categories }) {
       // TODOs: IF IT IS NOT REALSTATE -> MEANING IT HAS 3 STEPS
     }
   };
-  const validateStep4 = async () => {
-    setIsLoading(true);
+
+  const sendAd = async () => {
     const token = getCookie('token');
     const f = new FormData();
     const selectedFilters = filters[2];
@@ -208,10 +208,14 @@ export default function CreateAd({ categories }) {
         })
         .then((d) => router.push('/'));
       console.log(ad);
-      setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
     }
+  };
+  const validateStep4 = () => {
+    setIsLoading(true);
+
+    setIsLoading(false);
   };
 
   const handlePrevStep = () => {

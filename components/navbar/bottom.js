@@ -1,97 +1,144 @@
-import Link from 'next/link';
-import { useState } from 'react';
-import { BiPlusCircle } from 'react-icons/bi';
-
 import { useAuth } from '@/context/auth';
 import { NavContainer } from '@/lib/Container';
+import { STYLES } from '@/styles/index';
 import mergeNames from '@/util/mergeNames';
-import { categories } from '@/data/categories';
+import { Image } from '@chakra-ui/react';
+import { motion } from 'framer-motion';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+import { HiOutlineSearch } from 'react-icons/hi';
+import { MdOutlineClear } from 'react-icons/md';
+import { UserIcon, WhiteHeartIcon } from './icons';
+import NavCategory from './navCategory';
+import UserDrawer from './userDrawer';
 
 const Bottom = ({ sticky }) => {
-  const [isHoveringId, setIsHoveringId] = useState(false);
-  // const pt = useBreakpoints();
+  const { user, logout, setAds } = useAuth();
+  const router = useRouter();
 
-  const handleMouseOver = (id) => {
-    setIsHoveringId(id);
-  };
+  // Visible start
+  const [activeSearch, setActiveSearch] = useState(false);
 
-  const handleMouseOut = () => {
-    setIsHoveringId(false);
+  // Visible end
+
+  // Search start
+  const [search, setSearch] = useState('');
+  const searchAds = async (value) => {
+    try {
+      await fetch(`${urls['test']}/ad/search/{value}?value=${value}`)
+        .then((d) => d.json())
+        .then((d) => setAds(d));
+    } catch (err) {
+      console.log(err.response.data.message);
+    }
   };
-  // const { categories } = useAuth();
+  const handleClear = (e) => {
+    // 👇️ clear input value
+    setSearch('');
+    console.log('clear input');
+  };
+  // Search end
+
   return (
-    <div
-      className={mergeNames(
-        'md:block hidden',
-        'bg-mainBlossom shadow-lg',
-        'transition-all ease-in-out duration-500',
-        sticky ? 'wrap' : 'nowrap'
-      )}
-    >
+    <div className={mergeNames('md:block hidden', 'bg-mainBlossom ')}>
       <NavContainer>
-        <div className="flex flex-row items-center justify-between h-full gap-2">
-          <div className="flex flex-row items-stretch h-full ">
-            {categories?.map(
-              ({ image, categoryName, id, itemCount, submenu }, key) => {
-                return (
-                  <div
-                    key={key}
-                    onMouseOut={handleMouseOut}
-                    onMouseOver={() => handleMouseOver(id)}
-                    className={mergeNames(
-                      'hover:bg-blue-900 transition-colors ease-in-out'
-                    )}
-                  >
-                    <div className="relative h-full">
-                      <div className="flex flex-col justify-center h-full px-2 py-4 lg:py-6 lg:px-4">
-                        <Link href={`/category/${id}`}>
-                          <a className="text-sm font-medium text-center text-white lg:text-base">
-                            {categoryName}
-                          </a>
-                        </Link>
-                      </div>
-                      <div className="absolute left-0 min-w-full bg-blue-900/[0.96] rounded-b-md flex flex-col overflow-hidden">
-                        {submenu &&
-                          isHoveringId &&
-                          isHoveringId === id &&
-                          submenu.map(({ category, href }, subkey) => {
-                            return (
-                              <Link
-                                key={subkey}
-                                href={`/category/${href}`}
-                                // className="px-4 py-3 text-sm font-medium text-white transition-colors ease-in hover:bg-blue-700 first-letter:uppercase whitespace-nowrap"
-                              >
-                                <a className="px-4 py-3 text-sm font-medium text-white transition-colors ease-in hover:bg-blue-700 first-letter:uppercase whitespace-nowrap">
-                                  {category}
-                                </a>
-                              </Link>
-                            );
-                          })}
-                      </div>
-                    </div>
-                  </div>
-                );
-              }
-            )}
-          </div>
-          <div className="flex flex-row gap-1 lg:gap-4">
-            <Link href={'/project'} className="hidden lg:block">
-              <button
-                disabled
-                className="px-4 py-1 text-sm text-gray-500 border border-blue-900 rounded-lg cursor-not-allowed lg:text-base"
-              >
-                Шинэ төсөл
-              </button>
+        <div className="flex flex-row items-center justify-center gap-10">
+          <div className="flex flex-row items-center ">
+            {/* logo */}
+            <Link href="/">
+              <a className="p-2">
+                <Image
+                  src="/images/logo/bom-white.png"
+                  alt="Logo"
+                  className="h-6"
+                />
+              </a>
             </Link>
 
+            {/* Categoriud */}
+            <NavCategory />
+          </div>
+
+          {/* baruun taliin bookmark search etc */}
+          <div className="flex flex-row items-center text-white">
+            <button
+              className="h-full px-2"
+              onClick={() => setActiveSearch(true)}
+            >
+              <HiOutlineSearch />
+            </button>
+
+            <WhiteHeartIcon onClick={() => router.push('/account?Bookmark')} />
+
+            {user == undefined ? (
+              <UserIcon
+                text="Бүртгүүлэх"
+                onClick={() => router.push('/login')}
+              />
+            ) : (
+              <UserDrawer user={user} logout={logout} />
+            )}
+
             <Link href={'/createAd'}>
-              <button className="flex flex-row items-center gap-1 px-4 py-1 text-sm font-semibold text-white transition-all ease-in-out bg-teal-700 rounded-lg lg:text-base hover:scale-105">
+              <button className="px-4 py-1 ml-2 text-sm font-semibold transition-all bg-teal-700 rounded-lg hover:scale-105">
                 <p>Зар нэмэх</p>
-                <BiPlusCircle className="hidden lg:block" />
+                {/* <BiPlusCircle className="hidden lg:block" /> */}
               </button>
             </Link>
           </div>
         </div>
+
+        {/* Search input */}
+        {activeSearch && (
+          <motion.div
+            onMouseOut={() => setActiveSearch(false)}
+            initial={{ opacity: 0, y: -10 }}
+            animate={{
+              opacity: 1,
+              y: 0,
+              transition: {
+                stiffness: 0,
+                ease: 'easeInOut',
+                duration: 0.3,
+              },
+            }}
+            onMouseOver={() => setActiveSearch(true)}
+            className={mergeNames(
+              'bg-blue-900/[0.96] w-full absolute left-0',
+              'py-2',
+              STYLES.flexCenter,
+              'items-center text-2xl text-blue-300'
+            )}
+          >
+            <div className="relative flex flex-row items-center w-2/5 h-10">
+              <HiOutlineSearch />
+              <input
+                onChange={(e) => setSearch(e.target.value)}
+                type="text"
+                placeholder="Зараа хайна уу"
+                onKeyPress={(e) => {
+                  if (event.key === 'Enter') {
+                    () => func(search), console.log('enter darah');
+                  }
+                }}
+                value={search}
+                className={mergeNames(
+                  'h-full w-full ml-2 border-none rounded-md placeholder-blue-300/40 bg-mainBlossom bg-opacity-40  focus:ring-0 '
+                )}
+              />
+              <button
+                onClick={handleClear}
+                className={mergeNames(
+                  'text-xs rounded-full p-[2px] bg-mainBlossom/80',
+                  'absolute right-2'
+                )}
+              >
+                <MdOutlineClear />
+              </button>
+            </div>
+          </motion.div>
+        )}
       </NavContainer>
     </div>
   );

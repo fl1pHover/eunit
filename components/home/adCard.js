@@ -19,7 +19,7 @@ const Card = ({ item }) => {
           alt="product image"
           layout="fill"
           objectFit="cover"
-          className="group-hover:scale-125 transition-all w-full ease-in-out duration-400 aspect-[4/5]"
+          className="group-hover:scale-125 transition-all w-full h-full ease-in-out duration-400 aspect-[4/5]"
         />
       </div>
       <div className="absolute top-0 bottom-0 left-0 right-0 w-full h-full">
@@ -28,10 +28,10 @@ const Card = ({ item }) => {
             onClick={() =>
               item && item._id && router.push(`/product/${item.num}`)
             }
-            className="flex items-start justify-between flex-1"
+            className="absolute top-0 left-0 flex items-start justify-between flex-1 w-full h-full p-2"
           >
             <div className="px-2 py-1 rounded-md bg-mainBlossom w-fit">
-              <p className="h-6 text-sm font-semibold text-white ">
+              <p className="h-4 text-sm font-semibold text-white md:h-6">
                 <Image
                   src="/images/logo/bom-white.png"
                   alt="BOM logo"
@@ -40,11 +40,11 @@ const Card = ({ item }) => {
                 />
               </p>
             </div>
-            <button className="flex items-center justify-center w-8 h-8 bg-gray-600 rounded-full">
+            <button className="flex items-center justify-center w-6 h-6 bg-gray-600 rounded-full md:w-8 md:h-8">
               <FiCamera size={16} className="text-white" />
             </button>
           </button>
-          <div className="flex flex-col justify-end mb-2 space-y-2 text-left">
+          <div className="relative z-10 flex flex-col justify-end h-full mb-2 space-y-2">
             <div className="flex flex-row justify-between w-full">
               <TextContainer
                 title={item.title}
@@ -103,7 +103,7 @@ const ItemContainer = ({ Icon = () => <></>, text = '' }) => {
   return (
     <div className="flex flex-row items-center gap-1">
       <Icon className="text-white" />
-      <p className="text-sm text-white">{text}</p>
+      <p className="text-white md:text-sm text-[12px]">{text}</p>
     </div>
   );
 };
@@ -111,8 +111,10 @@ const ItemContainer = ({ Icon = () => <></>, text = '' }) => {
 const TextContainer = ({ title = '', description = '' }) => {
   return (
     <div className="w-2/3">
-      <p className="text-lg font-bold text-white uppercase truncate">{title}</p>
-      <p className="font-semibold truncate text-slate-200/90 first-letter:uppercase">
+      <p className="text-sm font-bold text-white uppercase truncate md:text-lg">
+        {title}
+      </p>
+      <p className="text-[12px] md:text-base font-semibold truncate text-slate-200/90 first-letter:uppercase">
         {description}
       </p>
     </div>

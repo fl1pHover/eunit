@@ -2,7 +2,6 @@ import { STYLES } from '@/styles/index';
 import mergeNames from '@/util/mergeNames';
 import {
   Box,
-  Button,
   FormControl,
   FormLabel,
   Image,
@@ -58,7 +57,7 @@ export default function Login() {
   };
   return (
     <MainContainer w={'450px'} className="asd">
-      <div className="relative grid grid-cols-1 my-10 lg:grid-cols-2 h-[65vh]">
+      <div className="relative grid  grid-cols-1 md:my-10 my-5 lg:grid-cols-2 h-[65vh]">
         <div>
           <Image
             src="/images/login.png"
@@ -70,7 +69,7 @@ export default function Login() {
           <div
             className={mergeNames(
               STYLES.flexCenter,
-              'flex-row bg-white px-[50px] py-[30px] w-[500px] rounded-xl items-center'
+              'flex-row bg-white px-3 md:px-[50px] py-[30px] w-[500px] rounded-xl items-center'
             )}
           >
             <Tabs w="full">
@@ -127,15 +126,12 @@ export const LoginComp = ({ credential, setCredential, fc }) => {
         v="password"
       />
       <Box h={10} />
-      <Button
-        w={'full'}
-        borderRadius={'5px'}
-        h={'auto'}
-        py={4}
+      <button
+        className="w-full h-auto py-4 font-bold text-white bg-blue-600 rounded-md"
         onClick={() => fc()}
       >
         Нэвтрэх
-      </Button>
+      </button>
     </FormControl>
   );
 };
@@ -185,15 +181,12 @@ export const SignUpComp = ({ credential, setCredential, fc }) => {
         v="confirmPassword"
       />
       <Box h={10} />
-      <Button
-        w={'full'}
-        borderRadius={'5px'}
-        h={'auto'}
-        py={4}
+      <button
+        className="w-full h-auto py-4 font-bold text-white bg-blue-600 rounded-md"
         onClick={() => fc()}
       >
         Нэвтрэх
-      </Button>
+      </button>
     </FormControl>
   );
 };
@@ -209,7 +202,7 @@ export const InputComp = ({ lbl, type, value, setValue, v }) => {
           placeholder=" "
           border="1px solid #d9d9d9"
           //   _focusVisible={{ border: "none" }}
-          className="text-[14px] relative"
+          className="relative text-[14px]"
           type={type === 'password' ? (!show ? 'password' : 'text') : 'text'}
           value={value}
           onChange={(e) => {
@@ -252,12 +245,12 @@ export const InputComp = ({ lbl, type, value, setValue, v }) => {
         {type === 'password' && (
           <button
             onClick={handleClick}
-            className="absolute top-[50%] -translate-y-[50%] right-0 w-[40px] h-[40px] z-10 grid place-items-center"
+            className="absolute top-[50%] -translate-y-[50%] right-0 w-[40px] h-[40px] z-10 grid place-items-center "
           >
             {show ? <BiHide /> : <BiShow />}
           </button>
         )}
-        <FormLabel>{lbl}</FormLabel>
+        <FormLabel className="text-[14px] md:text-base">{lbl}</FormLabel>
       </FormControl>
     </Box>
   );

@@ -27,6 +27,7 @@ input[type='date']::-webkit-calendar-picker-indicator {
   transition: 0.3s ease;
 }
 
+
 .animate-pin {
   animation: pin 0.8s ease-in-out infinite;
 }
@@ -142,11 +143,17 @@ html {
   .animated__icon {
     background-image: url(../public/utils/icons/static/heart-outline.png);
     background-size: cover;
-    width: 30px;
-    height: 30px;
+    width: 22px;
+    height: 22px;
   }
   &:hover .animated__icon {
     background-image: url(../public/utils/icons/heart-outline.gif);
+  }
+}
+@media only screen and (max-width: 720px) {
+  .animated__icon {
+    width: 30px !important;
+    height: 30px !important;
   }
 }
 
@@ -160,6 +167,19 @@ html {
   &:hover .animated__icon {
     background-image: url(../public/utils/icons/account.gif);
   }
+}
+
+// account white
+.animated__account-white {
+  .animated__icon {
+    background-image: url(../public/utils/icons/account-white.gif);
+    background-size: cover;
+    width: 22px;
+    height: 22px;
+  }
+  // &:hover .animated__icon {
+  //   background-image: url(../public/utils/icons/account-white.gif);
+  // }
 }
 
 .info__icon {

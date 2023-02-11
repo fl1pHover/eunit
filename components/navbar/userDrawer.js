@@ -1,6 +1,5 @@
 import { Image, Text, useDisclosure } from '@chakra-ui/react';
-import { useState } from 'react';
-
+import React, { useState } from 'react';
 //TODO Icons
 import { useRouter } from 'next/router';
 import mergeNames from '../../util/mergeNames';
@@ -15,7 +14,6 @@ import {
   DrawerContent,
   DrawerOverlay,
 } from '@chakra-ui/react';
-import { useRef } from 'react';
 import { BsGrid } from 'react-icons/bs';
 import { CgProfile } from 'react-icons/cg';
 import { FiHeart } from 'react-icons/fi';
@@ -126,7 +124,7 @@ const UserDrawer = ({ user, logout }) => {
   const [active, setActive] = useState(false);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const btnRef = useRef();
+  const btnRef = React.useRef();
 
   const handleClick = () => {
     setActive((current) => !current);

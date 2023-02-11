@@ -145,6 +145,7 @@ const Product = ({ propAds }) => {
     }
   }, [propAds]);
 
+
   return (
     <Box my={5} as="section" id="main__product">
       <ScrollTop />
@@ -367,28 +368,31 @@ const Product = ({ propAds }) => {
                         lat: parseFloat(m.location?.lat ?? 47.74604),
                         lng: parseFloat(m.location?.lng ?? 107.341515),
                       }}
+                      // onMouseOver={() => setMarkerActive(i)}
                       onClick={() => setMarkerActive(i)}
                       animation={google.maps.Animation.DROP}
                     >
-                      <InfoWindow
-                        position={{
-                          lat: parseFloat(m.location?.lat ?? 47.74604),
-                          lng: parseFloat(m.location?.lng ?? 107.341515),
-                        }}
-                        // onLoad={(info) => console.log(info)}
-                      >
-                        {/* end zasna */}
-                        {/* <Image
+                     
+                          <InfoWindow
+                            position={{
+                              lat: parseFloat(m.location?.lat ?? 47.74604),
+                              lng: parseFloat(m.location?.lng ?? 107.341515),
+                            }} // onLoad={(info) => console.log(info)}
+                          >
+                            {/* end zasna */}
+                            {/* <Image
                           src="/images/logo/404.pmg"
                           alt="map image"
                           className="w-full h-[100px]"
                         /> */}
-                        <button
-                          onClick={() => router.push(`/product/${m.num}`)}
-                        >
-                          <div>{m.title}</div>
-                        </button>
-                      </InfoWindow>
+                            <button
+                              onClick={() => router.push(`/product/${m.num}`)}
+                            >
+                              <div>{m.title}</div>
+                            </button>
+                          </InfoWindow>
+                      
+                     
                     </MarkerF>
                   </HStack>
                 );

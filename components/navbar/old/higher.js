@@ -2,12 +2,12 @@ import { HStack } from "@chakra-ui/react";
 import React from "react";
 
 import Text from "../../lib/Text";
-import { NavContainer } from "../../lib/Container";
+import { ContainerX } from "../../lib/Container";
 
 const Higher = () => {
   return (
-    <div className="bg-mainBlossom/90 py-1 md:block hidden">
-      <NavContainer>
+    <div className="hidden py-1 bg-mainBlossom/90 md:block">
+      <ContainerX>
         <HStack justifyContent={"space-between"}>
           <Text classname="text-white">Welcome to BOM Website</Text>
           <div className="flex flex-row gap-8">
@@ -16,7 +16,7 @@ const Higher = () => {
             <Text classname="text-white">Тусламж</Text>
           </div>
         </HStack>
-      </NavContainer>
+      </ContainerX>
     </div>
   );
 };

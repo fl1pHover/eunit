@@ -6,22 +6,14 @@ import useBreakpoints from '../../hooks/useBreakpoints';
 import { NavContainer } from '../../lib/Container';
 
 import urls from '@/constants/api';
-import { useDisclosure } from '@chakra-ui/react';
+import { Image, useDisclosure } from '@chakra-ui/react';
 import { useAuth } from 'context/auth';
 import Cookies from 'js-cookie';
+import Link from 'next/link';
 import { useRef } from 'react';
 import BottomMenu from './bottomMenu';
-import {
-  EstimateIcon,
-  HeartIcon,
-  UserIcon,
-  WalletIcon,
-  WhiteHeartIcon,
-} from './icons';
-import NavLogo from './navLogo';
-import SearchBar from './searchBar';
+import { WhiteHeartIcon } from './icons';
 import SideMenu from './sideMenu';
-import UserDrawer from './userDrawer';
 
 const calcSize = (pt) => {
   switch (pt) {
@@ -69,29 +61,21 @@ const UpperNav = () => {
     }
   };
   return (
-    <div className="sticky z-30 shadow-lg md:bg-white bg-mainBlossom">
-      {/* <div className="sticky z-30 overflow-y-visible shadow-lg md:bg-white bg-mainBlossom md:overflow-hidden overflow-clip"> */}
+    <div className="sticky z-30 shadow-lg md:bg-white bg-mainBlossom md:hidden">
       <NavContainer>
-        <div className="flex flex-row items-center justify-between w-full py-2">
-          <NavLogo {...{ size }} />
-          <div className="md:block hidden lg:w-[55vw] w-[50vw] px-4 lg:px-8">
-            <SearchBar func={searchAds} />
-          </div>
-          <div className="flex-row items-center hidden gap-4 md:flex lg:gap-8">
-            <WalletIcon onClick={() => router.push('/wallet')} />
-            <EstimateIcon onClick={() => router.push('/estimate')} />
-            <HeartIcon onClick={() => router.push('/account?Bookmark')} />
-
-            {user == undefined ? (
-              <UserIcon
-                text="Бүртгүүлэх"
-                onClick={() => router.push('/login')}
+        <div className="flex items-center justify-between gap-2 py-2 ">
+          <Link href="/">
+            <a>
+              <Image
+                src="/images/logo/bom-white-text.png"
+                alt="BOM logo"
+                width={size.width}
+                height={size.height}
+                objectFit="contain"
               />
-            ) : (
-              <UserDrawer user={user} logout={logout} />
-            )}
-          </div>
-          <div className="flex items-center justify-center gap-2 md:hidden">
+            </a>
+          </Link>
+          <div className="flex items-center">
             <WhiteHeartIcon
               word={false}
               onClick={() => router.push('/bookmark')}
@@ -110,6 +94,7 @@ const UpperNav = () => {
             </button>
           </div>
         </div>
+        {/* </div> */}
       </NavContainer>
       <SideMenu
         show={showSideMenu}
