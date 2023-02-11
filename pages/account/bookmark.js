@@ -27,7 +27,7 @@ const CompareSelect = () => {
       className={mergeNames(
         'fixed px-[10%] bottom-0 left-0',
         'bg-secondary/90 w-screen transition-all ease-in-out pb-[68px] md:pb-0',
-        ' text-[12px] sm:text-base',
+        ' text-[12px] sm:text-base  z-20',
         expand ? 'h-[250px]' : 'h-0'
       )}
     >

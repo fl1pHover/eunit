@@ -1,4 +1,5 @@
 import {
+  AspectRatio,
   Box,
   GridItem,
   Heading,
@@ -10,12 +11,11 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { useEffect, useMemo, useState } from 'react';
-
 // Import Swiper React components
 // Import Swiper styles
 // import "swiper/css";
-
 import { FaHeart } from 'react-icons/fa';
+import ImageGallery from 'react-image-gallery';
 import MainContainer from '../../layout/mainContainer';
 import ECalculator from '../calculator';
 
@@ -23,6 +23,7 @@ import ScrollTop from '../../lib/ScrollTop';
 // Icons
 
 // Image Swiper Gallery
+
 import AdContent from '@/components/home/adContent';
 import { STYLES } from '@/styles/index';
 import mergeNames from '@/util/mergeNames';
@@ -38,6 +39,8 @@ import moment from 'moment/moment';
 import { useRouter } from 'next/router';
 import urls from '../../constants/api';
 import { useAuth } from '../../context/auth';
+
+import 'yet-another-react-lightbox/styles.css';
 const ProductInfo = ({
   title,
   value,
@@ -53,10 +56,7 @@ const ProductInfo = ({
       ) : (
         <Stack
           direction={'row'}
-          p={2}
-          borderColor="bgGrey"
-          borderWidth={2}
-          borderRadius={5}
+          className="h-full p-2 border-2 rounded-md border-bgGrey"
         >
           <Text textTransform={'capitalize'}>{title}: </Text>
           <Text textTransform={tt} fontWeight={'bold'}>
@@ -71,6 +71,7 @@ const ProductInfo = ({
     </GridItem>
   );
 };
+
 const Product = ({ propAds }) => {
   const toast = useToast();
   const { districts, locations } = useAuth();
@@ -81,6 +82,7 @@ const Product = ({ propAds }) => {
   const libraries = useMemo(() => ['places'], []);
   const [markerActive, setMarkerActive] = useState(null);
 
+  console.log(data);
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: 'AIzaSyC2u2OzBNo53GxJJdN3Oc_W6Yc42OmdZcE',
     libraries: libraries,
@@ -145,9 +147,24 @@ const Product = ({ propAds }) => {
     }
   }, [propAds]);
 
+  const [open, setOpen] = useState(false);
 
+  const images = [
+    {
+      original: 'https://picsum.photos/id/1018/1000/600/',
+      thumbnail: 'https://picsum.photos/id/1018/250/150/',
+    },
+    {
+      original: 'https://picsum.photos/id/1015/1000/600/',
+      thumbnail: 'https://picsum.photos/id/1015/250/150/',
+    },
+    {
+      original: 'https://picsum.photos/id/1019/1000/600/',
+      thumbnail: 'https://picsum.photos/id/1019/250/150/',
+    },
+  ];
   return (
-    <Box my={5} as="section" id="main__product">
+    <Box m={5} as="section" id="main__product">
       <ScrollTop />
       <MainContainer>
         <Stack direction={'row'} py={2} gap={3}>
@@ -159,7 +176,7 @@ const Product = ({ propAds }) => {
           {/* //TODO Main product */}
           <Box maxWidth={'100%'} flex="0 0 100%" borderRadius="5px">
             {/* <Box maxWidth={'75%'} flex="0 0 75%" borderRadius="5px"> */}
-            <Box bgColor={'white'} p={10} rounded={10} boxShadow="base">
+            <Box className="p-5 bg-white shadow-md md:p-10 rounded-xl">
               {/*Product */}
               {data.title && (
                 <Heading variant={'mediumHeading'} mb={5}>
@@ -168,20 +185,20 @@ const Product = ({ propAds }) => {
               )}
 
               {/* product image and information */}
-              <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 product__content-wrapper">
+              <div className="grid grid-cols-1 gap-10 md:grid-cols-2 product__content-wrapper">
                 {/*  //TODO LEFT SIDE IMAGES AND DESC */}
 
                 <div className="product__image-wrapper">
                   <Stack
                     className={mergeNames(STYLES.flexBetween, 'flex-row mb-2')}
                   >
-                    <Stack direction={'row'}>
-                      <Text>
-                        Зарын огноо:
-                        {moment(data.createdAt).format('lll')}
+                    <div className="flex flex-col justify-center sm:flex-row">
+                      <Text className="mr-[10px]">
+                        Зарын огноо: {moment(data.createdAt).format('lll')}
                       </Text>
                       <Text>Зарын дугаар: {data.num}</Text>
-                    </Stack>
+                    </div>
+
                     <Text>
                       <IconButton
                         aria-label="Search database"
@@ -189,12 +206,12 @@ const Product = ({ propAds }) => {
                         _hover={{
                           color: 'red',
                         }}
-                        size="lg"
+                        size={{ base: 'xs', sm: 'md' }}
                         onClick={() =>
                           toast({
                             title: 'Зар хадгалагдлаа.',
                             status: 'success',
-                            duration: 9000,
+                            duration: 5000,
                             isClosable: true,
                           })
                         }
@@ -202,19 +219,55 @@ const Product = ({ propAds }) => {
                       {/* Хандалт: lorem */}
                     </Text>
                   </Stack>
+
                   <Box
                     className={mergeNames(
                       'product__image',
                       'border-2 rounded-4 mb-[120px] shadow-md'
                     )}
                   >
-                    {/* {data?.images && (
+                    {data?.images && (
                       <AspectRatio ratio={1}>
-                       <ImageGallery items={
-                          
-                        } /> 
+                        <ImageGallery items={images} />
                       </AspectRatio>
-                    )} */}
+                    )}
+
+                    {/* npm install yet-another-react-lightbox  */}
+                    {/* <Lightbox
+                      open={open}
+                      close={() => setOpen(false)}
+                      slides={[
+                        {
+                          src: '/images/404.png',
+                          alt: 'image 1',
+                          width: 3840,
+                          height: 2560,
+                          srcSet: [
+                            { src: '/images/404.png', width: 320, height: 213 },
+                            { src: '/images/404.png', width: 640, height: 427 },
+                            {
+                              src: '/images/404.png',
+                              width: 1200,
+                              height: 800,
+                            },
+                            {
+                              src: '/images/404.png',
+                              width: 2048,
+                              height: 1365,
+                            },
+                            {
+                              src: '/images/404.png',
+                              width: 3840,
+                              height: 2560,
+                            },
+                          ],
+                        },
+                        // ...
+                      ]}
+                    /> */}
+                    {/* <button type="button" onClick={() => setOpen(true)}>
+                      Open Lightbox
+                    </button> */}
                   </Box>
                   <Text mt={5}>{data.description}</Text>
                 </div>
@@ -224,7 +277,7 @@ const Product = ({ propAds }) => {
                 {/*  //TODO  STARTS RIGHT SIDE INFOS */}
 
                 <div>
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                     {
                       // data?.positions?.location_id  &&
                       data?.positions?.district_id &&
@@ -300,7 +353,7 @@ const Product = ({ propAds }) => {
           </h1>
           <Box>
             <Select
-              className="border-2 border-blue-400 rounded-full"
+              className="h-[30px] text-sm border-2 pr-3 border-blue-700 rounded-full"
               onChange={async (e) => {
                 setSuggestion(e.target.value);
                 {
@@ -372,27 +425,24 @@ const Product = ({ propAds }) => {
                       onClick={() => setMarkerActive(i)}
                       animation={google.maps.Animation.DROP}
                     >
-                     
-                          <InfoWindow
-                            position={{
-                              lat: parseFloat(m.location?.lat ?? 47.74604),
-                              lng: parseFloat(m.location?.lng ?? 107.341515),
-                            }} // onLoad={(info) => console.log(info)}
-                          >
-                            {/* end zasna */}
-                            {/* <Image
+                      <InfoWindow
+                        position={{
+                          lat: parseFloat(m.location?.lat ?? 47.74604),
+                          lng: parseFloat(m.location?.lng ?? 107.341515),
+                        }} // onLoad={(info) => console.log(info)}
+                      >
+                        {/* end zasna */}
+                        {/* <Image
                           src="/images/logo/404.pmg"
                           alt="map image"
                           className="w-full h-[100px]"
                         /> */}
-                            <button
-                              onClick={() => router.push(`/product/${m.num}`)}
-                            >
-                              <div>{m.title}</div>
-                            </button>
-                          </InfoWindow>
-                      
-                     
+                        <button
+                          onClick={() => router.push(`/product/${m.num}`)}
+                        >
+                          <div>{m.title}</div>
+                        </button>
+                      </InfoWindow>
                     </MarkerF>
                   </HStack>
                 );

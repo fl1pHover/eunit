@@ -28,7 +28,7 @@ const Card = ({ item }) => {
             onClick={() =>
               item && item._id && router.push(`/product/${item.num}`)
             }
-            className="absolute top-0 left-0 flex items-start justify-between flex-1 w-full h-full p-2"
+            className="absolute top-0 left-0 z-10 flex items-start justify-between flex-1 w-full h-full p-2 "
           >
             <div className="px-2 py-1 rounded-md bg-mainBlossom w-fit">
               <p className="h-4 text-sm font-semibold text-white md:h-6">
@@ -44,7 +44,7 @@ const Card = ({ item }) => {
               <FiCamera size={16} className="text-white" />
             </button>
           </button>
-          <div className="relative z-10 flex flex-col justify-end h-full mb-2 space-y-2">
+          <div className="relative flex flex-col justify-end h-full mb-2 space-y-2">
             <div className="flex flex-row justify-between w-full">
               <TextContainer
                 title={item.title}
