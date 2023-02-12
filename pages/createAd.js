@@ -313,6 +313,7 @@ export default function CreateAd({ categories }) {
           onPrev={handlePrevStep}
           loading={isLoading}
           txt={step == 2 ? 'Илгээх' : 'Дараах'}
+          step={step}
           // onClick={() => step == 2 && <CustomModal />}
         />
       </ContainerX>

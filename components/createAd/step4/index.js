@@ -1,6 +1,7 @@
 import Counter from '@/lib/Counter';
 import { DateYearSelector } from '@/lib/DateSelector';
 import Select from '@/lib/Select';
+import CustomModal from '@/util/CustomModal';
 import mergeNames from '@/util/mergeNames';
 import {
   NumberDecrementStepper,
@@ -49,7 +50,7 @@ const Step3 = ({ filter }) => {
                 size="md"
                 allowMouseWheel
                 min={0}
-                className=" border-2 overflow-hidden border-blue-500 rounded-full md:w-2/3 flex flex-row justify-between mx-auto"
+                className="flex flex-row justify-between mx-auto overflow-hidden border-2 border-blue-500 rounded-full md:w-2/3"
                 onChange={(e) => (f.value = e)}
               >
                 <NumberInputField />
@@ -171,6 +172,7 @@ const Step3 = ({ filter }) => {
             </ItemContainer>
           );
       })}
+     
     </div>
   );
 };

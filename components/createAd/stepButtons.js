@@ -1,3 +1,4 @@
+import CustomModal from '@/util/CustomModal';
 import { FiArrowLeft, FiArrowRight } from 'react-icons/fi';
 
 const ButtonProcess = () => {
@@ -17,6 +18,7 @@ const StepButtons = ({
   onNext = () => {},
   txt = 'Дараах',
   onClick = () => {},
+  step,
 }) => {
   return (
     <div className="mt-4">
@@ -29,14 +31,37 @@ const StepButtons = ({
           <FiArrowLeft size={20} />
           Буцах
         </button>
-        <button
-          disabled={loading}
-          onClick={onNext}
-          className="flex flex-row items-center gap-1 px-4 py-2 font-bold text-white bg-blue-500 rounded-full"
-        >
-          {txt}
-          <FiArrowRight size={20} />
-        </button>
+
+        {step == 2 ? (
+          <CustomModal
+            btnOpen={
+              <>
+                Илгээх <FiArrowRight size={20} />
+              </>
+            }
+            onclick={onNext}
+            btnClose="Нэмэх"
+            btnClose2="Буцах"
+            header="Баталгаажуулах хэсэг"
+          >
+            <div className="grid grid-cols-2 p-2 text-sm border border-collapse">
+              <div className="font-bold">asdasd</div>
+              <div>asdasd</div>
+            </div>
+          </CustomModal>
+        ) : (
+          <button
+            disabled={loading}
+            onClick={onNext}
+            className="flex flex-row items-center gap-1 px-4 py-2 font-bold text-white bg-blue-500 rounded-full a"
+          >
+            {/* <AiOutlineLoading3Quarters
+            className={mergeNames(loading ? 'animate-spin' : 'hidden')}
+          /> */}
+            {txt}
+            <FiArrowRight size={20} />
+          </button>
+        )}
       </div>
     </div>
   );

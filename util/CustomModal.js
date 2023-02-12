@@ -17,6 +17,7 @@ function CustomModal({
   btnOpen,
   alert,
   func,
+  onclick,
 }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -49,7 +50,8 @@ function CustomModal({
             <div onClick={(onClose, alert)}>
               <button
                 className="px-4 py-2 text-white bg-green-400 rounded-full"
-                onClick={async () => await func()}
+                // onClick={async () => await func()}
+                onClick={onclick}
               >
                 {btnClose}
               </button>

@@ -1,9 +1,7 @@
 import AdCard from '@/components/home/adCard';
-import urls from '@/constants/api';
 import { STYLES } from '@/styles/index';
 import mergeNames from '@/util/mergeNames';
 import { Image } from '@chakra-ui/react';
-import axios from 'axios';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -64,22 +62,18 @@ const CompareSelect = () => {
   );
 };
 
-const Bookmark = ({ user }) => {
+const Bookmark = () => {
   const [products, setProducts] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const getData = async () => {
     setIsLoading(true);
     try {
-      await axios
-        .post(`${urls['test']}/ad/many/${0}`, user.bookmarks)
-        .then((d) => {
-          setProducts(d.data);
-          console.log(d);
-        })
+      await fetch('https://bom-location.herokuapp.com/ad')
+        .then((r) => r.json())
+        .then((d) => setProducts(d))
         .then((a) => setIsLoading(false));
     } catch (error) {
       console.log(error);
-      setIsLoading(false);
     }
   };
 
