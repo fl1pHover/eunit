@@ -13,6 +13,7 @@ const AdCardButton = ({ id }) => {
   const token = getCookie('token');
   const addToBookmark = async () => {
     try {
+      console.log(id);
       await axios
         .post(
           `${urls['test']}/bookmark/ad`,

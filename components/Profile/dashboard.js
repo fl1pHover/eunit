@@ -41,13 +41,7 @@ const Dashboard = () => {
           <AiOutlineEdit />
         </button> */}
         <DashStatus
-          agent={
-            user?.userType == 'default'
-              ? 'Энгийн'
-              : user?.userType == 'agent'
-              ? 'Агент'
-              : 'Байгууллага'
-          }
+          agent={user}
           phone={user?.phone}
           username={user?.username}
           ads={user?.ads?.length}

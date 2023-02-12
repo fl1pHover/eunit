@@ -2,6 +2,13 @@ import Counter from '@/lib/Counter';
 import { DateYearSelector } from '@/lib/DateSelector';
 import Select from '@/lib/Select';
 import mergeNames from '@/util/mergeNames';
+import {
+  NumberDecrementStepper,
+  NumberIncrementStepper,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+} from '@chakra-ui/react';
 import { useState } from 'react';
 import ButtonSelectItem from '../formButtonSelectItem';
 import FormLabel from '../formLabel';
@@ -23,7 +30,7 @@ const Step3 = ({ filter }) => {
       {filter?.map((f, i) => {
         // console.log(f.id)
         // console.table(f);
-        if (f.type == 'date' || f.mark == 'year')
+        if (f.mark == 'year')
           return (
             <ItemContainer>
               <FormLabel title={f.name} />
@@ -32,6 +39,25 @@ const Step3 = ({ filter }) => {
                 placeholder={f.name}
                 onSelect={(num) => (f.value = num)}
               />
+            </ItemContainer>
+          );
+        if (f.type == 'date')
+          return (
+            <ItemContainer>
+              <FormLabel title={f.name + ' / жил'} />
+              <NumberInput
+                size="md"
+                allowMouseWheel
+                min={0}
+                className=" border-2 overflow-hidden border-blue-500 rounded-full md:w-2/3 flex flex-row justify-between mx-auto"
+                onChange={(e) => (f.value = e)}
+              >
+                <NumberInputField />
+                <NumberInputStepper>
+                  <NumberIncrementStepper />
+                  <NumberDecrementStepper />
+                </NumberInputStepper>
+              </NumberInput>
             </ItemContainer>
           );
         if (f.id === 'room')

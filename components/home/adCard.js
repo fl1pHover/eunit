@@ -5,7 +5,7 @@ import { FiCamera } from 'react-icons/fi';
 import { IoBedOutline } from 'react-icons/io5';
 import { TbBath } from 'react-icons/tb';
 
-import { Image } from '@chakra-ui/react';
+import { Image, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import AdCardButton from './adCardButton';
 
@@ -66,6 +66,9 @@ const Card = ({ item }) => {
                   </React.Fragment>
                 );
               })}
+              {item?.adStatus == 'pending' && (
+                <Text color={'white'}>{item.adStatus}</Text>
+              )}
             </div>
           </div>
         </div>

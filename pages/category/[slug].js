@@ -140,25 +140,29 @@ const Category = ({ propAds }) => {
                           >
                             {/* end zasna */}
 
-                            <div
-                              onClick={() => router.push(`/product/${m.num}`)}
-                              className={mergeNames(
-                                ' h-[100px] aspect-video flex flex-col cursor-pointer justify-end',
-                                'group-hover:block'
-                              )}
-                            >
-                              <Image
-                                src="/images/404.png"
-                                alt="map image"
+                            {markerActive == i ? (
+                              <div
+                                onClick={() => router.push(`/product/${m.num}`)}
                                 className={mergeNames(
-                                  'absolute top-0 left-0 object-cover w-full h-full ',
-                                  'bg-gradient-to-b from-slate-700/0 via-slate-700/80 to-slate-900/100'
+                                  ' h-[100px] aspect-video flex flex-col cursor-pointer justify-end',
+                                  'group-hover:block'
                                 )}
-                              />
-                              <p className="z-10 text-base font-bold text-white">
-                                {m.title}
-                              </p>
-                            </div>
+                              >
+                                <Image
+                                  src="/images/404.png"
+                                  alt="map image"
+                                  className={mergeNames(
+                                    'absolute top-0 left-0 object-cover w-full h-full ',
+                                    'bg-gradient-to-b from-slate-700/0 via-slate-700/80 to-slate-900/100'
+                                  )}
+                                />
+                                <p className="z-10 text-base font-bold text-white">
+                                  {m.title}
+                                </p>
+                              </div>
+                            ) : (
+                              <div />
+                            )}
                           </InfoWindow>
                         </MarkerF>
                       </div>
@@ -187,7 +191,7 @@ export default Category;
 export async function getServerSideProps(ctx) {
   const { params } = ctx;
   const { slug } = params;
-  const res = await fetch(`${urls['test']}/ad/category/${slug}`);
+  const res = await fetch(`${urls['test']}/ad/category/${slug}/${0}`);
   const ads = await res.json();
   return {
     props: {

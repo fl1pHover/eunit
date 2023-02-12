@@ -91,6 +91,11 @@ function ECalculator({ data }) {
 
   const handlePayChange = (event) => {
     setPay(event);
+    if (price) {
+      if (price - event > 0) {
+        setPrincipal(price - event);
+      }
+    }
   };
 
   const handleInterestchange = (event) => {

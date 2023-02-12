@@ -1,4 +1,5 @@
 import FormTitle from '@/components/createAd/title';
+import { NumberInput, NumberInputField } from '@chakra-ui/react';
 import FormLine from '../formLine';
 import { AtomLabel } from './atom';
 import FieldPhotoUpload from './fieldPhotoUpload';
@@ -32,13 +33,25 @@ const Step3 = ({
               generalData={generalData}
               setGeneralData={setGeneralData}
             />
+            <div className="flex flex-col items-start w-full">
+              <AtomLabel>Утасны дугаар</AtomLabel>
+              <NumberInput
+                className="flex flex-col items-start w-full"
+                onChange={(e) =>
+                  setGeneralData((prev) => ({ ...prev, phone: e }))
+                }
+                value={generalData.phone}
+              >
+                <NumberInputField className="w-full px-4 py-2 border-2 rounded-full border-blue-400/70 ring-blue-400 invalid:border-blue-400 outline-blue-400" />
+              </NumberInput>
+            </div>
             <div className="hidden md:block">
               <FieldPhotoUpload
                 images={images}
                 setImages={setImages}
                 generalData={generalData}
                 setGeneralData={setGeneralData}
-              />  
+              />
             </div>
           </div>
           <div className="flex-1 pb-2">

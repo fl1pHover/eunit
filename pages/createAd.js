@@ -16,11 +16,10 @@ import { ContainerX } from '@/lib/Container';
 
 import Step3 from '@/components/createAd/step3';
 import urls from '@/constants/api';
-import CustomModal from '@/util/CustomModal';
 import { getCookie } from 'cookies-next';
 export default function CreateAd({ categories }) {
   const toast = useToast();
-  const { districts, locations } = useAuth(); // TODOs: user: 403 BAD REQUEST
+  const { districts, locations, user } = useAuth(); // TODOs: user: 403 BAD REQUEST
 
   const router = useRouter();
   // // if (!user) router.push("/login");
@@ -63,6 +62,7 @@ export default function CreateAd({ categories }) {
     desc: false,
     imgSelected: false,
     images: [],
+    phone: parseInt(user?.phone ?? 0),
   });
   // STEP 3IIN RAW IMAGE FILES
   const [images, setImages] = useState([]);
@@ -73,14 +73,12 @@ export default function CreateAd({ categories }) {
     if (types.categoryName && types.subCategoryId) {
       try {
         passcategory[types.categoryId].subCategory.filter((item) => {
-          console.log(types.subCategoryId, item.href);
           if (item.href == types.subCategoryId) {
             axios
               .get(`${urls['test']}/category/filters/${item._id}/false`)
               .then((res) => {
                 setSubCategory(res.data?.subCategory);
                 setFilters(res.data?.filters);
-                console.log(res.data);
               });
           }
         });
@@ -113,8 +111,7 @@ export default function CreateAd({ categories }) {
           generalData.area &&
           generalData.unitPrice &&
           generalData.title &&
-          generalData.desc &&
-          generalData.imgSelected
+          generalData.desc
       );
     // if (step === 2) return <CustomModal />;
     if (step === 2) return validateStep4();
@@ -164,6 +161,11 @@ export default function CreateAd({ categories }) {
       name: 'Үнэ',
     });
     selectedFilters.push({
+      id: 'phone',
+      value: generalData.phone,
+      name: 'Утасны дугаар',
+    });
+    selectedFilters.push({
       id: 'area',
       value: generalData.area,
       name: 'Талбай',
@@ -206,15 +208,27 @@ export default function CreateAd({ categories }) {
             'Access-Control-Allow-Headers': '*',
           },
         })
-        .then((d) => router.push('/'));
+        .then((d) => {
+          toast({
+            title: 'Амжилттай нэмэгдлээ.',
+            status: 'success',
+            duration: 1000,
+            isClosable: true,
+          });
+          router.push('/');
+        });
       console.log(ad);
     } catch (error) {
       setIsLoading(false);
     }
   };
-  const validateStep4 = () => {
+  const validateStep4 = async () => {
     setIsLoading(true);
-
+    // filter hooson esehiig shalgah
+    let emptyAd = filters[2].find((f) => f.value == '');
+    if (emptyAd === undefined) {
+      await sendAd();
+    }
     setIsLoading(false);
   };
 
@@ -243,12 +257,21 @@ export default function CreateAd({ categories }) {
           if (step == index) {
             if (index == 0)
               //STEP2: LOCATIONS - DISTRICT, LOCATION, COMMITTEE, TOWN
+
               return (
                 <Step2
                   selectedLocalData={selectedLocalData}
                   setSelectedLocalData={setSelectedLocalData}
                   key={index}
                   setMap={setMap}
+                  town={
+                    filter.find(
+                      (f) =>
+                        f.id == 'town' ||
+                        f.id == 'officeName' ||
+                        f.id == 'buildingName'
+                    ) ?? ''
+                  }
                   map={map}
                   {...{
                     types,

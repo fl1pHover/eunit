@@ -77,7 +77,7 @@ export default function Home({ propAds }) {
 }
 
 export async function getServerSideProps({ params, query }) {
-  const res = await fetch(`${urls['test']}/ad`);
+  const res = await fetch(`${urls['test']}/ad/${0}`);
   const ads = await res.json();
 
   return {

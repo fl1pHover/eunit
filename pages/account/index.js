@@ -27,12 +27,12 @@ const Account = ({ user }) => {
     {
       tabHeader: 'Миний зарууд',
       title: 'MyAds',
-      comp: <MyAds />,
+      comp: <MyAds user={user}/>,
     },
     {
       tabHeader: 'Миний хүслүүд',
       title: 'Bookmark',
-      comp: <Bookmark />,
+      comp: <Bookmark user={user}/>,
     },
   ];
 

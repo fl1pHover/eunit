@@ -14,6 +14,7 @@ const Step2 = ({
   locations = [],
   map,
   setMap,
+  town,
   positions = {},
   setPositions = () => {},
   positionNames = {},
@@ -113,12 +114,12 @@ const Step2 = ({
               }}
             />
 
-            {types?.subCategoryId !== 'land' &&
-              types?.subCategoryId !== 'office' && (
-                <FieldTown
-                  {...{ selectedLocalData, handleNamedata, setPositions }}
-                />
-              )}
+            {town != '' && (
+              <FieldTown
+                town={town}
+                {...{ selectedLocalData, handleNamedata, setPositions }}
+              />
+            )}
           </div>
         )}
 

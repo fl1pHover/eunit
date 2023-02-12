@@ -40,6 +40,7 @@ import { useRouter } from 'next/router';
 import urls from '../../constants/api';
 import { useAuth } from '../../context/auth';
 
+import { getCookie } from 'cookies-next';
 import 'yet-another-react-lightbox/styles.css';
 const ProductInfo = ({
   title,
@@ -82,11 +83,11 @@ const Product = ({ propAds }) => {
   const libraries = useMemo(() => ['places'], []);
   const [markerActive, setMarkerActive] = useState(null);
 
-  console.log(data);
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: 'AIzaSyC2u2OzBNo53GxJJdN3Oc_W6Yc42OmdZcE',
     libraries: libraries,
   });
+  const token = getCookie('token');
   const mapOptions = useMemo(
     () => ({
       disableDefaultUI: true,
@@ -207,14 +208,27 @@ const Product = ({ propAds }) => {
                           color: 'red',
                         }}
                         size={{ base: 'xs', sm: 'md' }}
-                        onClick={() =>
+                        onClick={async () => {
+                          await axios
+                            .post(
+                              `${urls['test']}/bookmark/ad`,
+                              {
+                                adId: data._id,
+                              },
+                              {
+                                headers: {
+                                  Authorization: `Bearer ${token}`,
+                                },
+                              }
+                            )
+                            .then((d) => console.log(d));
                           toast({
                             title: 'Зар хадгалагдлаа.',
                             status: 'success',
                             duration: 5000,
                             isClosable: true,
-                          })
-                        }
+                          });
+                        }}
                       />
                       {/* Хандалт: lorem */}
                     </Text>
@@ -228,7 +242,12 @@ const Product = ({ propAds }) => {
                   >
                     {data?.images && (
                       <AspectRatio ratio={1}>
-                        <ImageGallery items={images} />
+                        <ImageGallery
+                          items={data?.images.map((i) => ({
+                            original: i,
+                            thumbnail: i,
+                          }))}
+                        />
                       </AspectRatio>
                     )}
 
@@ -296,7 +315,7 @@ const Product = ({ propAds }) => {
 
                     {data?.positions?.location_id && (
                       <ProductInfo
-                        title={'Хороолол'}
+                        title={'Байршил'}
                         value={data?.positions?.location_id}
                       />
                     )}
@@ -307,7 +326,7 @@ const Product = ({ propAds }) => {
                         value={data?.positions?.committee_id}
                       />
                     )}
-                    {data?.positions?.town && (
+                    {data?.positions?.town?.value && (
                       <ProductInfo
                         title={'Хотхон'}
                         value={data?.positions?.town.value}
@@ -461,7 +480,7 @@ export default Product;
 export async function getServerSideProps(ctx) {
   const { params } = ctx;
   const { slug } = params;
-  const res = await fetch(`${urls['test']}/ad/${slug}`);
+  const res = await fetch(`${urls['test']}/ad/id/${slug}`);
   const ads = await res.json();
   return {
     props: {
