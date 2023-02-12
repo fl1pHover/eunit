@@ -229,6 +229,7 @@ export default function CreateAd({ categories }) {
     if (emptyAd === undefined) {
       await sendAd();
     }
+    console.log(emptyAd);
     setIsLoading(false);
   };
 
@@ -311,6 +312,7 @@ export default function CreateAd({ categories }) {
         <StepButtons
           onNext={handleNextStep}
           onPrev={handlePrevStep}
+          data={generalData}
           loading={isLoading}
           txt={step == 2 ? 'Илгээх' : 'Дараах'}
           step={step}

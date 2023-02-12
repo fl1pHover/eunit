@@ -16,6 +16,7 @@ const StepButtons = ({
   onPrev = () => {},
   loading = false,
   onNext = () => {},
+  data,
   txt = 'Дараах',
   onClick = () => {},
   step,
@@ -45,8 +46,8 @@ const StepButtons = ({
             header="Баталгаажуулах хэсэг"
           >
             <div className="grid grid-cols-2 p-2 text-sm border border-collapse">
-              <div className="font-bold">asdasd</div>
-              <div>asdasd</div>
+              <div className="font-bold">Гарчиг</div>
+              <div>{data.title}</div>
             </div>
           </CustomModal>
         ) : (
