@@ -7,6 +7,10 @@ import { useAuth } from '@/context/auth';
 import { useLoadScript } from '@react-google-maps/api';
 import { useEffect, useMemo, useState } from 'react';
 
+
+
+// import required modules
+
 export default function Home({ propAds }) {
   const [isLoading, setIsLoading] = useState(false);
   const { setAds, ads } = useAuth();
@@ -57,13 +61,7 @@ export default function Home({ propAds }) {
           );
       })} */}
       <div className="px-4 xl:px-28 lg:px-20 md:px-12 sm:px-14 xs:px-6">
-        {ads && (
-          <AdContent
-            data={ads}
-            showLink=""
-            className="xl:px-28 lg:px-20 md:px-12 sm:px-14 xs:px-6 px-"
-          />
-        )}
+        {ads && <AdContent data={ads} showLink="" />}
       </div>
     </>
   );
