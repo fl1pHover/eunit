@@ -60,7 +60,7 @@ export default function Home({ propAds }) {
         {ads && (
           <AdContent
             data={ads}
-            showLink="hidden"
+            showLink=""
             className="xl:px-28 lg:px-20 md:px-12 sm:px-14 xs:px-6 px-"
           />
         )}

@@ -24,7 +24,7 @@ const AdContent = ({
         </div>
         <button
           onClick={() => router.push(`category/${url}`)}
-          className={mergeNames(showLink)}
+          className={mergeNames(showLink, 'flex items-center')}
         >
           <p className="text-sm font-semibold">Цааш үзэх</p>
           <AiOutlineArrowRight size={12} />

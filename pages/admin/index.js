@@ -230,7 +230,7 @@ const Admin = ({ propAds }) => {
             <table className="w-full p-2 text-sm text-left border border-collapse border-gray-400 table-fixed">
               <thead>
                 <tr>
-                  <th>Дугаар</th>
+                  <th className="w-[30px]">Дугаар</th>
                   <th>Гарчиг</th>
                   <th>Дэлгэрэнгүй</th>
                   <th>Зарын төрөл</th>
@@ -242,21 +242,25 @@ const Admin = ({ propAds }) => {
                 {ads?.map((a, i) => {
                   return (
                     <tr key={i}>
-                      <td>{a.num}</td>
-                      <td>{a.title}</td>
-                      <td>{a.description}</td>
+                      <td className="w-[30px]">{a.num}</td>
+                      <td className="truncate ...">{a.title}</td>
+                      <td className="truncate ...">{a.description}</td>
                       <td>{a.adType}</td>
-                      <td
-                        className="cursor-pointer"
-                        onClick={() => verify(a._id)}
-                      >
-                        <SiVerizon />
+                      <td>
+                        <button
+                          onClick={() => verify(a._id)}
+                          className="bg-teal-500 hover:bg-teal-600"
+                        >
+                          <SiVerizon />
+                        </button>
                       </td>
-                      <td
-                        className="cursor-pointer"
-                        onClick={() => deleteAd(a._id)}
-                      >
-                        <MdDelete />
+                      <td>
+                        <button
+                          onClick={() => deleteAd(a._id)}
+                          className="bg-red-500 hover:bg-red-800"
+                        >
+                          <MdDelete />
+                        </button>
                       </td>
                     </tr>
                   );

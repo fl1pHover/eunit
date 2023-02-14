@@ -119,7 +119,7 @@ const Bottom = ({ sticky }) => {
                 placeholder="Зараа хайна уу"
                 onKeyPress={(e) => {
                   if (event.key === 'Enter') {
-                    () => func(search), console.log('enter darah');
+                    () => func(search), console.log('Search enter press!!');
                   }
                 }}
                 value={search}

@@ -79,6 +79,7 @@ export default function Login() {
               setCredential={setCredential}
               fc={signIn}
             />
+            <p className="">Амжилттай нэвтэрлээ</p>
             <p className="my-10 text-sm font-bold text-gray-600">
               Та бүртгүүлээгүй юм биш биз?{' '}
               <button className="text-blue-800" onClick={() => setSign(2)}>
