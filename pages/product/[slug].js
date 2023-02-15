@@ -41,7 +41,6 @@ import urls from '../../constants/api';
 import { useAuth } from '../../context/auth';
 
 import { getCookie } from 'cookies-next';
-import 'yet-another-react-lightbox/styles.css';
 const ProductInfo = ({
   title,
   value,
