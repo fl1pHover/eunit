@@ -42,6 +42,19 @@ const FilterLayout = ({ data, isOpenMap }) => {
   });
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef();
+  const getItems = async (data) => {
+    try {
+      await axios
+        .get(`${urls['test']}/category/filters/${data}/true`, {})
+        .then((d) => {
+          setSubCategory(d.data?.subCategory);
+          setFilter(d.data?.filters);
+          console.log(d);
+        });
+    } catch (e) {
+      console.log(e);
+    }
+  };
   useEffect(() => {
     if (data) {
       try {
@@ -63,7 +76,7 @@ const FilterLayout = ({ data, isOpenMap }) => {
         types.push('rent');
       }
       if (adType.sell) types.push('sell');
-
+      console.log(subCategory._id);
       axios
         .post(`${urls['test']}/ad/filter`, {
           filters: filter,
@@ -157,8 +170,11 @@ const FilterLayout = ({ data, isOpenMap }) => {
 
                         // Eniig inspectdeer neg haraarai aldaatai bolood bn
                         <Radio
-                          value={name}
+                          value={href}
                           key={id}
+                          onChange={(e) => {
+                            getItems(e.target.value);
+                          }}
                           _selected={{ font: 'bold' }}
                         >
                           <Text>{name}</Text>
@@ -213,12 +229,13 @@ const FilterLayout = ({ data, isOpenMap }) => {
               <Select
                 placeholder={'Дүүрэг'}
                 className="border-1  border-blue-400 rounded-full text-[14px]"
-                onChange={(e) =>
+                onChange={(e) => {
                   setPositions((positions) => ({
                     ...positions,
                     district_id: e.target.value,
-                  }))
-                }
+                  }));
+                  console.log(positions);
+                }}
               >
                 {districts?.map((item, i) => {
                   return (
@@ -242,7 +259,7 @@ const FilterLayout = ({ data, isOpenMap }) => {
                   {locations?.map((item, i) => {
                     if (positions.district_id == item.district_id)
                       return (
-                        <option key={i} value={item._id}>
+                        <option key={i} value={item.name}>
                           {item.name}
                         </option>
                       );

@@ -215,7 +215,7 @@ export default function CreateAd({ categories }) {
             duration: 1000,
             isClosable: true,
           });
-          router.push('/');
+          // router.push('/');
         });
       console.log(ad);
     } catch (error) {

@@ -10,6 +10,7 @@ const ProfileInput = ({
   item,
   edit,
   onChange,
+  value,
   ...props
 }) => {
   return (
@@ -21,6 +22,7 @@ const ProfileInput = ({
       )}
     >
       <input
+        value={value}
         placeholder={ph}
         type={type}
         onChange={onChange}

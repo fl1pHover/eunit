@@ -2,14 +2,10 @@ import { STYLES } from '@/styles/index';
 import mergeNames from '@/util/mergeNames';
 import { Flex, Image } from '@chakra-ui/react';
 import Link from 'next/link';
-
-const Socials = ({ edit }) => {
-  const socials = [
-    { social: 'Facebook', href: 'https://www.facebook.com/' },
-    { social: 'Instagram', href: 'https://www.instagram.com/' },
-    { social: 'Telegram', href: 'https://www.telegram.com/' },
-  ];
-
+const capitalizeFirst = (str) => {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+};
+const Socials = ({ edit, socials, setSocials }) => {
   return (
     <>
       <div className="col-span-full">
@@ -21,18 +17,18 @@ const Socials = ({ edit }) => {
             edit && 'animate-pin'
           )}
         >
-          {socials.map((s, i) => {
+          {socials?.map((s, i) => {
             return (
               <div key={i}>
-                <Link target="_blank" href={s.href} passHref>
+                <Link target="_blank" href={s.url} passHref>
                   <a className={mergeNames(edit && 'pointer-events-none')}>
                     <Flex alignItems="center" gap={2}>
                       {/* <BsFacebook className="text-blue-600" /> */}
                       <p className="md:text-[16px] text-[12px] font-bold">
-                        {s.social}
+                        {capitalizeFirst(s.name)}
                       </p>
                       <Image
-                        src={`./utils/socials/` + s.social + `.svg`}
+                        src={`./utils/socials/` + s.name + `.svg`}
                         alt="social icon"
                         className="w-[30px]"
                       />
@@ -42,9 +38,10 @@ const Socials = ({ edit }) => {
                 {edit && (
                   <input
                     type="text"
+                    onChange={(e) => (socials[i].url = e.target.value)}
                     key={i}
                     className={mergeNames(STYLES.input, 'w-full')}
-                    placeholder={s.href + 'userId'}
+                    placeholder={s.url + 'userId'}
                   />
                 )}
               </div>
