@@ -53,7 +53,7 @@ const ProductInfo = ({
   return (
     <GridItem
       className={
-        value.length > 20 ? 'product__info col-span-2' : 'product__info'
+        value.length > 30 ? 'product__info col-span-2' : 'product__info'
       }
       key={key}
     >
@@ -288,6 +288,13 @@ const Product = ({ propAds }) => {
 
                 <div>
                   <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                    {data?.user && (
+                      <button
+                        onClick={() => router.push(`/account/${data.user}`)}
+                      >
+                        {data.user}
+                      </button>
+                    )}
                     {
                       // data?.positions?.location_id  &&
                       data?.positions?.district_id &&

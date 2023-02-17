@@ -15,8 +15,9 @@ export default function Home({ propAds }) {
   const [isLoading, setIsLoading] = useState(false);
   const { setAds, ads } = useAuth();
   const libraries = useMemo(() => ['places'], []);
-  const [adLimit, setAdLimit] = useState(0);
+  // const { categories, setAds } = useAuth();
   const [markerActive, setMarkerActive] = useState(null);
+  const [limitAd, setLimitAd] = useState(0);
 
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: 'AIzaSyC2u2OzBNo53GxJJdN3Oc_W6Yc42OmdZcE',
@@ -37,22 +38,20 @@ export default function Home({ propAds }) {
     }),
     []
   );
-  const getData = async (limit) => {
+  const getAds = async (num) => {
     try {
-      await axios.get(`${urls['test']}/ad/${limit}`).then((d) => {
-        setAds(d.data.ads);
-        console.log(ads);
-      });
+      await axios
+        .get(`${urls['test']}/ad/${num}`)
+        .then((d) => setAds(d.data.ads));
     } catch (error) {
       console.log(error);
     }
   };
   useEffect(() => {
     setIsLoading(true);
-
-    if (typeof propAds === 'object' && propAds?.ads) {
-      setAds(propAds?.ads);
-
+    console.log(propAds);
+    if (typeof propAds === 'object' && propAds) {
+      setAds(propAds.ads);
       setMarkerActive(0);
     }
 
@@ -82,28 +81,26 @@ export default function Home({ propAds }) {
             // pointer-events-none focus:shadow-none
             tabindex="-1"
             onClick={() => {
-              if (adLimit > 0) {
-                setAdLimit(adLimit - 1);
-                getData(adLimit - 1);
+              if (limitAd > 0) {
+                setLimitAd(limitAd - 1);
+                getAds(limitAd - 1);
               }
             }}
           >
             Өмнөх
           </button>
         </li>
-        {propAds?.count &&
-          [...Array(Math.ceil(propAds.count / 10)).keys()].map((l, i) => {
+        {propAds?.limit &&
+          [...Array(Math.ceil(propAds.limit / 10)).keys()].map((l, i) => {
             return (
               <li key={i}>
                 <button
                   className={mergeNames(
-                    adLimit == i ? STYLES.active : STYLES.notActive
+                    limitAd == i ? STYLES.active : STYLES.notActive
                   )}
                   onClick={() => {
-                    if (adLimit != i) {
-                      setAdLimit(i);
-                      getData(i);
-                    }
+                    setLimitAd(i);
+                    getAds(i);
                   }}
                 >
                   {i + 1}
@@ -115,9 +112,9 @@ export default function Home({ propAds }) {
           <button
             className={mergeNames(STYLES.notActive)}
             onClick={() => {
-              if (adLimit < Math.ceil(propAds.count / 10)) {
-                setAdLimit(adLimit + 1);
-                getData(adLimit + 1);
+              if (limitAd < propAds?.limit) {
+                setLimitAd(limitAd + 1);
+                getAds(limitAd + 1);
               }
             }}
           >
