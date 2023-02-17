@@ -41,6 +41,7 @@ import urls from '../../constants/api';
 import { useAuth } from '../../context/auth';
 
 import { getCookie } from 'cookies-next';
+
 const ProductInfo = ({
   title,
   value,
