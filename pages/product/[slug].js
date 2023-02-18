@@ -11,18 +11,16 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { useEffect, useMemo, useState } from 'react';
-// Import Swiper React components
-// Import Swiper styles
-// import "swiper/css";
+
 import { FaHeart } from 'react-icons/fa';
-import ImageGallery from 'react-image-gallery';
+
 import MainContainer from '../../layout/mainContainer';
 import ECalculator from '../calculator';
 
 import ScrollTop from '../../lib/ScrollTop';
-// Icons
 
 // Image Swiper Gallery
+import ImageGallery from 'react-image-gallery';
 
 import AdContent from '@/components/home/adContent';
 import { STYLES } from '@/styles/index';

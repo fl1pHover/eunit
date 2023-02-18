@@ -1,5 +1,3 @@
-import { Skeleton } from '@chakra-ui/react';
-
 import AdCard from '@/components/home/adCard';
 import { ContainerXP } from '@/lib/Container';
 import { SectionTitle } from '@/lib/Title';
@@ -14,11 +12,17 @@ import { AiOutlineArrowRight } from 'react-icons/ai';
 import 'swiper/css';
 import 'swiper/css/grid';
 import 'swiper/css/navigation';
+// import required modules
+import { Swiper, SwiperSlide } from 'swiper/react';
 
 // import required modules
-import { STYLES } from '@/styles/index';
+import { Skeleton } from '@chakra-ui/react';
+import { Grid, Navigation, Pagination } from 'swiper';
+
+// import required modules
 
 const AdContent = ({
+  inCat,
   showLink,
   data = [],
   key = Math.random(),
@@ -40,31 +44,77 @@ const AdContent = ({
           <AiOutlineArrowRight size={12} />
         </button>
       </div>
-      <div className="grid grid-cols-2 gap-5 xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-3">
-        {data?.map((item, key) => (
-          <AdCard key={key} item={item || {}} />
-        ))}{' '}
-        {data == undefined && <Skeleton />}
-      </div>
-      {/* <Swiper
-        navigation={true}
-        slidesPerView={5}
-        grid={{
-          rows: 2,
-        }}
-        fill="column"
-        slidesPerColumn={2}
-        modules={[Grid, Navigation]}
-        className="mySwiper"
-      >
-        {data?.map((item, key) => (
-          <SwiperSlide key={key}>
-            <AdCard item={item || {}} />
-          </SwiperSlide>
-        ))}
-      </Swiper> */}
-
-      
+      {inCat ? (
+        <div className="grid grid-cols-2 gap-5 xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-3">
+          {data?.map((item, key) => (
+            <AdCard key={key} item={item || {}} />
+          ))}
+          {data == undefined && <Skeleton />}
+        </div>
+      ) : (
+        <Swiper
+          navigation={true}
+          slidesPerView={5}
+          grid={{
+            rows: 2,
+            fill: 'row',
+          }}
+          breakpoints={{
+            // sm
+            1: {
+              slidesPerView: 2,
+              grid: {
+                rows: 2,
+                fill: 'row',
+              },
+            },
+            640: {
+              slidesPerView: 3,
+              grid: {
+                rows: 2,
+                fill: 'row',
+              },
+            },
+            // md
+            768: {
+              slidesPerView: 3,
+              grid: {
+                rows: 2,
+                fill: 'row',
+              },
+            },
+            // lg
+            1024: {
+              slidesPerView: 4,
+              grid: {
+                rows: 2,
+                fill: 'row',
+              },
+            },
+            // xl
+            1280: {
+              slidesPerView: 5,
+              grid: {
+                rows: 2,
+                fill: 'row',
+              },
+            },
+          }}
+          spaceBetween={20}
+          fill="column"
+          modules={[Grid, Navigation, Pagination]}
+          className="mySwiper"
+          pagination={{
+            type: 'progressbar',
+          }}
+        >
+          {data?.map((item, key) => (
+            <SwiperSlide key={key}>
+              <AdCard item={item || {}} />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      )}
     </ContainerXP>
   );
 };

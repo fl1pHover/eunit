@@ -94,6 +94,7 @@ const Category = ({ propAds }) => {
             {/* //TODO Engiin zar */}
 
             <AdContent
+              inCat
               data={ads}
               tlc={toLowerCase}
               title={category ?? ''}
