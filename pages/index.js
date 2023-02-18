@@ -2,12 +2,12 @@ import AdContent from '@/components/home/adContent';
 import CategorySelect from '@/components/home/categorySelect';
 import SwiperHeader from '@/components/home/swiperHeader';
 import urls from '@/constants/api';
-
 import { useAuth } from '@/context/auth';
+import { STYLES } from '@/styles/index';
+import mergeNames from '@/util/mergeNames';
 import { useLoadScript } from '@react-google-maps/api';
+import axios from 'axios';
 import { useEffect, useMemo, useState } from 'react';
-
-
 
 // import required modules
 
@@ -17,6 +17,7 @@ export default function Home({ propAds }) {
   const libraries = useMemo(() => ['places'], []);
   // const { categories, setAds } = useAuth();
   const [markerActive, setMarkerActive] = useState(null);
+  const [limitAd, setLimitAd] = useState(0);
 
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: 'AIzaSyC2u2OzBNo53GxJJdN3Oc_W6Yc42OmdZcE',
@@ -37,15 +38,25 @@ export default function Home({ propAds }) {
     }),
     []
   );
+  const getAds = async (num) => {
+    try {
+      await axios
+        .get(`${urls['test']}/ad/${num}`)
+        .then((d) => setAds(d.data.ads));
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
     setIsLoading(true);
-    if (typeof propAds === 'object' && propAds && propAds.length > 0) {
-      setAds(propAds);
+    console.log(propAds);
+    if (typeof propAds === 'object' && propAds) {
+      setAds(propAds.ads);
       setMarkerActive(0);
     }
 
     setIsLoading(false);
-  }, [propAds]);
+  }, [propAds?.ads]);
   if (!isLoaded) {
     return <p>Loading...</p>;
   }
@@ -63,6 +74,54 @@ export default function Home({ propAds }) {
       <div className="px-4 xl:px-28 lg:px-20 md:px-12 sm:px-14 xs:px-6">
         {ads && <AdContent data={ads} showLink="" />}
       </div>
+      <ul className="flex float-right list-style-none">
+        <li className="disabled">
+          <button
+            className="page-link relative block py-1.5 px-3 border-0 bg-transparent outline-none transition-all duration-300 rounded text-gray-500 "
+            // pointer-events-none focus:shadow-none
+            tabindex="-1"
+            onClick={() => {
+              if (limitAd > 0) {
+                setLimitAd(limitAd - 1);
+                getAds(limitAd - 1);
+              }
+            }}
+          >
+            Өмнөх
+          </button>
+        </li>
+        {propAds?.limit &&
+          [...Array(Math.ceil(propAds.limit / 10)).keys()].map((l, i) => {
+            return (
+              <li key={i}>
+                <button
+                  className={mergeNames(
+                    limitAd == i ? STYLES.active : STYLES.notActive
+                  )}
+                  onClick={() => {
+                    setLimitAd(i);
+                    getAds(i);
+                  }}
+                >
+                  {i + 1}
+                </button>
+              </li>
+            );
+          })}
+        <li>
+          <button
+            className={mergeNames(STYLES.notActive)}
+            onClick={() => {
+              if (limitAd < propAds?.limit) {
+                setLimitAd(limitAd + 1);
+                getAds(limitAd + 1);
+              }
+            }}
+          >
+            Дараах
+          </button>
+        </li>
+      </ul>
     </>
   );
 }

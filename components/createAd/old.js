@@ -1,5 +1,5 @@
-import { ContainerX } from "@/lib/Container";
-import { SectionTitle } from "@/lib/Title";
+import { ContainerX } from '@/lib/Container';
+import { SectionTitle } from '@/lib/Title';
 import {
   Box,
   Button,
@@ -8,7 +8,6 @@ import {
   Divider,
   Grid,
   GridItem,
-  Heading,
   HStack,
   IconButton,
   Input,
@@ -16,33 +15,31 @@ import {
   Text,
   Textarea,
   VStack,
-} from "@chakra-ui/react";
-import axios from "axios";
-import { useAuth } from "context/auth";
-import Cookies from "js-cookie";
-import Image from "next/image";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { MdDeleteForever } from "react-icons/md";
-import urls from "../constants/api";
-import { AdTypes } from "../constants/enums";
-
-import MainContainer from "../layout/mainContainer";
+} from '@chakra-ui/react';
+import axios from 'axios';
+import { useAuth } from 'context/auth';
+import Cookies from 'js-cookie';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import { MdDeleteForever } from 'react-icons/md';
+import urls from '../constants/api';
+import { AdTypes } from '../constants/enums';
 
 export default function CreateAd() {
   const { user, categories, districts, locations, token } = useAuth();
   const router = useRouter();
-  if (!user) router.push("/login");
+  if (!user) router.push('/login');
 
   const [select, setSelect] = useState({
-    category: "",
-    subCategory: "",
+    category: '',
+    subCategory: '',
   });
 
   const [selectStatic, setSelectStatic] = useState({
-    title: "",
-    description: "",
-    position: "",
+    title: '',
+    description: '',
+    position: '',
   });
 
   const [subCategory, setSubCategory] = useState();
@@ -52,21 +49,21 @@ export default function CreateAd() {
   const [images, setImages] = useState([]);
   const [imageUrl, setImageUrl] = useState([]);
   const [positions, setPositions] = useState({
-    district_id: "",
-    committee_id: "",
-    location_id: "",
-    town_id: "",
+    district_id: '',
+    committee_id: '',
+    location_id: '',
+    town_id: '',
   });
   const uploadImage = async () => {
     images.map(async (i) => {
       const formData = new FormData();
-      formData.append("file", i);
-      formData.append("upload_preset", "lubtonkg");
+      formData.append('file', i);
+      formData.append('upload_preset', 'lubtonkg');
 
       await axios
-        .post("http://api.cloudinary.com/v1_1/dosvc4rce/image/upload", formData)
+        .post('http://api.cloudinary.com/v1_1/dosvc4rce/image/upload', formData)
         .then((res) => {
-          setImageUrl((imageUrl) => [...imageUrl, res.data["secure_url"]]);
+          setImageUrl((imageUrl) => [...imageUrl, res.data['secure_url']]);
         });
     });
     await createAd(false);
@@ -77,11 +74,11 @@ export default function CreateAd() {
     } else {
       try {
         if (subCategory?.subCategory?._id && imageUrl.length > 0) {
-          let token = Cookies.get("token");
+          let token = Cookies.get('token');
           console.log(subCategory);
           axios
             .post(
-              `${urls["test"]}/ad`,
+              `${urls['test']}/ad`,
               {
                 title: selectStatic.title,
                 description: selectStatic.description,
@@ -99,20 +96,20 @@ export default function CreateAd() {
             )
             .then((d) => {
               setSelectStatic(
-                (s) => ({ ...s, description: "", position: "", title: "" }),
+                (s) => ({ ...s, description: '', position: '', title: '' }),
                 setPositions((positions) => ({
                   ...positions,
-                  committee_id: "",
-                  district_id: "",
-                  location_id: "",
-                  town_id: "",
+                  committee_id: '',
+                  district_id: '',
+                  location_id: '',
+                  town_id: '',
                 })),
                 setAdType(AdTypes.sell),
                 setImageUrl([]),
                 setSelect((select) => ({
                   ...select,
-                  category: "",
-                  subCategory: "",
+                  category: '',
+                  subCategory: '',
                 }))
               );
             });
@@ -123,7 +120,7 @@ export default function CreateAd() {
     }
   };
 
-  const capitalizeFirst = (str) => {
+  export const capitalizeFirst = (str) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
   };
   const setFilter = (id, e) => {
@@ -142,7 +139,7 @@ export default function CreateAd() {
         categories[select.category].subCategory.filter((f) => {
           if (f.name == select.subCategory) {
             axios
-              .get(`${urls["test"]}/category/filters/{id}/true?id=${f._id}`)
+              .get(`${urls['test']}/category/filters/{id}/true?id=${f._id}`)
               .then((d) => {
                 setSubCategory(d.data);
                 setFilters(d.data?.filters);
@@ -168,7 +165,7 @@ export default function CreateAd() {
     setSelectedImages((previousImages) => previousImages.concat(imagesArray));
     setImages((images) => [...images, selectedFiles[0]]);
     // FOR BUG IN CHROME
-    event.target.value = "";
+    event.target.value = '';
   };
 
   function deleteHandler(image) {
@@ -182,22 +179,22 @@ export default function CreateAd() {
       <div className="min-h-[80vh] py-10">
         <ContainerX>
           <div className=""></div>
-          <Box bgColor={"white"} px={{ base: 2, sm: 10 }} py={5} rounded={10}>
+          <Box bgColor={'white'} px={{ base: 2, sm: 10 }} py={5} rounded={10}>
             <div className="text-center">
               <SectionTitle>Зар Нэмэх</SectionTitle>
             </div>
             {/* category && subcategory && sell type  BIDNII HUVID BOL STEP 1*/}
             <Box
-              display={"grid"}
+              display={'grid'}
               gridTemplateColumns={{
-                base: "repeat(1,1fr)",
-                md: "repeat(3,1fr)",
+                base: 'repeat(1,1fr)',
+                md: 'repeat(3,1fr)',
               }}
               gap={{ base: 5, md: 10 }}
               mt={4}
             >
               <HStack>
-                <Text width={"100%"}>Зарах хөрөнгийн төрөл</Text>
+                <Text width={'100%'}>Зарах хөрөнгийн төрөл</Text>
                 <Select
                   size="sm"
                   placeholder="Сонгох"
@@ -220,7 +217,7 @@ export default function CreateAd() {
               </HStack>
               {categories[select.category]?.subCategory && (
                 <HStack>
-                  <Text width={"100%"}>Дэд төрөл</Text>
+                  <Text width={'100%'}>Дэд төрөл</Text>
                   <Select
                     size="sm"
                     placeholder="Сонгох"
@@ -244,7 +241,7 @@ export default function CreateAd() {
               )}
               {select.subCategory && (
                 <HStack>
-                  <Text width={"100%"}>Борлуулах төрөл</Text>
+                  <Text width={'100%'}>Борлуулах төрөл</Text>
                   <Select
                     placeholder="Сонгох"
                     size="sm"
@@ -263,17 +260,17 @@ export default function CreateAd() {
               )}
             </Box>
             <Grid
-              templateColumns={{ base: "repeat(1,1fr)", md: "repeat(3,1fr)" }}
+              templateColumns={{ base: 'repeat(1,1fr)', md: 'repeat(3,1fr)' }}
               gap={5}
               mt={10}
             >
-              {select.type != "" && subCategory?.filters && (
+              {select.type != '' && subCategory?.filters && (
                 <>
                   {/* duureg haruulj baigaa heseg */}
                   <GridItem>
                     <Select
                       size="sm"
-                      placeholder={"Дүүрэг"}
+                      placeholder={'Дүүрэг'}
                       onChange={(e) =>
                         setPositions((positions) => ({
                           ...positions,
@@ -294,7 +291,7 @@ export default function CreateAd() {
                   <GridItem>
                     <Select
                       size="sm"
-                      placeholder={"Байршил"}
+                      placeholder={'Байршил'}
                       onChange={(e) =>
                         setPositions((positions) => ({
                           ...positions,
@@ -323,7 +320,7 @@ export default function CreateAd() {
                           committee_id: e.target.value,
                         }))
                       }
-                      placeholder={capitalizeFirst("Хороо")}
+                      placeholder={capitalizeFirst('Хороо')}
                     ></Input>
                   </GridItem>
 
@@ -335,7 +332,7 @@ export default function CreateAd() {
                           town_id: e.target.value,
                         }))
                       }
-                      placeholder={capitalizeFirst("Хотхон")}
+                      placeholder={capitalizeFirst('Хотхон')}
                     ></Input>
                   </GridItem>
 
@@ -365,10 +362,10 @@ export default function CreateAd() {
                     );
                   })}
                   <Textarea
-                    placeholder={"Гарчиг"}
+                    placeholder={'Гарчиг'}
                     type="textarea"
                     height="100px"
-                    whiteSpace={"nowrap"}
+                    whiteSpace={'nowrap'}
                     onChange={(e) =>
                       setSelectStatic((selectStatic) => ({
                         ...selectStatic,
@@ -378,10 +375,10 @@ export default function CreateAd() {
                     value={selectStatic.title}
                   />
                   <Textarea
-                    placeholder={"Дэлгэрэнгүй"}
+                    placeholder={'Дэлгэрэнгүй'}
                     type="textarea"
                     height="100px"
-                    whiteSpace={"nowrap"}
+                    whiteSpace={'nowrap'}
                     value={selectStatic.description}
                     onChange={(e) =>
                       setSelectStatic((selectStatic) => ({
@@ -391,7 +388,7 @@ export default function CreateAd() {
                     }
                   />
                   <Input
-                    placeholder={"Хаяг"}
+                    placeholder={'Хаяг'}
                     value={selectStatic.position}
                     onChange={(e) =>
                       setSelectStatic((selectStatic) => ({
@@ -424,28 +421,28 @@ export default function CreateAd() {
                       //   base: '300px',
                       //   lg: '250px',
                       // }}
-                      border={"1px dashed grey"}
+                      border={'1px dashed grey'}
                       overflow="hidden"
                     >
                       <Box
                         width="100%"
-                        position={"relative"}
-                        bgColor={"bgGrey"}
+                        position={'relative'}
+                        bgColor={'bgGrey'}
                         _hover={{
                           Button: {
-                            bgColor: "mainBlossom",
+                            bgColor: 'mainBlossom',
                           },
                         }}
                         textAlign="center"
                       >
                         <Input
-                          type={"file"}
+                          type={'file'}
                           position="absolute"
                           height="100%"
-                          width={"100%"}
+                          width={'100%'}
                           left="0"
                           accept="image/png, image/jpg, image/jpeg"
-                          borderStyle={"dashed"}
+                          borderStyle={'dashed'}
                           multiple
                           opacity="0"
                           cursor="pointer"
@@ -458,9 +455,9 @@ export default function CreateAd() {
                         </Text>
                       </Box>
                       <HStack
-                        flexWrap={"wrap"}
+                        flexWrap={'wrap'}
                         gap={{ base: 1, md: 3 }}
-                        justifyContent={"center"}
+                        justifyContent={'center'}
                       >
                         {selectedImages?.map((image, index) => {
                           return (
@@ -468,18 +465,18 @@ export default function CreateAd() {
                               position="relative"
                               key={index}
                               width={{
-                                base: "50px",
-                                md: "75px",
-                                lg: "100px",
+                                base: '50px',
+                                md: '75px',
+                                lg: '100px',
                               }}
                               height={{
-                                base: "50px",
-                                md: "75px",
-                                lg: "100px",
+                                base: '50px',
+                                md: '75px',
+                                lg: '100px',
                               }}
                               p={1}
                               border="2px solid"
-                              borderColor={"bgGrey"}
+                              borderColor={'bgGrey'}
                             >
                               <Image
                                 src={image}

@@ -64,30 +64,7 @@ const AdContent = ({
         ))}
       </Swiper> */}
 
-      <ul className="flex float-right list-style-none">
-        <li className="disabled">
-          <button
-            className="page-link relative block py-1.5 px-3 border-0 bg-transparent outline-none transition-all duration-300 rounded text-gray-500 pointer-events-none focus:shadow-none"
-            tabindex="-1"
-          >
-            Өмнөх
-          </button>
-        </li>
-        <li>
-          <button className={mergeNames(STYLES.notActive)}>1</button>
-        </li>
-        <li className="active">
-          <button className={mergeNames(STYLES.active)}>
-            2 <span className="visually-hidden"></span>
-          </button>
-        </li>
-        <li>
-          <button className={mergeNames(STYLES.notActive)}>3</button>
-        </li>
-        <li>
-          <button className={mergeNames(STYLES.notActive)}>Дараах</button>
-        </li>
-      </ul>
+      
     </ContainerXP>
   );
 };

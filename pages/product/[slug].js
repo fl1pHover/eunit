@@ -51,7 +51,12 @@ const ProductInfo = ({
   tt = 'capitalize',
 }) => {
   return (
-    <GridItem className="product__info" key={key}>
+    <GridItem
+      className={
+        value.length > 30 ? 'product__info col-span-2' : 'product__info'
+      }
+      key={key}
+    >
       {children ? (
         children
       ) : (
@@ -150,20 +155,6 @@ const Product = ({ propAds }) => {
 
   const [open, setOpen] = useState(false);
 
-  const images = [
-    {
-      original: 'https://picsum.photos/id/1018/1000/600/',
-      thumbnail: 'https://picsum.photos/id/1018/250/150/',
-    },
-    {
-      original: 'https://picsum.photos/id/1015/1000/600/',
-      thumbnail: 'https://picsum.photos/id/1015/250/150/',
-    },
-    {
-      original: 'https://picsum.photos/id/1019/1000/600/',
-      thumbnail: 'https://picsum.photos/id/1019/250/150/',
-    },
-  ];
   return (
     <Box m={5} as="section" id="main__product">
       <ScrollTop />
@@ -297,6 +288,13 @@ const Product = ({ propAds }) => {
 
                 <div>
                   <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                    {data?.user && (
+                      <button
+                        onClick={() => router.push(`/account/${data.user}`)}
+                      >
+                        {data.user}
+                      </button>
+                    )}
                     {
                       // data?.positions?.location_id  &&
                       data?.positions?.district_id &&

@@ -5,6 +5,7 @@ import urls from '@/constants/api';
 import mergeNames from '@/util/mergeNames';
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
+import moment from 'moment';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
@@ -22,15 +23,29 @@ const Profile = ({ user }) => {
     username: user?.username,
     phone: user?.phone,
     userType: user?.userType,
+    birthday: user?.birthday,
   });
   const router = useRouter();
-  const [socials, setSocials] = useState([]);
+  const [socials, setSocials] = useState([
+    {
+      name: 'facebook',
+      url: user?.socials[0]?.url ?? 'https://www.facebook.com/',
+    },
+    {
+      name: 'instagram',
+      url: user?.socials[1]?.url ?? 'https://www.instagram.com',
+    },
+    {
+      name: 'telegram',
+      url: user?.socials[2]?.url ?? 'https://www.telegram.com/',
+    },
+  ]);
+
   const handleEdit = async () => {
     setIsLoading(true);
 
     if (edit) {
       const token = getCookie('token');
-      console.log(userData);
       try {
         await axios
           .put(
@@ -39,6 +54,21 @@ const Profile = ({ user }) => {
               username: userData.username,
               phone: userData.phone,
               userType: userData.userType,
+              socials: [
+                {
+                  url: socials[0].url,
+                  name: socials[0].name,
+                },
+                {
+                  url: socials[1].url,
+                  name: socials[1].name,
+                },
+                {
+                  url: socials[2].url,
+                  name: socials[2].name,
+                },
+              ],
+              birthday: userData.birthday,
             },
             {
               headers: {
@@ -114,10 +144,22 @@ const Profile = ({ user }) => {
         </GroupLayout>
 
         <GroupLayout title="Төрсөн өдөр">
-          <ProfileInput type="date" item="date" edit={edit} />
+          <ProfileInput
+            value={moment(
+              userData?.birthday ?? Date.now(),
+              'YYYY-MM-DD'
+            ).format('YYYY-MM-DD')}
+            type="date"
+            item="date"
+            edit={edit}
+            ph={'01-02-2002'}
+            onChange={(e) =>
+              setUserData((prev) => ({ ...prev, birthday: e.target.value }))
+            }
+          />
         </GroupLayout>
 
-        <Socials edit={edit} />
+        <Socials edit={edit} socials={socials} setSocials={setSocials} />
 
         {/* //TODO: Burgteltei email ni haragdaj bdgaar ghde disabled eniig yahav hereggui gevel arilgachna */}
 
