@@ -1,6 +1,7 @@
 import {
   AspectRatio,
   Box,
+  Button,
   GridItem,
   Heading,
   HStack,
@@ -41,7 +42,7 @@ import urls from '../../constants/api';
 import { useAuth } from '../../context/auth';
 
 import { getCookie } from 'cookies-next';
-import 'yet-another-react-lightbox/styles.css';
+// import 'yet-another-react-lightbox/styles.css';
 const ProductInfo = ({
   title,
   value,
@@ -49,6 +50,7 @@ const ProductInfo = ({
   children,
   key = 0,
   tt = 'capitalize',
+  onClick,
 }) => {
   return (
     <GridItem
@@ -65,13 +67,18 @@ const ProductInfo = ({
           className="h-full p-2 border-2 rounded-md border-bgGrey"
         >
           <Text textTransform={'capitalize'}>{title}: </Text>
-          <Text textTransform={tt} fontWeight={'bold'}>
+          <Button
+            textTransform={tt}
+            fontWeight={'bold'}
+            cursor={'pointer'}
+            onClick={onClick}
+          >
             {id === 'price' || id === 'unitPrice'
               ? currency(value, { separator: ',', symbol: '' })
                   .format()
                   .toString()
               : value}
-          </Text>
+          </Button>
         </Stack>
       )}
     </GridItem>
@@ -83,7 +90,7 @@ const Product = ({ propAds }) => {
   const { districts, locations } = useAuth();
   const router = useRouter();
   const [data, setData] = useState('');
-  const [suggestion, setSuggestion] = useState('location');
+  const [suggestion, setSuggestion] = useState();
   const [sData, setsData] = useState([]);
   const libraries = useMemo(() => ['places'], []);
   const [markerActive, setMarkerActive] = useState(null);
@@ -102,54 +109,50 @@ const Product = ({ propAds }) => {
     []
   );
   const mapCenter = useMemo(() => data?.location, [data]);
-  const getSuggestion = async (suggest) => {
-    if (data && suggest != 'map') {
+  const getSuggestion = async (suggest, ad = data) => {
+    if (ad && suggest != 'map') {
       try {
+        let id = '';
+        let value = '';
+        switch (suggest) {
+          case 'room':
+            id = 'room';
+            value = ad?.filters.filter((f) => f.id == 'room')[0].value;
+            break;
+          case 'location':
+            id = 'district';
+            value = ad?.filters.filter((f) => f.id == 'district')[0].value;
+            break;
+        }
         await axios
-          .post(`${urls['test']}/ad/suggesstion`, {
-            suggestion:
-              suggest == 'location'
-                ? data?.positions?.district_id
-                : suggest == 'room'
-                ? data?.filters.filter((f) => f.id == 'room')[0].value
-                : null,
-            type: suggest,
-          })
+          .get(`${urls['test']}/ad/filter/${id}/${value}/${0}`)
           .then((d) => {
+            console.log(d, suggest);
             setsData([]);
-            setsData(d.data.filter((sd) => sd._id != data._id));
+            setsData(d.data);
           });
       } catch (error) {
         console.log(error);
       }
     }
   };
-  const getData = async () => {
-    setData(propAds);
-    console.log(propAds);
-    if (suggestion != 'map') {
-      try {
-        await axios
-          .post(`${urls['test']}/ad/suggesstion`, {
-            suggestion:
-              suggestion == 'location'
-                ? propAds?.positions?.district_id
-                : suggestion == 'room'
-                ? `${data?.filters.filter((f) => f.id == 'room')[0].value}`
-                : null,
-            type: suggestion,
-          })
-          .then((s) => {
-            setsData(s.data);
-          });
-      } catch (error) {
-        console.log(error);
-      }
+  const getFilterByItem = async (id, value) => {
+    console.log(id, value);
+    try {
+      await axios.get(`${urls['test']}/ad/filter/${id}/${value}`).then((d) => {
+        setsData(d.data), console.log(d.data);
+      });
+    } catch (error) {
+      console.error(error);
     }
   };
   useEffect(() => {
     if (propAds) {
-      getData();
+      setData(propAds);
+      if (propAds?.subCategory?.suggessionType?.length > 0) {
+        setSuggestion(propAds.subCategory.suggessionType[0]);
+        getSuggestion(propAds.subCategory.suggessionType[0], propAds);
+      }
     }
   }, [propAds]);
 
@@ -297,6 +300,7 @@ const Product = ({ propAds }) => {
                               key={i}
                               title={'Дүүрэг'}
                               value={d.name}
+                              onClick={getFilterByItem(d.id, d.value)}
                             />
                           ) : (
                             ''
@@ -332,6 +336,7 @@ const Product = ({ propAds }) => {
                             title={p.name}
                             id={p.id}
                             value={p.value}
+                            onClick={() => getFilterByItem(p.id, p.value)}
                           />
                         );
                       }
@@ -410,6 +415,7 @@ const Product = ({ propAds }) => {
             </Select>
           </Box>
         </div>
+        <Text>{JSON.stringify(sData)}</Text>
         {suggestion == 'map' ? (
           <GoogleMap
             options={mapOptions}
@@ -424,6 +430,7 @@ const Product = ({ propAds }) => {
           >
             {isLoaded &&
               sData?.map((m, i) => {
+                console.log(m);
                 return (
                   <HStack key={i}>
                     <MarkerF

@@ -25,6 +25,7 @@ const AdContent = ({
   title = 'Үл хөдлөх хөрөнгө',
   url = 'realState',
 }) => {
+
   const router = useRouter();
   return (
     <ContainerXP key={key} classname="pb-10">
@@ -41,7 +42,7 @@ const AdContent = ({
         </button>
       </div>
       <div className="grid grid-cols-2 gap-5 xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-3">
-        {data?.map((item, key) => (
+        {data?.ads?.map((item, key) => (
           <AdCard key={key} item={item || {}} />
         ))}{' '}
         {data == undefined && <Skeleton />}

@@ -7,8 +7,6 @@ import { useAuth } from '@/context/auth';
 import { useLoadScript } from '@react-google-maps/api';
 import { useEffect, useMemo, useState } from 'react';
 
-
-
 // import required modules
 
 export default function Home({ propAds }) {
@@ -39,7 +37,7 @@ export default function Home({ propAds }) {
   );
   useEffect(() => {
     setIsLoading(true);
-    if (typeof propAds === 'object' && propAds && propAds.length > 0) {
+    if (typeof propAds === 'object' && propAds?.ads) {
       setAds(propAds);
       setMarkerActive(0);
     }
