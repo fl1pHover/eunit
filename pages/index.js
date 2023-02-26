@@ -77,7 +77,7 @@ export default function Home({ propAds }) {
           );
       })} */}
       <ContainerX classname="py-6">
-        <Heading className=''>Шинэ зарууд</Heading>
+        <Heading className="">Шинэ зарууд</Heading>
         {ads && <AdContent data={ads} showLink="" />}
         {/* <ul className="flex justify-end list-style-none">
           <li className="disabled">
