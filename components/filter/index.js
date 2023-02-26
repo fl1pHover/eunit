@@ -13,6 +13,7 @@ import {
   Radio,
   RadioGroup,
   Select,
+  Skeleton,
   Text,
   useDisclosure,
   VStack,
@@ -22,6 +23,7 @@ import { useEffect, useRef, useState } from 'react';
 import urls from '../../constants/api';
 import { useAuth } from '../../context/auth';
 // import Select from '@/lib/Select';
+import { LoadingButton } from '@/lib/Button';
 import { STYLES } from '@/styles/index';
 import mergeNames from '@/util/mergeNames';
 import { MdFilterList } from 'react-icons/md';
@@ -110,6 +112,15 @@ const FilterLayout = ({ data, isOpenMap }) => {
     });
     console.log(filter);
   };
+
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+  });
+
   const [value, setValue] = useState('');
   return (
     <>
@@ -158,22 +169,11 @@ const FilterLayout = ({ data, isOpenMap }) => {
                   >
                     {c.subCategory.map(({ href, name }, id) => {
                       return (
-                        // <Link
-                        //   key={id}
-                        //   href={`/category/${href}`}
-                        //   p="2px"
-                        //   mt={0}
-                        //   fontWeight={data == href ? 'bold' : 'medium'}
-                        // >
-                        //   <Text>{name}</Text>
-                        // </Link>
-
-                        // Eniig inspectdeer neg haraarai aldaatai bolood bn
                         <Radio
                           value={href}
                           key={id}
                           onChange={(e) => {
-                            getItems(e.target.value);
+                            getItems(e.target.value), setLoading(true);
                           }}
                           _selected={{ font: 'bold' }}
                         >
@@ -225,88 +225,101 @@ const FilterLayout = ({ data, isOpenMap }) => {
 
             <FilterStack borderBottom={'2px solid '} borderColor="bgGrey">
               <Heading variant={'smallHeading'}>Нэмэлт хайлт</Heading>
-              {/* <Select></Select> */}
-              <Select
-                placeholder={'Дүүрэг'}
-                className="border-1  border-blue-400 rounded-full text-[14px]"
-                onChange={(e) => {
-                  setPositions((positions) => ({
-                    ...positions,
-                    district_id: e.target.value,
-                  }));
-                  console.log(positions);
-                }}
-              >
-                {districts?.map((item, i) => {
-                  return (
-                    <option key={i} value={item._id}>
-                      {item.name}
-                    </option>
-                  );
-                })}
-              </Select>
-              {positions.district_id && (
-                <Select
-                  placeholder={'Байршил'}
-                  className="border-b rounded-full lue-400 border-1"
-                  onChange={(e) =>
-                    setPositions((positions) => ({
-                      ...positions,
-                      location_id: e.target.value,
-                    }))
-                  }
-                >
-                  {locations?.map((item, i) => {
-                    if (positions.district_id == item.district_id)
-                      return (
-                        <option key={i} value={item.name}>
-                          {item.name}
-                        </option>
-                      );
-                  })}
-                </Select>
-              )}
-              {filter?.map((f, i) => {
-                return f.values.length == 0 ? (
-                  <VStack flex key={i}>
-                    <Heading variant={'smallHeading'}>{f.name}</Heading>
-                    <Flex alignItems={'center'} gap={2}>
-                      <Input
-                        type="number"
-                        placeholder="Доод"
-                        className="border-b rounded-full lue-400 border-1"
-                        onChange={(e) => setFilters(f.id, e, false)}
-                      />
-                      <Text>-</Text>
-                      <Input
-                        type="number"
-                        placeholder="Дээд"
-                        className="border-b rounded-full lue-400 border-1 focus:outline-none"
-                        onChange={(e) => setFilters(f.id, e, true)}
-                      />
-                    </Flex>
-                  </VStack>
-                ) : (
+
+              {loading ? (
+                <>
+                  <Skeleton className="h-10 rounded-full" />
+                  <Skeleton className="h-10 rounded-full" />
+                  <Skeleton className="h-10 rounded-full" />
+                  <Skeleton className="h-10 rounded-full" />
+                </>
+              ) : (
+                <>
                   <Select
-                    key={i}
-                    placeholder={f.name}
-                    className="border-b rounded-full lue-400 border-1"
-                    onChange={(e) => setFilters(f.id, e, true)}
+                    placeholder={'Дүүрэг'}
+                    className="border-1  border-blue-400 rounded-full text-[14px]"
+                    onChange={(e) => {
+                      setPositions((positions) => ({
+                        ...positions,
+                        district_id: e.target.value,
+                      }));
+                      console.log(positions);
+                    }}
                   >
-                    {f.values.map((item, i) => {
+                    {districts?.map((item, i) => {
                       return (
-                        <option key={i} value={item}>
-                          {item}
+                        <option key={i} value={item._id}>
+                          {item.name}
                         </option>
                       );
                     })}
                   </Select>
-                );
-              })}
+                  {positions.district_id && (
+                    <Select
+                      placeholder={'Байршил'}
+                      className="border-b rounded-full lue-400 border-1"
+                      onChange={(e) =>
+                        setPositions((positions) => ({
+                          ...positions,
+                          location_id: e.target.value,
+                        }))
+                      }
+                    >
+                      {locations?.map((item, i) => {
+                        if (positions.district_id == item.district_id)
+                          return (
+                            <option key={i} value={item.name}>
+                              {item.name}
+                            </option>
+                          );
+                      })}
+                    </Select>
+                  )}
+                  {filter?.map((f, i) => {
+                    return f.values.length == 0 ? (
+                      <VStack flex key={i}>
+                        <Heading variant={'smallHeading'}>{f.name}</Heading>
+                        <Flex alignItems={'center'} gap={2}>
+                          <Input
+                            type="number"
+                            placeholder="Доод"
+                            className="border-b rounded-full lue-400 border-1"
+                            onChange={(e) => setFilters(f.id, e, false)}
+                          />
+                          <Text>-</Text>
+                          <Input
+                            type="number"
+                            placeholder="Дээд"
+                            className="border-b rounded-full lue-400 border-1 focus:outline-none"
+                            onChange={(e) => setFilters(f.id, e, true)}
+                          />
+                        </Flex>
+                      </VStack>
+                    ) : (
+                      <Select
+                        key={i}
+                        placeholder={f.name}
+                        className="border-b rounded-full lue-400 border-1"
+                        onChange={(e) => setFilters(f.id, e, true)}
+                      >
+                        {f.values.map((item, i) => {
+                          return (
+                            <option key={i} value={item}>
+                              {item}
+                            </option>
+                          );
+                        })}
+                      </Select>
+                    );
+                  })}
+                </>
+              )}
 
               <Button variant={'blueButton'} mx={4} onClick={() => filterAd()}>
                 Хайх
               </Button>
+
+              <LoadingButton text="Хайх" onClick={() => filterAd()} />
             </FilterStack>
           </DrawerBody>
         </DrawerContent>

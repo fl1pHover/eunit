@@ -6,18 +6,9 @@ import mergeNames from '@/util/mergeNames';
 import { useRouter } from 'next/router';
 import { AiOutlineArrowRight } from 'react-icons/ai';
 
-// Import Swiper React components
-
-// Import Swiper styles
-import 'swiper/css';
-import 'swiper/css/grid';
-import 'swiper/css/navigation';
-// import required modules
-import { Swiper, SwiperSlide } from 'swiper/react';
-
-// import required modules
+import SwiperNav from '@/util/SwiperNav';
 import { Skeleton } from '@chakra-ui/react';
-import { Grid, Navigation, Pagination } from 'swiper';
+import { SwiperSlide } from 'swiper/react';
 
 // import required modules
 
@@ -49,72 +40,17 @@ const AdContent = ({
           {data?.map((item, key) => (
             <AdCard key={key} item={item || {}} />
           ))}
-          {data == undefined && <Skeleton />}
         </div>
       ) : (
-        <Swiper
-          navigation={true}
-          slidesPerView={5}
-          grid={{
-            rows: 2,
-            fill: 'row',
-          }}
-          breakpoints={{
-            // sm
-            1: {
-              slidesPerView: 2,
-              grid: {
-                rows: 2,
-                fill: 'row',
-              },
-            },
-            640: {
-              slidesPerView: 3,
-              grid: {
-                rows: 2,
-                fill: 'row',
-              },
-            },
-            // md
-            768: {
-              slidesPerView: 3,
-              grid: {
-                rows: 2,
-                fill: 'row',
-              },
-            },
-            // lg
-            1024: {
-              slidesPerView: 4,
-              grid: {
-                rows: 2,
-                fill: 'row',
-              },
-            },
-            // xl
-            1280: {
-              slidesPerView: 5,
-              grid: {
-                rows: 2,
-                fill: 'row',
-              },
-            },
-          }}
-          spaceBetween={20}
-          fill="column"
-          modules={[Grid, Navigation, Pagination]}
-          className="mySwiper"
-          pagination={{
-            type: 'progressbar',
-          }}
-        >
+        <SwiperNav>
           {data?.map((item, key) => (
             <SwiperSlide key={key}>
               <AdCard item={item || {}} />
             </SwiperSlide>
           ))}
-        </Swiper>
+        </SwiperNav>
       )}
+      {data == undefined && <Skeleton height={'300px'} />}
     </ContainerXP>
   );
 };

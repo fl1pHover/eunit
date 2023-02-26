@@ -6,6 +6,7 @@ import { IoBedOutline } from 'react-icons/io5';
 import { TbBath } from 'react-icons/tb';
 
 import { Image, Skeleton, Text } from '@chakra-ui/react';
+
 import { useRouter } from 'next/router';
 import AdCardButton from './adCardButton';
 
@@ -13,14 +14,13 @@ const Card = ({ item }) => {
   const router = useRouter();
   return (
     <Skeleton isLoaded>
-      <div className="relative overflow-hidden rounded-md shadow-md bg-zinc-200 group ">
+      <div className="relative overflow-hidden rounded-md shadow-md bg-zinc-200 group">
         <div className="md:min-h-[35vh] min-h-[30vh] h-full w-full relative">
           <Image
             src={item?.images[0] ?? '/images/HeaderSlider/1.jpg'}
             alt="product image"
-            layout="fill"
-            objectFit="cover"
-            className="group-hover:scale-125 transition-all w-full  h-full ease-in-out duration-400 aspect-[4/5]"
+            loading="lazy"
+            className="group-hover:scale-125 transition-all w-full object-cover h-full ease-in-out duration-400 aspect-[4/5]"
           />
         </div>
         <div className="absolute top-0 bottom-0 left-0 right-0 w-full h-full">

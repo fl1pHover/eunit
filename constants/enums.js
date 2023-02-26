@@ -160,3 +160,45 @@ export const Filters = {
     name: 'Хэдэн давхарт',
   },
 };
+
+export const swiperBreakpoints = {
+  // sm
+  1: {
+    slidesPerView: 2,
+    grid: {
+      rows: 2,
+      fill: 'row',
+    },
+  },
+  640: {
+    slidesPerView: 3,
+    grid: {
+      rows: 2,
+      fill: 'row',
+    },
+  },
+  // md
+  768: {
+    slidesPerView: 3,
+    grid: {
+      rows: 2,
+      fill: 'row',
+    },
+  },
+  // lg
+  1024: {
+    slidesPerView: 4,
+    grid: {
+      rows: 2,
+      fill: 'row',
+    },
+  },
+  // xl
+  1280: {
+    slidesPerView: 5,
+    grid: {
+      rows: 2,
+      fill: 'row',
+    },
+  },
+};

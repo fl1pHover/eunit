@@ -14,7 +14,8 @@ import 'swiper/css/pagination';
 
 // import required modules
 import AdContent from '@/components/home/adContent';
-import { Heading } from '@chakra-ui/react';
+import { MainLoader } from '@/lib/Loader';
+import { Heading, Skeleton } from '@chakra-ui/react';
 
 export default function Home({ propAds }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -63,7 +64,7 @@ export default function Home({ propAds }) {
     setIsLoading(false);
   }, [propAds?.ads]);
   if (!isLoaded) {
-    return <p>Loading...</p>;
+    return <MainLoader />;
   }
   return (
     <>
@@ -79,6 +80,7 @@ export default function Home({ propAds }) {
       <ContainerX classname="py-6">
         <Heading className="">Шинэ зарууд</Heading>
         {ads && <AdContent data={ads} showLink="" />}
+       
         {/* <ul className="flex justify-end list-style-none">
           <li className="disabled">
             <button

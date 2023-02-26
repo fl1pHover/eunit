@@ -39,6 +39,7 @@ import urls from '../../constants/api';
 import { useAuth } from '../../context/auth';
 
 import { getCookie } from 'cookies-next';
+import UserInfo from './userInfo';
 
 const ProductInfo = ({
   title,
@@ -49,30 +50,45 @@ const ProductInfo = ({
   tt = 'capitalize',
 }) => {
   return (
-    <GridItem
-      className={
-        value.length > 30 ? 'product__info col-span-2' : 'product__info'
-      }
-      key={key}
-    >
-      {children ? (
-        children
-      ) : (
-        <Stack
-          direction={'row'}
-          className="h-full p-2 border-2 rounded-md border-bgGrey"
-        >
-          <Text textTransform={'capitalize'}>{title}: </Text>
-          <Text textTransform={tt} fontWeight={'bold'}>
-            {id === 'price' || id === 'unitPrice'
-              ? currency(value, { separator: ',', symbol: '' })
-                  .format()
-                  .toString()
-              : value}
-          </Text>
-        </Stack>
-      )}
-    </GridItem>
+    <>
+      <p
+        className={mergeNames(
+          id === 'price'
+            ? 'mt-3 text-xl font-bold col-span-full block'
+            : 'hidden'
+        )}
+      >
+        Үнийн мэдээлэл
+      </p>
+      <GridItem
+        className={
+          title.length + value.length > 25
+            ? 'product__info col-span-full'
+            : 'product__info'
+        }
+        key={key}
+      >
+        {children ? (
+          children
+        ) : (
+          <Stack
+            direction={'row'}
+            className={mergeNames(
+              'h-full p-2 border-2 rounded-md border-bgGrey'
+            )}
+          >
+            <Text textTransform={'capitalize'}>{title}: </Text>
+            <Text textTransform={tt} fontWeight={'bold'}>
+              {id === 'price' || id === 'unitPrice'
+                ? currency(value, { separator: ',', symbol: '₮ ' })
+                    .format()
+                    .toString()
+                : value}
+            </Text>
+          </Stack>
+        )}
+      </GridItem>
+    </>
   );
 };
 
@@ -122,9 +138,10 @@ const Product = ({ propAds }) => {
       }
     }
   };
+
   const getData = async () => {
     setData(propAds);
-    console.log(propAds);
+    // console.log(propAds);
     if (suggestion != 'map') {
       try {
         await axios
@@ -154,19 +171,16 @@ const Product = ({ propAds }) => {
   const [open, setOpen] = useState(false);
 
   return (
-    <Box m={5} as="section" id="main__product">
+    <Box m={2} as="section" id="main__product">
       <ScrollTop />
       <MainContainer>
         <Stack direction={'row'} py={2} gap={3}>
           {/* //TODO Filter Box */}
           {/* {data?.subCategory && <FilterLayout data={data.subCategory}/>} */}
 
-          {/* //TODO Filter box end */}
-
           {/* //TODO Main product */}
           <Box maxWidth={'100%'} flex="0 0 100%" borderRadius="5px">
-            {/* <Box maxWidth={'75%'} flex="0 0 75%" borderRadius="5px"> */}
-            <Box className="p-5 bg-white shadow-md md:p-10 rounded-xl">
+            <Box className="p-3 bg-white shadow-md md:p-10 rounded-xl">
               {/*Product */}
               {data.title && (
                 <Heading variant={'mediumHeading'} mb={5}>
@@ -178,7 +192,7 @@ const Product = ({ propAds }) => {
               <div className="grid grid-cols-1 gap-10 md:grid-cols-2 product__content-wrapper">
                 {/*  //TODO LEFT SIDE IMAGES AND DESC */}
 
-                <div className="product__image-wrapper">
+                <div>
                   <Stack
                     className={mergeNames(STYLES.flexBetween, 'flex-row mb-2')}
                   >
@@ -226,7 +240,7 @@ const Product = ({ propAds }) => {
                   <Box
                     className={mergeNames(
                       'product__image',
-                      'border-2 rounded-4 mb-[120px] shadow-md'
+                      'border-2 border-blue-900/20  mb-[120px] shadow-md'
                     )}
                   >
                     {data?.images && (
@@ -239,43 +253,6 @@ const Product = ({ propAds }) => {
                         />
                       </AspectRatio>
                     )}
-
-                    {/* npm install yet-another-react-lightbox  */}
-                    {/* <Lightbox
-                      open={open}
-                      close={() => setOpen(false)}
-                      slides={[
-                        {
-                          src: '/images/404.png',
-                          alt: 'image 1',
-                          width: 3840,
-                          height: 2560,
-                          srcSet: [
-                            { src: '/images/404.png', width: 320, height: 213 },
-                            { src: '/images/404.png', width: 640, height: 427 },
-                            {
-                              src: '/images/404.png',
-                              width: 1200,
-                              height: 800,
-                            },
-                            {
-                              src: '/images/404.png',
-                              width: 2048,
-                              height: 1365,
-                            },
-                            {
-                              src: '/images/404.png',
-                              width: 3840,
-                              height: 2560,
-                            },
-                          ],
-                        },
-                        // ...
-                      ]}
-                    /> */}
-                    {/* <button type="button" onClick={() => setOpen(true)}>
-                      Open Lightbox
-                    </button> */}
                   </Box>
                   <Text mt={5}>{data.description}</Text>
                 </div>
@@ -285,14 +262,22 @@ const Product = ({ propAds }) => {
                 {/*  //TODO  STARTS RIGHT SIDE INFOS */}
 
                 <div>
-                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                    {data?.user && (
-                      <button
-                        onClick={() => router.push(`/account/${data.user}`)}
-                      >
-                        {data.user}
-                      </button>
+                  <div className="grid grid-cols-1 gap-1 md:gap-3 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2">
+                    {data && (
+                      <UserInfo
+                        user={data.user}
+                        username={'username'}
+                        phone={'phone'}
+                        avatar=""
+                      />
                     )}
+
+                    <div className="bg-gray-200 h-[2px] w-full col-span-full" />
+
+                    <p className="text-xl font-bold col-span-full">
+                      Ерөнхий мэдээлэл
+                    </p>
+
                     {
                       // data?.positions?.location_id  &&
                       data?.positions?.district_id &&
@@ -328,6 +313,10 @@ const Product = ({ propAds }) => {
                         value={data?.positions?.town.value}
                       />
                     )}
+
+                    <p className="mt-3 text-xl font-bold col-span-full">
+                      Нэмэлт мэдээлэл
+                    </p>
 
                     {data?.filters?.map((p, i) => {
                       if (p.id != null) {

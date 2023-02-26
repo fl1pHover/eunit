@@ -1,12 +1,11 @@
-import { Center, ChakraProvider } from '@chakra-ui/react';
+import { ChakraProvider } from '@chakra-ui/react';
 import { AuthProvider, useAuth } from 'context/auth';
 import { AnimatePresence } from 'framer-motion';
-import Head from 'next/head';
 import { useState } from 'react';
-import PulseLoader from 'react-spinners/PulseLoader';
 
 import Navbar from '@/components/navbar/index';
 import Layout from '@/layout/layout';
+import { MainLoader } from '@/lib/Loader';
 import ScrollTop from '@/lib/ScrollTop';
 import theme from '@/lib/theme';
 import '@/styles/globals.scss';
@@ -16,6 +15,27 @@ function MyApp({ Component, pageProps }) {
   let [color, setColor] = useState('#1d1e44');
   let [category, setCategory] = useState();
 
+  // const router = useRouter();
+
+  // const [loading, setLoading] = useState(false);
+  // useEffect(() => {
+  //   const handleStart = (url) => url !== router.asPath && setLoading(true);
+  //   const handleComplete = (url) =>
+  //     url === router.asPath &&
+  //     setTimeout(() => {
+  //       setLoading(false);
+  //     }, 2000);
+
+  //   router.events.on('routeChangeStart', handleStart);
+  //   router.events.on('routeChangeComplete', handleComplete);
+  //   router.events.on('routeChangeError', handleComplete);
+
+  //   return () => {
+  //     router.events.off('routeChangeStart', handleStart);
+  //     router.events.off('routeChangeComplete', handleComplete);
+  //     router.events.off('routeChangeError', handleComplete);
+  //   };
+  // });
   return (
     <AuthProvider>
       {!loading ? (
@@ -29,14 +49,7 @@ function MyApp({ Component, pageProps }) {
           </AnimatePresence>
         </ChakraProvider>
       ) : (
-        <Center width={'100vw'} height="100vh" className="loader">
-          <Head>
-            <title>BOM</title>
-            <meta name="description" content="Bom, zariin site" />
-            {/* <link rel="icon" href="/favicon.ico" /> */}
-          </Head>
-          <PulseLoader color={color} loading={loading} size={30} />
-        </Center>
+        <MainLoader />
       )}
     </AuthProvider>
 

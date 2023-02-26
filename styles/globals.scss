@@ -16,33 +16,6 @@ a {
   text-decoration: none;
 }
 
-// .swiper {
-//   width: 100%;
-//   height: 100%;
-//   margin-left: auto;
-//   margin-right: auto;
-// }
-
-// .swiper-slide {
-//   text-align: center;
-//   font-size: 18px;
-//   background: #fff;
-//   height: calc((100% - 30px) / 2) !important;
-
-//   /* Center slide text vertically */
-//   display: -webkit-box;
-//   display: -ms-flexbox;
-//   display: -webkit-flex;
-//   display: flex;
-//   -webkit-box-pack: center;
-//   -ms-flex-pack: center;
-//   -webkit-justify-content: center;
-//   justify-content: center;
-//   -webkit-box-align: center;
-//   -ms-flex-align: center;
-//   -webkit-align-items: center;
-//   align-items: center;
-// }
 .swiper-grid-column > .swiper-wrapper {
   flex-direction: unset !important;
 }
@@ -51,15 +24,6 @@ input[type='date']::-webkit-inner-spin-button,
 input[type='date']::-webkit-calendar-picker-indicator {
   display: none;
   -webkit-appearance: none;
-}
-
-.icon {
-  color: #676767;
-  transition: 0.3s ease;
-}
-
-thead {
-  // @apply border-b border-gray-400;
 }
 
 th,
@@ -103,18 +67,8 @@ html {
   // user-select: none;
 }
 
-.white__icon {
-  color: white;
-}
-
-.wrap,
-.unwrap {
-  transition: 0.4s ease;
-}
-.wrap {
-  transform: translateY(-100%);
-}
-
+// Custom scroll bar
+// Note: Not supported on Firefox bruh
 ::-webkit-scrollbar {
   width: 3px;
 }
@@ -129,149 +83,8 @@ html {
   background: $mainBlossom;
 }
 
-.product__image {
-  position: relative;
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: $bgGrey;
-  }
-}
-
-.animated__icon {
-  background-size: cover;
-  width: 30px;
-  height: 30px;
-}
-
-.animated__wallet {
-  .animated__icon {
-    background-image: url(../public/utils/icons/static/wallet.png);
-    background-size: cover;
-    width: 30px;
-    height: 30px;
-  }
-  &:hover .animated__icon {
-    background-image: url(../public/utils/icons/wallet.gif);
-  }
-}
-
-.animated__estimator {
-  .animated__icon {
-    background-image: url(../public/utils/icons/static/estimator.png);
-    background-size: cover;
-    width: 30px;
-    height: 30px;
-  }
-  &:hover .animated__icon {
-    background-image: url(../public/utils/icons/estimator.gif);
-  }
-}
-
-.animated__heart {
-  .animated__icon {
-    background-image: url(../public/utils/icons/static/heart.png);
-    background-size: cover;
-    width: 30px;
-    height: 30px;
-  }
-  &:hover .animated__icon {
-    background-image: url(../public/utils/icons/heart.gif);
-  }
-}
-
-.white__animated__heart {
-  .animated__icon {
-    background-image: url(../public/utils/icons/static/heart-outline.png);
-    background-size: cover;
-    width: 22px;
-    height: 22px;
-  }
-  &:hover .animated__icon {
-    background-image: url(../public/utils/icons/heart-outline.gif);
-  }
-}
-@media only screen and (max-width: 720px) {
-  .animated__icon {
-    width: 30px !important;
-    height: 30px !important;
-  }
-}
-
-.animated__account {
-  .animated__icon {
-    background-image: url(../public/utils/icons/static/account.png);
-    background-size: cover;
-    width: 30px;
-    height: 30px;
-  }
-  &:hover .animated__icon {
-    background-image: url(../public/utils/icons/account.gif);
-  }
-}
-
-// account white
-.animated__account-white {
-  .animated__icon {
-    background-image: url(../public/utils/icons/account-white.gif);
-    background-size: cover;
-    width: 22px;
-    height: 22px;
-  }
-  // &:hover .animated__icon {
-  //   background-image: url(../public/utils/icons/account-white.gif);
-  // }
-}
-
 .info__icon {
   font-size: 20px;
-}
-
-.menu__item {
-  &:hover {
-    background: transparent !important;
-  }
-}
-
-.profile__dropdown-menu {
-  margin-right: 10% !important;
-  transform: translate(600px, 70px) !important;
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 10px;
-    height: 10px;
-    background-color: red;
-  }
-}
-
-.animated__account .asd {
-  display: none;
-}
-
-.card {
-  position: relative;
-  // z-index: 3;
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: $mainBlossom;
-    opacity: 0.7;
-    z-index: 1;
-  }
-}
-
-.file__upload {
 }
 
 /* Position and sizing of burger button */
