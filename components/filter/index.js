@@ -47,9 +47,7 @@ const FilterLayout = ({ data, isOpenMap }) => {
       await axios
         .get(`${urls['test']}/category/filters/${data}/true`, {})
         .then((d) => {
-          setSubCategory(d.data?.subCategory);
-          setFilter(d.data?.filters);
-          setFilterSent(d.data?.filters);
+          setSubCategory(d.data);
         });
     } catch (e) {
       console.log(e);
@@ -68,17 +66,22 @@ const FilterLayout = ({ data, isOpenMap }) => {
         types.push('rent');
       }
       if (adType.sell) types.push('sell');
-      console.log(subCategory._id);
-      axios
-        .post(`${urls['test']}/ad/filter`, {
-          filters: filter,
-          adTypes: types,
-          subCategory: subCategory._id,
-        })
-        .then((d) => {
-          setAds(d.data);
-          console.log(d.data);
-        });
+
+      let filter = subCategory.filters.filter((f, i) => f.input != '');
+      try {
+        axios
+          .post(`${urls['test']}/ad/filter`, {
+            filters: filter,
+            adTypes: types,
+            subCategory: subCategory._id,
+          })
+          .then((d) => {
+            setAds(d.data);
+            console.log(d.data);
+          });
+      } catch (error) {
+        console.error(error);
+      }
     } catch (e) {
       console.log(e);
     }
@@ -222,7 +225,7 @@ const FilterLayout = ({ data, isOpenMap }) => {
             <FilterStack borderBottom={'2px solid '} borderColor="bgGrey">
               <Heading variant={'smallHeading'}>Нэмэлт хайлт</Heading>
 
-              {filter?.map((f, i) => {
+              {subCategory?.filters?.map((f, i) => {
                 return f.value.length == 0 ? (
                   <VStack flex key={i}>
                     <Heading variant={'smallHeading'}>{f.name}</Heading>
@@ -231,14 +234,14 @@ const FilterLayout = ({ data, isOpenMap }) => {
                         type="number"
                         placeholder="Доод"
                         className="border-b rounded-full lue-400 border-1"
-                        onChange={(e) => setFilters(f.id, e, false)}
+                        onChange={(e) => (f.input = e.target.value)}
                       />
                       <Text>-</Text>
                       <Input
                         type="number"
                         placeholder="Дээд"
                         className="border-b rounded-full lue-400 border-1 focus:outline-none"
-                        onChange={(e) => setFilters(f.id, e, true)}
+                        onChange={(e) => (f.max = e.target.value)}
                       />
                     </Flex>
                   </VStack>
@@ -247,7 +250,7 @@ const FilterLayout = ({ data, isOpenMap }) => {
                     key={i}
                     placeholder={f.name}
                     className="border-b rounded-full lue-400 border-1"
-                    onChange={(e) => setFilters(f.id, e, true)}
+                    onChange={(e) => (f.input = e.target.value)}
                   >
                     {f.value.map((item, i) => {
                       return (

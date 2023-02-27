@@ -2,7 +2,7 @@ import { STYLES } from '@/styles/index';
 import mergeNames from '@/util/mergeNames';
 import { Flex, Image } from '@chakra-ui/react';
 import Link from 'next/link';
-const capitalizeFirst = (str) => {
+export const capitalizeFirst = (str) => {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
 const Socials = ({ edit, socials, setSocials }) => {

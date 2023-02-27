@@ -43,6 +43,8 @@ const AdContent = ({
         {data?.ads?.map((item, key) => (
           <AdCard key={key} item={item || {}} />
         ))}{' '}
+        {data?.ads === undefined &&
+          data?.map((item, key) => <AdCard key={key} item={item || {}} />)}{' '}
         {data == undefined && <Skeleton />}
       </div>
       {/* <Swiper

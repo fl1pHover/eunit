@@ -13,7 +13,7 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-  useDisclosure
+  useDisclosure,
 } from '@chakra-ui/react';
 
 import { ContainerX } from '@/lib/Container';
@@ -21,7 +21,7 @@ import {
   GoogleMap,
   InfoWindow,
   MarkerF,
-  useLoadScript
+  useLoadScript,
 } from '@react-google-maps/api';
 import { useRouter } from 'next/router';
 import { useEffect, useMemo, useState } from 'react';
@@ -39,6 +39,7 @@ const Category = ({ propAds }) => {
   };
   useEffect(() => {
     setAds(propAds?.ads);
+    console.log(propAds);
   }, [propAds]);
 
   const [isLoading, setIsLoading] = useState(false);
@@ -72,7 +73,7 @@ const Category = ({ propAds }) => {
     return location.lat + location.lng;
   }
 
-  return ads?.length > 0 ? (
+  return (
     <Box my={5} as="section" id="category">
       <MainContainer>
         <div className="relative flex flex-col gap-3 p-2">
@@ -92,13 +93,20 @@ const Category = ({ propAds }) => {
             {/* //TODO Ontsgoi zar */}
 
             {/* //TODO Engiin zar */}
-
-            <AdContent
-              data={ads}
-              tlc={toLowerCase}
-              title={category ?? ''}
-              showLink="hidden"
-            />
+            {ads?.length > 0 ? (
+              <AdContent
+                data={ads}
+                tlc={toLowerCase}
+                title={category ?? ''}
+                showLink="hidden"
+              />
+            ) : (
+              <ContainerX>
+                <div className="grid h-[80vh] text-2xl place-items-center">
+                  Зар байхгүй байна
+                </div>
+              </ContainerX>
+            )}
           </Box>
         </div>
         {/* <CustomModal></CustomModal> */}
@@ -177,12 +185,6 @@ const Category = ({ propAds }) => {
         </Modal>
       </MainContainer>
     </Box>
-  ) : (
-    <ContainerX>
-      <div className="grid h-[80vh] text-2xl place-items-center">
-        Зар байхгүй байна
-      </div>
-    </ContainerX>
   );
 };
 

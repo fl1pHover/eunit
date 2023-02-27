@@ -19,13 +19,15 @@ const Card = ({ item }) => {
         onClick={() => item && item._id && router.push(`/product/${item.num}`)}
       >
         <div className="md:min-h-[35vh] min-h-[30vh] h-full w-full relative">
-          <Image
-            src={item?.images[0] ?? '/images/HeaderSlider/1.jpg'}
-            alt="product image"
-            layout="fill"
-            objectFit="cover"
-            className="group-hover:scale-125 transition-all w-full  h-full ease-in-out duration-400 aspect-[4/5]"
-          />
+          {item?.images && (
+            <Image
+              src={item?.images[0] ?? '/images/HeaderSlider/1.jpg'}
+              alt="product image"
+              layout="fill"
+              objectFit="cover"
+              className="group-hover:scale-125 transition-all w-full  h-full ease-in-out duration-400 aspect-[4/5]"
+            />
+          )}
         </div>
         <div className="absolute top-0 bottom-0 left-0 right-0 w-full h-full">
           <div className="z-20 flex flex-col w-full h-full px-3 py-2 bg-gradient-to-b from-slate-700/0 via-slate-700/30 to-slate-900/100">
@@ -57,11 +59,10 @@ const Card = ({ item }) => {
               </div>
               <div className="flex flex-wrap items-end justify-between gap-x-1">
                 {item?.filters?.map((p, i) => {
-                  console.log(p);
                   return (
                     <React.Fragment key={i}>
                       <ApartmentIconInfo p={p} />
-                      {p.id === 'area' && (
+                      {p.type === 'area' && (
                         <ItemContainer
                           Icon={(props) => <BiArea {...props} text="" />}
                           text={calcValue(p.input, 'байхгүй', 'м.кв')}
