@@ -43,7 +43,7 @@ const AdCardButton = ({ id }) => {
         <button
           className={mergeNames(cardIcon.div)}
           onClick={() => {
-            addToBookmark();
+            console.log('asdff');
             setIsLiked(true);
             toast({
               title: 'Хүсэл рүү нэмэгдлээ.',

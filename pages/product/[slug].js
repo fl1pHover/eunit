@@ -67,7 +67,8 @@ const ProductInfo = ({
           className="h-full p-2 border-2 rounded-md border-bgGrey"
         >
           <Text textTransform={'capitalize'}>{title}: </Text>
-          <Button
+          <Text
+            cursor="pointer"
             textTransform={tt}
             fontWeight={'bold'}
             cursor={'pointer'}
@@ -78,7 +79,7 @@ const ProductInfo = ({
                   .format()
                   .toString()
               : value}
-          </Button>
+          </Text>
         </Stack>
       )}
     </GridItem>
@@ -117,17 +118,16 @@ const Product = ({ propAds }) => {
         switch (suggest) {
           case 'room':
             id = 'room';
-            value = ad?.filters.filter((f) => f.id == 'room')[0].value;
+            value = ad?.filters.filter((f) => f.type == 'room')[0].input;
             break;
           case 'location':
             id = 'district';
-            value = ad?.filters.filter((f) => f.id == 'district')[0].value;
+            value = ad?.filters.filter((f) => f.type == 'district')[0].input;
             break;
         }
         await axios
           .get(`${urls['test']}/ad/filter/${id}/${value}/${0}`)
           .then((d) => {
-            console.log(d, suggest);
             setsData([]);
             setsData(d.data);
           });
@@ -137,17 +137,19 @@ const Product = ({ propAds }) => {
     }
   };
   const getFilterByItem = async (id, value) => {
-    console.log(id, value);
     try {
-      await axios.get(`${urls['test']}/ad/filter/${id}/${value}`).then((d) => {
-        setsData(d.data), console.log(d.data);
-      });
+      await axios
+        .get(`${urls['test']}/ad/filter/${id}/${value}/0`)
+        .then((d) => {
+          setsData(d.data), console.log(d.data);
+        });
     } catch (error) {
       console.error(error);
     }
   };
   useEffect(() => {
     if (propAds) {
+      console.log(propAds);
       setData(propAds);
       if (propAds?.subCategory?.suggessionType?.length > 0) {
         setSuggestion(propAds.subCategory.suggessionType[0]);
@@ -289,60 +291,26 @@ const Product = ({ propAds }) => {
 
                 {/*  //TODO  STARTS RIGHT SIDE INFOS */}
 
-                <div>
-                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                    {
-                      // data?.positions?.location_id  &&
-                      data?.positions?.district_id &&
-                        districts?.map((d, i) => {
-                          return d._id == data.positions.district_id ? (
+                {data && (
+                  <div>
+                    <Button onClick={() => router.push(`/account/${data.user._id}`)}>{data.user?.phone}</Button>
+                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                      {data?.filters?.map((p, i) => {
+                        if (p.type != null) {
+                          return (
                             <ProductInfo
                               key={i}
-                              title={'Дүүрэг'}
-                              value={d.name}
-                              onClick={getFilterByItem(d.id, d.value)}
+                              title={p.name}
+                              id={p.type}
+                              value={p.input}
+                              onClick={() => getFilterByItem(p.type, p.input)}
                             />
-                          ) : (
-                            ''
                           );
-                        })
-                    }
-
-                    {data?.positions?.location_id && (
-                      <ProductInfo
-                        title={'Байршил'}
-                        value={data?.positions?.location_id}
-                      />
-                    )}
-                    {data?.positions?.committee_id && (
-                      <ProductInfo
-                        title={'Хороо'}
-                        tt="lowercase"
-                        value={data?.positions?.committee_id}
-                      />
-                    )}
-                    {data?.positions?.town?.value && (
-                      <ProductInfo
-                        title={'Хотхон'}
-                        value={data?.positions?.town.value}
-                      />
-                    )}
-
-                    {data?.filters?.map((p, i) => {
-                      if (p.id != null) {
-                        return (
-                          <ProductInfo
-                            key={i}
-                            title={p.name}
-                            id={p.id}
-                            value={p.value}
-                            onClick={() => getFilterByItem(p.id, p.value)}
-                          />
-                        );
-                      }
-                    })}
+                        }
+                      })}
+                    </div>
                   </div>
-                </div>
+                )}
                 {/*  //TODO  ENDING RIGHT SIDE INFOS */}
               </div>
             </Box>
@@ -351,7 +319,7 @@ const Product = ({ propAds }) => {
               {/* <Estimator /> */}
               {data && (
                 <ECalculator
-                  data={data?.filters?.filter((f) => f.id === 'price')}
+                  data={data?.filters?.filter((f) => f.type === 'price')}
                 />
               )}
             </Box>

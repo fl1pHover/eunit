@@ -13,7 +13,7 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-  useDisclosure,
+  useDisclosure
 } from '@chakra-ui/react';
 
 import { ContainerX } from '@/lib/Container';
@@ -21,7 +21,7 @@ import {
   GoogleMap,
   InfoWindow,
   MarkerF,
-  useLoadScript,
+  useLoadScript
 } from '@react-google-maps/api';
 import { useRouter } from 'next/router';
 import { useEffect, useMemo, useState } from 'react';
@@ -38,7 +38,7 @@ const Category = ({ propAds }) => {
     }
   };
   useEffect(() => {
-    setAds(propAds);
+    setAds(propAds?.ads);
   }, [propAds]);
 
   const [isLoading, setIsLoading] = useState(false);
@@ -111,7 +111,7 @@ const Category = ({ propAds }) => {
                 options={mapOptions}
                 onClick={(e) => {
                   // setMap(e.latLng.toJSON());
-                  console.log(e.latLng.toJSON());
+                  // console.log(e.latLng.toJSON());
                 }}
                 zoom={14}
                 center={mapCenter}

@@ -16,7 +16,6 @@ import 'swiper/css/grid';
 import 'swiper/css/navigation';
 
 // import required modules
-import { STYLES } from '@/styles/index';
 
 const AdContent = ({
   showLink,
@@ -25,7 +24,6 @@ const AdContent = ({
   title = 'Үл хөдлөх хөрөнгө',
   url = 'realState',
 }) => {
-
   const router = useRouter();
   return (
     <ContainerXP key={key} classname="pb-10">
@@ -65,11 +63,11 @@ const AdContent = ({
         ))}
       </Swiper> */}
 
-      <ul className="flex float-right list-style-none">
+      {/* <ul className="flex float-right list-style-none">
         <li className="disabled">
           <button
             className="page-link relative block py-1.5 px-3 border-0 bg-transparent outline-none transition-all duration-300 rounded text-gray-500 pointer-events-none focus:shadow-none"
-            tabindex="-1"
+            tabIndex="-1"
           >
             Өмнөх
           </button>
@@ -88,7 +86,7 @@ const AdContent = ({
         <li>
           <button className={mergeNames(STYLES.notActive)}>Дараах</button>
         </li>
-      </ul>
+      </ul> */}
     </ContainerXP>
   );
 };

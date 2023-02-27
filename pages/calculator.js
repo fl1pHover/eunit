@@ -61,7 +61,7 @@ const CalcInput = ({
 };
 
 function ECalculator({ data }) {
-  const [price, setPrice] = useState(parseInt(data[0]?.value ?? 0));
+  const [price, setPrice] = useState(parseInt(data[0]?.input ?? 0));
 
   // Zeeliin hemjee
   const [principal, setPrincipal] = useState(0);

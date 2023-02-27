@@ -36,10 +36,11 @@ const Admin = ({ propAds }) => {
       },
     })
       .then((d) => d.json())
-      .then((d) => setAds(d));
+      .then((d) => setAds(d?.ads));
   };
   useEffect(() => {
-    setAds(propAds);
+    setAds(propAds?.ads);
+    console.log(propAds);
   }, [propAds]);
   const verify = async (id) => {
     await fetch(`${urls['test']}/ad/check/${id}`).then((d) => getData());

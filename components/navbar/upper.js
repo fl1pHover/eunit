@@ -8,7 +8,6 @@ import { NavContainer } from '../../lib/Container';
 import urls from '@/constants/api';
 import { Image, useDisclosure } from '@chakra-ui/react';
 import { useAuth } from 'context/auth';
-import Cookies from 'js-cookie';
 import Link from 'next/link';
 import { useRef } from 'react';
 import BottomMenu from './bottomMenu';
@@ -48,7 +47,6 @@ const UpperNav = () => {
 
   useEffect(() => {
     setSize(calcSize(pt));
-    console.log(Cookies.get('currentUser'));
   }, [pt]);
 
   const searchAds = async (value) => {
