@@ -39,7 +39,6 @@ import currency from 'currency.js';
 import moment from 'moment/moment';
 import { useRouter } from 'next/router';
 import urls from '../../constants/api';
-import { useAuth } from '../../context/auth';
 
 import { getCookie } from 'cookies-next';
 // import 'yet-another-react-lightbox/styles.css';
@@ -48,7 +47,7 @@ const ProductInfo = ({
   value,
   id,
   children,
-  key = 0,
+
   tt = 'capitalize',
   onClick,
 }) => {
@@ -57,7 +56,7 @@ const ProductInfo = ({
       className={
         value.length > 20 ? 'product__info col-span-2' : 'product__info'
       }
-      key={key}
+
     >
       {children ? (
         children
@@ -71,7 +70,6 @@ const ProductInfo = ({
             cursor="pointer"
             textTransform={tt}
             fontWeight={'bold'}
-            cursor={'pointer'}
             onClick={onClick}
           >
             {id === 'price' || id === 'unitPrice'
@@ -88,7 +86,7 @@ const ProductInfo = ({
 
 const Product = ({ propAds }) => {
   const toast = useToast();
-  const { districts, locations } = useAuth();
+
   const router = useRouter();
   const [data, setData] = useState('');
   const [suggestion, setSuggestion] = useState();
@@ -149,7 +147,6 @@ const Product = ({ propAds }) => {
   };
   useEffect(() => {
     if (propAds) {
-      console.log(propAds);
       setData(propAds);
       if (propAds?.subCategory?.suggessionType?.length > 0) {
         setSuggestion(propAds.subCategory.suggessionType[0]);
@@ -158,7 +155,6 @@ const Product = ({ propAds }) => {
     }
   }, [propAds]);
 
-  const [open, setOpen] = useState(false);
 
   return (
     <Box m={5} as="section" id="main__product">
@@ -240,6 +236,7 @@ const Product = ({ propAds }) => {
                       <AspectRatio ratio={1}>
                         <ImageGallery
                           items={data?.images.map((i) => ({
+  
                             original: i,
                             thumbnail: i,
                           }))}
@@ -360,7 +357,7 @@ const Product = ({ propAds }) => {
                           Байршлаар
                         </option>
 
-                        <option value={'map'}>Газрын зургаар</option>
+                        <option value={'map'} key={i+1}>Газрын зургаар</option>
                       </>
                     );
                   case 'room':
@@ -375,15 +372,15 @@ const Product = ({ propAds }) => {
                           Өрөөгөөр
                         </option>
 
-                        <option value={'map'}>Газрын зургаар</option>
-                      </>
+                        <option value={'map'} key={i+1}>Газрын зургаар</option>
+                      </>+1
                     );
                 }
               })}
             </Select>
           </Box>
         </div>
-        <Text>{JSON.stringify(sData)}</Text>
+
         {suggestion == 'map' ? (
           <GoogleMap
             options={mapOptions}
@@ -398,10 +395,10 @@ const Product = ({ propAds }) => {
           >
             {isLoaded &&
               sData?.map((m, i) => {
-                console.log(m);
                 return (
                   <HStack key={i}>
                     <MarkerF
+                    key={i}
                       position={{
                         lat: parseFloat(m.location?.lat ?? 47.74604),
                         lng: parseFloat(m.location?.lng ?? 107.341515),

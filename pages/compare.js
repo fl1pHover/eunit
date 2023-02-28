@@ -1,66 +1,14 @@
+import { useAuth } from '@/context/auth';
 import { Image, Link } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import { BiRightArrowAlt } from 'react-icons/bi';
 import MainContainer from '../layout/mainContainer';
 import { STYLES } from '../styles';
 
-const compareTitle = [
-  {
-    title: 'Талбай',
-  },
-  {
-    title: 'Нэгж талбайн үнэ',
-  },
-  {
-    title: 'Дүүрэг',
-  },
-  {
-    title: 'Хороо',
-  },
-  {
-    title: 'Хотхон',
-  },
-  {
-    title: 'Ашиглалтад орсон он',
-  },
-  {
-    title: 'Барилгын давхар',
-  },
-  {
-    title: 'Хэдэн давхар',
-  },
-  {
-    title: 'Өрөө',
-  },
-  {
-    title: 'Угаалгын өрөө',
-  },
-  {
-    title: 'Мас/унтлагын өрөө',
-  },
-  {
-    title: 'Цонх',
-  },
-  {
-    title: 'Цонхны тоо',
-  },
-  {
-    title: 'Хаалга',
-  },
-  {
-    title: 'Шал',
-  },
-  {
-    title: 'Гараж',
-  },
-  {
-    title: 'Бартер',
-  },
-  {
-    title: 'Төлбөрийн нөхцөл',
-  },
-];
 
 const Comparing = () => {
+  const {compareAds, setCompareAds} = useAuth()
+  const router=useRouter()
   return (
     <div className="">
       <MainContainer>
@@ -79,58 +27,62 @@ const Comparing = () => {
             <h2 className="relative font-bold bg-[#eef0f2] p-2 z-0 flex justify-around">
               <span className="bg-[#eef0f2] absolute top-0 left-0 w-screen h-full z-[-1]" />
               <span>Мэдээлэл</span>
-              <span>\</span>
-              <span className="text-green-700">Үнэ</span>
+
             </h2>
             {/* Fixed information */}
             <div className="border-r border-r-blue">
-              {compareTitle.map((title, index) => (
+              {compareAds.length > 0 && compareAds[0]?.filters?.map((f, index) => (
                 <p
                   key={index}
                   className={`${
                     index % 2 == 0 ? ' ' : 'bg-gray-100 '
                   } whitespace-nowrap py-2 px-5`}
                 >
-                  {title.title}
+                  {f.name}
                 </p>
               ))}
             </div>
           </div>
           <div className="flex w-full overflow-x-scroll ">
             {/* Product 1 */}
-            <Link href="/" target="_blank">
+            {compareAds.length > 0 && compareAds.map((c,i) => {
+              return <div href="/" target="_blank" key={i}>
               <div className="min-w-[150px] max-w-[350px] flex-1 border-r border-r-blue">
                 <div
                   className={`${STYLES.height} ${STYLES.flexAround} px-5 py-5 flex-col`}
                 >
                   <Image
-                    src="/images/Category/computer.jpg"
+                    src={c.images[0] ?? "/images/Category/computer.jpg"}
                     alt=""
                     className="min-h-[100px] max-h-[200px]  object-cover mx-auto rounded-xl"
                   />
-                  <h1 className="font-bold">Lorem ipsum dolor sit amet.</h1>
-                  <button className="flex flex-row items-center gap-6 px-4 py-1 font-bold text-white bg-blue-500 rounded-2xl">
+                  <h1 className="font-bold">{c.title}</h1>
+                  <button className="flex flex-row items-center gap-6 px-4 py-1 font-bold text-white bg-blue-500 rounded-2xl"onClick={() => {
+                    router.push(`/product/${c.num}`).then(() => setCompareAds([]))}
+                    
+                  }>
                     Орох
                     <BiRightArrowAlt className="text-blue-800 bg-white rounded-full" />
                   </button>
                 </div>
                 <div className="text-center">
                   <h2 className="relative p-2 font-bold text-green-700">
-                    200,000$
+                    &nbsp;
                   </h2>
-                  {compareTitle.map((title, index) => (
+                  {c.filters?.map((f, index) => (
                     <p
                       key={index}
                       className={`${
                         index % 2 == 0 ? '' : 'bg-gray-100  '
                       } whitespace-nowrap py-2 px-5`}
                     >
-                      999
+                      {f.input}
                     </p>
                   ))}
                 </div>
               </div>
-            </Link>
+            </div>
+            })}
           </div>
         </div>
       </MainContainer>

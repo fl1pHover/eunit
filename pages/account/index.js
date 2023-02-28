@@ -7,6 +7,7 @@ import { STYLES } from '@/styles/index';
 import mergeNames from '@/util/mergeNames';
 import { getCookie } from 'cookies-next';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import { useState } from 'react';
 import Bookmark from './bookmark';
 import MyAds from './myAds';
@@ -15,9 +16,10 @@ import Profile from './profile';
 // /account
 
 const Account = ({ user }) => {
-  const [content, setContent] = useState('Profile');
-  const [active, setActive] = useState(false);
   const router = useRouter();
+  const [content, setContent] = useState( 'Profile');
+  const [active, setActive] = useState(false);
+
   const tabs = [
     {
       tabHeader: 'Хувийн мэдээлэл',
@@ -35,6 +37,10 @@ const Account = ({ user }) => {
       comp: <Bookmark user={user}/>,
     },
   ];
+useEffect(() => {
+  
+  setContent(router?.query?.tab)
+}, [router?.query?.tab])
 
   return (
     <MainContainer py={5}>
@@ -81,6 +87,7 @@ const Account = ({ user }) => {
           </div>
 
           {tabs.map((tab, index) => {
+
             return (
               tab.title && (
                 <div key={index}>{content === tab.title && tab.comp}</div>

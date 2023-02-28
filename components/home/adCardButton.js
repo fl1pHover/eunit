@@ -7,7 +7,9 @@ import { Tooltip, useToast } from '@chakra-ui/react';
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
 import { BiGitCompare } from 'react-icons/bi';
+import { useAuth } from '@/context/auth';
 const AdCardButton = ({ id }) => {
+  const {compareAds, setCompareAds} = useAuth()
   const toast = useToast();
   const [isLiked, setIsLiked] = React.useState(false);
   const token = getCookie('token');
@@ -31,6 +33,21 @@ const AdCardButton = ({ id }) => {
       console.log(err.response.data.message);
     }
   };
+  const getCompareAd = async () => {
+    try {
+      await axios.get(`${urls['test']}/ad/id/${id}`).then((d) => {
+        if(compareAds.length <= 4) {
+          if(compareAds.length > 0) {
+            compareAds[0].subCategory._id == d.data.subCategory._id ? setCompareAds(prev => [...prev, d.data]) : toast('error')
+          } else {
+            setCompareAds(prev => [...prev, d.data])
+          }
+        }
+      })
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
   const cardIcon = {
     div: 'flex items-center justify-center transition-all duration-300 ease-in-out rounded-full bg-slate-200/40 group-a hover:bg-slate-200 hidden sm:block ',
@@ -64,7 +81,7 @@ const AdCardButton = ({ id }) => {
       </Tooltip>
 
       <Tooltip label="Харьцуулах">
-        <button className={mergeNames(cardIcon.div)}>
+        <button className={mergeNames(cardIcon.div)} onClick={() => getCompareAd()}>
           <BiGitCompare
             className={mergeNames('text-blue-700', cardIcon.icon)}
           />

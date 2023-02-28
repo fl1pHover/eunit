@@ -13,6 +13,7 @@ import {
   Radio,
   RadioGroup,
   Select,
+  Skeleton,
   Text,
   useDisclosure,
   VStack,
@@ -30,8 +31,6 @@ import { MdFilterList } from 'react-icons/md';
 import FilterStack from '../../util/filterStack';
 
 const FilterLayout = ({ data, isOpenMap }) => {
-  const [filter, setFilter] = useState();
-  const [filterSent, setFilterSent] = useState();
   const { setAds } = useAuth();
   const [subCategory, setSubCategory] = useState();
   const router = useRouter();
@@ -85,24 +84,6 @@ const FilterLayout = ({ data, isOpenMap }) => {
     } catch (e) {
       console.log(e);
     }
-  };
-  const setFilters = (id, e, isMaxValue) => {
-    e.preventDefault();
-
-    filterSent.map((f, i) => {
-      if (f.id == id) {
-        if (f.value.length == 0) {
-          if (isMaxValue) {
-            f.max = e.target.value;
-          } else {
-            f.input = e.target.value;
-          }
-        } else {
-          f.input = e.target.value;
-        }
-        f.value = [];
-      }
-    });
   };
 
   return (
@@ -193,14 +174,14 @@ const FilterLayout = ({ data, isOpenMap }) => {
                 borderColor={'mainBlue'}
                 defaultChecked
                 onChange={(e) =>
-                  setAdType((adType) => ({ ...adType, sell: e.target.checked }))
+                  setAdType((prev) => ({ ...prev, sell: e.target.checked }))
                 }
               >
                 Зарна.
               </Checkbox>
               <Checkbox
                 onChange={(e) =>
-                  setAdType((adType) => ({ ...adType, rent: e.target.checked }))
+                  setAdType((prev) => ({ ...prev, rent: e.target.checked }))
                 }
               >
                 Түрээслүүлнэ
@@ -260,12 +241,14 @@ const FilterLayout = ({ data, isOpenMap }) => {
                       );
                     })}
                   </Select>
-                );
-              })}
 
-              <Button variant={'blueButton'} mx={4} onClick={() => filterAd()}>
+              )})}
+
+<Button variant={'blueButton'} mx={4} onClick={() => filterAd()}>
                 Хайх
               </Button>
+
+              {/* <LoadingButton text="Хайх" onClick={() => filterAd()} /> */}
             </FilterStack>
           </DrawerBody>
         </DrawerContent>

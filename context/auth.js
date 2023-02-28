@@ -12,7 +12,7 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState();
   const [ads, setAds] = useState();
-
+  const [compareAds, setCompareAds] = useState([])
   async function loadUserFromCookies() {
     const token = getCookie('token');
     setLoading(true);
@@ -121,6 +121,8 @@ export const AuthProvider = ({ children }) => {
         signup,
         ads,
         setAds,
+        setCompareAds,
+        compareAds
       }}
     >
       {children}

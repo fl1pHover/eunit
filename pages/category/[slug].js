@@ -39,7 +39,7 @@ const Category = ({ propAds }) => {
   };
   useEffect(() => {
     setAds(propAds?.ads);
-    console.log(propAds);
+
   }, [propAds]);
 
   const [isLoading, setIsLoading] = useState(false);

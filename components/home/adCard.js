@@ -9,11 +9,9 @@ import { Image, Skeleton, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import AdCardButton from './adCardButton';
 
-const Card = ({ item }) => {
-  const router = useRouter();
-
+const Card = ({ item , }) => {
   return (
-    <Skeleton isLoaded>
+    <Skeleton isLoaded >
       <div
         className="relative overflow-hidden rounded-md shadow-md bg-zinc-200 group "
         // onClick={() => item && item._id && router.push(`/product/${item.num}`)}

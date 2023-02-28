@@ -23,22 +23,26 @@ const drawerItem = [
   {
     icon: <CgProfile />,
     text: 'Хувийн мэдээлэл',
+    href: 'Profile'
   },
   {
     icon: <BsGrid />,
     text: 'Миний зарууд',
+    href: 'MyAds'
   },
   {
     icon: <FiHeart />,
     text: 'Миний хүслүүд',
+    href: 'Bookmark'
   },
   {
     icon: <IoWalletOutline />,
     text: 'Хэтэвч',
+    href: 'wallet'
   },
 ];
 
-const BodyDrawer = (onClose, ...props) => {
+const BodyDrawer = () => {
   const { user, logout } = useAuth();
   const router = useRouter();
 
@@ -73,7 +77,7 @@ const BodyDrawer = (onClose, ...props) => {
               <DownLink
                 key={i}
                 icon={d.icon}
-                onClick={() => router.push('/account')}
+                onClick={() => router.push({pathname: '/account', query: {tab: `${d.href}`, }}, null, {shallow: true})}
                 text={d.text}
               />
             );
