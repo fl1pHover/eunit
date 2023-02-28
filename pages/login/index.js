@@ -4,6 +4,7 @@ import { STYLES } from '@/styles/index';
 import mergeNames from '@/util/mergeNames';
 import { Box, FormControl, FormLabel, Image, Input } from '@chakra-ui/react';
 import { useAuth } from 'context/auth';
+import { getCookie } from 'cookies-next';
 
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -113,6 +114,20 @@ export default function Login() {
       </div>
     </ContainerXP>
   );
+}
+
+export async function getServerSideProps({ req, res }) {
+  // const res = await fetch(`${urls['test']}/category`);
+  // const resjson = await res.json();
+  const token = getCookie('token', { req, res });
+  // const categories = resjson?.categories;
+  if (token)
+    return {
+      redirect: {
+        destination: '/account',
+        permanent: false,
+      },
+    };
 }
 
 export const LoginComp = ({ credential, setCredential, fc }) => {

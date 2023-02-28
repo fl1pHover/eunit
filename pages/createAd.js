@@ -167,6 +167,7 @@ export default function CreateAd({ categories }) {
             duration: 1000,
             isClosable: true,
           });
+          router.reload();
           // router.push('/');
         });
       console.log(ad);
@@ -245,7 +246,7 @@ export default function CreateAd({ categories }) {
                     onClick={(e) => {
                       setMap(e.latLng.toJSON());
                     }}
-                    zoom={14}
+                  zoom={14}
                     center={mapCenter}
                     mapTypeId={google.maps.MapTypeId.ROADMAP}
                     mapContainerStyle={{ width: '100%', height: '40vh' }}

@@ -75,8 +75,7 @@ const Bookmark = () => {
       await axios
         .post(`${urls['test']}/ad/many/${0}`, user.bookmarks)
         .then((d) => {
-          setProducts(d.data);
-          console.log(d);
+          setProducts(d.data.ads);
         })
         .then((a) => setIsLoading(false));
     } catch (error) {

@@ -55,13 +55,16 @@ export const AuthProvider = ({ children }) => {
           email,
           password,
         });
-        if (data?.token) {
+        console.log(data);
+        if (data?.token && data.user.status == 'active') {
           setCookie('token', data.token);
 
           setUser(data.user);
           if (data.user.userType == 'admin' || data.user.userType == 'system')
             window.location.pathname = '/admin';
           else window.location.pathname = '/account';
+        } else {
+          window.location.pathname = '/account/check';
         }
       } catch (error) {
         setLoading(false);
@@ -87,11 +90,9 @@ export const AuthProvider = ({ children }) => {
           }
         );
 
-        if (data?.token) {
-          setCookie('token', data.token);
+        if (!data) {
 
-          setUser(data.user);
-          window.location.pathname = '/account';
+          window.location.pathname = '/account/check';
         }
       } catch (err) {
         setLoading(false);

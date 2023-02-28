@@ -15,7 +15,6 @@ const MyAds = ({ user }) => {
         .post(`${urls['test']}/ad/many/${0}`, user.ads)
         .then((d) => {
           setProducts(d.data);
-          console.log(d);
         })
         .then((a) => setIsLoading(false));
     } catch (error) {

@@ -28,7 +28,7 @@ const Step3 = ({ filter }) => {
   return (
     <div className="grid w-full md:grid-cols-2 ">
       {filter?.values?.map((f, i) => {
-        if (f.mark == 'year')
+        if (f.types == 'date')
           return (
             <ItemContainer>
               <FormLabel title={f.name} />
@@ -39,7 +39,7 @@ const Step3 = ({ filter }) => {
               />
             </ItemContainer>
           );
-        if (f.types == 'date')
+        if (f.types == 'year')
           return (
             <ItemContainer>
               <FormLabel title={f.name + ' / жил'} />
