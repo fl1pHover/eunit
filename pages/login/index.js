@@ -79,7 +79,7 @@ export default function Login() {
               setCredential={setCredential}
               fc={signIn}
             />
-            <p className="">Амжилттай нэвтэрлээ</p>
+            {/* <p className="">Амжилттай нэвтэрлээ</p> */}
             <p className="my-10 text-sm font-bold text-gray-600">
               Та бүртгүүлээгүй юм биш биз?{' '}
               <button className="text-blue-800" onClick={() => setSign(2)}>
@@ -90,7 +90,7 @@ export default function Login() {
         )}
         {sign == 2 && (
           <div className={mergeNames(STYLES.loginWidth)}>
-            <Image
+            <Image 
               src="/images/logo/bom-blue-text.png"
               alt="bom logo"
               className="w-[150px] mx-auto mb-10"
