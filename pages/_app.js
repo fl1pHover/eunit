@@ -5,6 +5,7 @@ import { useState } from 'react';
 
 import Navbar from '@/components/navbar/index';
 import Layout from '@/layout/layout';
+import { MainLoader } from '@/lib/Loader';
 import ScrollTop from '@/lib/ScrollTop';
 import theme from '@/lib/theme';
 import '@/styles/globals.scss';
