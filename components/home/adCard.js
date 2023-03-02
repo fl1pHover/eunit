@@ -10,11 +10,12 @@ import { useRouter } from 'next/router';
 import AdCardButton from './adCardButton';
 
 const Card = ({ item , }) => {
+  const router = useRouter()
   return (
     <Skeleton isLoaded >
       <div
         className="relative overflow-hidden rounded-md shadow-md bg-zinc-200 group "
-        // onClick={() => item && item._id && router.push(`/product/${item.num}`)}
+        onClick={() => item && item._id && router.push(`/product/${item.num}`)}
       >
         <div className="md:min-h-[35vh] min-h-[30vh] h-full w-full relative">
           {item?.images && (

@@ -1,31 +1,32 @@
-import { ContainerXP } from '@/lib/Container';
-import { STYLES } from '@/styles/index';
+import { ContainerXP } from "@/lib/Container";
+import { STYLES } from "@/styles/index";
 
-import mergeNames from '@/util/mergeNames';
-import { Box, FormControl, FormLabel, Image, Input } from '@chakra-ui/react';
-import { useAuth } from 'context/auth';
-import { getCookie } from 'cookies-next';
+import mergeNames from "@/util/mergeNames";
+import { Box, FormControl, FormLabel, Image, Input } from "@chakra-ui/react";
+import { useAuth } from "context/auth";
+import { getCookie } from "cookies-next";
+import { redirect } from "next/dist/server/api-utils";
 
-import { useRouter } from 'next/router';
-import { useState } from 'react';
-import { BiHide, BiShow } from 'react-icons/bi';
+import { useRouter } from "next/router";
+import { useState } from "react";
+import { BiHide, BiShow } from "react-icons/bi";
 
 export default function Login() {
   const { logout, login, signup } = useAuth();
   const [signupCredential, setSignupcredential] = useState({
-    email: '',
-    phone: '',
-    password: '',
-    confirmPassword: '',
-    username: '',
+    email: "",
+    phone: "",
+    password: "",
+    confirmPassword: "",
+    username: "",
   });
   const router = useRouter();
-  const [credential, setCredential] = useState({ email: '', password: '' });
+  const [credential, setCredential] = useState({ email: "", password: "" });
   const signUp = () => {
     if (
       signupCredential.password == signupCredential.confirmPassword &&
-      signupCredential.email != '' &&
-      setSignupcredential.password != ''
+      signupCredential.email != "" &&
+      setSignupcredential.password != ""
     ) {
       signup(
         signupCredential.email,
@@ -41,8 +42,8 @@ export default function Login() {
       login(credential.email, credential.password);
       setCredential((credential) => ({
         ...credential,
-        email: '',
-        password: '',
+        email: "",
+        password: "",
       }));
     }
   };
@@ -52,9 +53,9 @@ export default function Login() {
   return (
     <ContainerXP
       classname={mergeNames(
-        'w-[auto] md:w-[800px] lg:w-[1000px] ',
-        'relative grid grid-cols-1 md:grid-cols-2',
-        'mx-auto my-5 md:my-10 rounded-xl overflow-hidden'
+        "w-[auto] md:w-[800px] lg:w-[1000px] ",
+        "relative grid grid-cols-1 md:grid-cols-2",
+        "mx-auto my-5 md:my-10 rounded-xl overflow-hidden"
       )}
     >
       <div className="relative hidden bg-blue-900 md:block">
@@ -80,9 +81,8 @@ export default function Login() {
               setCredential={setCredential}
               fc={signIn}
             />
-            <p className="">Амжилттай нэвтэрлээ</p>
             <p className="my-10 text-sm font-bold text-gray-600">
-              Та бүртгүүлээгүй юм биш биз?{' '}
+              Та бүртгүүлээгүй юм биш биз?{" "}
               <button className="text-blue-800" onClick={() => setSign(2)}>
                 Бүртгүүлэх
               </button>
@@ -104,7 +104,7 @@ export default function Login() {
               fc={signUp}
             />
             <p className="text-sm font-bold text-gray-600 my-7">
-              Та хэдий нь бүртгэлтэй юу?{' '}
+              Та хэдий нь бүртгэлтэй юу?{" "}
               <button className="text-blue-800" onClick={() => setSign(1)}>
                 Нэвтрэх
               </button>
@@ -119,15 +119,22 @@ export default function Login() {
 export async function getServerSideProps({ req, res }) {
   // const res = await fetch(`${urls['test']}/category`);
   // const resjson = await res.json();
-  const token = getCookie('token', { req, res });
+  const token = getCookie("token", { req, res });
   // const categories = resjson?.categories;
   if (token)
     return {
       redirect: {
-        destination: '/account',
+        destination: "/account",
         permanent: false,
       },
     };
+  else {
+    return {
+      props: {
+        route: false
+      }
+    };
+  }
 }
 
 export const LoginComp = ({ credential, setCredential, fc }) => {
@@ -135,15 +142,15 @@ export const LoginComp = ({ credential, setCredential, fc }) => {
     <FormControl>
       <Box h={3} />
       <InputComp
-        lbl={'Та И-Мэйл хаягаа оруулна уу'}
+        lbl={"Та И-Мэйл хаягаа оруулна уу"}
         type="email"
         setValue={setCredential}
         value={credential.email}
-        v={'email'}
+        v={"email"}
       />
       <Box h={4} />
       <InputComp
-        lbl={'Та нууц үгээ оруулна уу'}
+        lbl={"Та нууц үгээ оруулна уу"}
         type="password"
         value={credential.password}
         setValue={setCredential}
@@ -163,7 +170,7 @@ export const LoginComp = ({ credential, setCredential, fc }) => {
       /> */}
 
       <button
-        className={mergeNames('w-full h-auto py-3 ', STYLES.blueButton)}
+        className={mergeNames("w-full h-auto py-3 ", STYLES.blueButton)}
         onClick={() => fc()}
       >
         Нэвтрэх
@@ -177,7 +184,7 @@ export const SignUpComp = ({ credential, setCredential, fc }) => {
     <FormControl>
       <Box h={3} />
       <InputComp
-        lbl={'Та И-Мэйл хаягаа оруулна уу'}
+        lbl={"Та И-Мэйл хаягаа оруулна уу"}
         type="email"
         value={credential.email}
         setValue={setCredential}
@@ -185,7 +192,7 @@ export const SignUpComp = ({ credential, setCredential, fc }) => {
       />
       <Box h={4} />
       <InputComp
-        lbl={'Та утасны дугаараа оруулна уу'}
+        lbl={"Та утасны дугаараа оруулна уу"}
         type="tel"
         value={credential.phone}
         setValue={setCredential}
@@ -193,7 +200,7 @@ export const SignUpComp = ({ credential, setCredential, fc }) => {
       />
       <Box h={4} />
       <InputComp
-        lbl={'Та нэрээ оруулна уу'}
+        lbl={"Та нэрээ оруулна уу"}
         type="text"
         value={credential.username}
         setValue={setCredential}
@@ -201,7 +208,7 @@ export const SignUpComp = ({ credential, setCredential, fc }) => {
       />
       <Box h={4} />
       <InputComp
-        lbl={'Та нууц үгээ оруулна уу'}
+        lbl={"Та нууц үгээ оруулна уу"}
         type="password"
         value={credential.password}
         setValue={setCredential}
@@ -209,7 +216,7 @@ export const SignUpComp = ({ credential, setCredential, fc }) => {
       />
       <Box h={4} />
       <InputComp
-        lbl={'Та нууц үгээ дахин оруулна уу'}
+        lbl={"Та нууц үгээ дахин оруулна уу"}
         type="password"
         value={credential.confirmPassword}
         setValue={setCredential}
@@ -225,7 +232,7 @@ export const SignUpComp = ({ credential, setCredential, fc }) => {
       /> */}
 
       <button
-        className={mergeNames('w-full h-auto py-3', STYLES.blueButton)}
+        className={mergeNames("w-full h-auto py-3", STYLES.blueButton)}
         onClick={() => fc()}
       >
         Бүртүүлэх
@@ -239,41 +246,41 @@ export const InputComp = ({ lbl, type, value, setValue, v }) => {
   const handleClick = () => setShow(!show);
 
   return (
-    <Box bg={'bg.input'} borderRadius={12} w="full">
+    <Box bg={"bg.input"} borderRadius={12} w="full">
       <FormControl variant="floating" id="first-name" isRequired>
         <Input
           placeholder=" "
           border="1px solid #d9d9d9 "
           className="relative text-[14px] rounded-full"
-          type={type === 'password' ? (!show ? 'password' : 'text') : 'text'}
+          type={type === "password" ? (!show ? "password" : "text") : "text"}
           value={value}
           onChange={(e) => {
             switch (v) {
-              case 'email':
+              case "email":
                 setValue((value) => ({
                   ...value,
                   email: e.target.value,
                 }));
                 break;
-              case 'phone':
+              case "phone":
                 setValue((value) => ({
                   ...value,
                   phone: e.target.value,
                 }));
                 break;
-              case 'password':
+              case "password":
                 setValue((value) => ({
                   ...value,
                   password: e.target.value,
                 }));
                 break;
-              case 'confirmPassword':
+              case "confirmPassword":
                 setValue((value) => ({
                   ...value,
                   confirmPassword: e.target.value,
                 }));
                 break;
-              case 'username':
+              case "username":
                 setValue((value) => ({
                   ...value,
                   username: e.target.value,
@@ -284,7 +291,7 @@ export const InputComp = ({ lbl, type, value, setValue, v }) => {
             }
           }}
         />
-        {type === 'password' && (
+        {type === "password" && (
           <button
             onClick={handleClick}
             className="absolute top-[50%] -translate-y-[50%] right-0 w-[40px] h-[40px] z-10 grid place-items-center "

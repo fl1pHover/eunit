@@ -254,7 +254,7 @@ export default function CreateAd({ categories }) {
                     {isLoaded && map && (
                       <MarkerF
                         position={map}
-                        onClick={() => setMarkerActive(i)}
+                        onClick={() => {}}
                         animation={google.maps.Animation.DROP}
                       />
                     )}

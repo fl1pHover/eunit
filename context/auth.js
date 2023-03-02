@@ -4,10 +4,12 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import urls from 'constants/api';
 import { deleteCookie, getCookie, setCookie } from 'cookies-next';
+import { useToast } from '@chakra-ui/react';
 
 const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
+  const toast = useToast()
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState();
@@ -55,11 +57,16 @@ export const AuthProvider = ({ children }) => {
           email,
           password,
         });
-        console.log(data);
         if (data?.token && data.user.status == 'active') {
           setCookie('token', data.token);
 
           setUser(data.user);
+          toast({
+            title: 'Амжилттай нэвтэрлээ',
+            status: 'success',
+            duration: 5000,
+            isClosable: true,
+          })
           if (data.user.userType == 'admin' || data.user.userType == 'system')
             window.location.pathname = '/admin';
           else window.location.pathname = '/account';

@@ -8,26 +8,25 @@ import {
   NumberInput,
   NumberInputField,
   NumberInputStepper,
+  Text,
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import ButtonSelectItem from '../formButtonSelectItem';
 import FormLabel from '../formLabel';
 
 const Step3 = ({ filter }) => {
-  const [roomNumber, setRoomNumber] = useState(false);
-  const [bedRoomNumber, setBedRoomNumber] = useState(false);
-  const [bathroomNumber, setBathroomNumber] = useState(false);
   const [usedYear, setUsedYear] = useState(false);
   const [selected, setSelected] = useState({
     bathroom: '',
     masterRoom: '',
   });
-  const [building, setBuilding] = useState({ allFloor: false, floor: false });
+  const [selectedParent, setSelectedParent] = useState([])
   // const [filters, setFilters] = useState(filter)
 
   return (
     <div className="grid w-full md:grid-cols-2 ">
       {filter?.values?.map((f, i) => {
+
         if (f.types == 'date')
           return (
             <ItemContainer>
@@ -126,12 +125,13 @@ const Step3 = ({ filter }) => {
             </ItemContainer>
           );
         if (f.types == 'dropdown')
-          return (
+       return  f.parentId == null  ? 
+           
             <ItemContainer
             //  className="bg-red-100"
             >
               <FormLabel title={f.name} />
-              {f.parentId == null ? (
+              
                 <Select
                   width="long"
                   data={f.value}
@@ -142,6 +142,27 @@ const Step3 = ({ filter }) => {
                         {...props}
                         onClick={() => {
                           f.input = data;
+                          let isNull =  selectedParent.findIndex((s) => s.parent == f.type)
+                          
+                          if(isNull > -1) {
+                            let selectedArr = [...selectedParent]
+                            
+                            selectedArr[isNull] = {
+                              id,
+                              parent: f.type,
+                              index: i
+                            }
+                            setSelectedParent(selectedArr)
+
+                          } else {
+                            
+                          setSelectedParent([...selectedParent, {
+                            id: id,
+                            parent: f.type,
+                            index: i
+                          }])
+                          }
+  
                           onClick();
                         }}
                       >
@@ -151,29 +172,80 @@ const Step3 = ({ filter }) => {
                     );
                   }}
                 />
-              ) : (
-                <Select
-                  width="long"
-                  data={filter.filter((fil) => fil.id == f.parentId)[0]?.values}
-                  label={f.input != '' ? f.input : f.name}
-                  Item={({ data, onClick, id, ...props }) => {
-                    return (
-                      <button
-                        {...props}
-                        onClick={() => {
-                          f.value = data.value;
-                          onClick();
-                        }}
-                      >
-                        {data.value}
-                        {props.children}
-                      </button>
-                    );
-                  }}
-                />
-              )}
+              
             </ItemContainer>
-          );
+           : (selectedParent.find((d) => d.parent == f.parentId) != undefined && f.value.length> 0) ? <ItemContainer>
+           <FormLabel title={f.name}/>
+           
+               <Select
+                 width="long"
+                 data={f.value.filter((fv) => {
+                   let parent = selectedParent.find((s) => s.id == fv.parentId && s.parent == s.parent)
+                   if(parent != undefined) return fv
+                 })}
+                 label={f.input != '' ? f.input : f.name}
+                 Item={({ data, onClick, id, ...props }) => {
+                   return (
+                     <button
+                       {...props}
+                       onClick={() => {
+                         f.input = data;
+                         let isNull =  selectedParent.find((s) => s == id)
+                         if(isNull == undefined) {
+                           setSelectedParent([...selectedParent,  {
+                            id: id,
+                            parent: f.type,
+                            index: i
+                          }])
+                         }
+                         onClick();
+                       }}
+                     >
+                       {data}
+                       {props.children}
+                     </button>
+                   );
+                 }}
+               />
+             
+         </ItemContainer> : <ItemContainer>
+         <FormLabel title={f.name}/>
+         <Select
+                 width="long"
+                 data={filter?.values?.filter((fv, ind) => {
+                  let index = selectedParent.find((sf) => sf.parent == f.parentId)
+                  if(index != undefined){
+                  
+                  
+                  if(ind == index.index) {
+                    let value = fv.input
+                    console.log(value)
+                    return fv
+                  }
+                  
+                  }
+                 })[0]?.value}
+                 label={f.input != '' ? f.input : f.name}
+                 Item={({ data, onClick, id, ...props }) => {
+                   return (
+                     <button
+                       {...props}
+                       onClick={() => {
+                         f.input = data;
+                         let isNull =  selectedParent.find((s) => s == id)
+                         if(isNull == undefined) {
+                           setSelectedParent((prev) => [...prev, id])
+                         }
+                         onClick();
+                       }}
+                     >
+                       {data}
+                       {props.children}
+                     </button>
+                   );
+                 }}
+               />
+         </ItemContainer>
       })}
     </div>
   );

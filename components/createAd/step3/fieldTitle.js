@@ -9,7 +9,7 @@ const FieldTitle = ({ setGeneralData = () => {}, generalData }) => {
         onChange={(e) => {
           setGeneralData((prev) => ({ ...prev, title: e.target.value }));
         }}
-        maxlength="100"
+        maxLength="100"
         placeholder="Гарчиг"
         className="w-full px-4 py-2 border-2 rounded-full border-blue-400/70 ring-blue-400 invalid:border-blue-400 outline-blue-400"
       />
