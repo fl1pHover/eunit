@@ -1,9 +1,7 @@
-import { Center, ChakraProvider } from '@chakra-ui/react';
+import { ChakraProvider } from '@chakra-ui/react';
 import { AuthProvider, useAuth } from 'context/auth';
 import { AnimatePresence } from 'framer-motion';
-import Head from 'next/head';
 import { useState } from 'react';
-import PulseLoader from 'react-spinners/PulseLoader';
 
 import Navbar from '@/components/navbar/index';
 import Layout from '@/layout/layout';
@@ -29,14 +27,7 @@ function MyApp({ Component, pageProps }) {
           </AnimatePresence>
         </ChakraProvider>
       ) : (
-        <Center width={'100vw'} height="100vh" className="loader">
-          <Head>
-            <title>BOM</title>
-            <meta name="description" content="Bom, zariin site" />
-            {/* <link rel="icon" href="/favicon.ico" /> */}
-          </Head>
-          <PulseLoader color={color} loading={loading} size={30} />
-        </Center>
+        <MainLoader />
       )}
     </AuthProvider>
 
