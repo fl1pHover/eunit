@@ -39,7 +39,6 @@ import currency from 'currency.js';
 import moment from 'moment/moment';
 import { useRouter } from 'next/router';
 import urls from '../../constants/api';
-import { useAuth } from '../../context/auth';
 
 import { getCookie } from 'cookies-next';
 // import 'yet-another-react-lightbox/styles.css';
@@ -48,7 +47,7 @@ const ProductInfo = ({
   value,
   id,
   children,
-  key = 0,
+
   tt = 'capitalize',
   onClick,
 }) => {
@@ -57,7 +56,7 @@ const ProductInfo = ({
       className={
         value.length > 20 ? 'product__info col-span-2' : 'product__info'
       }
-      key={key}
+
     >
       {children ? (
         children
@@ -67,10 +66,10 @@ const ProductInfo = ({
           className="h-full p-2 border-2 rounded-md border-bgGrey"
         >
           <Text textTransform={'capitalize'}>{title}: </Text>
-          <Button
+          <Text
+            cursor="pointer"
             textTransform={tt}
             fontWeight={'bold'}
-            cursor={'pointer'}
             onClick={onClick}
           >
             {id === 'price' || id === 'unitPrice'
@@ -78,7 +77,7 @@ const ProductInfo = ({
                   .format()
                   .toString()
               : value}
-          </Button>
+          </Text>
         </Stack>
       )}
     </GridItem>
@@ -87,7 +86,7 @@ const ProductInfo = ({
 
 const Product = ({ propAds }) => {
   const toast = useToast();
-  const { districts, locations } = useAuth();
+
   const router = useRouter();
   const [data, setData] = useState('');
   const [suggestion, setSuggestion] = useState();
@@ -117,17 +116,16 @@ const Product = ({ propAds }) => {
         switch (suggest) {
           case 'room':
             id = 'room';
-            value = ad?.filters.filter((f) => f.id == 'room')[0].value;
+            value = ad?.filters.filter((f) => f.type == 'room')[0].input;
             break;
           case 'location':
             id = 'district';
-            value = ad?.filters.filter((f) => f.id == 'district')[0].value;
+            value = ad?.filters.filter((f) => f.type == 'district')[0].input;
             break;
         }
         await axios
           .get(`${urls['test']}/ad/filter/${id}/${value}/${0}`)
           .then((d) => {
-            console.log(d, suggest);
             setsData([]);
             setsData(d.data);
           });
@@ -137,11 +135,12 @@ const Product = ({ propAds }) => {
     }
   };
   const getFilterByItem = async (id, value) => {
-    console.log(id, value);
     try {
-      await axios.get(`${urls['test']}/ad/filter/${id}/${value}`).then((d) => {
-        setsData(d.data), console.log(d.data);
-      });
+      await axios
+        .get(`${urls['test']}/ad/filter/${id}/${value}/0`)
+        .then((d) => {
+          setsData(d.data), console.log(d.data);
+        });
     } catch (error) {
       console.error(error);
     }
@@ -156,7 +155,6 @@ const Product = ({ propAds }) => {
     }
   }, [propAds]);
 
-  const [open, setOpen] = useState(false);
 
   return (
     <Box m={5} as="section" id="main__product">
@@ -238,6 +236,7 @@ const Product = ({ propAds }) => {
                       <AspectRatio ratio={1}>
                         <ImageGallery
                           items={data?.images.map((i) => ({
+  
                             original: i,
                             thumbnail: i,
                           }))}
@@ -289,60 +288,26 @@ const Product = ({ propAds }) => {
 
                 {/*  //TODO  STARTS RIGHT SIDE INFOS */}
 
-                <div>
-                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                    {
-                      // data?.positions?.location_id  &&
-                      data?.positions?.district_id &&
-                        districts?.map((d, i) => {
-                          return d._id == data.positions.district_id ? (
+                {data && (
+                  <div>
+                    <Button onClick={() => router.push(`/account/${data.user._id}`)}>{data.user?.phone}</Button>
+                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                      {data?.filters?.map((p, i) => {
+                        if (p.type != null) {
+                          return (
                             <ProductInfo
                               key={i}
-                              title={'Дүүрэг'}
-                              value={d.name}
-                              onClick={getFilterByItem(d.id, d.value)}
+                              title={p.name}
+                              id={p.type}
+                              value={p.input}
+                              onClick={() => getFilterByItem(p.type, p.input)}
                             />
-                          ) : (
-                            ''
                           );
-                        })
-                    }
-
-                    {data?.positions?.location_id && (
-                      <ProductInfo
-                        title={'Байршил'}
-                        value={data?.positions?.location_id}
-                      />
-                    )}
-                    {data?.positions?.committee_id && (
-                      <ProductInfo
-                        title={'Хороо'}
-                        tt="lowercase"
-                        value={data?.positions?.committee_id}
-                      />
-                    )}
-                    {data?.positions?.town?.value && (
-                      <ProductInfo
-                        title={'Хотхон'}
-                        value={data?.positions?.town.value}
-                      />
-                    )}
-
-                    {data?.filters?.map((p, i) => {
-                      if (p.id != null) {
-                        return (
-                          <ProductInfo
-                            key={i}
-                            title={p.name}
-                            id={p.id}
-                            value={p.value}
-                            onClick={() => getFilterByItem(p.id, p.value)}
-                          />
-                        );
-                      }
-                    })}
+                        }
+                      })}
+                    </div>
                   </div>
-                </div>
+                )}
                 {/*  //TODO  ENDING RIGHT SIDE INFOS */}
               </div>
             </Box>
@@ -351,7 +316,7 @@ const Product = ({ propAds }) => {
               {/* <Estimator /> */}
               {data && (
                 <ECalculator
-                  data={data?.filters?.filter((f) => f.id === 'price')}
+                  data={data?.filters?.filter((f) => f.type === 'price')}
                 />
               )}
             </Box>
@@ -392,7 +357,7 @@ const Product = ({ propAds }) => {
                           Байршлаар
                         </option>
 
-                        <option value={'map'}>Газрын зургаар</option>
+                        <option value={'map'} key={i+1}>Газрын зургаар</option>
                       </>
                     );
                   case 'room':
@@ -407,15 +372,15 @@ const Product = ({ propAds }) => {
                           Өрөөгөөр
                         </option>
 
-                        <option value={'map'}>Газрын зургаар</option>
-                      </>
+                        <option value={'map'} key={i+1}>Газрын зургаар</option>
+                      </>+1
                     );
                 }
               })}
             </Select>
           </Box>
         </div>
-        <Text>{JSON.stringify(sData)}</Text>
+
         {suggestion == 'map' ? (
           <GoogleMap
             options={mapOptions}
@@ -430,10 +395,10 @@ const Product = ({ propAds }) => {
           >
             {isLoaded &&
               sData?.map((m, i) => {
-                console.log(m);
                 return (
                   <HStack key={i}>
                     <MarkerF
+                    key={i}
                       position={{
                         lat: parseFloat(m.location?.lat ?? 47.74604),
                         lng: parseFloat(m.location?.lng ?? 107.341515),

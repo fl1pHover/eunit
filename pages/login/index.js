@@ -4,6 +4,7 @@ import { STYLES } from '@/styles/index';
 import mergeNames from '@/util/mergeNames';
 import { Box, FormControl, FormLabel, Image, Input } from '@chakra-ui/react';
 import { useAuth } from 'context/auth';
+import { getCookie } from 'cookies-next';
 
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -79,7 +80,6 @@ export default function Login() {
               setCredential={setCredential}
               fc={signIn}
             />
-            {/* <p className="">Амжилттай нэвтэрлээ</p> */}
             <p className="my-10 text-sm font-bold text-gray-600">
               Та бүртгүүлээгүй юм биш биз?{' '}
               <button className="text-blue-800" onClick={() => setSign(2)}>
@@ -90,7 +90,7 @@ export default function Login() {
         )}
         {sign == 2 && (
           <div className={mergeNames(STYLES.loginWidth)}>
-            <Image 
+            <Image
               src="/images/logo/bom-blue-text.png"
               alt="bom logo"
               className="w-[150px] mx-auto mb-10"
@@ -113,6 +113,27 @@ export default function Login() {
       </div>
     </ContainerXP>
   );
+}
+
+export async function getServerSideProps({ req, res }) {
+  // const res = await fetch(`${urls['test']}/category`);
+  // const resjson = await res.json();
+  const token = getCookie('token', { req, res });
+  // const categories = resjson?.categories;
+  if (token)
+    return {
+      redirect: {
+        destination: '/account',
+        permanent: false,
+      },
+    };
+  else {
+    return {
+      props: {
+        route: false,
+      },
+    };
+  }
 }
 
 export const LoginComp = ({ credential, setCredential, fc }) => {

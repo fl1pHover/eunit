@@ -1,4 +1,3 @@
-import { Link } from '@chakra-ui/react';
 import Image from 'next/image';
 import React from 'react';
 
@@ -6,6 +5,7 @@ import { categories } from '@/data/categories';
 import useBreakpoints from '@/hooks/useBreakpoints';
 import { ContainerX } from '@/lib/Container';
 import mergeNames from '@/util/mergeNames';
+import Link from 'next/link';
 
 const calcSize = (pt) => {
   switch (pt) {

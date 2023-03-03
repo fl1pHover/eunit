@@ -1,49 +1,41 @@
-import Cookies from 'js-cookie';
 import { createContext, useContext, useEffect, useState } from 'react';
 
 //api here is an axios instance which has the baseURL set according to the env.
 import axios from 'axios';
 import urls from 'constants/api';
-import { getCookie, setCookie } from 'cookies-next';
+import { deleteCookie, getCookie, setCookie } from 'cookies-next';
+import { useToast } from '@chakra-ui/react';
 
 const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
+  const toast = useToast()
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState();
-  const [districts, setDistricts] = useState();
-  const [locations, setLocations] = useState();
   const [ads, setAds] = useState();
-
-
+  const [compareAds, setCompareAds] = useState([])
   async function loadUserFromCookies() {
-    const token = Cookies.get('token');
-    setLoading(true)
+    const token = getCookie('token');
+    setLoading(true);
     try {
       const { data: category } = await axios.get(`${urls['test']}/category`);
       setCategories(category.categories);
-      const { data: district } = await axios.get(`${urls['test']}/district`);
-      setDistricts(district);
-      const { data: location } = await axios.get(`${urls['test']}/location`);
-      setLocations(location);
     } catch (e) {
-      setLoading(false)
+      setLoading(false);
       console.log(e);
     }
     if (token && token != undefined) {
       try {
-       
         const { data: data } = await axios.get(`${urls['test']}/user/me`, {
           headers: {
             Authorization: `Bearer ${token}`,
             'Access-Control-Allow-Headers': '*',
           },
         });
-        
+
         setUser(data);
       } catch (error) {
-        
         console.log(error.response.data.message);
         logout();
       }
@@ -59,32 +51,40 @@ export const AuthProvider = ({ children }) => {
     const token = getCookie('token');
 
     if (!token) {
-      setLoading(true)
+      setLoading(true);
       try {
         const { data: data } = await axios.post(`${urls['test']}/auth/login`, {
           email,
           password,
         });
-        if (data?.token) {
+        if (data?.token && data.user.status == 'active') {
           setCookie('token', data.token);
 
           setUser(data.user);
+          toast({
+            title: 'Амжилттай нэвтэрлээ',
+            status: 'success',
+            duration: 5000,
+            isClosable: true,
+          })
           if (data.user.userType == 'admin' || data.user.userType == 'system')
             window.location.pathname = '/admin';
           else window.location.pathname = '/account';
+        } else {
+          window.location.pathname = '/account/check';
         }
       } catch (error) {
-        setLoading(false)
+        setLoading(false);
         console.log(error);
       }
-      setLoading(false)
+      setLoading(false);
     }
   };
   const signup = async (email, password, username, phone) => {
-    const token = Cookies.get('token');
+    const token = getCookie('token');
 
     if (!token) {
-      setLoading(true)
+      setLoading(true);
       try {
         const { data: data } = await axios.post(
           `${urls['test']}/auth/register`,
@@ -97,24 +97,22 @@ export const AuthProvider = ({ children }) => {
           }
         );
 
-        if (data?.token) {
-          Cookies.set('token', data.token);
+        if (!data) {
 
-          setUser(data.user);
-          window.location.pathname = '/account';
+          window.location.pathname = '/account/check';
         }
       } catch (err) {
-        setLoading(false)
+        setLoading(false);
         console.log(err.response.data.message);
       }
     }
-    setLoading(false)
+    setLoading(false);
   };
 
   const logout = () => {
-    Cookies.remove('token');
+    deleteCookie('token');
     setUser(null);
-    setLoading(false)
+    setLoading(false);
     window.location.pathname = '/login';
   };
 
@@ -127,11 +125,11 @@ export const AuthProvider = ({ children }) => {
         loading,
         logout,
         categories,
-        locations,
-        districts,
         signup,
         ads,
         setAds,
+        setCompareAds,
+        compareAds
       }}
     >
       {children}

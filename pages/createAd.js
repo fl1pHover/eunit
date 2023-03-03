@@ -6,7 +6,6 @@ import React, { useMemo, useState } from 'react';
 import { useAuth } from 'context/auth';
 
 import Step1 from '@/components/createAd/step1';
-import Step2 from '@/components/createAd/step2';
 import Step4 from '@/components/createAd/step4';
 
 import StepButtons from '@/components/createAd/stepButtons';
@@ -16,10 +15,11 @@ import { ContainerX } from '@/lib/Container';
 
 import Step3 from '@/components/createAd/step3';
 import urls from '@/constants/api';
+import { GoogleMap, MarkerF, useLoadScript } from '@react-google-maps/api';
 import { getCookie } from 'cookies-next';
 export default function CreateAd({ categories }) {
   const toast = useToast();
-  const { districts, locations, user } = useAuth(); // TODOs: user: 403 BAD REQUEST
+  const { user } = useAuth(); // TODOs: user: 403 BAD REQUEST
 
   const router = useRouter();
   // // if (!user) router.push("/login");
@@ -35,20 +35,7 @@ export default function CreateAd({ categories }) {
     sellType: false,
     adType: false,
   });
-  // STEP-2 DATA => ID HADGALJ BAIGAA
-  const [positions, setPositions] = useState({
-    district_id: '',
-    committee_id: '',
-    location_id: '',
-    town_id: '',
-  });
-  // STEP2 DATA => NAME (NER) HADGALJ BAIGA
-  const [positionNames, setPositionNames] = useState({
-    district: '',
-    location: '',
-    committee: '',
-    town: '',
-  });
+
   const [map, setMap] = useState({});
   // FILTER INFORMATION - FOR WHICH DATA TO DISPLAY
   const [filters, setFilters] = useState([]);
@@ -77,8 +64,7 @@ export default function CreateAd({ categories }) {
             axios
               .get(`${urls['test']}/category/filters/${item._id}/false`)
               .then((res) => {
-                setSubCategory(res.data?.subCategory);
-                setFilters(res.data?.filters);
+                setSubCategory(res.data);
               });
           }
         });
@@ -89,22 +75,19 @@ export default function CreateAd({ categories }) {
     }
   }, [passcategory, types.categoryId, types.subCategoryId, types.categoryName]);
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedLocalData, setSelectedLocalData] = useState({
-    district: positionNames?.district ?? false,
-    location: positionNames?.location ?? false,
-    committee: positionNames?.committee ?? false,
-    town: positionNames?.town ?? false,
-  });
   // checking validation of steps in here
   const handleNextStep = () => {
     if (step === -1)
       return checkConditionOnNextStep(
-        types?.categoryName &&
-          types?.subCategoryId &&
-          types?.sellType &&
-          types?.adType
+        types.adType != '' &&
+          types.categoryName != '' &&
+          types.sellType != '' &&
+          types.subCategoryId != ''
       );
-    if (step === 0) return validateStep2();
+    if (step == 0)
+      return checkConditionOnNextStep(
+        subCategory.steps[0].values.find((s) => s.input == '')
+      );
     if (step === 1)
       return checkConditionOnNextStep(
         generalData.price &&
@@ -118,7 +101,7 @@ export default function CreateAd({ categories }) {
   };
 
   const checkConditionOnNextStep = (booleanValue) => {
-    return booleanValue
+    return booleanValue === undefined || booleanValue === '' || booleanValue
       ? setStep((prev) => prev + 1)
       : toast({
           title: 'Та бүх талбарыг бөглөнө үү.',
@@ -128,74 +111,43 @@ export default function CreateAd({ categories }) {
         });
   };
 
-  const validateStep2 = () => {
-    // CHECKING IF IT IS REALSTATE => IT HAS FOUR STEPS
-    if (types?.categoryName === 'realState') {
-      // console.table(positions);
-      // THIS CONDITION IS FOR WHETHER IT HAS TOWN_ID -> LAND & OFFICE DEER XOTXOH NII ID GEJ BAIHGUI
-      const hasTownId =
-        types?.subCategoryId !== 'land' && types?.subCategoryId !== 'office';
-
-      const mainValidation =
-        positions?.location_id &&
-        positions?.district_id &&
-        positions?.committee_id;
-
-      if (hasTownId) {
-        console.log(positions);
-        return checkConditionOnNextStep(mainValidation && positions?.town_id);
-      }
-      return checkConditionOnNextStep(mainValidation);
-    } else {
-      // TODOs: IF IT IS NOT REALSTATE -> MEANING IT HAS 3 STEPS
-    }
-  };
-
   const sendAd = async () => {
     const token = getCookie('token');
     const f = new FormData();
-    const selectedFilters = filters[2];
+    const selectedFilters = subCategory.steps[0].values;
     selectedFilters.push({
-      id: 'price',
-      value: generalData.price,
+      type: 'price',
+      input: generalData.price,
       name: 'Үнэ',
     });
     selectedFilters.push({
-      id: 'phone',
-      value: generalData.phone,
+      type: 'phone',
+      input: generalData.phone,
       name: 'Утасны дугаар',
     });
     selectedFilters.push({
-      id: 'area',
-      value: generalData.area,
+      type: 'area',
+      input: generalData.area,
       name: 'Талбай',
     });
     selectedFilters.push({
-      id: 'unitPrice',
-      value: generalData.unitPrice,
+      type: 'unitPrice',
+      input: generalData.unitPrice,
       name: 'Нэгж талбайн үнэ',
     });
+    let finalFilters = selectedFilters.concat(subCategory.steps[2].values);
+    let copiedFilters = JSON.parse(JSON.stringify(finalFilters));
+    copiedFilters.map((f) => (f.value = []));
+
     f.append('title', generalData.title);
     f.append('description', generalData.desc);
-    f.append(
-      'positions',
-      JSON.stringify({
-        district_id: selectedLocalData.district,
-        committee_id: selectedLocalData.committee,
-        location_id: selectedLocalData.location,
-        town: {
-          value: selectedLocalData.town,
-          values: [],
-          name: 'town',
-        },
-      })
-    );
+    subCategory.steps[1].values = selectedFilters;
     f.append('location', JSON.stringify(map));
     f.append('types', types.sellType);
     f.append('adTypes', types.adType);
     f.append('subCategory', subCategory._id);
     f.append('category', categories[types.categoryId]._id);
-    f.append('filters', JSON.stringify(selectedFilters));
+    f.append('filters', JSON.stringify(copiedFilters));
     images?.map((prev) => {
       f.append('images', prev);
     });
@@ -215,6 +167,7 @@ export default function CreateAd({ categories }) {
             duration: 1000,
             isClosable: true,
           });
+          router.reload();
           // router.push('/');
         });
       console.log(ad);
@@ -225,7 +178,7 @@ export default function CreateAd({ categories }) {
   const validateStep4 = async () => {
     setIsLoading(true);
     // filter hooson esehiig shalgah
-    let emptyAd = filters[2].find((f) => f.value == '');
+    let emptyAd = subCategory.steps[2].values.find((f) => f.input == '');
     if (emptyAd === undefined) {
       await sendAd();
     }
@@ -238,7 +191,32 @@ export default function CreateAd({ categories }) {
       return prev > -1 ? prev - 1 : prev;
     });
   };
+  const libraries = useMemo(() => ['places'], []);
 
+  const [markerActive, setMarkerActive] = useState(null);
+
+  const { isLoaded } = useLoadScript({
+    googleMapsApiKey: 'AIzaSyC2u2OzBNo53GxJJdN3Oc_W6Yc42OmdZcE',
+    libraries: libraries,
+  });
+  const mapOptions = useMemo(
+    () => ({
+      disableDefaultUI: true,
+      // clickableIcons: true,
+      scrollwheel: true,
+    }),
+    []
+  );
+  const mapCenter = useMemo(
+    () => ({
+      lat: 47.9186367,
+      lng: 106.9164856,
+    }),
+    []
+  );
+  if (!isLoaded) {
+    return <p>Loading...</p>;
+  }
   return (
     <div className="min-h-[80vh] py-10">
       <ContainerX>
@@ -254,36 +232,34 @@ export default function CreateAd({ categories }) {
           )
         }
 
-        {filters?.map((filter, index) => {
+        {subCategory?.steps?.map((filter, index) => {
           if (step == index) {
             if (index == 0)
               //STEP2: LOCATIONS - DISTRICT, LOCATION, COMMITTEE, TOWN
 
               return (
-                <Step2
-                  selectedLocalData={selectedLocalData}
-                  setSelectedLocalData={setSelectedLocalData}
-                  key={index}
-                  setMap={setMap}
-                  town={
-                    filter.find(
-                      (f) =>
-                        f.id == 'town' ||
-                        f.id == 'officeName' ||
-                        f.id == 'buildingName'
-                    ) ?? ''
-                  }
-                  map={map}
-                  {...{
-                    types,
-                    districts,
-                    locations,
-                    positions,
-                    setPositions,
-                    positionNames,
-                    setPositionNames,
-                  }}
-                />
+                <div>
+                  <Step4 filter={filter} />
+                  <GoogleMap
+                    className="aspect-video"
+                    options={mapOptions}
+                    onClick={(e) => {
+                      setMap(e.latLng.toJSON());
+                    }}
+                  zoom={14}
+                    center={mapCenter}
+                    mapTypeId={google.maps.MapTypeId.ROADMAP}
+                    mapContainerStyle={{ width: '100%', height: '40vh' }}
+                  >
+                    {isLoaded && map && (
+                      <MarkerF
+                        position={map}
+                        onClick={() => {}}
+                        animation={google.maps.Animation.DROP}
+                      />
+                    )}
+                  </GoogleMap>
+                </div>
               );
             if (index == 1)
               return (
@@ -325,9 +301,9 @@ export default function CreateAd({ categories }) {
 }
 export async function getServerSideProps({ req, res }) {
   const response = await fetch(`${urls['test']}/category`);
-  const resjson = await response.json();
+  const categories = await response.json();
   const token = getCookie('token', { req, res });
-  const categories = resjson?.categories;
+
   if (!token)
     return {
       redirect: {
