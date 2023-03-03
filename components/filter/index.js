@@ -22,6 +22,7 @@ import { useEffect, useRef, useState } from 'react';
 import urls from '../../constants/api';
 import { useAuth } from '../../context/auth';
 // import Select from '@/lib/Select';
+import { LoadingButton } from '@/lib/Button';
 import { STYLES } from '@/styles/index';
 import mergeNames from '@/util/mergeNames';
 import { MdFilterList } from 'react-icons/md';
@@ -307,6 +308,8 @@ const FilterLayout = ({ data, isOpenMap }) => {
               <Button variant={'blueButton'} mx={4} onClick={() => filterAd()}>
                 Хайх
               </Button>
+
+              <LoadingButton text="Хайх" onClick={() => filterAd()} />
             </FilterStack>
           </DrawerBody>
         </DrawerContent>
