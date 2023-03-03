@@ -82,16 +82,7 @@ const Category = ({ propAds }) => {
             <FilterLayout data={router.query.slug} isOpenMap={onOpen} />
           )}
 
-          {/* //TODO Filter box end */}
-
-          {/* //TODO Main product */}
           <Box className="max-w-[100%] w-full rounded-[5px]">
-            {/* <SwiperHeader /> */}
-
-            {/* //TODO Ontsgoi zar */}
-            {/* //TODO Ontsgoi zar */}
-            {/* //TODO Ontsgoi zar */}
-
             {/* //TODO Engiin zar */}
             {ads?.length > 0 ? (
               <AdContent
@@ -146,26 +137,28 @@ const Category = ({ propAds }) => {
                             }}
                             onLoad={(info) => {}}
                           >
-                            {/* end zasna */}
-
                             {markerActive == i ? (
                               <div
                                 onClick={() => router.push(`/product/${m.num}`)}
                                 className={mergeNames(
-                                  ' h-[100px] aspect-video flex flex-col cursor-pointer justify-end',
-                                  'group-hover:block'
+                                  'h-[125px] aspect-4/3 flex flex-col cursor-pointer justify-end',
+                                  'group-hover:block '
                                 )}
                               >
                                 <Image
-                                  src="/images/404.png"
+                                  src="/images/HeaderSlider/1.jpg"
                                   alt="map image"
                                   className={mergeNames(
                                     'absolute top-0 left-0 object-cover w-full h-full ',
-                                    'bg-gradient-to-b from-slate-700/0 via-slate-700/80 to-slate-900/100'
+                                    ''
                                   )}
                                 />
+                                <div className="absolute top-0 left-0 object-cover w-full h-full bg-gradient-to-b from-slate-700/0 via-slate-700/50 to-slate-900/100 "></div>
                                 <p className="z-10 text-base font-bold text-white">
                                   {m.title}
+                                </p>
+                                <p className="z-10 text-base font-bold text-white">
+                                  end une
                                 </p>
                               </div>
                             ) : (

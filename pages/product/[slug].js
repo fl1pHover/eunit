@@ -47,16 +47,15 @@ const ProductInfo = ({
   value,
   id,
   children,
-
   tt = 'capitalize',
   onClick,
 }) => {
   return (
     <GridItem
       className={
-        value.length > 20 ? 'product__info col-span-2' : 'product__info'
+        mergeNames()
+        // value.length > 20 ? 'product__info col-span-2' : 'product__info'
       }
-
     >
       {children ? (
         children
@@ -155,7 +154,6 @@ const Product = ({ propAds }) => {
     }
   }, [propAds]);
 
-
   return (
     <Box m={5} as="section" id="main__product">
       <ScrollTop />
@@ -236,50 +234,14 @@ const Product = ({ propAds }) => {
                       <AspectRatio ratio={1}>
                         <ImageGallery
                           items={data?.images.map((i) => ({
-  
                             original: i,
                             thumbnail: i,
+                     
                           }))}
                         />
                       </AspectRatio>
                     )}
 
-                    {/* npm install yet-another-react-lightbox  */}
-                    {/* <Lightbox
-                      open={open}
-                      close={() => setOpen(false)}
-                      slides={[
-                        {
-                          src: '/images/404.png',
-                          alt: 'image 1',
-                          width: 3840,
-                          height: 2560,
-                          srcSet: [
-                            { src: '/images/404.png', width: 320, height: 213 },
-                            { src: '/images/404.png', width: 640, height: 427 },
-                            {
-                              src: '/images/404.png',
-                              width: 1200,
-                              height: 800,
-                            },
-                            {
-                              src: '/images/404.png',
-                              width: 2048,
-                              height: 1365,
-                            },
-                            {
-                              src: '/images/404.png',
-                              width: 3840,
-                              height: 2560,
-                            },
-                          ],
-                        },
-                        // ...
-                      ]}
-                    /> */}
-                    {/* <button type="button" onClick={() => setOpen(true)}>
-                      Open Lightbox
-                    </button> */}
                   </Box>
                   <Text mt={5}>{data.description}</Text>
                 </div>
@@ -290,7 +252,11 @@ const Product = ({ propAds }) => {
 
                 {data && (
                   <div>
-                    <Button onClick={() => router.push(`/account/${data.user._id}`)}>{data.user?.phone}</Button>
+                    <Button
+                      onClick={() => router.push(`/account/${data.user._id}`)}
+                    >
+                      {data.user?.phone}
+                    </Button>
                     <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                       {data?.filters?.map((p, i) => {
                         if (p.type != null) {
@@ -357,7 +323,9 @@ const Product = ({ propAds }) => {
                           Байршлаар
                         </option>
 
-                        <option value={'map'} key={i+1}>Газрын зургаар</option>
+                        <option value={'map'} key={i + 1}>
+                          Газрын зургаар
+                        </option>
                       </>
                     );
                   case 'room':
@@ -367,13 +335,17 @@ const Product = ({ propAds }) => {
                         Өрөөгөөр
                       </option>
                     ) : (
-                      <>
-                        <option value="room" key={i}>
-                          Өрөөгөөр
-                        </option>
+                      (
+                        <>
+                          <option value="room" key={i}>
+                            Өрөөгөөр
+                          </option>
 
-                        <option value={'map'} key={i+1}>Газрын зургаар</option>
-                      </>+1
+                          <option value={'map'} key={i + 1}>
+                            Газрын зургаар
+                          </option>
+                        </>
+                      ) + 1
                     );
                 }
               })}
@@ -398,7 +370,7 @@ const Product = ({ propAds }) => {
                 return (
                   <HStack key={i}>
                     <MarkerF
-                    key={i}
+                      key={i}
                       position={{
                         lat: parseFloat(m.location?.lat ?? 47.74604),
                         lng: parseFloat(m.location?.lng ?? 107.341515),

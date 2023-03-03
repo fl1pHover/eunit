@@ -22,18 +22,20 @@ import { useEffect, useRef, useState } from 'react';
 import urls from '../../constants/api';
 import { useAuth } from '../../context/auth';
 // import Select from '@/lib/Select';
-import { LoadingButton } from '@/lib/Button';
 import { STYLES } from '@/styles/index';
 import mergeNames from '@/util/mergeNames';
-import { useRouter } from 'next/router';
 import { MdFilterList } from 'react-icons/md';
 import FilterStack from '../../util/filterStack';
 
 const FilterLayout = ({ data, isOpenMap }) => {
-  const { setAds } = useAuth();
+  const [filter, setFilter] = useState();
+  const { districts, locations, categories, setAds } = useAuth();
   const [subCategory, setSubCategory] = useState();
-  const router = useRouter();
-  const [value, setValue] = useState('');
+
+  const [positions, setPositions] = useState({
+    district_id: '',
+    location_id: '',
+  });
   const [adType, setAdType] = useState({
     rent: false,
     sell: true,
@@ -45,7 +47,9 @@ const FilterLayout = ({ data, isOpenMap }) => {
       await axios
         .get(`${urls['test']}/category/filters/${data}/true`, {})
         .then((d) => {
-          setSubCategory(d.data);
+          setSubCategory(d.data?.subCategory);
+          setFilter(d.data?.filters);
+          console.log(d);
         });
     } catch (e) {
       console.log(e);
@@ -53,8 +57,16 @@ const FilterLayout = ({ data, isOpenMap }) => {
   };
   useEffect(() => {
     if (data) {
-      getItems(data);
-      setValue(data);
+      try {
+        axios
+          .get(`${urls['test']}/category/filters/${data}/true`, {})
+          .then((d) => {
+            setSubCategory(d.data?.subCategory);
+            setFilter(d.data?.filters);
+          });
+      } catch (e) {
+        console.log(e);
+      }
     }
   }, [data]);
   const filterAd = async () => {
@@ -64,27 +76,41 @@ const FilterLayout = ({ data, isOpenMap }) => {
         types.push('rent');
       }
       if (adType.sell) types.push('sell');
-
-      let filter = subCategory.filters.filter((f, i) => f.input != '');
-      try {
-        axios
-          .post(`${urls['test']}/ad/filter`, {
-            filters: filter,
-            adTypes: types,
-            subCategory: subCategory._id,
-          })
-          .then((d) => {
-            setAds(d.data);
-            console.log(d.data);
-          });
-      } catch (error) {
-        console.error(error);
-      }
+      console.log(subCategory._id);
+      axios
+        .post(`${urls['test']}/ad/filter`, {
+          filters: filter,
+          adTypes: types,
+          positions: positions,
+          subCategory: subCategory._id,
+        })
+        .then((d) => {
+          setAds(d.data);
+          console.log(d.data);
+        });
     } catch (e) {
       console.log(e);
     }
   };
+  const setFilters = (id, e, isMaxValue) => {
+    e.preventDefault();
 
+    filter.map((f, i) => {
+      if (f.id == id) {
+        if (f.values.length == 0) {
+          if (isMaxValue) {
+            f.maxValue = e.target.value;
+          } else {
+            f.value = e.target.value;
+          }
+        } else {
+          f.value = e.target.value;
+        }
+      }
+    });
+    console.log(filter);
+  };
+  const [value, setValue] = useState('');
   return (
     <>
       <button
@@ -122,47 +148,42 @@ const FilterLayout = ({ data, isOpenMap }) => {
               <Heading variant={'smallHeading'} mb={2}>
                 Үл хөдлөх хөрөнгө
               </Heading>
-              {router &&
-                categories?.map((c, i) => {
-                  return (
-                    <RadioGroup
-                      onChange={setValue}
-                      value={value}
-                      key={i}
-                      className="flex flex-col gap-2"
-                    >
-                      {(router.query.slug == c.id ||
-                        c.submenu.findIndex(
-                          (s) => s.href == router.query.slug
-                        ) > -1) &&
-                        c.submenu.map(({ href, category }, id) => {
-                          return (
-                            // <Link
-                            //   key={id}
-                            //   href={`/category/${href}`}
-                            //   p="2px"
-                            //   mt={0}
-                            //   fontWeight={data == href ? 'bold' : 'medium'}
-                            // >
-                            //   <Text>{name}</Text>
-                            // </Link>
+              {categories?.map((c, i) => {
+                return (
+                  <RadioGroup
+                    onChange={setValue}
+                    value={value}
+                    key={i}
+                    className="flex flex-col gap-2"
+                  >
+                    {c.subCategory.map(({ href, name }, id) => {
+                      return (
+                        // <Link
+                        //   key={id}
+                        //   href={`/category/${href}`}
+                        //   p="2px"
+                        //   mt={0}
+                        //   fontWeight={data == href ? 'bold' : 'medium'}
+                        // >
+                        //   <Text>{name}</Text>
+                        // </Link>
 
-                            // Eniig inspectdeer neg haraarai aldaatai bolood bn
-                            <Radio
-                              value={href}
-                              key={id}
-                              onChange={(e) => {
-                                getItems(e.target.value);
-                              }}
-                              _selected={{ font: 'bold' }}
-                            >
-                              <Text>{category}</Text>
-                            </Radio>
-                          );
-                        })}
-                    </RadioGroup>
-                  );
-                })}
+                        // Eniig inspectdeer neg haraarai aldaatai bolood bn
+                        <Radio
+                          value={href}
+                          key={id}
+                          onChange={(e) => {
+                            getItems(e.target.value);
+                          }}
+                          _selected={{ font: 'bold' }}
+                        >
+                          <Text>{name}</Text>
+                        </Radio>
+                      );
+                    })}
+                  </RadioGroup>
+                );
+              })}
             </FilterStack>
 
             <FilterStack>
@@ -173,14 +194,14 @@ const FilterLayout = ({ data, isOpenMap }) => {
                 borderColor={'mainBlue'}
                 defaultChecked
                 onChange={(e) =>
-                  setAdType((prev) => ({ ...prev, sell: e.target.checked }))
+                  setAdType((adType) => ({ ...adType, sell: e.target.checked }))
                 }
               >
                 Зарна.
               </Checkbox>
               <Checkbox
                 onChange={(e) =>
-                  setAdType((prev) => ({ ...prev, rent: e.target.checked }))
+                  setAdType((adType) => ({ ...adType, rent: e.target.checked }))
                 }
               >
                 Түрээслүүлнэ
@@ -204,9 +225,49 @@ const FilterLayout = ({ data, isOpenMap }) => {
 
             <FilterStack borderBottom={'2px solid '} borderColor="bgGrey">
               <Heading variant={'smallHeading'}>Нэмэлт хайлт</Heading>
-
-              {subCategory?.filters?.map((f, i) => {
-                return f.value.length == 0 ? (
+              {/* <Select></Select> */}
+              <Select
+                placeholder={'Дүүрэг'}
+                className="border-1  border-blue-400 rounded-full text-[14px]"
+                onChange={(e) => {
+                  setPositions((positions) => ({
+                    ...positions,
+                    district_id: e.target.value,
+                  }));
+                  console.log(positions);
+                }}
+              >
+                {districts?.map((item, i) => {
+                  return (
+                    <option key={i} value={item._id}>
+                      {item.name}
+                    </option>
+                  );
+                })}
+              </Select>
+              {positions.district_id && (
+                <Select
+                  placeholder={'Байршил'}
+                  className="border-b rounded-full lue-400 border-1"
+                  onChange={(e) =>
+                    setPositions((positions) => ({
+                      ...positions,
+                      location_id: e.target.value,
+                    }))
+                  }
+                >
+                  {locations?.map((item, i) => {
+                    if (positions.district_id == item.district_id)
+                      return (
+                        <option key={i} value={item.name}>
+                          {item.name}
+                        </option>
+                      );
+                  })}
+                </Select>
+              )}
+              {filter?.map((f, i) => {
+                return f.values.length == 0 ? (
                   <VStack flex key={i}>
                     <Heading variant={'smallHeading'}>{f.name}</Heading>
                     <Flex alignItems={'center'} gap={2}>
@@ -214,14 +275,14 @@ const FilterLayout = ({ data, isOpenMap }) => {
                         type="number"
                         placeholder="Доод"
                         className="border-b rounded-full lue-400 border-1"
-                        onChange={(e) => (f.input = e.target.value)}
+                        onChange={(e) => setFilters(f.id, e, false)}
                       />
                       <Text>-</Text>
                       <Input
                         type="number"
                         placeholder="Дээд"
                         className="border-b rounded-full lue-400 border-1 focus:outline-none"
-                        onChange={(e) => (f.max = e.target.value)}
+                        onChange={(e) => setFilters(f.id, e, true)}
                       />
                     </Flex>
                   </VStack>
@@ -230,12 +291,12 @@ const FilterLayout = ({ data, isOpenMap }) => {
                     key={i}
                     placeholder={f.name}
                     className="border-b rounded-full lue-400 border-1"
-                    onChange={(e) => (f.input = e.target.value)}
+                    onChange={(e) => setFilters(f.id, e, true)}
                   >
-                    {f.value.map((item, i) => {
+                    {f.values.map((item, i) => {
                       return (
-                        <option key={i} value={item.value}>
-                          {item.value}
+                        <option key={i} value={item}>
+                          {item}
                         </option>
                       );
                     })}
@@ -246,8 +307,6 @@ const FilterLayout = ({ data, isOpenMap }) => {
               <Button variant={'blueButton'} mx={4} onClick={() => filterAd()}>
                 Хайх
               </Button>
-
-              <LoadingButton text="Хайх" onClick={() => filterAd()} />
             </FilterStack>
           </DrawerBody>
         </DrawerContent>

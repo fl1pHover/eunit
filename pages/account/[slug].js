@@ -57,7 +57,7 @@ const Accounts = ({ propUser }) => {
                   <h1 className="text-xl font-bold md:text-3xl">
                     {propUser.username}
                   </h1>
-                  <h3 className="font-bold text-blue-600 text-md capitalize">
+                  <h3 className="font-bold text-blue-600 capitalize text-md">
                     {propUser.userType}
                   </h3>
                 </div>

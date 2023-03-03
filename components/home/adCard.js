@@ -6,13 +6,14 @@ import { IoBedOutline } from 'react-icons/io5';
 import { TbBath } from 'react-icons/tb';
 
 import { Image, Skeleton, Text } from '@chakra-ui/react';
+
 import { useRouter } from 'next/router';
 import AdCardButton from './adCardButton';
 
-const Card = ({ item , }) => {
-  const router = useRouter()
+const Card = ({ item }) => {
+  const router = useRouter();
   return (
-    <Skeleton isLoaded >
+    <Skeleton isLoaded>
       <div
         className="relative overflow-hidden rounded-md shadow-md bg-zinc-200 group "
         onClick={() => item && item._id && router.push(`/product/${item.num}`)}
@@ -24,7 +25,7 @@ const Card = ({ item , }) => {
               alt="product image"
               layout="fill"
               objectFit="cover"
-              className="group-hover:scale-125 transition-all w-full  h-full ease-in-out duration-400 aspect-[4/5]"
+              className="group-hover:scale-125 transition-all w-full object-cover h-full ease-in-out duration-400 aspect-[4/5]"
             />
           )}
         </div>
@@ -48,7 +49,7 @@ const Card = ({ item , }) => {
                 <FiCamera size={16} className="text-white" />
               </button>
             </div>
-            <div className="relative z-10 flex flex-col justify-end h-full mb-2 space-y-2 ">
+            <div className="relative z-10 flex flex-col justify-end h-full mb-2 space-y-2 cursor-pointer">
               <div className="flex flex-row justify-between w-full">
                 <TextContainer
                   title={item.title}

@@ -1,5 +1,3 @@
-import { Skeleton } from '@chakra-ui/react';
-
 import AdCard from '@/components/home/adCard';
 import { ContainerXP } from '@/lib/Container';
 import { SectionTitle } from '@/lib/Title';
@@ -8,16 +6,14 @@ import mergeNames from '@/util/mergeNames';
 import { useRouter } from 'next/router';
 import { AiOutlineArrowRight } from 'react-icons/ai';
 
-// Import Swiper React components
-
-// Import Swiper styles
-import 'swiper/css';
-import 'swiper/css/grid';
-import 'swiper/css/navigation';
+import SwiperNav from '@/util/SwiperNav';
+import { Skeleton } from '@chakra-ui/react';
+import { SwiperSlide } from 'swiper/react';
 
 // import required modules
 
 const AdContent = ({
+  inCat,
   showLink,
   data = [],
   key = Math.random(),
@@ -41,11 +37,11 @@ const AdContent = ({
       </div>
       <div className="grid grid-cols-2 gap-5 xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-3">
         {data?.ads?.map((item, i) => {
-
-          return <AdCard key={i} item={item || {}} />})}
+          return <AdCard key={i} item={item || {}} />;
+        })}
         {data?.ads === undefined &&
           data?.map((item, i) => {
-            return <AdCard key={i} item={item || {}} />
+            return <AdCard key={i} item={item || {}} />;
           })}{' '}
         {data == undefined && <Skeleton />}
       </div>
@@ -66,7 +62,6 @@ const AdContent = ({
           </SwiperSlide>
         ))}
       </Swiper> */}
-
       {/* <ul className="flex float-right list-style-none">
         <li className="disabled">
           <button
@@ -91,6 +86,22 @@ const AdContent = ({
           <button className={mergeNames(STYLES.notActive)}>Дараах</button>
         </li>
       </ul> */}
+      {/* {inCat ? (
+        <div className="grid grid-cols-2 gap-5 xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-3">
+          {data?.map((item, key) => (
+            <AdCard key={key} item={item || {}} />
+          ))}
+        </div>
+      ) : (
+        <SwiperNav>
+          {data?.map((item, key) => (
+            <SwiperSlide key={key}>
+              <AdCard item={item || {}} />
+            </SwiperSlide>
+          ))}
+        </SwiperNav>
+      )}
+      {data == undefined && <Skeleton height={'300px'} />} */}
     </ContainerXP>
   );
 };
