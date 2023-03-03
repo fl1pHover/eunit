@@ -12,20 +12,17 @@ import {
   Input,
   Radio,
   RadioGroup,
-  Select, Text,
+  Select,
+  Text,
   useDisclosure,
-  VStack
+  VStack,
 } from '@chakra-ui/react';
 import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import urls from '../../constants/api';
 import { useAuth } from '../../context/auth';
 // import Select from '@/lib/Select';
-<<<<<<< HEAD
 import { LoadingButton } from '@/lib/Button';
-=======
-import { categories } from '@/data/categories';
->>>>>>> 068132758f09e8a35ad08730f9556b136f342c2a
 import { STYLES } from '@/styles/index';
 import mergeNames from '@/util/mergeNames';
 import { useRouter } from 'next/router';
@@ -243,10 +240,10 @@ const FilterLayout = ({ data, isOpenMap }) => {
                       );
                     })}
                   </Select>
+                );
+              })}
 
-              )})}
-
-<Button variant={'blueButton'} mx={4} onClick={() => filterAd()}>
+              <Button variant={'blueButton'} mx={4} onClick={() => filterAd()}>
                 Хайх
               </Button>
 

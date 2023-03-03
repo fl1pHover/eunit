@@ -81,7 +81,7 @@ export default function Login() {
               fc={signIn}
             />
             <p className="my-10 text-sm font-bold text-gray-600">
-              Та бүртгүүлээгүй юм биш биз?{' '}
+              Та бүртгүүлээгүй юм биш биз?
               <button className="text-blue-800" onClick={() => setSign(2)}>
                 Бүртгүүлэх
               </button>
