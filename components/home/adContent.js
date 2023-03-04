@@ -35,33 +35,37 @@ const AdContent = ({
           <AiOutlineArrowRight size={12} />
         </button>
       </div>
-      <div className="grid grid-cols-2 gap-5 xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-3">
-        {data?.ads?.map((item, i) => {
-          return <AdCard key={i} item={item || {}} />;
-        })}
-        {data?.ads === undefined &&
-          data?.map((item, i) => {
+
+      {inCat ? (
+        <div className="grid grid-cols-2 gap-5 xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-3">
+          {data?.ads?.map((item, i) => {
             return <AdCard key={i} item={item || {}} />;
-          })}{' '}
-        {data == undefined && <Skeleton />}
-      </div>
-      {/* <Swiper
-        navigation={true}
-        slidesPerView={5}
-        grid={{
-          rows: 2,
-        }}
-        fill="column"
-        slidesPerColumn={2}
-        modules={[Grid, Navigation]}
-        className="mySwiper"
-      >
-        {data?.map((item, key) => (
-          <SwiperSlide key={key}>
-            <AdCard item={item || {}} />
-          </SwiperSlide>
-        ))}
-      </Swiper> */}
+          })}
+          {data?.ads === undefined &&
+            data?.map((item, i) => {
+              return <AdCard key={i} item={item || {}} />;
+            })}
+        </div>
+      ) : (
+        <SwiperNav>
+          {data?.ads?.map((item, i) => {
+            return (
+              <SwiperSlide key={i}>
+                <AdCard item={item || {}} />
+              </SwiperSlide>
+            );
+          })}
+          {data?.ads === undefined &&
+            data?.map((item, i) => {
+              return (
+                <SwiperSlide key={i}>
+                  <AdCard item={item || {}} />
+                </SwiperSlide>
+              );
+            })}
+        </SwiperNav>
+      )}
+      {data == undefined && <Skeleton height={'300px'} />}
       {/* <ul className="flex float-right list-style-none">
         <li className="disabled">
           <button

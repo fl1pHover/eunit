@@ -16,7 +16,7 @@ const Card = ({ item }) => {
     <Skeleton isLoaded>
       <div
         className="relative overflow-hidden rounded-md shadow-md bg-zinc-200 group "
-        onClick={() => item && item._id && router.push(`/product/${item.num}`)}
+        // onClick={() => item && item._id && router.push(`/product/${item.num}`)}
       >
         <div className="md:min-h-[35vh] min-h-[30vh] h-full w-full relative">
           {item?.images && (
@@ -50,7 +50,7 @@ const Card = ({ item }) => {
               </button>
             </div>
             <div className="relative z-10 flex flex-col justify-end h-full mb-2 space-y-2 cursor-pointer">
-              <div className="flex flex-row justify-between w-full">
+              <div className="relative z-20 flex flex-row justify-between w-full">
                 <TextContainer
                   title={item.title}
                   description={item.positions?.location_id ?? ''}

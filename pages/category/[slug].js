@@ -39,7 +39,6 @@ const Category = ({ propAds }) => {
   };
   useEffect(() => {
     setAds(propAds?.ads);
-
   }, [propAds]);
 
   const [isLoading, setIsLoading] = useState(false);
@@ -90,6 +89,7 @@ const Category = ({ propAds }) => {
                 tlc={toLowerCase}
                 title={category ?? ''}
                 showLink="hidden"
+                inCat
               />
             ) : (
               <ContainerX>

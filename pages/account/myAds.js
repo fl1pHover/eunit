@@ -1,8 +1,8 @@
+import AdContent from '@/components/home/adContent';
 import urls from '@/constants/api';
 import axios from 'axios';
-
 import { useEffect, useState } from 'react';
-import AdContent from '../../components/home/adContent';
+import AdCard from '@/components/home/adCard';
 
 const MyAds = ({ user }) => {
   const [products, setProducts] = useState([]);
@@ -34,13 +34,18 @@ const MyAds = ({ user }) => {
 
   return (
     <>
-      <AdContent
+      <div className="grid grid-cols-2 gap-5 mt-5 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-3">
+        {products?.ads?.map((item, key) => (
+          <AdCard key={key} item={item || {}} />
+        ))}
+      </div>
+      {/* <AdContent
         inCat
         data={products}
         tlc={toLowerCase}
         title=" "
         showLink="hidden"
-      />
+      /> */}
     </>
   );
 };
