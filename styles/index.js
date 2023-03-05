@@ -12,6 +12,7 @@ export const STYLES = {
     'relative block py-1.5 px-3 rounded border-0 bg-blue-600 outline-none transition-all duration-300 rounded text-white hover:text-white hover:bg-blue-600 shadow-md focus:shadow-md',
   notActive:
     'relative block py-1.5 px-3 rounded border-0 bg-transparent outline-none transition-all duration-300 rounded text-gray-800 hover:text-gray-800 hover:bg-gray-200 focus:shadow-none',
+  select: 'border-1 border-blue-400 rounded-full text-[14px] text-sm',
 };
 
 export const fade = () => ({

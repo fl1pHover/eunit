@@ -1,8 +1,10 @@
-import AdContent from '@/components/home/adContent';
+import AdCard from '@/components/home/adCard';
 import urls from '@/constants/api';
+import { STYLES } from '@/styles/index';
+import mergeNames from '@/util/mergeNames';
+import { Checkbox, Select } from '@chakra-ui/react';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import AdCard from '@/components/home/adCard';
 
 const MyAds = ({ user }) => {
   const [products, setProducts] = useState([]);
@@ -32,8 +34,28 @@ const MyAds = ({ user }) => {
     getData();
   }, []);
 
+  const brk = 'md:flex-col lg:flex-row sm:flex-row';
+
   return (
     <>
+      <div className={mergeNames('flex flex-col gap-4 mt-5', brk)}>
+        <div className="flex w-full gap-4">
+          <Select
+            className={mergeNames(STYLES.select)}
+            placeholder="Бүх төрөл "
+          />
+          <Select
+            className={mergeNames(STYLES.select)}
+            placeholder="Бүх дэд төрөл"
+          />
+        </div>
+        <div className="flex justify-end">
+          <Checkbox className="font-bold text-primary whitespace-nowrap">
+            Хүлээгдэж буй
+          </Checkbox>
+        </div>
+      </div>
+
       <div className="grid grid-cols-2 gap-5 mt-5 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-3">
         {products?.ads?.map((item, key) => (
           <AdCard key={key} item={item || {}} />

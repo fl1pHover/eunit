@@ -1,4 +1,6 @@
 import CustomModal from '@/util/CustomModal';
+import mergeNames from '@/util/mergeNames';
+import { Image } from '@chakra-ui/react';
 import { FiArrowLeft, FiArrowRight } from 'react-icons/fi';
 
 const ButtonProcess = () => {
@@ -21,6 +23,7 @@ const StepButtons = ({
   onClick = () => {},
   step,
 }) => {
+  console.log(data);
   return (
     <div className="mt-4">
       {/* <ButtonProcess /> */}
@@ -45,9 +48,24 @@ const StepButtons = ({
             btnClose2="Буцах"
             header="Баталгаажуулах хэсэг"
           >
-            <div className="grid grid-cols-2 p-2 text-sm border border-collapse">
-              <div className="font-bold">Гарчиг</div>
-              <div>{data.title}</div>
+            <div className="p-2 text-sm border border-collapse ">
+              <div
+                className={mergeNames(
+                  'flex flex-col w-full mb-3 gap-2',
+                  'items-center justify-between'
+                )}
+              >
+                <div className="font-bold">Зурагнууд</div>
+                <Image
+                  src={data.images}
+                  className="w-[300px] aspect-[4/3]"
+                  alt="asd"
+                />
+              </div>
+              <div className="grid grid-cols-2">
+                <div className="font-bold">Гарчиг</div>
+                <div>{data.title}</div>
+              </div>
             </div>
           </CustomModal>
         ) : (

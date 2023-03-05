@@ -153,14 +153,14 @@ function ECalculator({ data }) {
             )}
           />
         </button>
-        <Flex gap={4}>
+        {/* <Flex gap={4}>
           <Heading
             variant={'smallHeading'}
             className="text-blue-700 underline cursor-pointer"
           >
             Задаргаа
           </Heading>
-        </Flex>
+        </Flex> */}
       </div>
       <Divider />
       <div

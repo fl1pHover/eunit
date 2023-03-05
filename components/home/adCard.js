@@ -5,8 +5,9 @@ import { FiCamera } from 'react-icons/fi';
 import { IoBedOutline } from 'react-icons/io5';
 import { TbBath } from 'react-icons/tb';
 
-import { Image, Skeleton, Text } from '@chakra-ui/react';
+import { Image, Skeleton } from '@chakra-ui/react';
 
+import mergeNames from '@/util/mergeNames';
 import { useRouter } from 'next/router';
 import AdCardButton from './adCardButton';
 
@@ -29,6 +30,7 @@ const Card = ({ item }) => {
             />
           )}
         </div>
+
         <div className="absolute top-0 bottom-0 left-0 right-0 w-full h-full">
           <div className="z-20 flex flex-col w-full h-full px-3 py-2 bg-gradient-to-b from-slate-700/0 via-slate-700/30 to-slate-900/100">
             <div className="absolute top-0 left-0 z-10 flex items-start justify-between flex-1 w-full h-full p-2">
@@ -42,6 +44,7 @@ const Card = ({ item }) => {
                   />
                 </p>
               </div>
+
               <button
                 className="flex items-center justify-center w-6 h-6 bg-gray-600 rounded-full md:w-8 md:h-8"
                 onClick={() => console.log('asdf')}
@@ -71,10 +74,17 @@ const Card = ({ item }) => {
                     </React.Fragment>
                   );
                 })}
-                {item?.adStatus == 'pending' && (
-                  <Text color={'white'}>{item.adStatus}</Text>
-                )}
               </div>
+              {item?.adStatus == 'pending' && (
+                <p
+                  className={mergeNames(
+                    'text-teal-300 px-3 rounded-md font-bold mx-auto'
+                  )}
+                >
+                  {/* {item.adStatus} */}
+                  Хүлээгдэж байна...
+                </p>
+              )}
             </div>
           </div>
         </div>

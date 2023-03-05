@@ -7,8 +7,7 @@ import { STYLES } from '@/styles/index';
 import mergeNames from '@/util/mergeNames';
 import { getCookie } from 'cookies-next';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Bookmark from './bookmark';
 import MyAds from './myAds';
 import Profile from './profile';
@@ -17,7 +16,7 @@ import Profile from './profile';
 
 const Account = ({ user }) => {
   const router = useRouter();
-  const [content, setContent] = useState( 'Profile');
+  const [content, setContent] = useState('Profile');
   const [active, setActive] = useState(false);
 
   const tabs = [
@@ -29,18 +28,17 @@ const Account = ({ user }) => {
     {
       tabHeader: 'Миний зарууд',
       title: 'MyAds',
-      comp: <MyAds user={user}/>,
+      comp: <MyAds user={user} />,
     },
     {
       tabHeader: 'Миний хүслүүд',
       title: 'Bookmark',
-      comp: <Bookmark user={user}/>,
+      comp: <Bookmark user={user} />,
     },
   ];
-useEffect(() => {
-  
-  setContent(router?.query?.tab)
-}, [router?.query?.tab])
+  useEffect(() => {
+    setContent(router?.query?.tab);
+  }, [router?.query?.tab]);
 
   return (
     <MainContainer py={5}>
@@ -62,7 +60,9 @@ useEffect(() => {
             {tabs.map((tab, index) => {
               return (
                 <button
-                  className="pb-3 focus:border-b-2 focus:border-b-mainBlue"
+                  className={mergeNames(
+                    'pb-3 focus:border-b-2 focus:border-b-mainBlue'
+                  )}
                   key={index}
                   onClick={
                     () => {
@@ -87,7 +87,6 @@ useEffect(() => {
           </div>
 
           {tabs.map((tab, index) => {
-
             return (
               tab.title && (
                 <div key={index}>{content === tab.title && tab.comp}</div>

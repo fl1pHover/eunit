@@ -66,6 +66,7 @@ const AdContent = ({
         </SwiperNav>
       )}
       {data == undefined && <Skeleton height={'300px'} />}
+
       {/* <ul className="flex float-right list-style-none">
         <li className="disabled">
           <button
