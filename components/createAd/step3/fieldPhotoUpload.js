@@ -70,7 +70,7 @@ const FieldPhotoUpload = ({
           onChange={handleChange}
         />
         {isImageSelected ? (
-          <div className="grid md:grid-cols-3 grid-cols-2 gap-4 w-full h-full overflow-hidden border-2 border-dotted border-blue-400 bg-blue-100/50 rounded-xl outline-none p-4">
+          <div className="grid w-full h-full grid-cols-2 gap-4 p-4 overflow-hidden border-2 border-blue-400 border-dotted outline-none md:grid-cols-3 bg-blue-100/50 rounded-xl">
             {selectedImages.map((image, key) => {
               return (
                 <div
@@ -80,11 +80,11 @@ const FieldPhotoUpload = ({
                   <img
                     src={image}
                     alt="image"
-                    className="h-full w-full object-center object-cover bg-gray-300 rounded-md overflow-hidden"
+                    className="object-cover object-center w-full h-full overflow-hidden bg-gray-300 rounded-md"
                   />
                   <button
                     onClick={() => deleteHandler(image)}
-                    className="absolute -bottom-2 -right-2 text-white bg-gray-500 rounded-full hover:bg-red-500 transition-all"
+                    className="absolute text-white transition-all bg-gray-500 rounded-full -bottom-2 -right-2 hover:bg-red-500"
                   >
                     <BiX size={30} />
                   </button>
@@ -103,7 +103,7 @@ const FieldPhotoUpload = ({
         )}
         {isImageSelected && (
           <button
-            className="bg-blue-500 text-white px-4 py-1 rounded-md mt-4"
+            className="px-4 py-1 mt-4 text-white bg-blue-500 rounded-md"
             onClick={handleClick}
           >
             Зураг нэмэх

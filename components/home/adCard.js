@@ -15,78 +15,82 @@ const Card = ({ item }) => {
   const router = useRouter();
   return (
     <Skeleton isLoaded>
-      <div
-        className="relative overflow-hidden rounded-md shadow-md bg-zinc-200 group "
-        // onClick={() => item && item._id && router.push(`/product/${item.num}`)}
-      >
-        <div className="md:min-h-[35vh] min-h-[30vh] h-full w-full relative">
+      <div className="relative overflow-hidden rounded-md md:min-h-[35vh] min-h-[30vh]  shadow-md bg-zinc-200 group">
+        {/* zarin zurag absolute  */}
+        <div className="absolute top-0 bottom-0 left-0 right-0 z-0 w-full h-full">
           {item?.images && (
             <Image
               src={item?.images[0] ?? '/images/HeaderSlider/1.jpg'}
               alt="product image"
               layout="fill"
               objectFit="cover"
-              className="group-hover:scale-125 transition-all w-full object-cover h-full ease-in-out duration-400 aspect-[4/5]"
+              className="group-hover:scale-125 transition-all w-full object-cover h-full ease-in-out duration-400 aspect-[4/5]  relative z-0"
             />
           )}
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-slate-700/0 via-slate-700/30 to-slate-900/100"></div>
+        </div>
+        {/* Zariin body  */}
+        <div
+          className="relative z-10 flex w-full h-full px-3 py-2"
+          onClick={() =>
+            item && item._id && router.push(`/product/${item.num}`)
+          }
+        >
+          <div className="absolute top-0 left-0 flex items-start justify-between flex-1 w-full p-2">
+            <div className="px-2 py-1 rounded-md bg-mainBlossom w-fit">
+              <p className="h-4 text-sm font-semibold text-white md:h-6">
+                <Image
+                  src="/images/logo/bom-white.png"
+                  alt="BOM logo"
+                  objectFit="contain "
+                  className="h-full"
+                />
+              </p>
+            </div>
+
+            <button
+              className="flex items-center justify-center w-6 h-6 bg-gray-600 rounded-full md:w-8 md:h-8"
+              onClick={() => console.log('asdf')}
+            >
+              <FiCamera size={16} className="text-white" />
+            </button>
+          </div>
         </div>
 
-        <div className="absolute top-0 bottom-0 left-0 right-0 w-full h-full">
-          <div className="z-20 flex flex-col w-full h-full px-3 py-2 bg-gradient-to-b from-slate-700/0 via-slate-700/30 to-slate-900/100">
-            <div className="absolute top-0 left-0 z-10 flex items-start justify-between flex-1 w-full h-full p-2">
-              <div className="px-2 py-1 rounded-md bg-mainBlossom w-fit">
-                <p className="h-4 text-sm font-semibold text-white md:h-6">
-                  <Image
-                    src="/images/logo/bom-white.png"
-                    alt="BOM logo"
-                    objectFit="contain "
-                    className="h-full"
-                  />
-                </p>
-              </div>
-
-              <button
-                className="flex items-center justify-center w-6 h-6 bg-gray-600 rounded-full md:w-8 md:h-8"
-                onClick={() => console.log('asdf')}
-              >
-                <FiCamera size={16} className="text-white" />
-              </button>
-            </div>
-            <div className="relative z-10 flex flex-col justify-end h-full mb-2 space-y-2 cursor-pointer">
-              <div className="relative z-20 flex flex-row justify-between w-full">
-                <TextContainer
-                  title={item.title}
-                  description={item.positions?.location_id ?? ''}
-                />
-                <AdCardButton id={item?.num} />
-              </div>
-              <div className="flex flex-wrap items-end justify-between gap-x-1">
-                {item?.filters?.map((p, i) => {
-                  return (
-                    <React.Fragment key={i}>
-                      <ApartmentIconInfo p={p} />
-                      {p.type === 'area' && (
-                        <ItemContainer
-                          Icon={(props) => <BiArea {...props} text="" />}
-                          text={calcValue(p.input, 'байхгүй', 'м.кв')}
-                        />
-                      )}
-                    </React.Fragment>
-                  );
-                })}
-              </div>
-              {item?.adStatus == 'pending' && (
-                <p
-                  className={mergeNames(
-                    'text-teal-300 px-3 rounded-md font-bold mx-auto'
-                  )}
-                >
-                  {/* {item.adStatus} */}
-                  Хүлээгдэж байна...
-                </p>
-              )}
-            </div>
+        {/* Zariin info  */}
+        <div className="absolute bottom-0 left-0 flex flex-col justify-end w-full p-2 mb-2 space-y-2 cursor-pointer">
+          <div className="relative z-50 flex flex-row justify-between w-full">
+            <TextContainer
+              title={item.title}
+              description={item.positions?.location_id ?? ''}
+            />
+            <AdCardButton id={item?.num} />
           </div>
+          <div className="flex flex-wrap items-end justify-between gap-x-1">
+            {item?.filters?.map((p, i) => {
+              return (
+                <React.Fragment key={i}>
+                  <ApartmentIconInfo p={p} />
+                  {p.type === 'area' && (
+                    <ItemContainer
+                      Icon={(props) => <BiArea {...props} text="" />}
+                      text={calcValue(p.input, 'байхгүй', 'м.кв')}
+                    />
+                  )}
+                </React.Fragment>
+              );
+            })}
+          </div>
+          {item?.adStatus == 'pending' && (
+            <p
+              className={mergeNames(
+                'text-teal-300 px-3 rounded-md font-bold mx-auto'
+              )}
+            >
+              {/* {item.adStatus} */}
+              Хүлээгдэж байна...
+            </p>
+          )}
         </div>
       </div>
     </Skeleton>

@@ -60,7 +60,7 @@ const AdCardButton = ({ id }) => {
   };
 
   return (
-    <div className="relative z-20 flex flex-row items-center space-x-2">
+    <div className="flex flex-row items-center space-x-2">
       <Tooltip label="Хадгалах">
         <button
           className={mergeNames(cardIcon.div)}

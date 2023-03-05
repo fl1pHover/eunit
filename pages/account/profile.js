@@ -1,4 +1,5 @@
 import ButtonSelectItem from '@/components/createAd/formButtonSelectItem';
+import ProfileImage from '@/components/Profile/profileImage';
 import ProfileInput from '@/components/Profile/profileInput';
 import Socials from '@/components/Profile/socials';
 import urls from '@/constants/api';
@@ -16,7 +17,13 @@ const GroupLayout = ({ title, children, className = '' }) => (
   </div>
 );
 
-const Profile = ({ user }) => {
+const Profile = ({
+  user,
+  images = [],
+  generalData = {},
+  setImages = () => {},
+  setGeneralData = () => {},
+}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [edit, setEdit] = useState(false);
   const [userData, setUserData] = useState({
@@ -163,7 +170,10 @@ const Profile = ({ user }) => {
 
         {/* //TODO: Burgteltei email ni haragdaj bdgaar ghde disabled eniig yahav hereggui gevel arilgachna */}
 
-        <GroupLayout title="Бүртгэлтэй Имэйл" className="col-span-full">
+        <GroupLayout title="Профайл зураг" className="col-span-1/2">
+          <ProfileImage />
+        </GroupLayout>
+        <GroupLayout title="Бүртгэлтэй Имэйл" className="col-span-1/2">
           <p className="italic ">{user?.email}</p>
         </GroupLayout>
       </div>

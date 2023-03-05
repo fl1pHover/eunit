@@ -12,7 +12,7 @@ const Socials = ({ edit, socials, setSocials }) => {
         <h2 className="text-[20px] font-bold">Сошиал хаягууд</h2>
         <div
           className={mergeNames(
-            edit ? 'block' : STYLES.flexBetween,
+            edit ? 'flex flex-col gap-3' : STYLES.flexBetween,
             'mt-4',
             edit && 'animate-pin'
           )}

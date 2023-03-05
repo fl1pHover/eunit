@@ -27,7 +27,7 @@ const Dashboard = () => {
       <div className={mergeNames(STYLES.flexBetween, 'flex-col w-full')}>
         <Center flexDirection={'column'}>
           <Image
-            src="https://www.w3schools.com/howto/img_avatar2.png"
+            src="https://www.pikpng.com/pngl/m/80-805068_my-profile-icon-blank-profile-picture-circle-clipart.png"
             className="w-[100px] aspect-square rounded-full object-cover"
             alt="profile "
           />

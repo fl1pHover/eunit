@@ -49,9 +49,15 @@ const MyAds = ({ user }) => {
             placeholder="Бүх дэд төрөл"
           />
         </div>
-        <div className="flex justify-end">
+        <div className="flex flex-col justify-end">
+          <Checkbox
+            colorScheme="green"
+            className="font-bold text-green-400 whitespace-nowrap"
+          >
+            Нэмсэн зарууд
+          </Checkbox>
           <Checkbox className="font-bold text-primary whitespace-nowrap">
-            Хүлээгдэж буй
+            Хүлээгдэж байгаа
           </Checkbox>
         </div>
       </div>
