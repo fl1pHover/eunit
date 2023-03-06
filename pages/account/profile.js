@@ -32,6 +32,7 @@ const Profile = ({
     userType: user?.userType,
     birthday: user?.birthday,
   });
+  const [selectedImage, setSelectedImage] = useState();
   const router = useRouter();
   const [socials, setSocials] = useState([
     {
@@ -53,36 +54,37 @@ const Profile = ({
 
     if (edit) {
       const token = getCookie('token');
+      let f = new FormData();
+      f.append('file', selectedImage);
+      f.append('username', userData.username);
+      f.append('phone', userData.phone);
+      f.append('userType', userData.userType);
+      f.append(
+        'socials',
+        JSON.stringify([
+          {
+            url: socials[0].url,
+            name: socials[0].name,
+          },
+          {
+            url: socials[1].url,
+            name: socials[1].name,
+          },
+          {
+            url: socials[2].url,
+            name: socials[2].name,
+          },
+        ])
+      );
+      f.append('birthday', userData.birthday);
+
       try {
         await axios
-          .put(
-            `${urls['test']}/user`,
-            {
-              username: userData.username,
-              phone: userData.phone,
-              userType: userData.userType,
-              socials: [
-                {
-                  url: socials[0].url,
-                  name: socials[0].name,
-                },
-                {
-                  url: socials[1].url,
-                  name: socials[1].name,
-                },
-                {
-                  url: socials[2].url,
-                  name: socials[2].name,
-                },
-              ],
-              birthday: userData.birthday,
+          .put(`${urls['test']}/user`, f, {
+            headers: {
+              Authorization: `Bearer ${token}`,
             },
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          )
+          })
           .then((d) => router.reload());
       } catch (error) {
         console.log(error);
@@ -140,7 +142,9 @@ const Profile = ({
                   text={id == 0 ? 'Энгийн' : id == 1 ? 'Агент' : 'Байгууллага'}
                   isSelected={userData.userType == text}
                   onClick={() =>
-                    setUserData((prev) => ({ ...prev, userType: text }))
+                    edit
+                      ? setUserData((prev) => ({ ...prev, userType: text }))
+                      : null
                   }
                   edit={edit}
                   disabled={edit ? false : true}
@@ -170,9 +174,14 @@ const Profile = ({
 
         {/* //TODO: Burgteltei email ni haragdaj bdgaar ghde disabled eniig yahav hereggui gevel arilgachna */}
 
-        <GroupLayout title="Профайл зураг" className="col-span-1/2">
-          <ProfileImage />
-        </GroupLayout>
+        {edit && (
+          <GroupLayout title="Профайл зураг" className="col-span-1/2">
+            <ProfileImage
+              selectedImage={selectedImage}
+              setSelectedImage={setSelectedImage}
+            />
+          </GroupLayout>
+        )}
         <GroupLayout title="Бүртгэлтэй Имэйл" className="col-span-1/2">
           <p className="italic ">{user?.email}</p>
         </GroupLayout>

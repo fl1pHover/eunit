@@ -1,8 +1,6 @@
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 
-const ProfileImage = ({}) => {
-  const [selectedImage, setSelectedImage] = useState();
-
+const ProfileImage = ({ selectedImage, setSelectedImage }) => {
   const imageChange = (e) => {
     if (e.target.files && e.target.files.length > 0) {
       setSelectedImage(e.target.files[0]);

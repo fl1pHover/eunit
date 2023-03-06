@@ -292,7 +292,8 @@ export default function CreateAd({ categories }) {
         <StepButtons
           onNext={handleNextStep}
           onPrev={handlePrevStep}
-          data={generalData}
+          data={subCategory.steps}
+          generalData={generalData}
           loading={isLoading}
           txt={step == 2 ? 'Илгээх' : 'Дараах'}
           step={step}

@@ -22,11 +22,12 @@ const StepButtons = ({
   loading = false,
   onNext = () => {},
   data,
+  generalData,
   txt = 'Дараах',
   onClick = () => {},
   step,
 }) => {
-  console.log(data);
+  console.log(data, generalData);
   return (
     <div className="mt-4">
       {/* <ButtonProcess /> */}
@@ -60,9 +61,9 @@ const StepButtons = ({
                 <Box maxWidth={'100%'} flex="0 0 100%" borderRadius="5px">
                   <Box className="p-3 bg-white shadow-md md:p-10 rounded-xl">
                     {/*Product */}
-                    {data.title && (
+                    {generalData?.title && (
                       <Heading variant={'mediumHeading'} mb={5}>
-                        {data.title}
+                        {generalData?.title}
                       </Heading>
                     )}
 
@@ -91,10 +92,10 @@ const StepButtons = ({
                             'border-2 border-blue-900/20  mb-[120px] shadow-md'
                           )}
                         >
-                          {data?.images && (
+                          {generalData?.images && (
                             <AspectRatio ratio={1}>
                               <ImageGallery
-                                items={data?.images.map((i) => ({
+                                items={generalData?.images.map((i) => ({
                                   original: i,
                                   thumbnail: i,
                                 }))}
@@ -102,7 +103,7 @@ const StepButtons = ({
                             </AspectRatio>
                           )}
                         </Box>
-                        <Text mt={5}>{data.description}</Text>
+                        <Text mt={5}>{generalData.desc}</Text>
                       </div>
 
                       {/*  //TODO  ENDING LEFT SIDE IMAGES AND DESC */}
