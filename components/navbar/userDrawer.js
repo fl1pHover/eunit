@@ -1,5 +1,5 @@
 import { Image, Text, useDisclosure } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import { useState } from 'react';
 //TODO Icons
 import { useRouter } from 'next/router';
 import mergeNames from '../../util/mergeNames';
@@ -14,6 +14,7 @@ import {
   DrawerContent,
   DrawerOverlay,
 } from '@chakra-ui/react';
+import { useRef } from 'react';
 import { BsGrid } from 'react-icons/bs';
 import { CgProfile } from 'react-icons/cg';
 import { FiHeart } from 'react-icons/fi';
@@ -23,22 +24,22 @@ const drawerItem = [
   {
     icon: <CgProfile />,
     text: 'Хувийн мэдээлэл',
-    href: 'Profile'
+    href: 'Profile',
   },
   {
     icon: <BsGrid />,
     text: 'Миний зарууд',
-    href: 'MyAds'
+    href: 'MyAds',
   },
   {
     icon: <FiHeart />,
     text: 'Миний хүслүүд',
-    href: 'Bookmark'
+    href: 'Bookmark',
   },
   {
     icon: <IoWalletOutline />,
     text: 'Хэтэвч',
-    href: 'wallet'
+    href: 'wallet',
   },
 ];
 
@@ -77,7 +78,13 @@ const BodyDrawer = () => {
               <DownLink
                 key={i}
                 icon={d.icon}
-                onClick={() => router.push({pathname: '/account', query: {tab: `${d.href}`, }}, null, {shallow: true})}
+                onClick={() =>
+                  router.push(
+                    { pathname: '/account', query: { tab: `${d.href}` } },
+                    null,
+                    { shallow: true }
+                  )
+                }
                 text={d.text}
               />
             );
@@ -128,7 +135,7 @@ const UserDrawer = ({ user, logout }) => {
   const [active, setActive] = useState(false);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const btnRef = React.useRef();
+  const btnRef = useRef();
 
   const handleClick = () => {
     setActive((current) => !current);

@@ -1,8 +1,7 @@
-import MainContainer from '@/layout/mainContainer';
-import { STYLES } from '@/styles/index';
+import { LoadingButton } from '@/lib/Button';
 import CustomModal from '@/util/CustomModal';
 import mergeNames from '@/util/mergeNames';
-import { AspectRatio, Box, Heading, Stack, Text } from '@chakra-ui/react';
+import { AspectRatio, Box, Heading, Text } from '@chakra-ui/react';
 import { ProductInfo } from 'pages/product/[slug]';
 import { FiArrowLeft, FiArrowRight } from 'react-icons/fi';
 import ImageGallery from 'react-image-gallery';
@@ -47,104 +46,74 @@ const StepButtons = ({
               </>
             }
             onclick={onNext}
-            btnClose="Нэмэх"
+            btnClose={<LoadingButton text="Нэмэх" />}
             btnClose2="Буцах"
             header="Баталгаажуулах хэсэг"
           >
-            <MainContainer>
-              <Stack direction={'row'} py={2} gap={3}>
-                {/* //TODO Filter Box */}
-                {/* {data?.subCategory && <FilterLayout data={data.subCategory}/>} */}
+            {/* //TODO Main product */}
+            <Box maxWidth={'100%'} flex="0 0 100%" borderRadius="5px">
+              <Box className="p-3 bg-white shadow-md md:p-10 rounded-xl">
+                {/*Product */}
+                {data.title && (
+                  <Heading variant={'mediumHeading'} mb={5}>
+                    {data.title}
+                  </Heading>
+                )}
 
-                {/* //TODO Main product */}
-                <Box maxWidth={'100%'} flex="0 0 100%" borderRadius="5px">
-                  <Box className="p-3 bg-white shadow-md md:p-10 rounded-xl">
-                    {/*Product */}
-                    {data.title && (
-                      <Heading variant={'mediumHeading'} mb={5}>
-                        {data.title}
-                      </Heading>
-                    )}
-
-                    {/* product image and information */}
-                    <div className="grid grid-cols-1 gap-10 md:grid-cols-2 product__content-wrapper">
-                      {/*  //TODO LEFT SIDE IMAGES AND DESC */}
-
-                      <div>
-                        <Stack
-                          className={mergeNames(
-                            STYLES.flexBetween,
-                            'flex-row mb-2'
-                          )}
-                        >
-                          <div className="flex flex-col justify-center sm:flex-row">
-                            {/* <Text className="mr-[10px]">
-                        Зарын огноо: {moment(data.createdAt).format('lll')}
-                      </Text> */}
-                            {/* <Text>Зарын дугаар: {data.num}</Text> */}
-                          </div>
-                        </Stack>
-
-                        <Box
-                          className={mergeNames(
-                            'product__image',
-                            'border-2 border-blue-900/20  mb-[120px] shadow-md'
-                          )}
-                        >
-                          {data?.images && (
-                            <AspectRatio ratio={1}>
-                              <ImageGallery
-                                items={data?.images.map((i) => ({
-                                  original: i,
-                                  thumbnail: i,
-                                }))}
-                              />
-                            </AspectRatio>
-                          )}
-                        </Box>
-                        <Text mt={5}>{data.description}</Text>
-                      </div>
-
-                      {/*  //TODO  ENDING LEFT SIDE IMAGES AND DESC */}
-
-                      {/*  //TODO  STARTS RIGHT SIDE INFOS */}
-                      {data && (
-                        <div className="grid grid-cols-1 gap-1 md:gap-3 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2">
-                          {/* <Button
-                      onClick={() => router.push(`/account/${data.user._id}`)}
-                    >
-                      {data.user?.phone}
-                    </Button> */}
-
-                          <p className="text-xl font-bold col-span-full">
-                            Ерөнхий мэдээлэл
-                          </p>
-
-                          {data?.filters?.map((p, i) => {
-                            console.log(data);
-                            if (p.type != null) {
-                              return (
-                                <ProductInfo
-                                  key={i}
-                                  title={p.name}
-                                  id={p.type}
-                                  value={p.input}
-                                  onClick={() =>
-                                    getFilterByItem(p.type, p.input)
-                                  }
-                                />
-                              );
-                            }
-                          })}
-                        </div>
+                {/* product image and information */}
+                <div className="grid grid-cols-1 gap-10 md:grid-cols-2 product__content-wrapper">
+                  <div>
+                    <Box
+                      className={mergeNames(
+                        'product__image ',
+                        'border-2 border-blue-900/20  mb-[120px] shadow-md'
                       )}
+                    >
+                      {data?.images && (
+                        <AspectRatio ratio={1}>
+                          <ImageGallery
+                            items={data?.images.map((i) => ({
+                              original: i,
+                              thumbnail: i,
+                            }))}
+                            className="object-contain"
+                          />
+                        </AspectRatio>
+                      )}
+                    </Box>
+                    <Text mt={5}>{data.description}</Text>
+                  </div>
 
-                      {/*  //TODO  ENDING RIGHT SIDE INFOS */}
+                  {/*  //TODO  ENDING LEFT SIDE IMAGES AND DESC */}
+
+                  {/*  //TODO  STARTS RIGHT SIDE INFOS */}
+                  {data && (
+                    <div className="grid grid-cols-1 gap-1 md:gap-3 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2">
+                      <p className="text-xl font-bold col-span-full">
+                        Ерөнхий мэдээлэл
+                      </p>
+
+                      {data?.filters?.map((p, i) => {
+                        console.log(data);
+                        if (p.type != null) {
+                          return (
+                            <ProductInfo
+                              key={i}
+                              title={p.name}
+                              id={p.type}
+                              value={p.input}
+                              onClick={() => getFilterByItem(p.type, p.input)}
+                            />
+                          );
+                        }
+                      })}
                     </div>
-                  </Box>
-                </Box>
-              </Stack>
-            </MainContainer>
+                  )}
+
+                  {/*  //TODO  ENDING RIGHT SIDE INFOS */}
+                </div>
+              </Box>
+            </Box>
           </CustomModal>
         ) : (
           <button
