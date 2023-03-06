@@ -41,7 +41,7 @@ import { useAuth } from '../../context/auth';
 import { getCookie } from 'cookies-next';
 import UserInfo from './userInfo';
 
-const ProductInfo = ({
+export const ProductInfo = ({
   title,
   value,
   id,
@@ -50,6 +50,7 @@ const ProductInfo = ({
   tt = 'capitalize',
 }) => {
   // console.log(value);
+
   return (
     <>
       <p
@@ -290,6 +291,7 @@ const Product = ({ propAds }) => {
                     </p>
 
                     {data?.filters?.map((p, i) => {
+                      console.log(data);
                       if (p.type != null) {
                         return (
                           <ProductInfo

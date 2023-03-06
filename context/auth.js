@@ -124,6 +124,7 @@ export const AuthProvider = ({ children }) => {
         login,
         loading,
         logout,
+        setLoading,
         categories,
         signup,
         ads,

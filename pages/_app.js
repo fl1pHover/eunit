@@ -1,5 +1,5 @@
 import { ChakraProvider } from '@chakra-ui/react';
-import { AuthProvider } from 'context/auth';
+import { AuthProvider, useAuth } from 'context/auth';
 import { AnimatePresence } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
@@ -12,20 +12,22 @@ import '@/styles/globals.scss';
 import { useRouter } from 'next/router';
 
 function MyApp({ Component, pageProps }) {
-  // let { loading } = useAuth();
+  let { loading, setLoading } = useAuth();
+  let [isLoading, setIsLoading] = useState(false);
   let [color, setColor] = useState('#1d1e44');
   let [category, setCategory] = useState();
 
   const router = useRouter();
 
-  const [loading, setLoading] = useState(false);
   useEffect(() => {
-    const handleStart = (url) => url !== router.asPath && setLoading(true);
+    const handleStart = (url) => url !== router.asPath && setIsLoading(true);
     const handleComplete = (url) =>
-      url === router.asPath &&
+    {
+      return url === router.asPath &&
       setTimeout(() => {
-        setLoading(false);
+        setIsLoading(false);
       }, 1000);
+    }
 
     router.events.on('routeChangeStart', handleStart);
     router.events.on('routeChangeComplete', handleComplete);
@@ -39,7 +41,7 @@ function MyApp({ Component, pageProps }) {
   });
   return (
     <AuthProvider>
-      {!loading ? (
+      {!isLoading ? (
         <ChakraProvider theme={theme}>
           <AnimatePresence>
             <Layout>

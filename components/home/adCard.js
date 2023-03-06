@@ -15,7 +15,10 @@ const Card = ({ item }) => {
   const router = useRouter();
   return (
     <Skeleton isLoaded>
-      <div className="relative overflow-hidden rounded-md md:min-h-[35vh] min-h-[30vh]  shadow-md bg-zinc-200 group">
+      <div
+        className="relative overflow-hidden rounded-md md:min-h-[35vh] min-h-[30vh]  shadow-md bg-zinc-200 group"
+        onClick={() => item && item._id && router.push(`/product/${item.num}`)}
+      >
         {/* zarin zurag absolute  */}
         <div className="absolute top-0 bottom-0 left-0 right-0 z-0 w-full h-full">
           {item?.images && (

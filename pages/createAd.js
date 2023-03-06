@@ -115,22 +115,27 @@ export default function CreateAd({ categories }) {
     const token = getCookie('token');
     const f = new FormData();
     const selectedFilters = subCategory.steps[0].values;
-    selectedFilters.push({
-      type: 'price',
-      input: generalData.price,
-      name: 'Үнэ',
-    });
-    selectedFilters.push({
+    selectedFilters.splice(0, 0, {
       type: 'phone',
       input: generalData.phone,
       name: 'Утасны дугаар',
     });
-    selectedFilters.push({
+    selectedFilters.splice(1, 0, {
+      type: 'sellType',
+      input: types.sellType,
+      name: 'Борлуулах төрөл',
+    });
+    selectedFilters.splice(2, 0, {
+      type: 'price',
+      input: generalData.price,
+      name: 'Үнэ',
+    });
+    selectedFilters.splice(3, 0, {
       type: 'area',
       input: generalData.area,
       name: 'Талбай',
     });
-    selectedFilters.push({
+    selectedFilters.splice(4, 0, {
       type: 'unitPrice',
       input: generalData.unitPrice,
       name: 'Нэгж талбайн үнэ',
@@ -138,7 +143,6 @@ export default function CreateAd({ categories }) {
     let finalFilters = selectedFilters.concat(subCategory.steps[2].values);
     let copiedFilters = JSON.parse(JSON.stringify(finalFilters));
     copiedFilters.map((f) => (f.value = []));
-
     f.append('title', generalData.title);
     f.append('description', generalData.desc);
     subCategory.steps[1].values = selectedFilters;
@@ -246,7 +250,7 @@ export default function CreateAd({ categories }) {
                     onClick={(e) => {
                       setMap(e.latLng.toJSON());
                     }}
-                  zoom={14}
+                    zoom={14}
                     center={mapCenter}
                     mapTypeId={google.maps.MapTypeId.ROADMAP}
                     mapContainerStyle={{ width: '100%', height: '40vh' }}

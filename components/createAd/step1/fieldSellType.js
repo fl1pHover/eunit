@@ -1,10 +1,9 @@
-import React from "react";
-import CheckItem from "./checkItem";
-import Line from "@/components/createAd/formLine";
-import FormLabel from "@/components/createAd/formLabel";
-import ButtonSelectItem from "@/components/createAd/formButtonSelectItem";
+import ButtonSelectItem from '@/components/createAd/formButtonSelectItem';
+import FormLabel from '@/components/createAd/formLabel';
+import Line from '@/components/createAd/formLine';
+import CheckItem from './checkItem';
 
-import { SellTypes } from "@/constants/enums";
+import { SellTypes } from '@/constants/enums';
 
 const FieldSellType = ({ types = {}, setTypes = () => {} }) => {
   return (
@@ -12,7 +11,7 @@ const FieldSellType = ({ types = {}, setTypes = () => {} }) => {
       <FormLabel num={2} title="Борлуулах төрөл" />
       <div className="flex flex-row justify-center gap-4 mt-2">
         {Object.keys(SellTypes).map((type, key) => {
-          const isSelected = type === types?.sellType;
+          const isSelected = SellTypes[type].name === types?.sellType;
           return (
             <ButtonSelectItem
               key={key}
@@ -21,7 +20,7 @@ const FieldSellType = ({ types = {}, setTypes = () => {} }) => {
               onClick={() =>
                 setTypes((prev) => ({
                   ...prev,
-                  sellType: type,
+                  sellType: SellTypes[type].name,
                 }))
               }
               LeftItem={() => <CheckItem {...{ isSelected }} />}
