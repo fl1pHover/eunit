@@ -66,7 +66,7 @@ export const ProductInfo = ({
       <GridItem
         className={
           title.length + value?.length > 30
-            ? 'product__info col-span-full '
+            ? 'product__info col-span-full'
             : 'product__info'
         }
         key={key}
@@ -76,9 +76,7 @@ export const ProductInfo = ({
         ) : (
           <Stack
             direction={'row'}
-            className={mergeNames(
-              'h-full p-2 border-2 rounded-md border-bgGrey'
-            )}
+            className={mergeNames('p-2 border-2 rounded-md border-bgGrey')}
           >
             <Text
               fontSize={{ base: '13px', xl: '15px' }}
@@ -270,43 +268,42 @@ const Product = ({ propAds }) => {
                 {/*  //TODO  ENDING LEFT SIDE IMAGES AND DESC */}
 
                 {/*  //TODO  STARTS RIGHT SIDE INFOS */}
-                {data && (
-                  <div className="grid grid-cols-1 gap-1 md:gap-3 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2">
-                    {/* <Button
-                      onClick={() => router.push(`/account/${data.user._id}`)}
-                    >
-                      {data.user?.phone}
-                    </Button> */}
 
-                    <UserInfo
-                      id={data.user._id}
-                      username={data.user?.username}
-                      phone={data.user?.phone}
-                      avatar=""
-                    />
-
-                    <p className="text-xl font-bold col-span-full">
-                      Ерөнхий мэдээлэл
-                    </p>
-
-                    {data?.filters?.map((p, i) => {
-                      if (p.type != null) {
-                        return (
-                          <ProductInfo
-                            key={i}
-                            title={p.name}
-                            id={p.type}
-                            value={p.input}
-                            onClick={() => getFilterByItem(p.type, p.input)}
-                          />
-                        );
-                      }
-                    })}
-                  </div>
-                )}
-
-                {/*  //TODO  ENDING RIGHT SIDE INFOS */}
+                <div className="block w-full">
+                  {data && (
+                    <div className="grid grid-cols-1 gap-1 md:gap-3 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2">
+                      {/* <Button
+                        onClick={() => router.push(`/account/${data.user._id}`)}
+                      >
+                        {data.user?.phone}
+                      </Button> */}
+                      <UserInfo
+                        id={data.user._id}
+                        username={data.user?.username}
+                        phone={data.user?.phone}
+                        avatar=""
+                      />
+                      <p className="text-xl font-bold col-span-full">
+                        Ерөнхий мэдээлэл
+                      </p>
+                      {data?.filters?.map((p, i) => {
+                        if (p.type != null) {
+                          return (
+                            <ProductInfo
+                              key={i}
+                              title={p.name}
+                              id={p.type}
+                              value={p.input}
+                              onClick={() => getFilterByItem(p.type, p.input)}
+                            />
+                          );
+                        }
+                      })}
+                    </div>
+                  )}
+                </div>
               </div>
+              {/*  //TODO  ENDING RIGHT SIDE INFOS */}
             </Box>
 
             <Box>

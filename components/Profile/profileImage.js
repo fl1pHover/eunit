@@ -1,6 +1,10 @@
+import { useAuth } from '@/context/auth';
+import { Image } from '@chakra-ui/react';
 import { useRef } from 'react';
 
 const ProfileImage = ({ selectedImage, setSelectedImage }) => {
+  const user = useAuth();
+
   const imageChange = (e) => {
     if (e.target.files && e.target.files.length > 0) {
       setSelectedImage(e.target.files[0]);
@@ -33,8 +37,11 @@ const ProfileImage = ({ selectedImage, setSelectedImage }) => {
 
       {selectedImage ? (
         <div className="h-[25vh] relative rounded-md flex-col justify-center items-center">
-          <img
-            src={URL.createObjectURL(selectedImage)}
+          <Image
+            src={
+              URL.createObjectURL(selectedImage) ??
+              URL.createObjectURL(user?.profileImg)
+            }
             className="object-cover object-center w-full h-full overflow-hidden bg-gray-300 rounded-md aspect-square"
             alt="Thumb"
           />
