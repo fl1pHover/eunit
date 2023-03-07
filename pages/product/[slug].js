@@ -5,6 +5,7 @@ import {
   Heading,
   HStack,
   IconButton,
+  Link,
   Select,
   Stack,
   Text,
@@ -32,13 +33,13 @@ import {
   useLoadScript,
 } from '@react-google-maps/api';
 import axios from 'axios';
+import { getCookie } from 'cookies-next';
 import currency from 'currency.js';
 import moment from 'moment/moment';
+import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import urls from '../../constants/api';
 import { useAuth } from '../../context/auth';
-
-import { getCookie } from 'cookies-next';
 import UserInfo from './userInfo';
 
 export const ProductInfo = ({
@@ -64,7 +65,7 @@ export const ProductInfo = ({
       </p>
       <GridItem
         className={
-          title.length + value?.length > 28
+          title.length + value?.length > 30
             ? 'product__info col-span-full '
             : 'product__info'
         }
@@ -85,17 +86,25 @@ export const ProductInfo = ({
             >
               {title}:{' '}
             </Text>
-            <Text
-              fontSize={{ base: '13px', xl: '15px' }}
-              textTransform={tt}
-              fontWeight={'bold'}
+            <NextLink
+              href={{
+                pathname: `/category/filter/${id}`,
+                query: { num: 0, value: value },
+              }}
             >
-              {id === 'price' || id === 'unitPrice'
-                ? currency(value, { separator: ',', symbol: '₮ ' })
-                    .format()
-                    .toString()
-                : value}
-            </Text>
+              <Link
+                fontSize={{ base: '13px', xl: '15px' }}
+                textTransform={tt}
+                cursor={'pointer'}
+                fontWeight={'bold'}
+              >
+                {id === 'price' || id === 'unitPrice'
+                  ? currency(value, { separator: ',', symbol: '₮ ' })
+                      .format()
+                      .toString()
+                  : value}
+              </Link>
+            </NextLink>
           </Stack>
         )}
       </GridItem>
@@ -108,11 +117,12 @@ const Product = ({ propAds }) => {
   const { districts, locations } = useAuth();
   const router = useRouter();
   const [data, setData] = useState('');
-  const [suggestion, setSuggestion] = useState('location');
+  const [suggestion, setSuggestion] = useState(
+    propAds?.subCategory?.suggessionType[0] ?? 'location'
+  );
   const [sData, setsData] = useState([]);
   const libraries = useMemo(() => ['places'], []);
   const [markerActive, setMarkerActive] = useState(null);
-
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: 'AIzaSyC2u2OzBNo53GxJJdN3Oc_W6Yc42OmdZcE',
     libraries: libraries,
@@ -127,22 +137,30 @@ const Product = ({ propAds }) => {
     []
   );
   const mapCenter = useMemo(() => data?.location, [data]);
-  const getSuggestion = async (suggest) => {
-    if (data && suggest != 'map') {
+  const getSuggestion = async (suggest, sdata) => {
+    if (suggest != 'map') {
       try {
+        let type, id;
+        switch (suggest) {
+          case 'location':
+            type = sdata?.filters.filter((d) => d.type == 'district')[0].input;
+            id = 'district';
+            break;
+          case 'usage':
+            type = sdata?.filters.filter((d) => d.type == 'landUsage')[0].input;
+            id = 'landUsage';
+            break;
+          default:
+            (type = sdata?.filters.filter((f) => f.type == suggest)[0].input),
+              (id = suggest);
+            break;
+        }
         await axios
-          .post(`${urls['test']}/ad/suggesstion`, {
-            suggestion:
-              suggest == 'location'
-                ? data?.positions?.district_id
-                : suggest == 'room'
-                ? data?.filters.filter((f) => f.id == 'room')[0].value
-                : null,
-            type: suggest,
-          })
+          .get(`${urls['test']}/ad/suggesstion/${id}/${type}/0`)
           .then((d) => {
             setsData([]);
-            setsData(d.data.filter((sd) => sd._id != data._id));
+            let ads = d.data.ads.filter((da) => da._id != sdata._id);
+            setsData({ ads, limit: sdata.limit - 1 });
           });
       } catch (error) {
         console.log(error);
@@ -152,26 +170,7 @@ const Product = ({ propAds }) => {
 
   const getData = async () => {
     setData(propAds);
-    // console.log(propAds);
-    if (suggestion != 'map') {
-      try {
-        await axios
-          .post(`${urls['test']}/ad/suggesstion`, {
-            suggestion:
-              suggestion == 'location'
-                ? propAds?.positions?.district_id
-                : suggestion == 'room'
-                ? `${data?.filters.filter((f) => f.id == 'room')[0].value}`
-                : null,
-            type: suggestion,
-          })
-          .then((s) => {
-            setsData(s.data);
-          });
-      } catch (error) {
-        console.log(error);
-      }
-    }
+    await getSuggestion(suggestion, propAds);
   };
   useEffect(() => {
     if (propAds) {
@@ -291,7 +290,6 @@ const Product = ({ propAds }) => {
                     </p>
 
                     {data?.filters?.map((p, i) => {
-                      console.log(data);
                       if (p.type != null) {
                         return (
                           <ProductInfo
@@ -334,10 +332,10 @@ const Product = ({ propAds }) => {
             <Select
               className="h-[30px] text-sm border-2 pr-3 border-blue-700 rounded-full"
               onChange={async (e) => {
-                setSuggestion(e.target.value);
+                setSuggestion(e.target.value, data);
                 {
                   suggestion != 'map'
-                    ? getSuggestion(e.target.value)
+                    ? getSuggestion(e.target.value, data)
                     : console.log(data);
                 }
               }}
@@ -354,6 +352,23 @@ const Product = ({ propAds }) => {
                       <>
                         <option value="location" key={i}>
                           Байршлаар
+                        </option>
+
+                        <option value={'map'} key={i + 1}>
+                          Газрын зургаар
+                        </option>
+                      </>
+                    );
+                  case 'usage':
+                    return i !=
+                      data?.subCategory?.suggessionType?.length - 1 ? (
+                      <option value="usage" key={i}>
+                        Зориулалтаар
+                      </option>
+                    ) : (
+                      <>
+                        <option value="usage" key={i}>
+                          Зориулалтаар
                         </option>
 
                         <option value={'map'} key={i + 1}>

@@ -9,19 +9,25 @@ import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { MdCompareArrows } from 'react-icons/md';
-const CompareItem = ({item, onClick}) => {
+const CompareItem = ({ item, onClick }) => {
   return (
     <div className="w-full h-full bg-white max-w-[250px] relative ">
-      <Image src={item?.images[0] ?? '/images/HeaderSlider/1.jpg' } alt="compare ads image" />
+      <Image
+        src={item?.images[0] ?? '/images/HeaderSlider/1.jpg'}
+        alt="compare ads image"
+      />
 
       {/* Delete button*/}
-      <div className="absolute delete -top-[10px] -right-[10px] rounded-full cursor-pointer" onClick={onClick} />
+      <div
+        className="absolute delete -top-[10px] -right-[10px] rounded-full cursor-pointer"
+        onClick={onClick}
+      />
     </div>
   );
 };
 
 const CompareSelect = () => {
-  const {compareAds, setCompareAds} = useAuth()
+  const { compareAds, setCompareAds } = useAuth();
   const router = useRouter();
   const [expand, setExpand] = useState(false);
 
@@ -48,7 +54,7 @@ const CompareSelect = () => {
           Харьцуулах ( <span> {compareAds.length}</span>/4 )
         </p>
         <div className="flex gap-2 transition-all ease-in-out">
-          <button onClick={() =>setCompareAds([])}>Цэвэрлэх</button>
+          <button onClick={() => setCompareAds([])}>Цэвэрлэх</button>
           <button
             onClick={() => router.push('/compare')}
             className="px-4 py-2 bg-blue-500 hover:bg-blue-700 rounded-2xl"
@@ -59,16 +65,24 @@ const CompareSelect = () => {
       </div>
       <div className="grid h-[80%] grid-cols-4 md:gap-6 gap-1 py-5">
         {/* Compare item */}
-        {compareAds.length > 0 && compareAds.map((cAds, i) => {
-          return <CompareItem item={cAds} key={i} onClick={() => setCompareAds(compareAds.filter((c) => c.num != cAds.num))}/>
-        })}
+        {compareAds.length > 0 &&
+          compareAds.map((cAds, i) => {
+            return (
+              <CompareItem
+                item={cAds}
+                key={i}
+                onClick={() =>
+                  setCompareAds(compareAds.filter((c) => c.num != cAds.num))
+                }
+              />
+            );
+          })}
       </div>
     </div>
   );
 };
 
 const Bookmark = () => {
-  
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const { user } = useAuth();
@@ -76,7 +90,7 @@ const Bookmark = () => {
     setIsLoading(true);
     try {
       await axios
-        .post(`${urls['test']}/ad/many/${0}`, user.bookmarks)
+        .post(`${urls['test']}/ad/many/${0}/false`, user.bookmarks)
         .then((d) => {
           setProducts(d.data.ads);
         })

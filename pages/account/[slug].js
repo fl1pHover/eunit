@@ -13,7 +13,7 @@ import urls from '../../constants/api';
 const Accounts = ({ propUser }) => {
   const [ads, setAds] = useState([]);
   const getAds = async () => {
-    await axios.post(`${urls['test']}/ad/many/0`, propUser.ads).then((d) => {
+    await axios.post(`${urls['test']}/ad/many/0/false`, propUser.ads).then((d) => {
       setAds(d.data.ads);
     });
   };
@@ -37,7 +37,10 @@ const Accounts = ({ propUser }) => {
             )}
           >
             <Image
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Avatar_The_Way_of_Water_Tokyo_Press_Conference_Sam_Worthington_%2852563252594%29_%28cropped%29.jpg/800px-Avatar_The_Way_of_Water_Tokyo_Press_Conference_Sam_Worthington_%2852563252594%29_%28cropped%29.jpg"
+              src={
+                propUser?.profileImg ??
+                'https://www.pikpng.com/pngl/m/80-805068_my-profile-icon-blank-profile-picture-circle-clipart.png'
+              }
               alt="User"
               className={mergeNames(
                 'h-[150px] w-[150px] border border-gray-300',
