@@ -53,7 +53,7 @@ export const ProductInfo = ({
   // console.log(value);
 
   return (
-    <>
+    <div key={key}>
       <p
         className={mergeNames(
           id === 'price'
@@ -108,7 +108,7 @@ export const ProductInfo = ({
           </Stack>
         )}
       </GridItem>
-    </>
+    </div>
   );
 };
 
@@ -282,7 +282,10 @@ const Product = ({ propAds }) => {
                       id={data.user._id}
                       username={data.user?.username}
                       phone={data.user?.phone}
-                      avatar=""
+                      avatar={
+                        data.user?.profileImg ??
+                        'https://www.pikpng.com/pngl/m/80-805068_my-profile-icon-blank-profile-picture-circle-clipart.png'
+                      }
                     />
 
                     <p className="text-xl font-bold col-span-full">

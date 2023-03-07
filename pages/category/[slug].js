@@ -23,6 +23,7 @@ import {
   MarkerF,
   useLoadScript,
 } from '@react-google-maps/api';
+import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect, useMemo, useState } from 'react';
 import { useAuth } from '../../context/auth';
@@ -38,7 +39,7 @@ const Category = ({ propAds }) => {
     }
   };
   useEffect(() => {
-    setAds(propAds?.ads);
+    setAds(propAds);
   }, [propAds]);
 
   const [isLoading, setIsLoading] = useState(false);
@@ -65,6 +66,17 @@ const Category = ({ propAds }) => {
     }),
     []
   );
+  const getData = async (id) => {
+    try {
+      if (router.query.slug)
+        await axios
+          .get(`${urls['test']}/ad/category/${router.query.slug}/${id}`)
+          .then((d) => {
+            console.log(d.data);
+            // setAds(d.data)
+          });
+    } catch (error) {}
+  };
   if (!isLoaded) {
     return <p>Loading...</p>;
   }
@@ -83,13 +95,14 @@ const Category = ({ propAds }) => {
 
           <Box className="max-w-[100%] w-full rounded-[5px]">
             {/* //TODO Engiin zar */}
-            {ads?.length > 0 ? (
+            {ads?.ads?.length > 0 ? (
               <AdContent
                 data={ads}
                 tlc={toLowerCase}
                 title={category ?? ''}
                 showLink="hidden"
                 inCat
+                func={getData}
               />
             ) : (
               <ContainerX>
@@ -118,7 +131,7 @@ const Category = ({ propAds }) => {
                 mapContainerStyle={{ width: '100%', height: '50vh' }}
               >
                 {isLoaded &&
-                  ads?.map((m, i) => {
+                  ads?.ads?.map((m, i) => {
                     return (
                       <div className="" key={i}>
                         <MarkerF
