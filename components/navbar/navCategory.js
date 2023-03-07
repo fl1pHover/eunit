@@ -46,7 +46,7 @@ const NavCategory = () => {
                   isHoveringId === id &&
                   submenu.map(({ category, href }, subkey) => {
                     return (
-                      <>
+                      <div key={subkey}>
                         {/* <div className="absolute left-0 w-1/2 h-full from-blue-900/0 via-blue-900/40 to-blue-900/100 bg-[url('/images/flurry.svg')] bg-no-repeat" /> */}
                         <Image
                           src="/images/flurry.svg"
@@ -55,7 +55,7 @@ const NavCategory = () => {
                           bgRepeat="repeat"
                         />
 
-                        <Link href={`/category/${href}`} key={subkey}>
+                        <Link href={`/category/${href}`}>
                           <motion.a
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
@@ -76,7 +76,7 @@ const NavCategory = () => {
                           bgRepeat="repeat"
                         />
                         {/* <div className="absolute right-0 w-1/2 h-full bg-gradient-to-r from-blue-900/100 via-blue-900/40 to-white/0" /> */}
-                      </>
+                      </div>
                     );
                   })}
               </div>
