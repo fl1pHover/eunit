@@ -12,12 +12,13 @@ const MyAds = ({ user }) => {
   const [category, setCategory] = useState([]);
   const [subCategory, setSubCategory] = useState([]);
   const [checker, setChecker] = useState(false);
+  const [num, setNum] = useState(0);
   const [data, setData] = useState([]);
   const getData = async () => {
     setIsLoading(true);
     try {
       await axios
-        .post(`${urls['test']}/ad/many/${0}/true`, user.ads)
+        .post(`${urls['test']}/ad/many/${num}/true`, user.ads)
         .then((d) => {
           setProducts(d.data);
           setData(d.data);
@@ -57,7 +58,7 @@ const MyAds = ({ user }) => {
   };
   useEffect(() => {
     getData();
-  }, []);
+  }, [num]);
   useEffect(() => {
     adStatusChecker();
   }, [checker]);
@@ -163,13 +164,52 @@ const MyAds = ({ user }) => {
           <AdCard key={key} item={item || {}} />
         ))}
       </div>
-      {/* <AdContent
-        inCat
-        data={products}
-        tlc={toLowerCase}
-        title=" "
-        showLink="hidden"
-      /> */}
+      <ul className="flex float-right list-style-none">
+        <li className="mx-2">
+          <button
+            className={mergeNames(STYLES.notActive)}
+            onClick={() => {
+              if (num > 0) {
+                let n = num - 1;
+                setNum(n);
+              }
+            }}
+          >
+            Өмнөх
+          </button>
+        </li>
+        {products?.limit &&
+          [...Array(Math.ceil(products.limit / 10)).keys()].map((l) => {
+            return (
+              <li className={l == num ? 'active mx-1' : 'mx-1'}>
+                <button
+                  className={mergeNames(
+                    l == num ? STYLES.active : STYLES.notActive
+                  )}
+                  onClick={() => {
+                    setNum(l);
+                  }}
+                >
+                  {l + 1}
+                </button>
+              </li>
+            );
+          })}
+
+        <li className="mx-2">
+          <button
+            className={mergeNames(STYLES.notActive)}
+            onClick={() => {
+              if (products.limit > 10) {
+                let n = num + 1;
+                setNum(n);
+              }
+            }}
+          >
+            Дараах
+          </button>
+        </li>
+      </ul>
     </>
   );
 };

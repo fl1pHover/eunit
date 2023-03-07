@@ -53,6 +53,7 @@ export const ProductInfo = ({
   // console.log(value);
 
   return (
+    // <div key={key}>
     <>
       <p
         className={mergeNames(
@@ -107,6 +108,7 @@ export const ProductInfo = ({
         )}
       </GridItem>
     </>
+    // </div>
   );
 };
 
@@ -272,20 +274,20 @@ const Product = ({ propAds }) => {
                 <div className="block w-full">
                   {data && (
                     <div className="grid grid-cols-1 gap-1 md:gap-3 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2">
-                      {/* <Button
-                        onClick={() => router.push(`/account/${data.user._id}`)}
-                      >
-                        {data.user?.phone}
-                      </Button> */}
                       <UserInfo
                         id={data.user._id}
                         username={data.user?.username}
                         phone={data.user?.phone}
-                        avatar=""
+                        avatar={
+                          data.user?.profileImg ??
+                          'https://www.pikpng.com/pngl/m/80-805068_my-profile-icon-blank-profile-picture-circle-clipart.png'
+                        }
                       />
+
                       <p className="text-xl font-bold col-span-full">
                         Ерөнхий мэдээлэл
                       </p>
+
                       {data?.filters?.map((p, i) => {
                         if (p.type != null) {
                           return (
