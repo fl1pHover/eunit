@@ -9,6 +9,14 @@
   margin-top: 10px;
 }
 
+.image-gallery-thumbnail {
+  @apply aspect-square;
+  span,
+  img {
+    height: 100%;
+  }
+}
+
 .image-gallery-slide-wrapper {
   overflow: hidden;
 }

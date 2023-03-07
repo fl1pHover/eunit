@@ -51,7 +51,6 @@ const StepButtons = ({
             btnClose2="Буцах"
             header="Баталгаажуулах хэсэг"
           >
-            {/* //TODO Main product */}
             <Box maxWidth={'100%'} flex="0 0 100%" borderRadius="5px">
               <Box className="p-3 bg-white shadow-md md:p-10 rounded-xl">
                 {/*Product */}
@@ -66,11 +65,11 @@ const StepButtons = ({
                   <div>
                     <Box
                       className={mergeNames(
-                        'product__image ',
-                        'border-2 border-blue-900/20  mb-[120px] shadow-md'
+                        'product__image',
+                        'border-2 border-blue-900/20 mb-[120px] shadow-md'
                       )}
                     >
-                      {data?.images && (
+                      {data?.images ? (
                         <AspectRatio ratio={1}>
                           <ImageGallery
                             items={data?.images.map((i) => ({
@@ -80,6 +79,9 @@ const StepButtons = ({
                             className="object-contain"
                           />
                         </AspectRatio>
+                      ) : (
+                        // ene er ustgagdah ulaan shuu
+                        <div className="w-full bg-red-500 aspect-square" />
                       )}
                     </Box>
                     <Text mt={5}>{data.description}</Text>
@@ -122,9 +124,6 @@ const StepButtons = ({
             onClick={onNext}
             className="flex flex-row items-center gap-1 px-4 py-2 font-bold text-white bg-blue-500 rounded-full a"
           >
-            {/* <AiOutlineLoading3Quarters
-            className={mergeNames(loading ? 'animate-spin' : 'hidden')}
-          /> */}
             {txt}
             <FiArrowRight size={20} />
           </button>

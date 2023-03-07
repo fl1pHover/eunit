@@ -12,27 +12,27 @@ import Bookmark from './bookmark';
 import MyAds from './myAds';
 import Profile from './profile';
 
-// /account
-
 const Account = ({ user }) => {
   const router = useRouter();
   const [content, setContent] = useState('Profile');
-  const [active, setActive] = useState(false);
 
   const tabs = [
     {
       tabHeader: 'Хувийн мэдээлэл',
       title: 'Profile',
+      tabId: 1,
       comp: <Profile user={user} />,
     },
     {
       tabHeader: 'Миний зарууд',
       title: 'MyAds',
+      tabId: 2,
       comp: <MyAds user={user} />,
     },
     {
       tabHeader: 'Миний хүслүүд',
       title: 'Bookmark',
+      tabId: 3,
       comp: <Bookmark user={user} />,
     },
   ];
@@ -57,28 +57,19 @@ const Account = ({ user }) => {
           )}
         >
           <div className="flex flex-row gap-5 border-b cursor-pointer border-b-bgGrey lg:text-base text-[12px]">
-            {tabs.map((tab, index) => {
+            {tabs.map((tab, tabId) => {
               return (
                 <button
+                  key={tabId}
                   className={mergeNames(
-                    'pb-3 focus:border-b-2 focus:border-b-mainBlue'
+                    'pb-3',
+                    content === tab.title
+                      ? 'border-b-2 border-mainBlue'
+                      : 'border-none'
                   )}
-                  key={index}
-                  onClick={
-                    () => {
-                      setContent(tab.title);
-
-                      // router.push(`account?${tab.title}`, undefined, {
-                      //   shallow: false,
-                      // });
-                    }
-                    // (() =>
-
-                    //   router.push(`account?${tab.title}`, undefined, {
-                    //     shallow: true,
-                    //   }),
-                    // () => setContent(tab.title))
-                  }
+                  onClick={() => {
+                    setContent(tab.title);
+                  }}
                 >
                   {tab.tabHeader}
                 </button>
@@ -86,10 +77,10 @@ const Account = ({ user }) => {
             })}
           </div>
 
-          {tabs.map((tab, index) => {
+          {tabs.map((tab, tabId) => {
             return (
               tab.title && (
-                <div key={index}>{content === tab.title && tab.comp}</div>
+                <div key={tabId}>{content === tab.title && tab.comp}</div>
               )
             );
           })}

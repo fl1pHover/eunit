@@ -4,6 +4,7 @@ import ProfileInput from '@/components/Profile/profileInput';
 import Socials from '@/components/Profile/socials';
 import urls from '@/constants/api';
 import mergeNames from '@/util/mergeNames';
+import { Image } from '@chakra-ui/react';
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
 import moment from 'moment';
@@ -172,18 +173,27 @@ const Profile = ({
 
         <Socials edit={edit} socials={socials} setSocials={setSocials} />
 
-        {/* //TODO: Burgteltei email ni haragdaj bdgaar ghde disabled eniig yahav hereggui gevel arilgachna */}
 
-        {edit && (
-          <GroupLayout title="Профайл зураг" className="col-span-1/2">
+        
+        <GroupLayout title="Профайл зураг" className="col-span-1/2">
+          {edit ? (
             <ProfileImage
               selectedImage={selectedImage}
               setSelectedImage={setSelectedImage}
             />
-          </GroupLayout>
-        )}
+          ) : (
+            <Image
+              className="object-cover object-center  h-[25vh] overflow-hidden bg-gray-300 rounded-md aspect-square"
+              alt="Current Profile"
+              src={
+                user?.profileImg ??
+                'https://www.pikpng.com/pngl/m/80-805068_my-profile-icon-blank-profile-picture-circle-clipart.png'
+              }
+            />
+          )}
+        </GroupLayout>
         <GroupLayout title="Бүртгэлтэй Имэйл" className="col-span-1/2">
-          <p className="italic ">{user?.email}</p>
+          <p className="italic">{user?.email}</p>
         </GroupLayout>
       </div>
 
