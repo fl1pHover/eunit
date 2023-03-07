@@ -12,6 +12,7 @@ const MyAds = ({ user }) => {
   const [category, setCategory] = useState([]);
   const [subCategory, setSubCategory] = useState([]);
   const [checker, setChecker] = useState(false);
+  const [data, setData] = useState([]);
   const getData = async () => {
     setIsLoading(true);
     try {
@@ -19,6 +20,7 @@ const MyAds = ({ user }) => {
         .post(`${urls['test']}/ad/many/${0}/true`, user.ads)
         .then((d) => {
           setProducts(d.data);
+          setData(d.data);
           // setCategory(d.data.ads.fi)
           let c = [],
             s = [];
@@ -77,13 +79,13 @@ const MyAds = ({ user }) => {
       } else await getData();
     }
   };
-  const filterCategory = async (cate, value ) => {
-    await getData()
-    if(cate == 'category') {
-      let ads = products.ads.filter((ad) => ad.category.name == value)
-      setProducts()
+  const filterCategory = async (cate, value) => {
+    await getData();
+    if (cate == 'category') {
+      let ads = products.ads.filter((ad) => ad.category.name == value);
+      setProducts();
     }
-  }
+  };
   return (
     <>
       <div className={mergeNames('flex flex-col gap-4 mt-5', brk)}>
@@ -91,6 +93,16 @@ const MyAds = ({ user }) => {
           <Select
             className={mergeNames(STYLES.select)}
             placeholder="Бүх төрөл "
+            onChange={(e) => {
+              if (e.target.value != '') {
+                let ads = data.ads.filter(
+                  (d) => d.category.name == e.target.value
+                );
+                setProducts({ ads, limit: data.limit });
+              } else {
+                setProducts(data);
+              }
+            }}
           >
             {category?.map((p, i) => {
               return (
@@ -103,6 +115,16 @@ const MyAds = ({ user }) => {
           <Select
             className={mergeNames(STYLES.select)}
             placeholder="Бүх дэд төрөл"
+            onChange={(e) => {
+              if (e.target.value != '') {
+                let ads = data.ads.filter(
+                  (d) => d.subCategory.name == e.target.value
+                );
+                setProducts({ ads, limit: data.limit });
+              } else {
+                setProducts(data);
+              }
+            }}
           >
             {subCategory?.map((p, i) => {
               return (
