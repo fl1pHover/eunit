@@ -150,7 +150,7 @@ const Admin = ({ propAds }) => {
       //     {content == 3 && <p>adafgdfgsd</p>}
       //   </div>
       // </div>
-      <div className="flex flex-row p-5">
+      <div className="flex flex-row p-5 min-h-[60vh]">
         <div className="w-[20%] text-[#b8cde9] rounded-md bg-mainBlossom">
           <div>
             <button

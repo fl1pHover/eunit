@@ -41,7 +41,7 @@ const AdContent = ({
           <AiOutlineArrowRight size={12} />
         </button>
       </div>
-
+    
       {inCat ? (
         <div className="grid grid-cols-2 gap-5 xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-3">
           {data?.ads?.map((item, i) => {
@@ -74,7 +74,7 @@ const AdContent = ({
       {data == undefined && <Skeleton height={'300px'} />}
 
       <ul className="flex float-right list-style-none">
-        <li className="disabled mx-2">
+        <li className="mx-2 disabled">
           <button
             className={mergeNames(STYLES.notActive)}
             onClick={() => {
@@ -88,9 +88,10 @@ const AdContent = ({
           </button>
         </li>
         {data?.limit &&
-          [...Array(Math.ceil(data.limit / n)).keys()].map((l) => {
+          [...Array(Math.ceil(data.limit / n)).keys()].map((l, i) => {
+            // [...Array(Math.ceil(data.limit / n)).keys()].map((l) => {
             return (
-              <li className={l == num ? 'active' : ''}>
+              <li className={l == num ? 'active' : ''} key={i}>
                 <button
                   className={mergeNames(
                     l == num ? STYLES.active : STYLES.notActive
@@ -106,7 +107,7 @@ const AdContent = ({
             );
           })}
 
-        <li className="disabled mx-2">
+        <li className="mx-2 disabled">
           <button
             className={mergeNames(STYLES.notActive)}
             onClick={() => {

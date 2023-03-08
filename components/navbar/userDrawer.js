@@ -63,7 +63,10 @@ const BodyDrawer = () => {
         >
           <Image
             // src={user?.image}
-            src="https://newprofilepic2.photo-cdn.net//assets/images/article/profile.jpg"
+            src={
+              user?.profileImg ??
+              'https://newprofilepic2.photo-cdn.net//assets/images/article/profile.jpg'
+            }
             alt="user image"
             className="w-[100px] aspect-square rounded-full bg-gray-400 object-contain mt-10"
           />

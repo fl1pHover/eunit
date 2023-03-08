@@ -1,8 +1,9 @@
 import AdCard from '@/components/home/adCard';
+import FilterAd from '@/components/Profile/filterAd';
 import urls from '@/constants/api';
 import { STYLES } from '@/styles/index';
 import mergeNames from '@/util/mergeNames';
-import { Checkbox, Select } from '@chakra-ui/react';
+import { Checkbox } from '@chakra-ui/react';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
@@ -62,7 +63,9 @@ const MyAds = ({ user }) => {
   useEffect(() => {
     adStatusChecker();
   }, [checker]);
+
   const brk = 'md:flex-col lg:flex-row sm:flex-row';
+
   const adStatusChecker = async () => {
     if (checker.pending) {
       let ads = products.ads.filter((p) => p.adStatus == 'pending');
@@ -91,9 +94,8 @@ const MyAds = ({ user }) => {
     <>
       <div className={mergeNames('flex flex-col gap-4 mt-5', brk)}>
         <div className="flex w-full gap-4">
-          <Select
-            className={mergeNames(STYLES.select)}
-            placeholder="Бүх төрөл "
+          <FilterAd
+            plc="Бүх төрөл"
             onChange={(e) => {
               if (e.target.value != '') {
                 let ads = data.ads.filter(
@@ -112,10 +114,9 @@ const MyAds = ({ user }) => {
                 </option>
               );
             })}
-          </Select>
-          <Select
-            className={mergeNames(STYLES.select)}
-            placeholder="Бүх дэд төрөл"
+          </FilterAd>
+          <FilterAd
+            plc="Бүх дэд төрөл"
             onChange={(e) => {
               if (e.target.value != '') {
                 let ads = data.ads.filter(
@@ -134,7 +135,7 @@ const MyAds = ({ user }) => {
                 </option>
               );
             })}
-          </Select>
+          </FilterAd>
         </div>
         <div className="flex flex-col justify-end">
           <Checkbox
