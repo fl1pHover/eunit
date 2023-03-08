@@ -17,6 +17,7 @@ import {
 } from '@chakra-ui/react';
 
 import { ContainerX } from '@/lib/Container';
+import { MainLoader } from '@/lib/Loader';
 import {
   GoogleMap,
   InfoWindow,
@@ -39,7 +40,7 @@ const Category = ({ propAds }) => {
     }
   };
   useEffect(() => {
-    setAds(propAds);
+    if (propAds) setAds(propAds);
   }, [propAds]);
 
   const [isLoading, setIsLoading] = useState(false);
@@ -61,8 +62,8 @@ const Category = ({ propAds }) => {
   );
   const mapCenter = useMemo(
     () => ({
-      lat: ads ? parseFloat(ads[0]?.location?.lat ?? 47.74604) : 47.74604,
-      lng: ads ? parseFloat(ads[0]?.location?.lng ?? 107.341515) : 107.341515,
+      lat: parseFloat(ads ? ads[0]?.location?.lat ?? 47.74604 : 47.74604),
+      lng: parseFloat(ads ? ads[0]?.location?.lng ?? 107.341515 : 107.341515),
     }),
     []
   );
@@ -78,10 +79,7 @@ const Category = ({ propAds }) => {
     } catch (error) {}
   };
   if (!isLoaded) {
-    return <p>Loading...</p>;
-  }
-  function createKey(location) {
-    return location.lat + location.lng;
+    return <MainLoader />;
   }
 
   return (
@@ -133,7 +131,7 @@ const Category = ({ propAds }) => {
                 {isLoaded &&
                   ads?.ads?.map((m, i) => {
                     return (
-                      <div className="" key={i}>
+                      <div key={i}>
                         <MarkerF
                           position={{
                             lat: parseFloat(m.location?.lat ?? 47.74604),
@@ -143,14 +141,14 @@ const Category = ({ propAds }) => {
                           animation={google.maps.Animation.DROP}
                           className={mergeNames('group')}
                         >
-                          <InfoWindow
-                            position={{
-                              lat: parseFloat(m.location?.lat ?? 47.74604),
-                              lng: parseFloat(m.location?.lng ?? 107.341515),
-                            }}
-                            onLoad={(info) => {}}
-                          >
-                            {markerActive == i ? (
+                          {markerActive == i && (
+                            <InfoWindow
+                              position={{
+                                lat: parseFloat(m.location?.lat ?? 47.74604),
+                                lng: parseFloat(m.location?.lng ?? 107.341515),
+                              }}
+                              className="relative"
+                            >
                               <div
                                 onClick={() => router.push(`/product/${m.num}`)}
                                 className={mergeNames(
@@ -159,7 +157,9 @@ const Category = ({ propAds }) => {
                                 )}
                               >
                                 <Image
-                                  src="/images/HeaderSlider/1.jpg"
+                                  src={
+                                    m.images[0] ?? '/images/HeaderSlider/1.jpg'
+                                  }
                                   alt="map image"
                                   className={mergeNames(
                                     'absolute top-0 left-0 object-cover w-full h-full ',
@@ -171,13 +171,15 @@ const Category = ({ propAds }) => {
                                   {m.title}
                                 </p>
                                 <p className="z-10 text-base font-bold text-white">
-                                  end une
+                                  {
+                                    m.filters.filter(
+                                      (f) => f.type == 'price'
+                                    )[0]?.input
+                                  }
                                 </p>
                               </div>
-                            ) : (
-                              <div />
-                            )}
-                          </InfoWindow>
+                            </InfoWindow>
+                          )}
                         </MarkerF>
                       </div>
                     );

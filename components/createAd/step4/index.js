@@ -28,7 +28,6 @@ const Step3 = ({ filter }) => {
   return (
     <div className="grid w-full md:grid-cols-2 ">
       {filter?.values?.map((f, i) => {
-        console.log(selectedParent);
         if (
           f.other == true &&
           f.value.find((v) => v.id == 'other') == undefined
@@ -36,7 +35,7 @@ const Step3 = ({ filter }) => {
           f.value.push({ id: 'other', value: 'Бусад' });
         if (f.types == 'date')
           return (
-            <ItemContainer>
+            <ItemContainer key={i}>
               <FormLabel title={f.name} />
               <DateYearSelector
                 defValue={usedYear}
@@ -47,7 +46,7 @@ const Step3 = ({ filter }) => {
           );
         if (f.types == 'year')
           return (
-            <ItemContainer>
+            <ItemContainer key={i}>
               <FormLabel title={f.name + ' / жил'} />
               <NumberInput
                 size="md"
@@ -67,6 +66,7 @@ const Step3 = ({ filter }) => {
         if (f.type === 'room')
           return (
             <ItemContainer
+              key={i}
               className={'flex flex-col items-center justify-center'}
             >
               <FormLabel title="Өрөөний тоо" />
@@ -80,6 +80,7 @@ const Step3 = ({ filter }) => {
         if (f.types == 'text')
           return (
             <ItemContainer
+              key={i}
               className={'flex flex-col items-center justify-center'}
             >
               <FormLabel title={f.name} />
@@ -93,7 +94,7 @@ const Step3 = ({ filter }) => {
           );
         if (f.type === 'bathroom')
           return (
-            <ItemContainer>
+            <ItemContainer key={i}>
               <FormLabel title="Угаалгын өрөөний тоо" />
               <div className="flex flex-row justify-center gap-4">
                 {f?.value?.map((text, id) => {
@@ -122,7 +123,7 @@ const Step3 = ({ filter }) => {
           );
         if (f.type === 'masterBedroom')
           return (
-            <ItemContainer>
+            <ItemContainer key={i}>
               <FormLabel title="Мастер унтлагын өрөөний тоо" />
               <div className="flex flex-row justify-center gap-4">
                 {f?.value?.map((text, id) => {
@@ -147,7 +148,8 @@ const Step3 = ({ filter }) => {
         if (f.type == 'committee') {
           return (
             <ItemContainer
-            //  className="bg-red-100"
+              key={i}
+              //  className="bg-red-100"
             >
               <FormLabel title={f.name} />
 
@@ -220,7 +222,8 @@ const Step3 = ({ filter }) => {
         if (f.types == 'dropdown')
           return f.parentId == null ? (
             <ItemContainer
-            //  className="bg-red-100"
+              key={i}
+              //  className="bg-red-100"
             >
               <FormLabel title={f.name} />
 
@@ -271,6 +274,7 @@ const Step3 = ({ filter }) => {
           ) : selectedParent.find((d) => d.parent == f.parentId) != undefined &&
             f.value.length > 0 ? (
             <ItemContainer
+              key={i}
               className={'flex flex-col items-center justify-center'}
             >
               <FormLabel title={f.name} />
@@ -335,7 +339,7 @@ const Step3 = ({ filter }) => {
               )}
             </ItemContainer>
           ) : (
-            <ItemContainer>
+            <ItemContainer key={i}>
               <FormLabel title={f.name} />
               <Select
                 width="long"

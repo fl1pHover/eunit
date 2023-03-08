@@ -3,7 +3,7 @@ import { AuthProvider } from 'context/auth';
 import { AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 
-import Navbar from '@/components/navbar/index';
+import Navbar from '@/components/navbar';
 import Layout from '@/layout/layout';
 import { MainLoader } from '@/lib/Loader';
 import ScrollTop from '@/lib/ScrollTop';
@@ -38,10 +38,6 @@ function MyApp({ Component, pageProps }) {
         </AnimatePresence>
       </ChakraProvider>
     </AuthProvider>
-
-    //           </>
-    //      )}
-    // </>
   );
 }
 

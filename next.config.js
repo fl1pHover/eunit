@@ -2,7 +2,10 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: ['https://bom-file.s3.us-east-1.amazonaws.com'],
+    domains: [
+      'https://bom-file.s3.us-east-1.amazonaws.com',
+      'bom-file.s3.us-east-1.amazonaws.com',
+    ],
   },
 
   //  webpack: (config, { isServer }) => {

@@ -1,20 +1,20 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 
 //api here is an axios instance which has the baseURL set according to the env.
+import { useToast } from '@chakra-ui/react';
 import axios from 'axios';
 import urls from 'constants/api';
 import { deleteCookie, getCookie, setCookie } from 'cookies-next';
-import { useToast } from '@chakra-ui/react';
 
 const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
-  const toast = useToast()
+  const toast = useToast();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState();
-  const [ads, setAds] = useState();
-  const [compareAds, setCompareAds] = useState([])
+  const [ads, setAds] = useState(null);
+  const [compareAds, setCompareAds] = useState([]);
   async function loadUserFromCookies() {
     const token = getCookie('token');
     setLoading(true);
@@ -66,7 +66,7 @@ export const AuthProvider = ({ children }) => {
             status: 'success',
             duration: 5000,
             isClosable: true,
-          })
+          });
           if (data.user.userType == 'admin' || data.user.userType == 'system')
             window.location.pathname = '/admin';
           else window.location.pathname = '/account';
@@ -98,7 +98,6 @@ export const AuthProvider = ({ children }) => {
         );
 
         if (!data) {
-
           window.location.pathname = '/account/check';
         }
       } catch (err) {
@@ -130,7 +129,7 @@ export const AuthProvider = ({ children }) => {
         ads,
         setAds,
         setCompareAds,
-        compareAds
+        compareAds,
       }}
     >
       {children}

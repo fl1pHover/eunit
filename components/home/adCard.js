@@ -5,9 +5,9 @@ import { FiCamera } from 'react-icons/fi';
 import { IoBedOutline } from 'react-icons/io5';
 import { TbBath } from 'react-icons/tb';
 
-import { Image, Skeleton } from '@chakra-ui/react';
-
 import mergeNames from '@/util/mergeNames';
+import { Skeleton } from '@chakra-ui/react';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import AdCardButton from './adCardButton';
 
@@ -45,8 +45,11 @@ const Card = ({ item }) => {
                 <Image
                   src="/images/logo/bom-white.png"
                   alt="BOM logo"
-                  objectFit="contain "
+                  objectFit="contain"
                   className="h-full"
+                  width={32}
+                  height={24}
+                  // layout="fill"
                 />
               </p>
             </div>

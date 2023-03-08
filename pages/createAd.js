@@ -36,7 +36,7 @@ export default function CreateAd({ categories }) {
     adType: false,
   });
 
-  const [map, setMap] = useState({});
+  const [map, setMap] = useState();
   // FILTER INFORMATION - FOR WHICH DATA TO DISPLAY
   const [filters, setFilters] = useState([]);
   const [subCategory, setSubCategory] = useState([]);
@@ -242,27 +242,27 @@ export default function CreateAd({ categories }) {
               //STEP2: LOCATIONS - DISTRICT, LOCATION, COMMITTEE, TOWN
 
               return (
-                <div>
+                <div key={index}>
                   <Step4 filter={filter} />
-                  <GoogleMap
-                    className="aspect-video"
-                    options={mapOptions}
-                    onClick={(e) => {
-                      setMap(e.latLng.toJSON());
-                    }}
-                    zoom={14}
-                    center={mapCenter}
-                    mapTypeId={google.maps.MapTypeId.ROADMAP}
-                    mapContainerStyle={{ width: '100%', height: '40vh' }}
-                  >
-                    {isLoaded && map && (
+                  {isLoaded && (
+                    <GoogleMap
+                      className="aspect-video"
+                      options={mapOptions}
+                      onClick={(e) => {
+                        setMap(e.latLng.toJSON());
+                      }}
+                      zoom={14}
+                      center={mapCenter}
+                      mapTypeId={google.maps.MapTypeId.ROADMAP}
+                      mapContainerStyle={{ width: '100%', height: '40vh' }}
+                    >
                       <MarkerF
                         position={map}
                         onClick={() => {}}
                         animation={google.maps.Animation.DROP}
                       />
-                    )}
-                  </GoogleMap>
+                    </GoogleMap>
+                  )}
                 </div>
               );
             if (index == 1)

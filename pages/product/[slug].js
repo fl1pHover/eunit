@@ -11,7 +11,7 @@ import {
   Text,
   useToast,
 } from '@chakra-ui/react';
-import { useEffect, useMemo, useState } from 'react';
+import { Fragment, useEffect, useMemo, useState } from 'react';
 
 import { FaHeart } from 'react-icons/fa';
 
@@ -47,14 +47,11 @@ export const ProductInfo = ({
   value,
   id,
   children,
-  key = 0,
+
   tt = 'capitalize',
 }) => {
-  // console.log(value);
-
   return (
-    // <div key={key}>
-    <>
+    <Fragment>
       <p
         className={mergeNames(
           id === 'price'
@@ -70,45 +67,39 @@ export const ProductInfo = ({
             ? 'product__info col-span-full'
             : 'product__info'
         }
-        key={key}
       >
-        {children ? (
-          children
-        ) : (
-          <Stack
-            direction={'row'}
-            className={mergeNames('p-2 border-2 rounded-md border-bgGrey')}
+        <Stack
+          direction={'row'}
+          className={mergeNames('p-2 border-2 rounded-md border-bgGrey')}
+        >
+          <Text
+            fontSize={{ base: '13px', xl: '15px' }}
+            textTransform={'capitalize'}
           >
-            <Text
+            {title}:{' '}
+          </Text>
+          <NextLink
+            href={{
+              pathname: `/category/filter/${id}`,
+              query: { num: 0, value: value },
+            }}
+          >
+            <Link
               fontSize={{ base: '13px', xl: '15px' }}
-              textTransform={'capitalize'}
+              textTransform={tt}
+              cursor={'pointer'}
+              fontWeight={'bold'}
             >
-              {title}:{' '}
-            </Text>
-            <NextLink
-              href={{
-                pathname: `/category/filter/${id}`,
-                query: { num: 0, value: value },
-              }}
-            >
-              <Link
-                fontSize={{ base: '13px', xl: '15px' }}
-                textTransform={tt}
-                cursor={'pointer'}
-                fontWeight={'bold'}
-              >
-                {id === 'price' || id === 'unitPrice'
-                  ? currency(value, { separator: ',', symbol: '₮ ' })
-                      .format()
-                      .toString()
-                  : value}
-              </Link>
-            </NextLink>
-          </Stack>
-        )}
+              {id === 'price' || id === 'unitPrice'
+                ? currency(value, { separator: ',', symbol: '₮ ' })
+                    .format()
+                    .toString()
+                : value}
+            </Link>
+          </NextLink>
+        </Stack>
       </GridItem>
-    </>
-    // </div>
+    </Fragment>
   );
 };
 
@@ -143,15 +134,17 @@ const Product = ({ propAds }) => {
         let type, id;
         switch (suggest) {
           case 'location':
-            type = sdata?.filters.filter((d) => d.type == 'district')[0].input;
+            type = sdata?.filters?.filter((d) => d.type == 'district')[0]
+              ?.input;
             id = 'district';
             break;
           case 'usage':
-            type = sdata?.filters.filter((d) => d.type == 'landUsage')[0].input;
+            type = sdata?.filters?.filter((d) => d.type == 'landUsage')[0]
+              ?.input;
             id = 'landUsage';
             break;
           default:
-            (type = sdata?.filters.filter((f) => f.type == suggest)[0].input),
+            (type = sdata?.filters?.filter((f) => f.type == suggest)[0]?.input),
               (id = suggest);
             break;
         }
@@ -159,7 +152,7 @@ const Product = ({ propAds }) => {
           .get(`${urls['test']}/ad/suggesstion/${id}/${type}/0`)
           .then((d) => {
             setsData([]);
-            let ads = d.data.ads.filter((da) => da._id != sdata._id);
+            let ads = d.data?.ads?.filter((da) => da._id != sdata._id);
             setsData({ ads, limit: sdata.limit - 1 });
           });
       } catch (error) {
@@ -179,7 +172,6 @@ const Product = ({ propAds }) => {
   }, [propAds]);
 
   const [open, setOpen] = useState(false);
-
   return (
     <Box m={2} as="section" id="main__product">
       <ScrollTop />
@@ -319,138 +311,128 @@ const Product = ({ propAds }) => {
           </Box>
         </Stack>
       </MainContainer>
-      <MainContainer py={'50px'}>
-        <div className={mergeNames(STYLES.flexBetween, 'flex-row')}>
-          <h1
-            variant={'mediumHeading'}
-            className="text-sm font-bold uppercase md:text-lg"
-          >
-            Санал болгох зарууд
-          </h1>
-          <Box>
-            <Select
-              className="h-[30px] text-sm border-2 pr-3 border-blue-700 rounded-full"
-              onChange={async (e) => {
-                setSuggestion(e.target.value, data);
-                {
-                  suggestion != 'map'
-                    ? getSuggestion(e.target.value, data)
-                    : console.log(data);
-                }
-              }}
+      {sData?.ads?.length > 0 && (
+        <MainContainer py={'50px'}>
+          <div className={mergeNames(STYLES.flexBetween, 'flex-row')}>
+            <h1
+              variant={'mediumHeading'}
+              className="text-sm font-bold uppercase md:text-lg"
             >
-              {data?.subCategory?.suggessionType?.map((sug, i) => {
-                switch (sug) {
-                  case 'location':
-                    return i !=
-                      data?.subCategory?.suggessionType?.length - 1 ? (
-                      <option value="location" key={i}>
-                        Байршлаар
-                      </option>
-                    ) : (
-                      <>
+              Санал болгох зарууд
+            </h1>
+            <Box>
+              <Select
+                className="h-[30px] text-sm border-2 pr-3 border-blue-700 rounded-full"
+                onChange={async (e) => {
+                  setSuggestion(e.target.value, data);
+                  {
+                    suggestion != 'map'
+                      ? getSuggestion(e.target.value, data)
+                      : console.log(data);
+                  }
+                }}
+              >
+                {data?.subCategory?.suggessionType?.map((sug, i) => {
+                  switch (sug) {
+                    case 'location':
+                      return i !=
+                        data?.subCategory?.suggessionType?.length - 1 ? (
                         <option value="location" key={i}>
                           Байршлаар
                         </option>
+                      ) : (
+                        <Fragment key={i}>
+                          <option value="location">Байршлаар</option>
 
-                        <option value={'map'} key={i + 1}>
-                          Газрын зургаар
-                        </option>
-                      </>
-                    );
-                  case 'usage':
-                    return i !=
-                      data?.subCategory?.suggessionType?.length - 1 ? (
-                      <option value="usage" key={i}>
-                        Зориулалтаар
-                      </option>
-                    ) : (
-                      <>
+                          <option value={'map'}>Газрын зургаар</option>
+                        </Fragment>
+                      );
+                    case 'usage':
+                      return i !=
+                        data?.subCategory?.suggessionType?.length - 1 ? (
                         <option value="usage" key={i}>
                           Зориулалтаар
                         </option>
+                      ) : (
+                        <Fragment key={i}>
+                          <option value="usage">Зориулалтаар</option>
 
-                        <option value={'map'} key={i + 1}>
-                          Газрын зургаар
+                          <option value={'map'}>Газрын зургаар</option>
+                        </Fragment>
+                      );
+                    case 'room':
+                      return i !=
+                        data?.subCategory?.suggessionType?.length - 1 ? (
+                        <option value="room" key={i}>
+                          Өрөөгөөр
                         </option>
-                      </>
-                    );
-                  case 'room':
-                    return i !=
-                      data?.subCategory?.suggessionType?.length - 1 ? (
-                      <option value="room" key={i}>
-                        Өрөөгөөр
-                      </option>
-                    ) : (
-                      (
-                        <>
-                          <option value="room" key={i}>
-                            Өрөөгөөр
-                          </option>
+                      ) : (
+                        (
+                          <Fragment key={i}>
+                            <option value="room">Өрөөгөөр</option>
 
-                          <option value={'map'} key={i + 1}>
-                            Газрын зургаар
-                          </option>
-                        </>
-                      ) + 1
-                    );
-                }
-              })}
-            </Select>
-          </Box>
-        </div>
-        {suggestion == 'map' ? (
-          <GoogleMap
-            options={mapOptions}
-            onClick={(e) => {
-              // setMap(e.latLng.toJSON());
-              console.log(e.latLng.toJSON());
-            }}
-            zoom={14}
-            center={mapCenter}
-            mapTypeId={google.maps.MapTypeId.ROADMAP}
-            mapContainerStyle={{ width: '100%', height: '50vh' }}
-          >
-            {isLoaded &&
-              sData?.map((m, i) => {
-                return (
-                  <HStack key={i}>
-                    <MarkerF
-                      position={{
-                        lat: parseFloat(m.location?.lat ?? 47.74604),
-                        lng: parseFloat(m.location?.lng ?? 107.341515),
-                      }}
-                      // onMouseOver={() => setMarkerActive(i)}
-                      onClick={() => setMarkerActive(i)}
-                      animation={google.maps.Animation.DROP}
-                    >
-                      <InfoWindow
+                            <option value={'map'}>Газрын зургаар</option>
+                          </Fragment>
+                        ) + 1
+                      );
+                  }
+                })}
+              </Select>
+            </Box>
+          </div>
+          {suggestion == 'map' ? (
+            <GoogleMap
+              options={mapOptions}
+              onClick={(e) => {
+                // setMap(e.latLng.toJSON());
+                console.log(e.latLng.toJSON());
+              }}
+              zoom={14}
+              center={mapCenter}
+              mapTypeId={google.maps.MapTypeId.ROADMAP}
+              mapContainerStyle={{ width: '100%', height: '50vh' }}
+            >
+              {isLoaded &&
+                sData?.map((m, i) => {
+                  return (
+                    <HStack key={i}>
+                      <MarkerF
                         position={{
                           lat: parseFloat(m.location?.lat ?? 47.74604),
                           lng: parseFloat(m.location?.lng ?? 107.341515),
-                        }} // onLoad={(info) => console.log(info)}
+                        }}
+                        // onMouseOver={() => setMarkerActive(i)}
+                        onClick={() => setMarkerActive(i)}
+                        animation={google.maps.Animation.DROP}
                       >
-                        {/* end zasna */}
-                        {/* <Image
+                        <InfoWindow
+                          position={{
+                            lat: parseFloat(m.location?.lat ?? 47.74604),
+                            lng: parseFloat(m.location?.lng ?? 107.341515),
+                          }} // onLoad={(info) => console.log(info)}
+                        >
+                          {/* end zasna */}
+                          {/* <Image
                           src="/images/logo/404.pmg"
                           alt="map image"
                           className="w-full h-[100px]"
                         /> */}
-                        <button
-                          onClick={() => router.push(`/product/${m.num}`)}
-                        >
-                          <div>{m.title}</div>
-                        </button>
-                      </InfoWindow>
-                    </MarkerF>
-                  </HStack>
-                );
-              })}
-          </GoogleMap>
-        ) : (
-          <AdContent data={sData} />
-        )}
-      </MainContainer>
+                          <button
+                            onClick={() => router.push(`/product/${m.num}`)}
+                          >
+                            <div>{m.title}</div>
+                          </button>
+                        </InfoWindow>
+                      </MarkerF>
+                    </HStack>
+                  );
+                })}
+            </GoogleMap>
+          ) : (
+            <AdContent data={sData} />
+          )}
+        </MainContainer>
+      )}
     </Box>
   );
 };

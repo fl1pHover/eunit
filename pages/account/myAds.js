@@ -180,9 +180,9 @@ const MyAds = ({ user }) => {
           </button>
         </li>
         {products?.limit &&
-          [...Array(Math.ceil(products.limit / 10)).keys()].map((l) => {
+          [...Array(Math.ceil(products.limit / 10)).keys()].map((l, i) => {
             return (
-              <li className={l == num ? 'active mx-1' : 'mx-1'}>
+              <li className={l == num ? 'active mx-1' : 'mx-1'} key={i}>
                 <button
                   className={mergeNames(
                     l == num ? STYLES.active : STYLES.notActive

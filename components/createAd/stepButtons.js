@@ -26,7 +26,6 @@ const StepButtons = ({
   onClick = () => {},
   step,
 }) => {
-  console.log(data, generalData);
   return (
     <div className="mt-4">
       {/* <ButtonProcess /> */}
@@ -97,7 +96,6 @@ const StepButtons = ({
                       </p>
 
                       {data?.filters?.map((p, i) => {
-                        console.log(data);
                         if (p.type != null) {
                           return (
                             <ProductInfo

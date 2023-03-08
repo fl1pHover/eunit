@@ -23,7 +23,6 @@ import urls from '../../constants/api';
 import { useAuth } from '../../context/auth';
 // import Select from '@/lib/Select';
 import { categories } from '@/data/categories';
-import { LoadingButton } from '@/lib/Button';
 import { STYLES } from '@/styles/index';
 import mergeNames from '@/util/mergeNames';
 import { useRouter } from 'next/router';
@@ -35,10 +34,7 @@ const FilterLayout = ({ data, isOpenMap }) => {
   const [subCategory, setSubCategory] = useState();
   const router = useRouter();
   const [value, setValue] = useState('');
-  const [adType, setAdType] = useState({
-    rent: false,
-    sell: true,
-  });
+  const [adType, setAdType] = useState([0]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef();
   const getItems = async (data) => {
@@ -61,10 +57,19 @@ const FilterLayout = ({ data, isOpenMap }) => {
   const filterAd = async () => {
     try {
       let types = [];
-      if (adType.rent) {
-        types.push('rent');
-      }
-      if (adType.sell) types.push('sell');
+      adType.map((a) => {
+        switch (a) {
+          case 0:
+            types.push('Зарах');
+            break;
+          case 1:
+            types.push('Түрээслэх');
+            break;
+          case 2:
+            types.push('Зарах, түрээслэх');
+            break;
+        }
+      });
 
       let filter = subCategory.filters.filter((f, i) => f.input != '');
       try {
@@ -90,7 +95,7 @@ const FilterLayout = ({ data, isOpenMap }) => {
     <>
       <button
         ref={btnRef}
-        colorscheme="teal"
+        color="teal"
         onClick={onOpen}
         className={mergeNames(
           ' bg-blue-600 rounded-md text-white font-bold h-[50px]',
@@ -123,69 +128,59 @@ const FilterLayout = ({ data, isOpenMap }) => {
               <Heading variant={'smallHeading'} mb={2}>
                 Үл хөдлөх хөрөнгө
               </Heading>
-              {router &&
-                categories?.map((c, i) => {
-                  return (
-                    <RadioGroup
-                      onChange={setValue}
-                      value={value}
-                      key={i}
-                      className="flex flex-col gap-2"
-                    >
-                      {(router.query.slug == c.id ||
-                        c.submenu.findIndex(
-                          (s) => s.href == router.query.slug
-                        ) > -1) &&
-                        c.submenu.map(({ href, category }, id) => {
-                          return (
-                            // <Link
-                            //   key={id}
-                            //   href={`/category/${href}`}
-                            //   p="2px"
-                            //   mt={0}
-                            //   fontWeight={data == href ? 'bold' : 'medium'}
-                            // >
-                            //   <Text>{name}</Text>
-                            // </Link>
-
-                            // Eniig inspectdeer neg haraarai aldaatai bolood bn
-                            <Radio
-                              value={href}
-                              key={id}
-                              onChange={(e) => {
-                                getItems(e.target.value);
-                              }}
-                              _selected={{ font: 'bold' }}
-                            >
-                              <Text>{category}</Text>
-                            </Radio>
-                          );
-                        })}
-                    </RadioGroup>
-                  );
-                })}
+              {categories?.map((c, i) => {
+                return (
+                  <RadioGroup
+                    onChange={setValue}
+                    value={value}
+                    key={i}
+                    className="flex flex-col gap-2"
+                  >
+                    {(router?.query?.slug == c.id ||
+                      c.submenu.findIndex(
+                        (s) => s.href == router?.query?.slug
+                      ) > -1) &&
+                      c.submenu.map(({ href, category }, id) => {
+                        return (
+                          <Radio
+                            value={href}
+                            key={id}
+                            onChange={(e) => {
+                              getItems(e.target.value);
+                            }}
+                            _selected={{ font: 'bold' }}
+                          >
+                            <Text>{category}</Text>
+                          </Radio>
+                        );
+                      })}
+                  </RadioGroup>
+                );
+              })}
             </FilterStack>
 
             <FilterStack>
               <Heading variant={'smallHeading'} mb={2}>
-                Зарах & Түрээслүүлэх
+                Борлуулах төрөл
               </Heading>
-              <Checkbox
-                borderColor={'mainBlue'}
-                defaultChecked
-                onChange={(e) =>
-                  setAdType((prev) => ({ ...prev, sell: e.target.checked }))
-                }
-              >
-                Зарна.
-              </Checkbox>
-              <Checkbox
-                onChange={(e) =>
-                  setAdType((prev) => ({ ...prev, rent: e.target.checked }))
-                }
-              >
-                Түрээслүүлнэ
-              </Checkbox>
+              {['Зарна', 'Түрээслэнэ', 'Зарах & түрээслэнэ'].map((s, i) => {
+                return (
+                  <Checkbox
+                    key={i}
+                    borderColor={'mainBlue'}
+                    defaultChecked={adType.find((a) => a == i) != undefined}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setAdType((prev) => [...prev, i]);
+                      } else {
+                        setAdType(adType.filter((a) => a != i));
+                      }
+                    }}
+                  >
+                    {s}.
+                  </Checkbox>
+                );
+              })}
             </FilterStack>
             <FilterStack>
               <Heading variant={'smallHeading'} mb={2}>
@@ -247,8 +242,6 @@ const FilterLayout = ({ data, isOpenMap }) => {
               <Button variant={'blueButton'} mx={4} onClick={() => filterAd()}>
                 Хайх
               </Button>
-
-
             </FilterStack>
           </DrawerBody>
         </DrawerContent>

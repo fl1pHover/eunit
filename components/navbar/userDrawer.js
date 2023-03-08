@@ -117,8 +117,7 @@ const DownLink = ({ href, text, className, icon, onClick = () => {} }) => {
       className={mergeNames(
         'px-5 py-4 transition-all ease-in-out border-2 rounded-lg h-[100px] group hover:bg-gray-100 text-mainBlossom text-bold',
         STYLES.flexCenter,
-        'flex-col items-center',
-        className
+        'flex-col items-center'
       )}
     >
       {text && text?.length > 0 ? (
@@ -141,25 +140,19 @@ const UserDrawer = ({ user, logout }) => {
   const btnRef = useRef();
 
   const handleClick = () => {
-    setActive((current) => !current);
+    setActive(!current);
   };
   return (
     <div className="relative">
       <UserIcon
         text="Профайл"
         // onClick={handleClick}
-        ref={btnRef}
+
         onClick={onOpen}
         active={active}
       />
 
-      <Drawer
-        isOpen={isOpen}
-        placement="right"
-        onClose={onClose}
-        finalFocusRef={btnRef}
-        size="sm"
-      >
+      <Drawer isOpen={isOpen} placement="right" onClose={onClose} size="sm">
         <DrawerOverlay />
         <DrawerContent className="bg-transparent">
           <DrawerCloseButton className="text-white" />
