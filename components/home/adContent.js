@@ -48,6 +48,7 @@ const AdContent = ({
           {data?.ads?.map((item, i) => {
             return <AdCard key={i} item={item || {}} />;
           })}
+
           {data?.ads === undefined &&
             data?.map((item, i) => {
               return <AdCard key={i} item={item || {}} />;

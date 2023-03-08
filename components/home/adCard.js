@@ -6,14 +6,24 @@ import { IoBedOutline } from 'react-icons/io5';
 import { TbBath } from 'react-icons/tb';
 
 import mergeNames from '@/util/mergeNames';
+<<<<<<< HEAD
 import { Skeleton } from '@chakra-ui/react';
 import Image from 'next/image';
+=======
+
+>>>>>>> e79836650fbce11193457ba57c2093e3c5749a87
 import { useRouter } from 'next/router';
 import AdCardButton from './adCardButton';
 
-const Card = ({ item }) => {
+// const custom = ({ src, width, quality }) => {
+//   return `${src}?w=${width}&q=${quality || 75}`;
+// };
+
+function Card({ item }) {
   const router = useRouter();
+
   return (
+    // <Skeleton>
     <Skeleton isLoaded>
       <div
         className="relative overflow-hidden rounded-md md:min-h-[35vh] min-h-[30vh]  shadow-md bg-zinc-200 group "
@@ -34,6 +44,15 @@ const Card = ({ item }) => {
               objectFit="cover"
               className="group-hover:scale-125 transition-all w-full object-cover h-full ease-in-out duration-400 aspect-[4/5] relative z-0"
             />
+            // <div className="group-hover:scale-125 transition-all w-full object-cover h-full ease-in-out duration-400 aspect-[4/5] relative z-0">
+            //   <Image
+            //     loader={custom}
+            //     src={item?.images[0] ?? '/images/HeaderSlider/1.jpg'}
+            //     alt="product image"
+            //     layout="fill"
+            //     objectFit="cover"
+            //   />
+            // </div>
           )}
           <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-slate-700/0 via-slate-700/30 to-slate-900/100"></div>
         </div>
@@ -41,6 +60,7 @@ const Card = ({ item }) => {
         <div className="relative z-0 flex w-full h-full px-3 py-2">
           <div className="absolute top-0 left-0 z-10 flex items-start justify-between flex-1 w-full p-2">
             <div className="px-2 py-1 rounded-md bg-mainBlossom w-fit">
+<<<<<<< HEAD
               <p className="h-4 text-sm font-semibold text-white md:h-6">
                 <Image
                   src="/images/logo/bom-white.png"
@@ -52,6 +72,15 @@ const Card = ({ item }) => {
                   // layout="fill"
                 />
               </p>
+=======
+              <Image
+                src="/images/logo/bom-white.png"
+                alt="BOM logo"
+                layout="fill"
+                objectFit="contain "
+                className="w-full h-4 md:h-6"
+              />
+>>>>>>> e79836650fbce11193457ba57c2093e3c5749a87
             </div>
 
             <button
@@ -101,7 +130,7 @@ const Card = ({ item }) => {
       </div>
     </Skeleton>
   );
-};
+}
 const ApartmentIconInfo = ({ p }) => {
   // END YG ROOM MASTERBEDROOM AND BATHROOM IIN MEDEELEL BAIAGA
   return (

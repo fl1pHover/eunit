@@ -1,8 +1,8 @@
-import { motion } from "framer-motion";
-import Head from "next/head";
-import Footer from "../components/footer/index";
+import { motion } from 'framer-motion';
+import Head from 'next/head';
+import Footer from '../components/footer/index';
 
-const Layout = ({ children}) => {
+const Layout = ({ children }) => {
   return (
     <>
       <Head>

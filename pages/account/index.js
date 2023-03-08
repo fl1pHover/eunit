@@ -40,6 +40,8 @@ const Account = ({ user }) => {
     setContent(router?.query?.tab);
   }, [router?.query?.tab]);
 
+  // const { tabs, loading, error } = useRemoteData();
+
   return (
     <MainContainer py={5}>
       <div
@@ -76,11 +78,14 @@ const Account = ({ user }) => {
               );
             })}
           </div>
+          {/* Lorem ipsum dolor sit amet. */}
 
           {tabs.map((tab, tabId) => {
             return (
               tab.title && (
-                <div key={tabId}>{content === tab.title && tab.comp}</div>
+                <>
+                  <div key={tabId}>{content === tab.title && tab.comp}</div>
+                </>
               )
             );
           })}

@@ -1,4 +1,3 @@
-import { Box } from '@chakra-ui/react';
 import { useState } from 'react';
 
 import { categories } from '@/data/categories';
@@ -19,17 +18,15 @@ const Navbar = () => {
   return (
     <>
       {/* <Higher /> */}
-      <Box
-        top="0"
+      <div
+        className="sticky top-0 z-20"
         id="navbar"
-        zIndex={'20'}
         as={'section'}
         // pos={sticky ? 'sticky' : 'relative'}
-        pos={'sticky'}
       >
         <CategoryBottom {...{ sticky }} data={categories} />
         <UpperNav />
-      </Box>
+      </div>
     </>
   );
 };

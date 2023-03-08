@@ -53,9 +53,9 @@ const StepButtons = ({
             <Box maxWidth={'100%'} flex="0 0 100%" borderRadius="5px">
               <Box className="p-3 bg-white shadow-md md:p-10 rounded-xl">
                 {/*Product */}
-                {data.title && (
+                {generalData.title && (
                   <Heading variant={'mediumHeading'} mb={5}>
-                    {data.title}
+                    {generalData.title}
                   </Heading>
                 )}
 
@@ -68,10 +68,10 @@ const StepButtons = ({
                         'border-2 border-blue-900/20 mb-[120px] shadow-md'
                       )}
                     >
-                      {data?.images ? (
+                      {generalData?.images ? (
                         <AspectRatio ratio={1}>
                           <ImageGallery
-                            items={data?.images.map((i) => ({
+                            items={generalData?.images.map((i) => ({
                               original: i,
                               thumbnail: i,
                             }))}
@@ -83,14 +83,11 @@ const StepButtons = ({
                         <div className="w-full bg-red-500 aspect-square" />
                       )}
                     </Box>
-                    <Text mt={5}>{data.description}</Text>
+                    <Text mt={5}>{generalData.description}</Text>
                   </div>
 
-                  {/*  //TODO  ENDING LEFT SIDE IMAGES AND DESC */}
-
-                  {/*  //TODO  STARTS RIGHT SIDE INFOS */}
                   {data && (
-                    <div className="grid grid-cols-1 gap-3">
+                    <div className="flex flex-col gap-3">
                       <p className="text-xl font-bold col-span-full">
                         Ерөнхий мэдээлэл
                       </p>
@@ -108,10 +105,11 @@ const StepButtons = ({
                           );
                         }
                       })}
+                      <div>Lorem ipsum dolor sit amet.</div>
+                      <div>Lorem ipsum dolor sit amet.</div>
                     </div>
                   )}
-
-                  {/*  //TODO  ENDING RIGHT SIDE INFOS */}
+                  {/* <StepProgress /> */}
                 </div>
               </Box>
             </Box>
