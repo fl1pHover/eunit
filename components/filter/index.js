@@ -23,7 +23,6 @@ import urls from '../../constants/api';
 import { useAuth } from '../../context/auth';
 // import Select from '@/lib/Select';
 import { categories } from '@/data/categories';
-import { LoadingButton } from '@/lib/Button';
 import { STYLES } from '@/styles/index';
 import mergeNames from '@/util/mergeNames';
 import { useRouter } from 'next/router';
@@ -247,8 +246,6 @@ const FilterLayout = ({ data, isOpenMap }) => {
               <Button variant={'blueButton'} mx={4} onClick={() => filterAd()}>
                 Хайх
               </Button>
-
-
             </FilterStack>
           </DrawerBody>
         </DrawerContent>

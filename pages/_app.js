@@ -13,8 +13,6 @@ import Router from 'next/router';
 
 function MyApp({ Component, pageProps }) {
   let [isLoading, setIsLoading] = useState(false);
-  let [color, setColor] = useState('#1d1e44');
-  let [category, setCategory] = useState();
 
   const handleStart = (url) => setIsLoading(true);
   const handleComplete = (url) => {

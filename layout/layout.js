@@ -1,9 +1,10 @@
-import React from "react";
-import Head from "next/head";
-import { motion } from "framer-motion";
-import Footer from "../components/footer/index";
+import Loading from '@/lib/loading';
+import { motion } from 'framer-motion';
+import Head from 'next/head';
+import { Suspense } from 'react';
+import Footer from '../components/footer/index';
 
-const Layout = ({ children}) => {
+const Layout = ({ children }) => {
   return (
     <>
       <Head>
@@ -19,10 +20,10 @@ const Layout = ({ children}) => {
       >
         {children}
       </motion.div>
-      <div className="md:block hidden">
+      <div className="hidden md:block">
         <Footer />
       </div>
-      <div className="md:hidden block h-20" />
+      <div className="block h-20 md:hidden" />
     </>
   );
 };

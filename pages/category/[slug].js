@@ -17,6 +17,7 @@ import {
 } from '@chakra-ui/react';
 
 import { ContainerX } from '@/lib/Container';
+import SkeletonContent from '@/util/SkeletonContent';
 import {
   GoogleMap,
   InfoWindow,
@@ -78,7 +79,7 @@ const Category = ({ propAds }) => {
     } catch (error) {}
   };
   if (!isLoaded) {
-    return <p>Loading...</p>;
+    return <SkeletonContent />;
   }
   function createKey(location) {
     return location.lat + location.lng;

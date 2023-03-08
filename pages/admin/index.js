@@ -1,6 +1,9 @@
+import FilterAd from '@/components/Profile/filterAd';
 import urls from '@/constants/api';
 import { useAuth } from '@/context/auth';
+import { brk } from '@/styles/index';
 import mergeNames from '@/util/mergeNames';
+import { Checkbox } from '@chakra-ui/react';
 import { getCookie } from 'cookies-next';
 import Cookies from 'js-cookie';
 import { useEffect, useState } from 'react';
@@ -226,7 +229,27 @@ const Admin = ({ propAds }) => {
             <Button onClick={() => verify(a._id)}>verify</Button>
             <Button onClick={() => deleteAd(a._id)}>delete</Button> */}
           {/* {content && <> {content} </>} */}
-
+          <div className={mergeNames('flex flex-col gap-4 mt-5', brk)}>
+            <div className="flex w-full gap-4">
+              <FilterAd plc="Бүх төрөл" onChange={(e) => {}}>
+                <option value=""></option>
+              </FilterAd>
+              <FilterAd plc="Бүх дэд төрөл" onChange={(e) => {}}>
+                <option value=""></option>
+              </FilterAd>
+            </div>
+            <div className="flex flex-col justify-end">
+              <Checkbox
+                colorScheme="green"
+                className="font-bold text-green-400 whitespace-nowrap"
+              >
+                Нэмэгдсэн зарууд
+              </Checkbox>
+              <Checkbox className="font-bold text-primary whitespace-nowrap">
+                Хүлээгдэж байгаа
+              </Checkbox>
+            </div>
+          </div>
           <div className="w-full overflow-scroll">
             <table className="w-full p-2 text-sm text-left border border-collapse border-gray-400 table-fixed">
               <thead>

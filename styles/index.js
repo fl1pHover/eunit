@@ -14,7 +14,7 @@ export const STYLES = {
     'relative block py-1.5 px-3 rounded border-0 bg-transparent outline-none transition-all duration-300 rounded text-gray-800 hover:text-gray-800 hover:bg-gray-200 focus:shadow-none',
   select: 'border-1 border-blue-400 rounded-full text-[14px] text-sm',
 };
-
+export const brk = 'md:flex-col lg:flex-row sm:flex-row';
 export const fade = () => ({
   hidden: {
     opacity: 0,

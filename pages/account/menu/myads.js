@@ -1,5 +1,5 @@
 import urls from '@/constants/api';
-import { Stack } from '@chakra-ui/react';
+import { SkeletonText, Stack } from '@chakra-ui/react';
 import { getCookie } from 'cookies-next';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -41,6 +41,7 @@ const Myads = () => {
 
   return (
     <Stack display={{ base: 'flex', md: 'none' }} mx={5}>
+     
       <AdContent data={products} tlc={toLowerCase} title=" " />
     </Stack>
   );

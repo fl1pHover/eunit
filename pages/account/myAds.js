@@ -1,7 +1,7 @@
 import AdCard from '@/components/home/adCard';
 import FilterAd from '@/components/Profile/filterAd';
 import urls from '@/constants/api';
-import { STYLES } from '@/styles/index';
+import { brk, STYLES } from '@/styles/index';
 import mergeNames from '@/util/mergeNames';
 import { Checkbox } from '@chakra-ui/react';
 import axios from 'axios';
@@ -63,8 +63,6 @@ const MyAds = ({ user }) => {
   useEffect(() => {
     adStatusChecker();
   }, [checker]);
-
-  const brk = 'md:flex-col lg:flex-row sm:flex-row';
 
   const adStatusChecker = async () => {
     if (checker.pending) {
@@ -180,9 +178,10 @@ const MyAds = ({ user }) => {
           </button>
         </li>
         {products?.limit &&
-          [...Array(Math.ceil(products.limit / 10)).keys()].map((l) => {
+          [...Array(Math.ceil(products.limit / 10)).keys()].map((l, i) => {
+            // [...Array(Math.ceil(products.limit / 10)).keys()].map((l) => {
             return (
-              <li className={l == num ? 'active mx-1' : 'mx-1'}>
+              <li className={l == num ? 'active mx-1' : 'mx-1'} key={i}>
                 <button
                   className={mergeNames(
                     l == num ? STYLES.active : STYLES.notActive

@@ -33,7 +33,7 @@ function CustomModal({
         onClose={onClose}
         isOpen={isOpen}
         isCentered
-        size={{ base: 'sm', sm: 'xl', md: '2xl', lg: '4xl' }}
+        size={{ base: 'sm', sm: 'xl', md: '2xl', lg: '5xl' }}
         className="overflow-hidden "
       >
         <ModalOverlay />
