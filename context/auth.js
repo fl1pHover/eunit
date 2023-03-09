@@ -1,92 +1,140 @@
-import React, { createContext, useState, useContext, useEffect } from 'react'
-import Cookies from 'js-cookie'
+import { createContext, useContext, useEffect, useState } from 'react';
 
 //api here is an axios instance which has the baseURL set according to the env.
-import urls from 'constants/api';
+import { useToast } from '@chakra-ui/react';
 import axios from 'axios';
-
+import urls from 'constants/api';
+import { deleteCookie, getCookie, setCookie } from 'cookies-next';
 
 const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
+  const toast = useToast();
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [categories, setCategories] = useState();
+  const [ads, setAds] = useState(null);
+  const [compareAds, setCompareAds] = useState([]);
+  async function loadUserFromCookies() {
+    const token = getCookie('token');
+    setLoading(true);
+    try {
+      const { data: category } = await axios.get(`${urls['test']}/category`);
+      setCategories(category.categories);
+    } catch (e) {
+      setLoading(false);
+      console.log(e);
+    }
+    if (token && token != undefined) {
+      try {
+        const { data: data } = await axios.get(`${urls['test']}/user/me`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Access-Control-Allow-Headers': '*',
+          },
+        });
 
-    const [user, setUser] = useState(null)
-    const [loading, setLoading] = useState(true)
-    const [categories, setCategories] = useState()
-    const [districts, setDistricts] = useState()
-    const [locations, setLocations] = useState()
-    const [ads, setAds] = useState()
-    useEffect(() => {
+        setUser(data);
+      } catch (error) {
+        console.log(error.response.data.message);
+        logout();
+      }
+    }
+    setLoading(false);
+  }
 
-        async function loadUserFromCookies() {
-            const token = Cookies.get('token')
-            try {
-                const {data:category } = await axios.get(`${urls['test']}/category`)
-                setCategories(category.categories)
-                const {data: district} = await axios.get(`${urls['test']}/district`)
-                setDistricts(district)
-                const {data: location} = await axios.get(`${urls['test']}/location`)
-                setLocations(location)
-                
-                
-            } catch(e) {
-                console.log(e)
-            }
-            if (token && token != undefined) {
+  useEffect(() => {
+    loadUserFromCookies();
+  }, []);
 
-                const {data: data} = await axios.get(`${urls['test']}/user/me`, {
-                    headers: {
-                        'Authorization' : `Bearer ${token}`
-                    }
-                } )
-                setUser(data)
-            }
-            setLoading(false)
+  const login = async (email, password) => {
+    const token = getCookie('token');
+
+    if (!token) {
+      setLoading(true);
+      try {
+        const { data: data } = await axios.post(`${urls['test']}/auth/login`, {
+          email,
+          password,
+        });
+        if (data?.token && data.user.status == 'active') {
+          setCookie('token', data.token);
+
+          setUser(data.user);
+          toast({
+            title: 'Амжилттай нэвтэрлээ',
+            status: 'success',
+            duration: 5000,
+            isClosable: true,
+          });
+          if (data.user.userType == 'admin' || data.user.userType == 'system')
+            window.location.pathname = '/admin';
+          else window.location.pathname = '/account';
+        } else {
+          window.location.pathname = '/account/check';
         }
-        loadUserFromCookies()
-    }, [])
-
-    const login = async (email, password) => {
-        const token = Cookies.get('token')
-
-        if(!token ) {
-            const {data: data} = await axios.post(`${urls['test']}/auth/login`, { email, password })
-        
-        if (data?.token) {
-            Cookies.set('token', data.token)
-            
-            setUser(data.user)
-            window.location.pathname = '/account'
-        }}
+      } catch (error) {
+        setLoading(false);
+        console.log(error);
+      }
+      setLoading(false);
     }
-    const signup = async (email, password, username, phone) => {
-        const token = Cookies.get('token')
+  };
+  const signup = async (email, password, username, phone) => {
+    const token = getCookie('token');
 
-        if(!token ) {
-            const {data: data} = await axios.post(`${urls['test']}/auth/register`, { email, password , username, phone, isAdmin: false})
-        
-        if (data?.token) {
-            Cookies.set('token', data.token)
-            
-            setUser(data.user)
-            window.location.pathname = '/account'
-        }}
+    if (!token) {
+      setLoading(true);
+      try {
+        const { data: data } = await axios.post(
+          `${urls['test']}/auth/register`,
+          {
+            email,
+            password,
+            username,
+            phone,
+            isAdmin: false,
+          }
+        );
+
+        if (!data) {
+          window.location.pathname = '/account/check';
+        }
+      } catch (err) {
+        setLoading(false);
+        console.log(err.response.data.message);
+      }
     }
+    setLoading(false);
+  };
 
-    const logout = () => {
-        Cookies.remove('token')
-        setUser(null)
-        window.location.pathname = '/login'
-    }
+  const logout = () => {
+    deleteCookie('token');
+    setUser(null);
+    setLoading(false);
+    window.location.pathname = '/login';
+  };
 
+  return (
+    <AuthContext.Provider
+      value={{
+        isAuthenticated: !!user,
+        user,
+        login,
+        loading,
+        logout,
+        setLoading,
+        categories,
+        signup,
+        ads,
+        setAds,
+        setCompareAds,
+        compareAds,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
+};
 
-    return (
-        <AuthContext.Provider value={{ isAuthenticated: !!user, user, login, loading, logout, categories, locations, districts, signup, ads, setAds }}>
-            {children}
-        </AuthContext.Provider>
-    )
-}
-
-
-
-export const useAuth = () => useContext(AuthContext)
+export const useAuth = () => useContext(AuthContext);

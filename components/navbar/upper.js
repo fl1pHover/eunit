@@ -1,25 +1,18 @@
-import Image from 'next/image';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import { HiMenuAlt3 } from 'react-icons/hi';
 import useBreakpoints from '../../hooks/useBreakpoints';
-import { ContainerX } from '../../lib/Container';
+import { NavContainer } from '../../lib/Container';
 
+import urls from '@/constants/api';
+import { Image, useDisclosure } from '@chakra-ui/react';
 import { useAuth } from 'context/auth';
-import Cookies from 'js-cookie';
+import Link from 'next/link';
+import { useRef } from 'react';
 import BottomMenu from './bottomMenu';
-import {
-  EstimateIcon,
-  HeartIcon,
-  UserIcon,
-  WalletIcon,
-  WhiteHeartIcon,
-} from './icons';
-import SearchBar from './searchBar';
+import { WhiteHeartIcon } from './icons';
 import SideMenu from './sideMenu';
-import UserDropdown from './userDropdown';
 
 const calcSize = (pt) => {
   switch (pt) {
@@ -40,60 +33,47 @@ const calcSize = (pt) => {
     }
   }
 };
-const UpperNav = (
-  {
-    //  openNav
-  }
-) => {
+const UpperNav = () => {
   const router = useRouter();
   const pt = useBreakpoints();
 
   const [size, setSize] = useState(() => calcSize(pt));
   const [showSideMenu, setShowSideMenu] = useState(false);
   const [showBottomMenu, setShowBottomMenu] = useState(false);
-  const { user, logout } = useAuth();
+  const { user, logout, setAds } = useAuth();
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const btnRef = useRef();
 
   useEffect(() => {
     setSize(calcSize(pt));
-    console.log(Cookies.get('currentUser'));
   }, [pt]);
 
+  const searchAds = async (value) => {
+    try {
+      await fetch(`${urls['test']}/ad/search/{value}?value=${value}`)
+        .then((d) => d.json())
+        .then((d) => setAds(d));
+    } catch (err) {
+      console.log(err.response.data.message);
+    }
+  };
   return (
-    <div className="md:bg-white bg-mainBlossom shadow-lg z-30 sticky">
-      {/* <div className="md:bg-white bg-mainBlossom shadow-lg z-30 sticky md:overflow-hidden overflow-y-visible overflow-clip"> */}
-      <ContainerX>
-        <div className="flex flex-row items-center w-full justify-between py-2">
-          <div className="cursor-pointer">
-            <Link href="/">
-              <a>
-                <Image
-                  src="/images/logo/bom-blue-text.png"
-                  alt="BOM logo"
-                  width={size.width}
-                  height={size.height}
-                  objectFit="contain"
-                />
-              </a>
-            </Link>
-          </div>
-          <div className="md:block hidden lg:w-[55vw] w-[50vw] px-4 lg:px-8">
-            <SearchBar />
-          </div>
-          <div className="md:flex hidden  flex-row items-center lg:gap-8 gap-4">
-            <WalletIcon onClick={() => router.push('/wallet')} />
-            <EstimateIcon onClick={() => router.push('/estimate')} />
-            <HeartIcon onClick={() => router.push('/bookmark')} />
-
-            {user == undefined ? (
-              <UserIcon
-                text="Бүртгүүлэх"
-                onClick={() => router.push('/login')}
+    <div className="sticky z-30 shadow-lg md:bg-white bg-mainBlossom md:hidden">
+      <NavContainer>
+        <div className="flex items-center justify-between gap-2 py-2 ">
+          <Link href={'/'}>
+            <a>
+              <Image
+                src="/images/logo/bom-white-text.png"
+                alt="BOM logo"
+                width={size.width}
+                height={size.height}
+                objectFit="contain"
               />
-            ) : (
-              <UserDropdown user={user} logout={logout} />
-            )}
-          </div>
-          <div className="md:hidden flex justify-center items-center gap-2">
+            </a>
+          </Link>
+          <div className="flex items-center">
             <WhiteHeartIcon
               word={false}
               onClick={() => router.push('/bookmark')}
@@ -102,16 +82,18 @@ const UpperNav = (
               onClick={() => {
                 setShowSideMenu(true);
               }}
+
               // onClick={openNav}
             >
               <HiMenuAlt3
                 size={30}
-                className="hover:text-blue-400 text-white transition-all ease-in"
+                className="text-white transition-all ease-in hover:text-blue-400"
               />
             </button>
           </div>
         </div>
-      </ContainerX>
+        {/* </div> */}
+      </NavContainer>
       <SideMenu
         show={showSideMenu}
         closeNav={() => {

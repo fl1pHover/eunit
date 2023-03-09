@@ -1,47 +1,58 @@
-import axios from 'axios';
+import CategorySelect from '@/components/home/categorySelect';
+import SwiperHeader from '@/components/home/swiperHeader';
+import urls from '@/constants/api';
+import { useAuth } from '@/context/auth';
+import { ContainerX } from '@/lib/Container';
 import { useEffect, useState } from 'react';
-import AdContent from '../components/home/adContent';
-import CategorySelect from '../components/home/categorySelect';
-import SwiperHeader from '../components/home/swiperHeader';
-import urls from '../constants/api';
-import { useAuth } from '../context/auth';
-import ScrollTop from '../lib/ScrollTop';
 
-export default function Home() {
+// import required modules
+import AdContent from '@/components/home/adContent';
+
+export default function Home({ propAds }) {
   const [isLoading, setIsLoading] = useState(false);
-  const { ads, categories, setAds } = useAuth();
+  const { setAds, ads } = useAuth();
 
-  const toLowerCase = (text) => {
-    if (text) {
-      return text.toLowerCase();
+  const [limitAd, setLimitAd] = useState(0);
+
+  const getAds = async (num) => {
+    try {
+      await axios
+        .get(`${urls['test']}/ad/${num}`)
+        .then((d) => setAds(d.data.ads));
+    } catch (error) {
+      console.log(error);
     }
   };
-
-  async function getData() {
-    await axios
-      .get(`${urls['test']}/ad`)
-      .then((res) => {
-        setAds(res.data);
-      })
-      .catch((err) => console.log(err.message));
-  }
   useEffect(() => {
-    getData();
-  }, []);
+    setIsLoading(true);
+    if (typeof propAds === 'object' && propAds?.ads) {
+      setAds(propAds);
+    }
+
+    setIsLoading(false);
+  }, [propAds?.ads]);
 
   return (
     <>
       <SwiperHeader />
       <CategorySelect />
-      {categories?.map((c, i) => {
-        let ad = ads?.filter((a) => a.category == c._id);
-
-        if (ad?.length > 0)
-          return (
-            <AdContent data={ad} key={i} tlc={toLowerCase} title={c.name} />
-          );
-      })}
-      <ScrollTop />
+      <ContainerX classname="py-6">
+        {/* <Heading className="">Шинэ зарууд</Heading> */}
+        {ads && <AdContent data={ads} showLink="" pg={false} />}
+      </ContainerX>
     </>
   );
+}
+
+export async function getServerSideProps({ params, query }) {
+  try {
+    const res = await fetch(`${urls['test']}/ad/${0}`);
+    const ads = await res.json();
+    return {
+      props: { propAds: ads },
+    };
+  } catch (error) {
+    console.error(error);
+    return;
+  }
 }

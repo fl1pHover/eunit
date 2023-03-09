@@ -1,229 +1,124 @@
-import {
-     Avatar,
-     Box,
-     Button,
-     Center,
-     Flex,
-     Heading,
-     Image,
-     Link,
-     Stack,
-     Tab,
-     TabList,
-     TabPanels,
-     Tabs,
-     Text,
-} from "@chakra-ui/react";
-import { useAuth } from "context/auth";
+// import {
 
-import { useRouter } from "next/router";
+import Dashboard from '@/components/Profile/dashboard';
+import urls from '@/constants/api';
+import MainContainer from '@/layout/mainContainer';
+import { STYLES } from '@/styles/index';
+import mergeNames from '@/util/mergeNames';
+import { getCookie } from 'cookies-next';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import Bookmark from './bookmark';
+import MyAds from './myAds';
+import Profile from './profile';
 
-import { AiFillCaretRight } from "react-icons/ai";
-import { FiLogOut } from "react-icons/fi";
-import MainContainer from "../../layout/mainContainer";
-import MyAds from "./myAds";
-import Profile from "./profile";
-import Wallet from "./wallet";
-const TabSelecting = ({ title, tab }) => {
-     const router = useRouter();
-     return (
-          <Tab
-               _selected={{
-                    base: {
-                         borderBottom: "3px solid blue",
-                         bgColor: "#e2e8f0",
-                    },
-                    md: {
-                         borderLeft: "3px solid blue ",
-                         borderBottom: "none !important",
-                    },
-               }}
-               width="full"
-               justifyContent={{ base: "center", md: "flex-start" }}
-               onClick={() =>
-                    router.push(`/account?${tab}`, undefined, {
-                         shallow: true,
-                    })
-               }
-          >
-               <Text lineHeight={1.3}>{title}</Text>
-          </Tab>
-     );
-};
+const Account = ({ user }) => {
+  const router = useRouter();
+  const [content, setContent] = useState('Profile');
 
-const LinkSelecting = ({ title, tab, image }) => {
-     return (
-          <Link href={`/account/menu/${tab}`} mt="0px !important">
-               <Flex
-                    px={3}
-                    py={4}
-                    border="#eef0f2 1px solid"
-                    justifyContent="space-between"
-                    alignItems="center"
-               >
-                    <Flex gap="15px" alignItems="center">
-                         <Image
-                              src={`/utils/icons/static/${image}`}
-                              width="25px"
-                              height="25px"
-                              alt="icon"
-                         />
-                         <Text lineHeight={1.3}>{title}</Text>
-                    </Flex>
-                    <AiFillCaretRight />
-               </Flex>
-          </Link>
-     );
-};
+  const tabs = [
+    {
+      tabHeader: 'Хувийн мэдээлэл',
+      title: 'Profile',
+      tabId: 1,
+      comp: <Profile user={user} />,
+    },
+    {
+      tabHeader: 'Миний зарууд',
+      title: 'MyAds',
+      tabId: 2,
+      comp: <MyAds user={user} />,
+    },
+    {
+      tabHeader: 'Миний хүслүүд',
+      title: 'Bookmark',
+      tabId: 3,
+      comp: <Bookmark user={user} />,
+    },
+  ];
+  useEffect(() => {
+    setContent(router?.query?.tab);
+  }, [router?.query?.tab]);
 
-const Account = () => {
-     const {user, logout} = useAuth()
-     return (
-          <MainContainer>
-               <Tabs
-                    flexDirection={{ base: "column", md: "row" }}
-                    my={{ base: 5, md: 10 }}
-                    gap={5}
-                    display={{ base: "none", md: "flex" }}
-               >
-                    <TabList
-                         width={{ base: "100%", md: "450px" }}
-                         height="full"
-                         bgColor="white"
-                         rounded={10}
-                         display="flex"
-                         flexDirection={"column"}
-                    >
-                         <Stack
-                              alignItems={"center"}
-                              direction={{ base: "row", md: "column" }}
-                              width={"full"}
-                              justifyContent="space-between"
-                              p={(4, 4)}
-                         >
-                              <Stack direction={"inherit"} alignItems="center">
-                                   <Avatar
-                                        src="https://bit.ly/dan-abramov"
-                                        size={{ base: "lg", md: "2xl" }}
-                                   />
-                                   <Stack
-                                        alignItems={{
-                                             base: "flex-start",
-                                             md: "center",
-                                        }}
-                                        m={2}
-                                   >
-                                        <Heading variant={"smallHeading"}>
-                                             {user?.username}
-                                        </Heading>
-                                        <Text color={"grey"}>
-                                             {user?.email}
-                                        </Text>
-                                   </Stack>
-                              </Stack>
-                              <Box display={{ base: "block", md: "none" }}>
-                                   <Button rightIcon={<FiLogOut />} onClick={() => logout()}>
-                                        <Text>Гарах</Text>
-                                   </Button>
-                              </Box>
-                         </Stack>
-                         <Stack
-                              direction={{ base: "row", md: "column" }}
-                              width="full"
-                         >
-                              <TabSelecting
-                                   tab={"profile"}
-                                   title="Хувийн мэдэээлэл"
-                              />
+  // const { tabs, loading, error } = useRemoteData();
 
-                              <TabSelecting tab={"ads"} title="Миний зарууд" />
+  return (
+    <MainContainer py={5}>
+      <div
+        className={mergeNames(STYLES.flexCenter, 'flex-col gap-3 md:flex-row ')}
+      >
+        <div className="mx-auto md:mx-0">
+          <Dashboard />
+        </div>
 
-                              <TabSelecting tab={"wallet"} title="Хэтэвч" />
-                         </Stack>
-                         <Center
-                              width={"full"}
-                              display={{ base: "none", md: "flex" }}
-                              my={3}
-                         >
-                              <Button width={"60%"} onClick={() => logout()}>Гарах</Button>
-                         </Center>
-                    </TabList>
+        <div
+          className={mergeNames(
+            content === 'Profile' ? 'md:w-[800px] w-full' : 'w-[100%]',
+            'relative bg-white shadow-lg rounded-2xl w-full p-5 md:p-10',
+            'transition-all duration-500'
+          )}
+        >
+          <div className="flex flex-row gap-5 border-b cursor-pointer border-b-bgGrey lg:text-base text-[12px]">
+            {tabs.map((tab, tabId) => {
+              return (
+                <button
+                  key={tabId}
+                  className={mergeNames(
+                    'pb-3',
+                    content === tab.title
+                      ? 'border-b-2 border-mainBlue'
+                      : 'border-none'
+                  )}
+                  onClick={() => {
+                    setContent(tab.title);
+                  }}
+                >
+                  {tab.tabHeader}
+                </button>
+              );
+            })}
+          </div>
+          {/* Lorem ipsum dolor sit amet. */}
 
-                    <TabPanels
-                         bgColor={"white"}
-                         width="full"
-                         height={"full"}
-                         rounded={10}
-                         px={2}
-                    >
-                         <Profile />
-                         <MyAds />
-                         <Wallet />
-                    </TabPanels>
-               </Tabs>
-               <Stack
-                    direction={"column"}
-                    display={{ base: "flex", md: "none" }}
-               >
-                    <Stack direction={"column"} alignItems="center" my={8}>
-                         <Avatar
-                              src="https://bit.ly/dan-abramov"
-                              size={{ base: "xl", md: "2xl" }}
-                         />
-                         <Stack
-                              alignItems={{
-                                   base: "flex-start",
-                                   md: "center",
-                              }}
-                              m={2}
-                         >
-                              <Heading variant={"smallHeading"}>
-                                   Soko Bishu
-                              </Heading>
-                              <Text color={"grey"}>Email@email.com</Text>
-                         </Stack>
-                    </Stack>
-                    <Stack direction="column" bgColor="white" gap={0}>
-                         <LinkSelecting
-                              tab="wallet"
-                              title="Хэвэтч"
-                              image="wallet.png"
-                         />
-                         <LinkSelecting
-                              tab="bookmark"
-                              title="Хүсэл"
-                              image="heart.png"
-                         />
-                         <LinkSelecting
-                              tab="profile"
-                              title="Хувийн мэдээлэл"
-                              image="account.png"
-                         />
-                         <LinkSelecting
-                              tab="myads"
-                              title="Миний зарууд"
-                              image="ads.png"
-                         />
-                         <LinkSelecting
-                              tab="feedback"
-                              title="Тусламж"
-                              image="help.png"
-                         />
-
-                         <Box
-                              height="100px"
-                              bgColor="bgGrey"
-                              mt="0px !important"
-                         />
-                         <LinkSelecting
-                              tab="leave"
-                              title="Гарах"
-                              image="logout.png"
-                         />
-                    </Stack>{" "}
-               </Stack>
-          </MainContainer>
-     );
+          {tabs.map((tab, tabId) => {
+            return (
+              tab.title && (
+                <>
+                  <div key={tabId}>{content === tab.title && tab.comp}</div>
+                </>
+              )
+            );
+          })}
+        </div>
+      </div>
+    </MainContainer>
+  );
 };
 
 export default Account;
+export async function getServerSideProps({ req, res }) {
+  // const res = await fetch(`${urls['test']}/category`);
+  // const resjson = await res.json();
+  const token = getCookie('token', { req, res });
+  // const categories = resjson?.categories;
+  if (!token)
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  else {
+    const user = await fetch(`${urls['test']}/user/me`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const userJson = await user.json();
+    return {
+      props: {
+        user: userJson,
+      },
+    };
+  }
+}

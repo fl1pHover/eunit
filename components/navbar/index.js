@@ -1,34 +1,32 @@
-import { Box } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import { useState } from 'react';
 
-import UpperNav from "./upper";
-import Bottom from "./bottom";
-import Higher from "./higher";
+import { categories } from '@/data/categories';
+import CategoryBottom from './bottom';
+import UpperNav from './upper';
 
-const Navbar = ({data}) => {
+const Navbar = () => {
   const [sticky, setSticky] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setSticky(window.scrollY > 0);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  });
+  // const { categories } = useAuth();
+  // useEffect(() => {
+  //   const handleScroll = () => {
+  //     setSticky(window.scrollY > 0);
+  //   };
+  //   window.addEventListener('scroll', handleScroll);
+  //   return () => window.removeEventListener('scroll', handleScroll);
+  // });
 
   return (
     <>
-      <Higher />
-      <Box
-        top="0"
+      {/* <Higher /> */}
+      <div
+        className="sticky top-0 z-20"
         id="navbar"
-        zIndex={"20"}
-        as={"section"}
-        pos={sticky ? "sticky" : "relative"}
+        as={'section'}
+        // pos={sticky ? 'sticky' : 'relative'}
       >
-        <UpperNav  />
-        <Bottom {...{ sticky }} data ={data} />
-      </Box>
+        <CategoryBottom {...{ sticky }} data={categories} />
+        <UpperNav />
+      </div>
     </>
   );
 };

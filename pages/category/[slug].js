@@ -1,94 +1,217 @@
-import { Box, Grid, Heading, Image, Stack } from '@chakra-ui/react';
-import MainContainer from '../../layout/mainContainer';
+import FilterLayout from '@/components/filter';
+import AdContent from '@/components/home/adContent';
+import urls from '@/constants/api';
+import MainContainer from '@/layout/mainContainer';
+import mergeNames from '@/util/mergeNames';
+import {
+  Box,
+  Button,
+  Image,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  useDisclosure
+} from '@chakra-ui/react';
 
-import { useRouter } from 'next/router';
-import {useEffect, useState} from 'react'
-import FilterLayout from '../../components/filter';
-import AdContent from '../../components/home/adContent';
-import { useAuth } from '../../context/auth';
+import { ContainerX } from '@/lib/Container';
+<<<<<<< HEAD
+=======
+import SkeletonContent from '@/util/SkeletonContent';
+>>>>>>> e79836650fbce11193457ba57c2093e3c5749a87
+import {
+  GoogleMap,
+  InfoWindow,
+  MarkerF,
+  useLoadScript
+} from '@react-google-maps/api';
 import axios from 'axios';
-import urls from '../../constants/api';
+import { useRouter } from 'next/router';
+import { useEffect, useMemo, useState } from 'react';
+import { useAuth } from '../../context/auth';
 
-const Category = () => {
-     const {categories, ads, setAds} = useAuth()
+const Category = ({ propAds }) => {
   const router = useRouter();
-  const [category, setCategory] = useState() 
+  const { categories, ads, setAds } = useAuth();
+  const [category, setCategory] = useState();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const toLowerCase = (text) => {
     if (text) {
       return text.toLowerCase();
     }
   };
-
   useEffect(() => {
-       categories?.map((c) => {
-          c.subCategory?.map((s) => {
-      
-               if(s.href == router.query.slug) {
-                    setCategory(s.name)
-                    axios.get(`${urls["test"]}/ad/category/{id}?id=${s._id}`).then((data) => {
-                         setAds(data.data)
-                         
-                       })
-               }
-          })
-          
-     })
-  }, [router.query, categories,])
+    if (propAds) setAds(propAds);
+  }, [propAds]);
+
+  const [isLoading, setIsLoading] = useState(false);
+  const libraries = useMemo(() => ['places'], []);
+  // const { categories, setAds } = useAuth();
+  const [markerActive, setMarkerActive] = useState(null);
+
+  const { isLoaded } = useLoadScript({
+    googleMapsApiKey: 'AIzaSyC2u2OzBNo53GxJJdN3Oc_W6Yc42OmdZcE',
+    libraries: libraries,
+  });
+  const mapOptions = useMemo(
+    () => ({
+      disableDefaultUI: true,
+      clickableIcons: true,
+      scrollwheel: true,
+    }),
+    []
+  );
+  const mapCenter = useMemo(
+    () => ({
+      lat: parseFloat(ads ? ads[0]?.location?.lat ?? 47.74604 : 47.74604),
+      lng: parseFloat(ads ? ads[0]?.location?.lng ?? 107.341515 : 107.341515),
+    }),
+    []
+  );
+  const getData = async (id) => {
+    try {
+      if (router.query.slug)
+        await axios
+          .get(`${urls['test']}/ad/category/${router.query.slug}/${id}`)
+          .then((d) => {
+            console.log(d.data);
+            // setAds(d.data)
+          });
+    } catch (error) {}
+  };
+  if (!isLoaded) {
+    return <SkeletonContent />;
+  }
+  function createKey(location) {
+    return location.lat + location.lng;
+  }
 
   return (
     <Box my={5} as="section" id="category">
       <MainContainer>
-        <Stack direction={'row'} py={2} gap={3}>
+        <div className="relative flex flex-col gap-3 p-2">
           {/* //TODO Filter Box */}
-          {router.query?.slug && <FilterLayout data={router.query.slug} />}
+          {router.query?.slug && (
+            <FilterLayout data={router.query.slug} isOpenMap={onOpen} />
+          )}
 
-          {/* //TODO Filter box end */}
-
-          {/* //TODO Main product */}
-          <Box maxWidth={'75%'} flex="0 0 75%" borderRadius="5px">
-            {/* <SwiperHeader /> */}
-            <Image
-              src="/images/HeaderSlider/1.jpg"
-              height={'400px'}
-              width="100%"
-              objectFit={'cover'}
-              alt="image"
-            />
-
-            {/* //TODO Ontsgoi zar */}
-            {/* //TODO Ontsgoi zar */}
-            {/* //TODO Ontsgoi zar */}
-
-            <Box>
-              <Heading variant={'mediumHeading'} my={3}>
-                Онцгой зар
-              </Heading>
-              <Grid
-                direction={'row'}
-                templateColumns="repeat(auto-fill, minmax(200px, 1fr))"
-                rowGap={5}
-                gap={3}
-                width="100%"
-                justifyContent={'center'}
-              >
-                {/* йыбйыб */}
-                {/* йыбйыб */}
-                {/* йыбйыб */}
-              </Grid>
-            </Box>
-
+          <Box className="max-w-[100%] w-full rounded-[5px]">
             {/* //TODO Engiin zar */}
-
-            {ads && <AdContent
-                  data={ads}
-              tlc={toLowerCase}
-              title={category ?? ''}
-            />}
+            {ads?.ads?.length > 0 ? (
+              <AdContent
+                data={ads}
+                tlc={toLowerCase}
+                title={category ?? ''}
+                showLink="hidden"
+                inCat
+                func={getData}
+              />
+            ) : (
+              <ContainerX>
+                <div className="grid h-[80vh] text-2xl place-items-center">
+                  Зар байхгүй байна
+                </div>
+              </ContainerX>
+            )}
           </Box>
-        </Stack>
+        </div>
+        {/* <CustomModal></CustomModal> */}
+        <Modal onClose={onClose} isOpen={isOpen} isCentered size={'4xl'}>
+          <ModalContent>
+            <ModalHeader>Maps</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <GoogleMap
+                options={mapOptions}
+                onClick={(e) => {
+                  // setMap(e.latLng.toJSON());
+                  // console.log(e.latLng.toJSON());
+                }}
+                zoom={14}
+                center={mapCenter}
+                mapTypeId={google.maps.MapTypeId.ROADMAP}
+                mapContainerStyle={{ width: '100%', height: '50vh' }}
+              >
+                {isLoaded &&
+                  ads?.ads?.map((m, i) => {
+                    return (
+                      <div key={i}>
+                        <MarkerF
+                          position={{
+                            lat: parseFloat(m.location?.lat ?? 47.74604),
+                            lng: parseFloat(m.location?.lng ?? 107.341515),
+                          }}
+                          onClick={() => setMarkerActive(i)}
+                          animation={google.maps.Animation.DROP}
+                          className={mergeNames('group')}
+                        >
+                          {markerActive == i && (
+                            <InfoWindow
+                              position={{
+                                lat: parseFloat(m.location?.lat ?? 47.74604),
+                                lng: parseFloat(m.location?.lng ?? 107.341515),
+                              }}
+                              className="relative"
+                            >
+                              <div
+                                onClick={() => router.push(`/product/${m.num}`)}
+                                className={mergeNames(
+                                  'h-[125px] aspect-4/3 flex flex-col cursor-pointer justify-end',
+                                  'group-hover:block '
+                                )}
+                              >
+                                <Image
+                                  src={
+                                    m.images[0] ?? '/images/HeaderSlider/1.jpg'
+                                  }
+                                  alt="map image"
+                                  className={mergeNames(
+                                    'absolute top-0 left-0 object-cover w-full h-full ',
+                                    ''
+                                  )}
+                                />
+                                <div className="absolute top-0 left-0 object-cover w-full h-full bg-gradient-to-b from-slate-700/0 via-slate-700/50 to-slate-900/100 "></div>
+                                <p className="z-10 text-base font-bold text-white">
+                                  {m.title}
+                                </p>
+                                <p className="z-10 text-base font-bold text-white">
+                                  {
+                                    m.filters.filter(
+                                      (f) => f.type == 'price'
+                                    )[0]?.input
+                                  }
+                                </p>
+                              </div>
+                            </InfoWindow>
+                          )}
+                        </MarkerF>
+                      </div>
+                    );
+                  })}
+              </GoogleMap>
+            </ModalBody>
+            <ModalFooter>
+              <Button onClick={onClose}>Close</Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
       </MainContainer>
     </Box>
   );
 };
 
 export default Category;
+
+export async function getServerSideProps(ctx) {
+  const { params } = ctx;
+  const { slug } = params;
+  const res = await fetch(`${urls['test']}/ad/category/${slug}/${0}`);
+  const ads = await res.json();
+  return {
+    props: {
+      propAds: ads,
+    },
+  };
+}

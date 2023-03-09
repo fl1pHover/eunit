@@ -1,9 +1,10 @@
-@use "../vars/" as *;
+@use '../vars/' as *;
 
 .headerSwiper {
   height: 100% !important;
 }
 
+.swiper,
 .headerSwiper {
   .swiper-button-prev,
   .swiper-button-next {
@@ -49,7 +50,7 @@
 
   transform-origin: center;
   &::before {
-    content: "";
+    content: '';
     position: absolute;
     transform: translate(-50%, -50%) scale(1.3);
     background: url(../../public/utils/swiper-arrow.png);
@@ -92,7 +93,7 @@
     display: none;
   }
   &::after {
-    content: "";
+    content: '';
     position: absolute;
     transform: translate(-50%, -50%) scale(1.3) rotate(180deg);
     background: url(../../public/utils/swiper-arrow.png);

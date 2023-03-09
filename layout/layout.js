@@ -1,15 +1,14 @@
-import React from "react";
-import Head from "next/head";
-import { motion } from "framer-motion";
-import Footer from "../components/footer/index";
+import { motion } from 'framer-motion';
+import Head from 'next/head';
+import Footer from '../components/footer/index';
 
-const Layout = ({ children}) => {
+const Layout = ({ children }) => {
   return (
     <>
       <Head>
         <title>BOM</title>
         <meta name="description" content="Bom, zariin site" />
-        {/* <link rel="icon" href="/favicon.ico" /> */}
+        <link rel="icon" href="/images/logo/bom-blue.png" />
       </Head>
       <motion.div
         initial={{ opacity: 0 }}
@@ -19,10 +18,10 @@ const Layout = ({ children}) => {
       >
         {children}
       </motion.div>
-      <div className="md:block hidden">
+      <div className="hidden md:block">
         <Footer />
       </div>
-      <div className="md:hidden block h-20" />
+      <div className="block h-20 md:hidden" />
     </>
   );
 };

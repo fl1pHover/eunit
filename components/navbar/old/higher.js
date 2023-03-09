@@ -6,7 +6,7 @@ import { ContainerX } from "../../lib/Container";
 
 const Higher = () => {
   return (
-    <div className="bg-mainBlossom/90 py-1 md:block hidden">
+    <div className="hidden py-1 bg-mainBlossom/90 md:block">
       <ContainerX>
         <HStack justifyContent={"space-between"}>
           <Text classname="text-white">Welcome to BOM Website</Text>

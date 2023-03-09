@@ -1,101 +1,145 @@
-import { Button } from '@chakra-ui/react';
+import { useAuth } from '@/context/auth';
+import { NavContainer } from '@/lib/Container';
+import { STYLES } from '@/styles/index';
+import mergeNames from '@/util/mergeNames';
+import { Image } from '@chakra-ui/react';
+import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { BiPlusCircle } from 'react-icons/bi';
-import { ContainerX } from '../../lib/Container';
-import mergeNames from '../../util/mergeNames';
+import { HiOutlineSearch } from 'react-icons/hi';
+import { MdOutlineClear } from 'react-icons/md';
+import { UserIcon, WhiteHeartIcon } from './icons';
+import NavCategory from './navCategory';
+import UserDrawer from './userDrawer';
 
-const Bottom = ({ sticky, data }) => {
-  const [isHoveringId, setIsHoveringId] = useState(null);
-  // const pt = useBreakpoints();
+const Bottom = ({ sticky }) => {
+  const { user, logout, setAds } = useAuth();
   const router = useRouter();
-  const handleMouseOver = (category) => {
-    setIsHoveringId(category);
-  };
 
-  const handleMouseOut = () => {
-    setIsHoveringId(null);
+  // Visible start
+  const [activeSearch, setActiveSearch] = useState(false);
+
+  // Visible end
+
+  // Search start
+  const [search, setSearch] = useState('');
+  const searchAds = async (value) => {
+    try {
+      await fetch(`${urls['test']}/ad/search/{value}?value=${value}`)
+        .then((d) => d.json())
+        .then((d) => setAds(d));
+    } catch (err) {
+      console.log(err.response.data.message);
+    }
   };
+  const handleClear = (e) => {
+    // 👇️ clear input value
+    setSearch('');
+    console.log('clear input');
+  };
+  // Search end
 
   return (
-    <div
-      className={mergeNames(
-        'md:block hidden',
-        'bg-mainBlossom shadow-lg',
-        'transition-all ease-in-out duration-500',
-        sticky ? 'wrap' : 'nowrap'
-      )}
-    >
-      <ContainerX>
-        <div className="flex flex-row items-center justify-between h-full gap-2">
-          <div className="flex flex-row items-stretch h-full">
-            {data?.map((category, key) => {
-              return (
-                <div
-                  key={key}
-                  onMouseOut={handleMouseOut}
-                  onMouseOver={() => handleMouseOver(category)}
-                  className={mergeNames(
-                    'hover:bg-blue-900 transition-colors ease-in-out'
-                  )}
-                >
-                  <div className="relative h-full">
-                    <div className="h-full lg:py-6 lg:px-4 px-2 py-4 flex flex-col justify-center">
-                      <Link href={`/category/${category.name}`}>
-                        <a className="text-white font-medium text-sm lg:text-base text-center">
-                          {category.name}
-                        </a>
-                      </Link>
-                    </div>
-                    <div className="absolute left-0 min-w-full bg-blue-900/[0.96] rounded-b-md flex flex-col overflow-hidden">
-                      {category?.subCategory &&
-                        isHoveringId != null &&
-                        isHoveringId == category &&
-                        category.subCategory?.map(({ name, href }, key) => {
-                          return (
-                            <Button
-                              key={key}
-                              onClick={() => {
-                                router
-                                  .push(`/category/${href}`)
-                                  .then(() => router.reload());
-                              }}
-                              borderRadius="0"
-                              // colorScheme="mainBlue"
-                              className="bg-[#1d3988] text-left text-sm text-white font-medium px-4 py-3 hover:bg-blue-700 first-letter:uppercase transition-colors ease-in whitespace-nowrap"
-                            >
-                              {/* <a className="text-sm text-white font-medium px-4 py-3 hover:bg-blue-700 first-letter:uppercase transition-colors ease-in whitespace-nowrap z-1 w-full"> */}
-                              {name}
-                              {/* </a> */}
-                            </Button>
-                          );
-                        })}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-          <div className="flex flex-row lg:gap-4 gap-1">
-            <Link href={'/project'} className="lg:block hidden">
-              <button
-                disabled
-                className="text-gray-500 border border-blue-900 rounded-lg px-4 py-1 cursor-not-allowed text-sm lg:text-base"
-              >
-                Шинэ төсөл
-              </button>
+    <div className={mergeNames('md:block hidden', 'bg-mainBlossom ')}>
+      <NavContainer>
+        <div className="flex flex-row items-center justify-center gap-10">
+          <div className="flex flex-row items-center ">
+            {/* logo */}
+            <Link href="/">
+              <a className="p-2">
+                <Image
+                  src="/images/logo/bom-white.png"
+                  alt="Logo"
+                  className="h-6"
+                />
+              </a>
             </Link>
 
+            {/* Categoriud */}
+            <NavCategory />
+          </div>
+
+          {/* baruun taliin bookmark search etc */}
+          <div className="flex flex-row items-center text-white">
+            <button
+              className="h-full px-2"
+              onClick={() => setActiveSearch(true)}
+            >
+              <HiOutlineSearch />
+            </button>
+
+            <WhiteHeartIcon onClick={() => router.push('/account?Bookmark')} />
+
+            {user == undefined ? (
+              <UserIcon
+                text="Бүртгүүлэх"
+                onClick={() => router.push('/login')}
+              />
+            ) : (
+              <UserDrawer user={user} logout={logout} />
+            )}
+
             <Link href={'/createAd'}>
-              <button className="bg-teal-700 rounded-lg px-4 py-1 text-white font-semibold text-sm lg:text-base hover:scale-105 transition-all ease-in-out flex flex-row items-center gap-1">
+              <button className="px-4 py-1 ml-2 text-sm font-semibold transition-all bg-teal-700 rounded-lg hover:scale-105">
                 <p>Зар нэмэх</p>
-                <BiPlusCircle className="lg:block hidden" />
+                {/* <BiPlusCircle className="hidden lg:block" /> */}
               </button>
             </Link>
           </div>
         </div>
-      </ContainerX>
+
+        {/* Search input */}
+        {activeSearch && (
+          <motion.div
+            onMouseOut={() => setActiveSearch(false)}
+            initial={{ opacity: 0, y: -10 }}
+            animate={{
+              opacity: 1,
+              y: 0,
+              transition: {
+                stiffness: 0,
+                ease: 'easeInOut',
+                duration: 0.3,
+              },
+            }}
+            onMouseOver={() => setActiveSearch(true)}
+            className={mergeNames(
+              'bg-blue-900/[0.96] w-full absolute left-0',
+              'py-2',
+              STYLES.flexCenter,
+              'items-center text-2xl text-blue-300'
+            )}
+          >
+            <div className="relative flex flex-row items-center w-2/5 h-10">
+              <HiOutlineSearch />
+              <input
+                onChange={(e) => setSearch(e.target.value)}
+                type="text"
+                placeholder="Зараа хайна уу"
+                onKeyPress={(e) => {
+                  if (event.key === 'Enter') {
+                    () => func(search), console.log('Search enter press!!');
+                  }
+                }}
+                value={search}
+                className={mergeNames(
+                  'h-full w-full ml-2 border-none rounded-md placeholder-blue-300/40 bg-mainBlossom bg-opacity-40  focus:ring-0 '
+                )}
+              />
+              <button
+                onClick={handleClear}
+                className={mergeNames(
+                  'text-xs rounded-full p-[2px] bg-mainBlossom/80',
+                  'absolute right-2'
+                )}
+              >
+                <MdOutlineClear />
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </NavContainer>
     </div>
   );
 };

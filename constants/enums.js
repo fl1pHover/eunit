@@ -1,31 +1,170 @@
-import { AiOutlineCar } from "react-icons/ai";
-import { BsBuilding, BsPhone } from "react-icons/bs";
-import { CgSmartHomeWashMachine } from "react-icons/cg";
-import { MdComputer } from "react-icons/md";
-import { RiHomeSmile2Line } from "react-icons/ri";
-
-export const  AdTypes = {
-    sell : {
-      id: 'sell',
-      name: 'Зарах'
-    },
-    rent : {
-      id: 'rent',
-      name: 'Түрээслэх'
-    }
-}
+import { AiOutlineCar } from 'react-icons/ai';
+import { BsBuilding, BsPhone } from 'react-icons/bs';
+import { CgSmartHomeWashMachine } from 'react-icons/cg';
+import { MdComputer } from 'react-icons/md';
+import { RiHomeSmile2Line } from 'react-icons/ri';
+export const SellTypes = {
+  sell: {
+    id: 'sell',
+    name: 'Зарах',
+  },
+  rent: {
+    id: 'rent',
+    name: 'Түрээслэх',
+  },
+  sellRent: {
+    id: 'sellRent',
+    name: 'Зарах, түрээслэх',
+  },
+};
+export const Committee = [
+  {
+    id: '1khoroo',
+    value: '1-р хороо',
+  },
+  {
+    id: '2khoroo',
+    value: '2-р хороо',
+  },
+  {
+    id: '3khoroo',
+    value: '3-р хороо',
+  },
+  {
+    id: '4khoroo',
+    value: '4-р хороо',
+  },
+  {
+    id: '5khoroo',
+    value: '5-р хороо',
+  },
+  {
+    id: '6khoroo',
+    value: '6-р хороо',
+  },
+  {
+    id: '7khoroo',
+    value: '7-р хороо',
+  },
+  {
+    id: '8khoroo',
+    value: '8-р хороо',
+  },
+  {
+    id: '9khoroo',
+    value: '9-р хороо',
+  },
+  {
+    id: '10khoroo',
+    value: '10-р хороо',
+  },
+  {
+    id: '11khoroo',
+    value: '11-р хороо',
+  },
+  {
+    id: '12khoroo',
+    value: '12-р хороо',
+  },
+  {
+    id: '13khoroo',
+    value: '13-р хороо',
+  },
+  {
+    id: '14khoroo',
+    value: '14-р хороо',
+  },
+  {
+    id: '15khoroo',
+    value: '15-р хороо',
+  },
+  {
+    id: '16khoroo',
+    value: '16-р хороо',
+  },
+  {
+    id: '17khoroo',
+    value: '17-р хороо',
+  },
+  {
+    id: '18khoroo',
+    value: '18-р хороо',
+  },
+  {
+    id: '19khoroo',
+    value: '19-р хороо',
+  },
+  {
+    id: '20khoroo',
+    value: '20-р хороо',
+  },
+  {
+    id: '21khoroo',
+    value: '21-р хороо',
+  },
+  {
+    id: '22khoroo',
+    value: '22-р хороо',
+  },
+  {
+    id: '23khoroo',
+    value: '23-р хороо',
+  },
+  {
+    id: '24khoroo',
+    value: '24-р хороо',
+  },
+  {
+    id: '25khoroo',
+    value: '25-р хороо',
+  },
+  {
+    id: '26khoroo',
+    value: '26-р хороо',
+  },
+  {
+    id: '27khoroo',
+    value: '27-р хороо',
+  },
+  {
+    id: '28khoroo',
+    value: '28-р хороо',
+  },
+  {
+    id: '29khoroo',
+    value: '29-р хороо',
+  },
+  {
+    id: '30khoroo',
+    value: '30-р хороо',
+  },
+];
+export const AdTypes = {
+  default: {
+    id: 'default',
+    name: 'Энгийн',
+  },
+  special: {
+    id: 'special',
+    name: 'Онцгой',
+  },
+  poster: {
+    id: 'poster',
+    name: 'Постэр',
+  },
+};
 
 export const Category = {
-  realState : 'realState',
-  vehicle : 'vehicle',
-  computer : 'computer',
-  phone : 'phone',
-  electronics : 'electronics',
-  householdItems : 'householdItems'
-}
+  realState: 'realState',
+  vehicle: 'vehicle',
+  computer: 'computer',
+  phone: 'phone',
+  electronics: 'electronics',
+  householdItems: 'householdItems',
+};
 
-export const getIconCategory = ({item}) => {
-  switch(item) {
+export const getIconCategory = ({ item }) => {
+  switch (item) {
     case Category.realState:
       return <BsBuilding />;
     case Category.vehicle:
@@ -38,113 +177,154 @@ export const getIconCategory = ({item}) => {
       return <CgSmartHomeWashMachine />;
     case Category.householdItems:
       return <RiHomeSmile2Line />;
-
   }
-}
+};
 
 export const Filters = {
-    floor : {
-      id: 'floor',
-      name: 'Шал'
-    },
-  room : {
+  floor: {
+    id: 'floor',
+    name: 'Шал',
+  },
+  room: {
     id: 'room',
-    name: 'Өрөөний тоо'
+    name: 'Өрөөний тоо',
   },
-  bathroom : {
+  bathroom: {
     id: 'bathroom',
-    name: 'Угаалгын өрөөний тоо'
+    name: 'Угаалгын өрөөний тоо',
   },
-  masterBedroom : {
+  masterBedroom: {
     id: 'masterBedroom',
-    name: 'Мастер өрөөний тоо'
+    name: 'Мастер өрөөний тоо',
   },
-  window : {
+  window: {
     id: 'window',
-    name: 'Цонх'
+    name: 'Цонх',
   },
-  windowUnit : {
+  windowUnit: {
     id: 'windowUnit',
-    name: 'Цонхны тоо'
+    name: 'Цонхны тоо',
   },
-  door : {
+  door: {
     id: 'door',
-    name: 'Хаалга'
+    name: 'Хаалга',
   },
-  balconyUnit : {
+  balconyUnit: {
     id: 'balconyUnit',
-    name: 'Тагтны тоо'
+    name: 'Тагтны тоо',
   },
-  buildingFloor : {
+  buildingFloor: {
     id: 'buildingFloor',
-    name: "Барилгын давхар"
+    name: 'Барилгын давхар',
   },
-  garage : {
+  garage: {
     id: 'garage',
-    name: 'Гараж'
+    name: 'Гараж',
   },
-  paymentMethod : {
+  paymentMethod: {
     id: 'paymentMethod',
-    name: 'Төлбөрийн хэлбэр'
+    name: 'Төлбөрийн хэлбэр',
   },
-  barter : {
+  barter: {
     id: 'barter',
-    name: 'Бартер'
+    name: 'Бартер',
   },
-  landLicense : {
+  landLicense: {
     id: 'landLicense',
-    name: 'Газрын эзэмшлийн хэлбэр'
+    name: 'Газрын эзэмшлийн хэлбэр',
   },
-  landUsage : {
+  landUsage: {
     id: 'landUsage',
-    name: 'Газрын зориулалт'
+    name: 'Газрын зориулалт',
   },
-  objectType : {
+  objectType: {
     id: 'objectType',
-    name: 'Объектын төрөл'
+    name: 'Объектын төрөл',
   },
-  serviceType : {
+  serviceType: {
     id: 'serviceType',
-    name: 'Үйл ажиллагааны хэлбэр'
+    name: 'Үйл ажиллагааны хэлбэр',
   },
-  phone : {
+  phone: {
     id: 'phone',
-    name: 'Утас'
+    name: 'Утас',
   },
-  price : {
+  price: {
     id: 'price',
-    name: 'Үнэ'
+    name: 'Үнэ',
   },
-  unitPrice : {
+  unitPrice: {
     id: 'unitPrice',
-    name: 'Нэгжийн үнэ'
+    name: 'Нэгжийн үнэ',
   },
-  area : {
+  area: {
     id: 'area',
-    name: 'Талбай'
+    name: 'Талбай',
   },
-  operation : {
+  operation: {
     id: 'operation',
-    name: 'Ашиглалтанд орсон он'
+    name: 'Ашиглалтанд орсон он',
   },
-  district : {
+  district: {
     id: 'district',
-    name: 'Дүүрэг'
+    name: 'Дүүрэг',
   },
-  committee : {
+  committee: {
     id: 'committee',
-    name: "Хороо"
+    name: 'Хороо',
   },
-  location : {
+  location: {
     id: 'location',
-    name: "Байршил"
+    name: 'Байршил',
   },
-  town : {
+  town: {
     id: 'town',
-    name: "Хотхон"
+    name: 'Хотхон',
   },
-  howFloor : {
+  howFloor: {
     id: 'howFloor',
-    name: "Хэдэн давхарт"
+    name: 'Хэдэн давхарт',
   },
-}
+};
+
+export const swiperBreakpoints = {
+  // sm
+  1: {
+    slidesPerView: 2,
+    grid: {
+      rows: 2,
+      fill: 'row',
+    },
+  },
+  640: {
+    slidesPerView: 3,
+    grid: {
+      rows: 2,
+      fill: 'row',
+    },
+  },
+  // md
+  768: {
+    slidesPerView: 3,
+    grid: {
+      rows: 2,
+      fill: 'row',
+    },
+  },
+  // lg
+  1024: {
+    slidesPerView: 4,
+    grid: {
+      rows: 2,
+      fill: 'row',
+    },
+  },
+  // xl
+  1280: {
+    slidesPerView: 5,
+    grid: {
+      rows: 2,
+      fill: 'row',
+    },
+  },
+};

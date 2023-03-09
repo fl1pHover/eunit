@@ -1,201 +1,210 @@
 import {
   AspectRatio,
   Box,
-  Grid,
   GridItem,
   Heading,
+  HStack,
   IconButton,
+  Link,
   Select,
   Stack,
   Text,
   useToast,
 } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
-
-// Import Swiper React components
-// Import Swiper styles
-// import "swiper/css";
+import { Fragment, useEffect, useMemo, useState } from 'react';
 
 import { FaHeart } from 'react-icons/fa';
-import FilterLayout from '../../components/filter';
+
 import MainContainer from '../../layout/mainContainer';
-import ProductCard from '../../util/productCard';
 import ECalculator from '../calculator';
 
 import ScrollTop from '../../lib/ScrollTop';
 
-// Icons
-
 // Image Swiper Gallery
-import moment from "moment/moment";
-import { useRouter } from "next/router";
-import ImageGallery from "react-image-gallery";
-import urls from "../../constants/api";
+import ImageGallery from 'react-image-gallery';
+
+import AdContent from '@/components/home/adContent';
+import { STYLES } from '@/styles/index';
+import mergeNames from '@/util/mergeNames';
+import {
+  GoogleMap,
+  InfoWindow,
+  MarkerF,
+  useLoadScript,
+} from '@react-google-maps/api';
+import axios from 'axios';
+import { getCookie } from 'cookies-next';
+import currency from 'currency.js';
+import moment from 'moment/moment';
+import NextLink from 'next/link';
+import { useRouter } from 'next/router';
+import urls from '../../constants/api';
 import { useAuth } from '../../context/auth';
+import UserInfo from './userInfo';
 
-const images = [
-  {
-    original: '/images/HeaderSlider/1.jpg',
-    thumbnail: '/images/HeaderSlider/1.jpg',
-  },
-  {
-    original: '/images/404.png',
-    thumbnail: '/images/404.png',
-  },
-  {
-    original: '/images/HeaderSlider/1.jpg',
-    thumbnail: '/images/HeaderSlider/1.jpg',
-  },
-  {
-    original: '/images/HeaderSlider/1.jpg',
-    thumbnail: '/images/HeaderSlider/1.jpg',
-  },
+export const ProductInfo = ({
+  title,
+  value,
+  id,
+  children,
 
-  {
-    original: '/images/HeaderSlider/1.jpg',
-    thumbnail: '/images/HeaderSlider/1.jpg',
-  },
-  {
-    original: '/images/HeaderSlider/1.jpg',
-    thumbnail: '/images/HeaderSlider/1.jpg',
-  },
-  {
-    original: '/images/HeaderSlider/1.jpg',
-    thumbnail: '/images/HeaderSlider/1.jpg',
-  },
-  {
-    original: 'images/HeaderSlider/1.jpg',
-    thumbnail: 'images/HeaderSlider/1.jpg',
-  },
-
-  {
-    original: 'images/HeaderSlider/1.jpg',
-    thumbnail: 'images/HeaderSlider/1.jpg',
-  },
-  {
-    original: 'images/HeaderSlider/1.jpg',
-    thumbnail: 'images/HeaderSlider/1.jpg',
-  },
-];
-
-const ProductInfo = ({ title, value, children, key }) => {
-console.log(value)
+  tt = 'capitalize',
+}) => {
   return (
-    <GridItem className="product__info" key={key}>
-      {children ? (
-        children
-      ) : (
+    <Fragment>
+      <p
+        className={mergeNames(
+          id === 'price'
+            ? 'mt-3 text-xl font-bold col-span-full block'
+            : 'hidden'
+        )}
+      >
+        Бусад мэдээлэл
+      </p>
+      <GridItem
+        className={
+          title.length + value?.length > 30
+            ? 'product__info col-span-full'
+            : 'product__info'
+        }
+      >
         <Stack
           direction={'row'}
-          p={2}
-          borderColor="bgGrey"
-          borderWidth={2}
-          borderRadius={5}
+          className={mergeNames('p-2 border-2 rounded-md border-bgGrey')}
         >
-          <Text textTransform={'capitalize'}>{title}: </Text>
-          <Text textTransform={'capitalize'} fontWeight={'bold'}>
-            {value}
+          <Text
+            fontSize={{ base: '13px', xl: '15px' }}
+            textTransform={'capitalize'}
+          >
+            {title}:{' '}
           </Text>
+          <NextLink
+            href={{
+              pathname: `/category/filter/${id}`,
+              query: { num: 0, value: value },
+            }}
+          >
+            <Link
+              fontSize={{ base: '13px', xl: '15px' }}
+              textTransform={tt}
+              cursor={'pointer'}
+              fontWeight={'bold'}
+            >
+              {id === 'price' || id === 'unitPrice'
+                ? currency(value, { separator: ',', symbol: '₮ ' })
+                    .format()
+                    .toString()
+                : value}
+            </Link>
+          </NextLink>
         </Stack>
-      )}
-    </GridItem>
+      </GridItem>
+    </Fragment>
   );
 };
-const product = {
-  title: 'Академи хотхон 3 өрөө байр зарна.',
-  date: '2022.09.21 15:53',
-  description: 'Академи 2 хотхонд 3-н өрөө бүрэн тавилгатай орон сууц зарна.',
-  info: [
-    { Утас: '9599-2333' },
-    { '': '' },
-    { Үнэ: '350.0 сая' },
-    { Талбай: '70 м2' },
-    { 'Нэгж талбайн үнэ': '5.0 сая' },
-    { Дүүрэг: 'Хан-Уул' },
-    { Хороо: '4-р хороо' },
-    { Байршид: 'Оргил' },
-    { Хотхон: 'Академи 2' },
-    { 'Ашиглалтад орсон он': '2021' },
-    { 'Барилгын давхар': '25' },
-    { 'Хэдэн давхар': '18' },
-    { Өрөө: '3' },
-    { 'Угаалгын өрөө': '1' },
-    { 'Mac/Унтлгаын өрөө': 'Байхгүй' },
-    { Цонх: 'Вакум' },
-    { 'Цонхны тоо': '4' },
-    { Хаалга: 'Бүргэд' },
-    { Шал: 'Паркет' },
-    { Гараж: 'Байгаа' },
-    { 'Тагтны тоо': '1' },
-    { Бартер: 'Байхгүй' },
-    { 'Төлбөрийн нөхцөл': 'Бэлэн' },
-  ],
-  socials: {
-    facebook: 'https://www.facebook.com/sokobishu',
-  },
-};
-const Product = () => {
+
+const Product = ({ propAds }) => {
   const toast = useToast();
-  const {districts, locations} = useAuth()
+  const { districts, locations } = useAuth();
   const router = useRouter();
   const [data, setData] = useState('');
-  const getData = async () => {
-    try {
-      await fetch(`${urls['test']}/ad/{id}?id=${router.query.slug}`)
-        .then((r) => r.json())
-        .then((d) => {
-          setData(d), console.log(d);
-        });
-    } catch (error) {
-      console.log(error);
+  const [suggestion, setSuggestion] = useState(
+    propAds?.subCategory?.suggessionType[0] ?? 'location'
+  );
+  const [sData, setsData] = useState([]);
+  const libraries = useMemo(() => ['places'], []);
+  const [markerActive, setMarkerActive] = useState(null);
+  const { isLoaded } = useLoadScript({
+    googleMapsApiKey: 'AIzaSyC2u2OzBNo53GxJJdN3Oc_W6Yc42OmdZcE',
+    libraries: libraries,
+  });
+  const token = getCookie('token');
+  const mapOptions = useMemo(
+    () => ({
+      disableDefaultUI: true,
+      // clickableIcons: true,
+      scrollwheel: true,
+    }),
+    []
+  );
+  const mapCenter = useMemo(() => data?.location, [data]);
+  const getSuggestion = async (suggest, sdata) => {
+    if (suggest != 'map') {
+      try {
+        let type, id;
+        switch (suggest) {
+          case 'location':
+            type = sdata?.filters?.filter((d) => d.type == 'district')[0]
+              ?.input;
+            id = 'district';
+            break;
+          case 'usage':
+            type = sdata?.filters?.filter((d) => d.type == 'landUsage')[0]
+              ?.input;
+            id = 'landUsage';
+            break;
+          default:
+            (type = sdata?.filters?.filter((f) => f.type == suggest)[0]?.input),
+              (id = suggest);
+            break;
+        }
+        await axios
+          .get(`${urls['test']}/ad/suggesstion/${id}/${type}/0`)
+          .then((d) => {
+            setsData([]);
+            let ads = d.data?.ads?.filter((da) => da._id != sdata._id);
+            setsData({ ads, limit: sdata.limit - 1 });
+          });
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
+
+  const getData = async () => {
+    setData(propAds);
+    await getSuggestion(suggestion, propAds);
+  };
   useEffect(() => {
-    if (router.query.slug) {
+    if (propAds) {
       getData();
     }
-  }, [router.query]);
+  }, [propAds]);
 
+  const [open, setOpen] = useState(false);
   return (
-    <Box my={5} as="section" id="main__product">
+    <Box m={2} as="section" id="main__product">
       <ScrollTop />
       <MainContainer>
         <Stack direction={'row'} py={2} gap={3}>
           {/* //TODO Filter Box */}
           {/* {data?.subCategory && <FilterLayout data={data.subCategory}/>} */}
 
-          {/* //TODO Filter box end */}
-
           {/* //TODO Main product */}
-          <Box maxWidth={'75%'} flex="0 0 75%" borderRadius="5px">
-            <Box bgColor={'white'} p={10} rounded={10} boxShadow="base">
+          <Box maxWidth={'100%'} flex="0 0 100%" borderRadius="5px">
+            <Box className="p-3 bg-white shadow-md md:p-10 rounded-xl">
               {/*Product */}
               {data.title && (
                 <Heading variant={'mediumHeading'} mb={5}>
                   {data.title}
                 </Heading>
               )}
-              <Grid
-                className="product__content-wrapper"
-                templateColumns="repeat(2,1fr)"
-                gap={10}
-              >
+
+              {/* product image and information */}
+              <div className="grid grid-cols-1 gap-10 md:grid-cols-2 product__content-wrapper">
                 {/*  //TODO LEFT SIDE IMAGES AND DESC */}
 
-                <GridItem className="product__image-wrapper">
+                <div>
                   <Stack
-                    direction={'row'}
-                    justifyContent="space-between"
-                    alignItems={'center'}
-                    mb={2}
+                    className={mergeNames(STYLES.flexBetween, 'flex-row mb-2')}
                   >
-                    <Stack direction={'row'}>
-                      <Text>
-                        Зарын огноо:
-                        {moment(data.createdAt).format('lll')}
+                    <div className="flex flex-col justify-center sm:flex-row">
+                      <Text className="mr-[10px]">
+                        Зарын огноо: {moment(data.createdAt).format('lll')}
                       </Text>
-                      <Text>Зарын дугаар: 1</Text>
-                    </Stack>
+                      <Text>Зарын дугаар: {data.num}</Text>
+                    </div>
+
                     <Text>
                       <IconButton
                         aria-label="Search database"
@@ -203,231 +212,241 @@ const Product = () => {
                         _hover={{
                           color: 'red',
                         }}
-                        size="lg"
-                        onClick={() =>
+                        size={{ base: 'xs', sm: 'md' }}
+                        onClick={async () => {
+                          await axios
+                            .post(
+                              `${urls['test']}/bookmark/ad`,
+                              {
+                                adId: data._id,
+                              },
+                              {
+                                headers: {
+                                  Authorization: `Bearer ${token}`,
+                                },
+                              }
+                            )
+                            .then((d) => console.log(d));
                           toast({
                             title: 'Зар хадгалагдлаа.',
                             status: 'success',
-                            duration: 9000,
+                            duration: 5000,
                             isClosable: true,
-                          })
-                        }
+                          });
+                        }}
                       />
                       {/* Хандалт: lorem */}
                     </Text>
                   </Stack>
+
                   <Box
-                    boxShadow={'xs'}
-                    borderWidth="2px"
-                    rounded={4}
-                    mb="120px"
-                    className="product__image"
+                    className={mergeNames(
+                      'product__image',
+                      'border-2 border-blue-900/20  mb-[120px] shadow-md'
+                    )}
                   >
-                    <AspectRatio ratio={1}>
-                      <ImageGallery items={images} />
-                    </AspectRatio>
+                    {data?.images && (
+                      <AspectRatio ratio={1}>
+                        <ImageGallery
+                          items={data?.images.map((i) => ({
+                            original: i,
+                            thumbnail: i,
+                          }))}
+                        />
+                      </AspectRatio>
+                    )}
                   </Box>
                   <Text mt={5}>{data.description}</Text>
-                </GridItem>
+                </div>
 
                 {/*  //TODO  ENDING LEFT SIDE IMAGES AND DESC */}
 
                 {/*  //TODO  STARTS RIGHT SIDE INFOS */}
 
-                <GridItem>
-                  <Grid templateColumns="repeat(2, 1fr)" gap={3}>
-                    {
-                      
-                        // data?.positions?.location_id  &&
-                        data?.positions?.district_id && districts?.map((d, i) => {
-                          return  d._id == data.positions.district_id ?  (
-                             
-                             <ProductInfo
-                               key={i}
-                               title={'Дүүрэг'}
-                               value={d.name}
-                             />
-                             
-                           
-                           ) : ''
-                         })  }
+                <div className="block w-full">
+                  {data && (
+                    <div className="grid grid-cols-1 gap-1 md:gap-3 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2">
+                      <UserInfo
+                        id={data.user._id}
+                        username={data.user?.username}
+                        phone={data.user?.phone}
+                        avatar={
+                          data.user?.profileImg ??
+                          'https://www.pikpng.com/pngl/m/80-805068_my-profile-icon-blank-profile-picture-circle-clipart.png'
+                        }
+                      />
 
+                      <p className="text-xl font-bold col-span-full">
+                        Ерөнхий мэдээлэл
+                      </p>
 
-                        {
-                          data?.positions?.location_id && locations?.map((l, i) => {
-                            return  l._id == data.positions.location_id ?  (
-                               
-                               <ProductInfo
-                                 key={i}
-                                 title={'Хороолол'}
-                                 value={l.name}
-                               />
-                               
-                             
-                             ) : ''
-                           }) 
-                        } 
-                          
-                         { 
-                        
-                        // <ProductInfo
-                        //       key={data.positions.location_id._id}
-                        //       title={'Хороолол'}
-                        //       value={data.positions.location_id.name}
-                        //     />
-
-                      //   return (
-                      //        <ProductInfo
-                      //             key={i}
-                      //        >
-                      //             <HStack
-                      //                  p={2}
-                      //                  justifyContent="center"
-                      //                  gap={1}
-                      //                  borderColor="bgGrey"
-                      //                  borderWidth={
-                      //                       2
-                      //                  }
-                      //                  borderRadius={
-                      //                       5
-                      //                  }
-                      //             >
-                      //                  {product
-                      //                       .socials
-                      //                       .facebook && (
-                      //                       <Link
-                      //                            target={
-                      //                                 "_blank"
-                      //                            }
-                      //                            href={
-                      //                                 product
-                      //                                      .socials
-                      //                                      .facebook
-                      //                            }
-                      //                       >
-                      //                            <BsFacebook />
-                      //                       </Link>
-                      //                  )}
-                      //                  {product
-                      //                       .socials
-                      //                       .instagram && (
-                      //                       <Link>
-                      //                            <BsInstagram />
-                      //                       </Link>
-                      //                  )}
-                      //             </HStack>
-                      //        </ProductInfo>
-                      //   );
-                    }
-                    {
-                      data?.filters?.map((p, i) => {
-                        if (p.id != null) {
-                          console.log(p)
-                          
+                      {data?.filters?.map((p, i) => {
+                        if (p.type != null) {
                           return (
                             <ProductInfo
                               key={i}
                               title={p.name}
-                              value={p.value}
+                              id={p.type}
+                              value={p.input}
+                              onClick={() => getFilterByItem(p.type, p.input)}
                             />
                           );
                         }
-
-                        //   return (
-                        //        <ProductInfo
-                        //             key={i}
-                        //        >
-                        //             <HStack
-                        //                  p={2}
-                        //                  justifyContent="center"
-                        //                  gap={1}
-                        //                  borderColor="bgGrey"
-                        //                  borderWidth={
-                        //                       2
-                        //                  }
-                        //                  borderRadius={
-                        //                       5
-                        //                  }
-                        //             >
-                        //                  {product
-                        //                       .socials
-                        //                       .facebook && (
-                        //                       <Link
-                        //                            target={
-                        //                                 "_blank"
-                        //                            }
-                        //                            href={
-                        //                                 product
-                        //                                      .socials
-                        //                                      .facebook
-                        //                            }
-                        //                       >
-                        //                            <BsFacebook />
-                        //                       </Link>
-                        //                  )}
-                        //                  {product
-                        //                       .socials
-                        //                       .instagram && (
-                        //                       <Link>
-                        //                            <BsInstagram />
-                        //                       </Link>
-                        //                  )}
-                        //             </HStack>
-                        //        </ProductInfo>
-                        //   );
                       })}
-                  </Grid>
-                </GridItem>
-                {/*  //TODO  ENDING RIGHT SIDE INFOS */}
-              </Grid>
+                    </div>
+                  )}
+                </div>
+              </div>
+              {/*  //TODO  ENDING RIGHT SIDE INFOS */}
             </Box>
 
             <Box>
               {/* <Estimator /> */}
-              <ECalculator />
+              {data && (
+                <ECalculator
+                  data={data?.filters?.filter((f) => f.id === 'price')}
+                />
+              )}
             </Box>
           </Box>
         </Stack>
       </MainContainer>
-      <MainContainer py={'50px'}>
-        <Stack
-          direction={'row'}
-          display={'flex'}
-          justifyContent={'space-between'}
-        >
-          <Heading variant="smallHeader" mb={5}>
-            Санал болгох зарууд
-          </Heading>
-          <Box>
-            <Select
-              placeholder="Өрөөгөөр"
-              variant="outline"
-              borderWidth="2px"
-              color={'mainBlossom'}
+      {sData?.ads?.length > 0 && (
+        <MainContainer py={'50px'}>
+          <div className={mergeNames(STYLES.flexBetween, 'flex-row')}>
+            <h1
+              variant={'mediumHeading'}
+              className="text-sm font-bold uppercase md:text-lg"
             >
-              <option value="option1">Байршлаар</option>
-            </Select>
-          </Box>
-        </Stack>
+              Санал болгох зарууд
+            </h1>
+            <Box>
+              <Select
+                className="h-[30px] text-sm border-2 pr-3 border-blue-700 rounded-full"
+                onChange={async (e) => {
+                  setSuggestion(e.target.value, data);
+                  {
+                    suggestion != 'map'
+                      ? getSuggestion(e.target.value, data)
+                      : console.log(data);
+                  }
+                }}
+              >
+                {data?.subCategory?.suggessionType?.map((sug, i) => {
+                  switch (sug) {
+                    case 'location':
+                      return i !=
+                        data?.subCategory?.suggessionType?.length - 1 ? (
+                        <option value="location" key={i}>
+                          Байршлаар
+                        </option>
+                      ) : (
+                        <Fragment key={i}>
+                          <option value="location">Байршлаар</option>
 
-        <Grid
-          direction={'row'}
-          templateColumns="repeat(auto-fill, minmax(230px, 1fr))"
-          rowGap={5}
-          gap="5"
-          width="100%"
-          justifyContent={'center'}
-        >
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-        </Grid>
-      </MainContainer>
+                          <option value={'map'}>Газрын зургаар</option>
+                        </Fragment>
+                      );
+                    case 'usage':
+                      return i !=
+                        data?.subCategory?.suggessionType?.length - 1 ? (
+                        <option value="usage" key={i}>
+                          Зориулалтаар
+                        </option>
+                      ) : (
+                        <Fragment key={i}>
+                          <option value="usage">Зориулалтаар</option>
+
+                          <option value={'map'}>Газрын зургаар</option>
+                        </Fragment>
+                      );
+                    case 'room':
+                      return i !=
+                        data?.subCategory?.suggessionType?.length - 1 ? (
+                        <option value="room" key={i}>
+                          Өрөөгөөр
+                        </option>
+                      ) : (
+                        (
+                          <Fragment key={i}>
+                            <option value="room">Өрөөгөөр</option>
+
+                            <option value={'map'}>Газрын зургаар</option>
+                          </Fragment>
+                        ) + 1
+                      );
+                  }
+                })}
+              </Select>
+            </Box>
+          </div>
+          {suggestion == 'map' ? (
+            <GoogleMap
+              options={mapOptions}
+              onClick={(e) => {
+                // setMap(e.latLng.toJSON());
+                console.log(e.latLng.toJSON());
+              }}
+              zoom={14}
+              center={mapCenter}
+              mapTypeId={google.maps.MapTypeId.ROADMAP}
+              mapContainerStyle={{ width: '100%', height: '50vh' }}
+            >
+              {isLoaded &&
+                sData?.map((m, i) => {
+                  return (
+                    <HStack key={i}>
+                      <MarkerF
+                        position={{
+                          lat: parseFloat(m.location?.lat ?? 47.74604),
+                          lng: parseFloat(m.location?.lng ?? 107.341515),
+                        }}
+                        // onMouseOver={() => setMarkerActive(i)}
+                        onClick={() => setMarkerActive(i)}
+                        animation={google.maps.Animation.DROP}
+                      >
+                        <InfoWindow
+                          position={{
+                            lat: parseFloat(m.location?.lat ?? 47.74604),
+                            lng: parseFloat(m.location?.lng ?? 107.341515),
+                          }} // onLoad={(info) => console.log(info)}
+                        >
+                          {/* end zasna */}
+                          {/* <Image
+                          src="/images/logo/404.pmg"
+                          alt="map image"
+                          className="w-full h-[100px]"
+                        /> */}
+                          <button
+                            onClick={() => router.push(`/product/${m.num}`)}
+                          >
+                            <div>{m.title}</div>
+                          </button>
+                        </InfoWindow>
+                      </MarkerF>
+                    </HStack>
+                  );
+                })}
+            </GoogleMap>
+          ) : (
+            <AdContent data={sData} />
+          )}
+        </MainContainer>
+      )}
     </Box>
   );
 };
 
 export default Product;
+
+export async function getServerSideProps(ctx) {
+  const { params } = ctx;
+  const { slug } = params;
+  const res = await fetch(`${urls['test']}/ad/id/${slug}`);
+  const ads = await res.json();
+  return {
+    props: {
+      propAds: ads,
+    },
+  };
+}

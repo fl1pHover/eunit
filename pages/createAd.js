@@ -1,517 +1,329 @@
-import {
-  Box,
-  Button,
-  Center,
-  Code,
-  Divider,
-  FormControl,
-  FormLabel,
-  Grid,
-  GridItem,
-  Heading,
-  HStack,
-  IconButton,
-  Input,
-  Select,
-  Text,
-  VStack,
-} from '@chakra-ui/react';
+import { useToast } from '@chakra-ui/react';
 import axios from 'axios';
-import { useAuth } from 'context/auth';
-import Cookies from 'js-cookie';
-import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
-import { MdDeleteForever } from 'react-icons/md';
-import urls from '../constants/api';
-import { AdTypes } from '../constants/enums';
+import React, { useMemo, useState } from 'react';
 
-import MainContainer from '../layout/mainContainer';
+import { useAuth } from 'context/auth';
 
-import { BomArea, BomSelect } from '../util/BomInput';
+import Step1 from '@/components/createAd/step1';
+import Step4 from '@/components/createAd/step4';
 
-export default function CreateAd() {
-  const { user, categories, districts, locations, token } = useAuth();
+import StepButtons from '@/components/createAd/stepButtons';
+import StepProgress from '@/components/createAd/stepProgress';
+import FormTitle from '@/components/createAd/title';
+import { ContainerX } from '@/lib/Container';
+
+import Step3 from '@/components/createAd/step3';
+import urls from '@/constants/api';
+import { GoogleMap, MarkerF, useLoadScript } from '@react-google-maps/api';
+import { getCookie } from 'cookies-next';
+export default function CreateAd({ categories }) {
+  const toast = useToast();
+  const { user } = useAuth(); // TODOs: user: 403 BAD REQUEST
+
   const router = useRouter();
-  const [select, setSelect] = useState({
-    category: '',
-    subCategory: '',
+  // // if (!user) router.push("/login");
+
+  const [step, setStep] = useState(-1);
+  const passcategory = useMemo(() => categories, [categories]);
+
+  //  STEP 1 DATA => HURUHNGIIN TURUL, DED TURUL, ZARIIN TURUL, ZARAH TURUL
+  const [types, setTypes] = useState({
+    categoryId: false,
+    categoryName: false,
+    subCategoryId: false,
+    sellType: false,
+    adType: false,
   });
-  const [selectStatic, setSelectStatic] = useState({
-    title: '',
-    description: '',
-    position: '',
-  });
-  const [subCategory, setSubCategory] = useState();
+
+  const [map, setMap] = useState();
+  const [selectedParent, setSelectedParent] = useState([]);
+  // FILTER INFORMATION - FOR WHICH DATA TO DISPLAY
   const [filters, setFilters] = useState([]);
-  const [adType, setAdType] = useState(AdTypes.sell);
-  const [selectedImages, setSelectedImages] = useState([]);
+  const [subCategory, setSubCategory] = useState([]);
+  // STEP3 IIN DATA - PRICE, AREA, UNITPRICE, TITLE, DESC, IMAGE
+  const [generalData, setGeneralData] = useState({
+    price: false,
+    area: false,
+    unitPrice: false,
+    title: false,
+    desc: false,
+    imgSelected: false,
+    images: [],
+    phone: parseInt(user?.phone ?? 0),
+  });
+  // STEP 3IIN RAW IMAGE FILES
   const [images, setImages] = useState([]);
   const [imageUrl, setImageUrl] = useState([]);
-  const [positions, setPositions] = useState({
-    district_id: '',
-    committee_id: '',
-    location_id: '',
-    town_id: '',
-  });
-  const uploadImage = async () => {
-    images.map(async (i) => {
-      const formData = new FormData();
-      formData.append('file', i);
-      formData.append('upload_preset', 'lubtonkg');
 
-      await axios
-        .post('http://api.cloudinary.com/v1_1/dosvc4rce/image/upload', formData)
-        .then((res) => {
-          setImageUrl((imageUrl) => [...imageUrl, res.data['secure_url']]);
-        });
-    });
-    await createAd(false);
-  };
-  const createAd = async (upload) => {
-    if (upload) {
-      await uploadImage();
-    } else {
+  // THIS EFFECT IS FOR FETCHING FILTER DATA FOR STEP2,STEP3,STEP4
+  React.useEffect(() => {
+    if (types.categoryName && types.subCategoryId) {
       try {
-        if (subCategory?.subCategory?._id && imageUrl.length > 0) {
-          let token = Cookies.get('token');
-          console.log(subCategory);
-          axios
-            .post(
-              `${urls['test']}/ad`,
-              {
-                title: selectStatic.title,
-                description: selectStatic.description,
-                location: selectStatic.position,
-                positions: positions,
-                images: imageUrl,
-                types: [adType],
-                filters: filters,
-                subCategory: subCategory.subCategory._id,
-                category: categories[select.category]._id,
-              },
-              {
-                headers: { Authorization: `Bearer ${token}` },
-              }
-            )
-            .then((d) => {
-              setSelectStatic(
-                (s) => ({ ...s, description: '', position: '', title: '' }),
-                setPositions((positions) => ({
-                  ...positions,
-                  committee_id: '',
-                  district_id: '',
-                  location_id: '',
-                  town_id: '',
-                })),
-                setAdType(AdTypes.sell),
-                setImageUrl([]),
-                setSelect((select) => ({
-                  ...select,
-                  category: '',
-                  subCategory: '',
-                }))
-              );
-            });
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  };
-  const capitalizeFirst = (str) => {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  };
-  const setFilter = (id, e) => {
-    e.preventDefault();
-
-    filters.map((f) => {
-      if (f.id == id) {
-        f.value = e.target.value;
-      }
-    });
-  };
-
-  useEffect(() => {
-    if (select.subCategory && select.category) {
-      try {
-        categories[select.category].subCategory.filter((f) => {
-          if (f.name == select.subCategory) {
+        passcategory[types.categoryId].subCategory.filter((item) => {
+          if (item.href == types.subCategoryId) {
             axios
-              .get(`${urls['test']}/category/filters/{id}/true?id=${f._id}`)
-              .then((d) => {
-                setSubCategory(d.data);
-                setFilters(d.data?.filters);
+              .get(`${urls['test']}/category/filters/${item._id}/false`)
+              .then((res) => {
+                setSubCategory(res.data);
               });
           }
         });
       } catch (e) {
         console.log(e);
       }
+    } else {
     }
-  }, [select]);
-
-  // image preview
-
-  const onSelectFile = (event) => {
-    const selectedFiles = event.target.files;
-    const selectedFilesArray = Array.from(selectedFiles);
-
-    const imagesArray = selectedFilesArray.map((file) => {
-      return URL.createObjectURL(file);
-    });
-
-    setSelectedImages((previousImages) => previousImages.concat(imagesArray));
-    setImages((images) => [...images, selectedFiles[0]]);
-    // FOR BUG IN CHROME
-    event.target.value = '';
+  }, [passcategory, types.categoryId, types.subCategoryId, types.categoryName]);
+  const [isLoading, setIsLoading] = useState(false);
+  // checking validation of steps in here
+  const handleNextStep = () => {
+    if (step === -1)
+      return checkConditionOnNextStep(
+        types.adType != '' &&
+          types.categoryName != '' &&
+          types.sellType != '' &&
+          types.subCategoryId != ''
+      );
+    if (step == 0)
+      return checkConditionOnNextStep(
+        subCategory.steps[0].values.find((s) => s.input == '')
+      );
+    if (step === 1)
+      return checkConditionOnNextStep(
+        generalData.price &&
+          generalData.area &&
+          generalData.unitPrice &&
+          generalData.title &&
+          generalData.desc
+      );
+    // if (step === 2) return <CustomModal />;
+    if (step === 2) return validateStep4();
   };
 
-  function deleteHandler(image) {
-    setSelectedImages(selectedImages.filter((e) => e !== image));
-    URL.revokeObjectURL(image);
+  const checkConditionOnNextStep = (booleanValue) => {
+    return booleanValue === undefined || booleanValue === '' || booleanValue
+      ? setStep((prev) => prev + 1)
+      : toast({
+          title: 'Та бүх талбарыг бөглөнө үү.',
+          status: 'error',
+          duration: 1000,
+          isClosable: true,
+        });
+  };
+
+  const sendAd = async () => {
+    const token = getCookie('token');
+    const f = new FormData();
+    const selectedFilters = subCategory.steps[0].values;
+    selectedFilters.splice(0, 0, {
+      type: 'phone',
+      input: generalData.phone,
+      name: 'Утасны дугаар',
+    });
+    selectedFilters.splice(1, 0, {
+      type: 'sellType',
+      input: types.sellType,
+      name: 'Борлуулах төрөл',
+    });
+    selectedFilters.splice(2, 0, {
+      type: 'price',
+      input: generalData.price,
+      name: 'Үнэ',
+    });
+    selectedFilters.splice(3, 0, {
+      type: 'area',
+      input: generalData.area,
+      name: 'Талбай',
+    });
+    selectedFilters.splice(4, 0, {
+      type: 'unitPrice',
+      input: generalData.unitPrice,
+      name: 'Нэгж талбайн үнэ',
+    });
+    let finalFilters = selectedFilters.concat(subCategory.steps[2].values);
+    let copiedFilters = JSON.parse(JSON.stringify(finalFilters));
+    copiedFilters.map((f) => (f.value = []));
+    f.append('title', generalData.title);
+    f.append('description', generalData.desc);
+    subCategory.steps[1].values = selectedFilters;
+    f.append('location', JSON.stringify(map));
+    f.append('types', types.sellType);
+    f.append('adTypes', types.adType);
+    f.append('subCategory', subCategory._id);
+    f.append('category', categories[types.categoryId]._id);
+    f.append('filters', JSON.stringify(copiedFilters));
+    images?.map((prev) => {
+      f.append('images', prev);
+    });
+    let ad;
+    try {
+      ad = await axios
+        .post(`${urls['test']}/ad`, f, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Access-Control-Allow-Headers': '*',
+          },
+        })
+        .then((d) => {
+          toast({
+            title: 'Амжилттай нэмэгдлээ.',
+            status: 'success',
+            duration: 1000,
+            isClosable: true,
+          });
+          router.reload();
+          // router.push('/');
+        });
+    } catch (error) {
+      setIsLoading(false);
+    }
+  };
+  const validateStep4 = async () => {
+    setIsLoading(true);
+    // filter hooson esehiig shalgah
+    let emptyAd = subCategory.steps[2].values.find((f) => f.input == '');
+    if (emptyAd === undefined) {
+      await sendAd();
+    }
+    setIsLoading(false);
+  };
+
+  const handlePrevStep = () => {
+    setStep((prev) => {
+      return prev > -1 ? prev - 1 : prev;
+    });
+  };
+  const libraries = useMemo(() => ['places'], []);
+
+  const [markerActive, setMarkerActive] = useState(null);
+
+  const { isLoaded } = useLoadScript({
+    googleMapsApiKey: 'AIzaSyC2u2OzBNo53GxJJdN3Oc_W6Yc42OmdZcE',
+    libraries: libraries,
+  });
+  const mapOptions = useMemo(
+    () => ({
+      disableDefaultUI: true,
+      // clickableIcons: true,
+      scrollwheel: true,
+    }),
+    []
+  );
+  const mapCenter = useMemo(
+    () => ({
+      lat: 47.9186367,
+      lng: 106.9164856,
+    }),
+    []
+  );
+  if (!isLoaded) {
+    return <p>Loading...</p>;
   }
+  return (
+    <div className="min-h-[80vh] py-10">
+      <ContainerX>
+        <StepProgress
+          activeStep={step}
+          handleClick={(stepId) => setStep(stepId)}
+          hasFourStep={types?.categoryName === 'realState'}
+        />
+        {
+          // STEP1 TYPES: CATEGORY, SUBCATEGORY, ADTYPE, SELLTYPE
+          step === -1 && (
+            <Step1 {...{ types, setTypes }} categories={passcategory} />
+          )
+        }
 
-  if (user) {
-    return (
-      <Box
-        as="section"
-        px={{ base: 2, sm: 5 }}
-        my={{ base: 10, md: '50px' }}
-        id="add__ad"
-      >
-        <MainContainer>
-          <Box bgColor={'white'} px={{ base: 2, sm: 10 }} py={5} rounded={10}>
-            <Center>
-              <Heading variant={'bigHeading'}>Зар оруулах хэсэг</Heading>
-            </Center>
-            <Code mt={10} textAlign="center">
-              Зар оруулах дараагийн хэсэг дараах сонголтыг сонгосны дараа гарч
-              ирнэ.
-            </Code>
-            <Box
-              display={'grid'}
-              gridTemplateColumns={{
-                base: 'repeat(1,1fr)',
-                md: 'repeat(3,1fr)',
-              }}
-              gap={{ base: 5, md: 10 }}
-              mt={4}
-            >
-              <HStack>
-                <Text width={'100%'}>Зарах хөрөнгийн төрөл</Text>
-                <BomSelect
-                  onChange={(e) =>
-                    setSelect((select) => ({
-                      ...select,
-                      category: e.target.value,
-                    }))
-                  }
-                  placeholder="Сонгох"
-                  value={select.category}
-                >
-                  {categories?.map((c, i) => {
-                    return (
-                      <option value={i} key={i}>
-                        {capitalizeFirst(c.name)}
-                      </option>
-                    );
-                  })}
-                </BomSelect>
-              </HStack>
-              {categories[select.category]?.subCategory && (
-                <HStack>
-                  <Text width={'100%'}>Дэд төрөл</Text>
-                  <BomSelect
-                    onChange={(e) =>
-                      setSelect((select) => ({
-                        ...select,
-                        subCategory: e.target.value,
-                      }))
-                    }
-                    placeholder="Сонгох"
-                    value={select.subCategory}
-                  >
-                    {categories[select.category]?.subCategory?.map((t, i) => {
-                      return (
-                        <option value={t.name} key={i}>
-                          {capitalizeFirst(t.name)}
-                        </option>
-                      );
-                    })}
-                  </BomSelect>
-                </HStack>
-              )}
-              {select.subCategory && (
-                <HStack>
-                  <Text width={'100%'}>Борлуулах төрөл</Text>
-                  <BomSelect
-                    onChange={(e) => setAdType(e.target.value)}
-                    value={adType}
-                  >
-                    {Object.keys(AdTypes).map((type, key) => {
-                      return (
-                        <option key={key} value={AdTypes[type].id}>
-                          {AdTypes[type].name}
-                        </option>
-                      );
-                    })}
-                  </BomSelect>
-                </HStack>
-              )}
-            </Box>
-            <Grid
-              templateColumns={{ base: 'repeat(1,1fr)', md: 'repeat(3,1fr)' }}
-              gap={5}
-              mt={10}
-            >
-              {select.type != '' && subCategory?.filters && (
-                <>
-                  <BomSelect
-                    placeholder={'Дүүрэг'}
-                    onChange={(e) =>
-                      setPositions((positions) => ({
-                        ...positions,
-                        district_id: e.target.value,
-                      }))
-                    }
-                  >
-                    {districts?.map((d, ind) => {
-                      return (
-                        <option value={d._id} key={ind}>
-                          {capitalizeFirst(d.name)}
-                        </option>
-                      );
-                    })}
-                  </BomSelect>
+        {subCategory?.steps?.map((filter, index) => {
+          if (step == index) {
+            if (index == 0)
+              //STEP2: LOCATIONS - DISTRICT, LOCATION, COMMITTEE, TOWN
 
-                  <BomSelect
-                    placeholder={'Байршил'}
-                    onChange={(e) =>
-                      setPositions((positions) => ({
-                        ...positions,
-                        location_id: e.target.value,
-                      }))
-                    }
-                  >
-                    {locations?.map((d, ind) => {
-                      if (positions?.district_id == d.district_id) {
-                        return (
-                          <option value={d._id} key={ind}>
-                            {capitalizeFirst(d.name)}
-                          </option>
-                        );
-                      }
-                    })}
-                  </BomSelect>
-
-                  <FormControl variant="floating" isRequired>
-                    <Input
-                      onChange={(e) =>
-                        setPositions((positions) => ({
-                          ...positions,
-                          committee_id: e.target.value,
-                        }))
-                      }
-                      // placeholder={capitalizeFirst('Хороо')}
-                      placeholder={capitalizeFirst(' ')}
-                    />
-                    <FormLabel>Хороо</FormLabel>
-                  </FormControl>
-
-                  <FormControl variant="floating" isRequired>
-                    <Input
-                      onChange={(e) =>
-                        setPositions((positions) => ({
-                          ...positions,
-                          town_id: e.target.value,
-                        }))
-                      }
-                      // placeholder={capitalizeFirst('Хороо')}
-                      placeholder={capitalizeFirst(' ')}
-                    />
-                    <FormLabel>Хотхон</FormLabel>
-                  </FormControl>
-
-                  {subCategory.filters.map((f, i) => {
-                    return f.values.length == 0 ? (
-                      <Input
-                        key={i}
-                        onChange={(e) => setFilter(f.id, e)}
-                        placeholder={capitalizeFirst(f.name)}
-                      ></Input>
-                    ) : (
-                      <GridItem key={i}>
-                        <Select
-                          size="sm"
-                          placeholder={f.name}
-                          onChange={(e) => setFilter(f.id, e)}
-                        >
-                          {f.values?.map((d, ind) => {
-                            return (
-                              <option value={d} key={ind}>
-                                {capitalizeFirst(d)}
-                              </option>
-                            );
-                          })}
-                        </Select>
-                      </GridItem>
-                    );
-                  })}
-
-                  {/* <FormControl variant="floating" isRequired>
-                    <Input
-                      placeholder={' '}
-                      value={selectStatic.position}
-                      onChange={(e) =>
-                        setSelectStatic((selectStatic) => ({
-                          ...selectStatic,
-                          position: e.target.value,
-                        }))
-                      }
-                    />
-                    <FormLabel>Хаяг</FormLabel>
-                  </FormControl> */}
-
-                  <BomArea
-                    placeholder="Гарчиг"
-                    onChange={(e) =>
-                      setSelectStatic((selectStatic) => ({
-                        ...selectStatic,
-                        title: e.target.value,
-                      }))
-                    }
-                    value={selectStatic.title}
+              return (
+                <div key={index}>
+                  <Step4
+                    filter={filter}
+                    selectedParent={selectedParent}
+                    setSelectedParent={setSelectedParent}
                   />
-                  <BomArea
-                    placeholder="Дэлгэрэнгүй"
-                    value={selectStatic.description}
-                    onChange={(e) =>
-                      setSelectStatic((selectStatic) => ({
-                        ...selectStatic,
-                        description: e.target.value,
-                      }))
-                    }
-                  />
-
-                  {/* //Todo Thumbnail Photo */}
-
-                  <GridItem colStart={1} colEnd={2}>
-                    <Code>
-                      Таны оруулсан эхний зураг зарны нүүр зураг болж харагдахыг
-                      анхаарна уу
-                    </Code>
-                  </GridItem>
-
-                  {/* //Todo: All Photo */}
-
-                  <GridItem
-                    colStart={{ base: 1, md: 2 }}
-                    colEnd={{ base: 2, md: 4 }}
-                  >
-                    <VStack
-                      rounded={10}
-                      minH="100px"
-                      border={'1px dashed grey'}
-                      overflow="hidden"
+                  {isLoaded && (
+                    <GoogleMap
+                      className="aspect-video"
+                      options={mapOptions}
+                      onClick={(e) => {
+                        setMap(e.latLng.toJSON());
+                      }}
+                      zoom={14}
+                      center={mapCenter}
+                      mapTypeId={google.maps.MapTypeId.ROADMAP}
+                      mapContainerStyle={{ width: '100%', height: '40vh' }}
                     >
-                      <Box
-                        width="100%"
-                        position={'relative'}
-                        bgColor={'bgGrey'}
-                        _hover={{
-                          Button: {
-                            bgColor: 'mainBlossom',
-                          },
-                        }}
-                        textAlign="center"
-                    >
-                        <Input
-                          type={'file'}
-                          position="absolute"
-                          height="100%"
-                          width={'100%'}
-                          left="0"
-                          accept="image/png, image/jpg, image/jpeg"
-                          borderStyle={'dashed'}
-                          multiple
-                          opacity="0"
-                          cursor="pointer"
-                          zIndex="10"
-                          onChange={(e) => onSelectFile(e)}
-                        />
+                      <MarkerF
+                        position={map}
+                        onClick={() => {}}
+                        animation={google.maps.Animation.DROP}
+                      />
+                    </GoogleMap>
+                  )}
+                </div>
+              );
+            if (index == 1)
+              return (
+                <Step3
+                  key={index}
+                  filter={filter}
+                  images={images}
+                  setImages={setImages}
+                  generalData={generalData}
+                  setGeneralData={setGeneralData}
+                />
+              );
 
-                        <Text my={3}>
-                          Оруулж буй зарынхаа зурагнуудаа оруулна уу
-                        </Text>
-                      </Box>
-                      <HStack
-                        flexWrap={'wrap'}
-                        gap={{ base: 1, md: 3 }}
-                        justifyContent={'center'}
-                      >
-                        {selectedImages?.map((image, index) => {
-                          return (
-                            <Box
-                              position="relative"
-                              key={index}
-                              width={{
-                                base: '50px',
-                                md: '75px',
-                                lg: '100px',
-                              }}
-                              height={{
-                                base: '50px',
-                                md: '75px',
-                                lg: '100px',
-                              }}
-                              p={1}
-                              border="2px solid"
-                              borderColor={'bgGrey'}
-                            >
-                              <Image
-                                src={image}
-                                height="100%"
-                                width="100%"
-                                alt="upload"
-                                objectFit="cover"
-                              />
-                              <IconButton
-                                position="absolute"
-                                top="-5px"
-                                right="-5px"
-                                colorScheme="red"
-                                size="xs"
-                                icon={<MdDeleteForever />}
-                                p={2}
-                                onClick={() => deleteHandler(image)}
-                              />
-                            </Box>
-                          );
-                        })}
-                      </HStack>
-                    </VStack>
-                  </GridItem>
+            if (index == 2)
+              return (
+                <div key={index}>
+                  <FormTitle>Дэлгэрэнгүй мэдээлэл</FormTitle>
+                  <div className="bg-white min-h-[40vh] rounded-xl py-10 md:px-10 px-2">
+                    <Step4
+                      filter={filter}
+                      selectedParent={selectedParent}
+                      setSelectedParent={setSelectedParent}
+                    />
+                  </div>
+                </div>
+              );
+          }
+        })}
 
-                  <GridItem colStart={1} colEnd={{ base: 2, md: 4 }}>
-                    <Divider my={1} />
-                  </GridItem>
+        <StepButtons
+          onNext={handleNextStep}
+          onPrev={handlePrevStep}
+          data={selectedParent}
+          generalData={generalData}
+          loading={isLoading}
+          txt={step == 2 ? 'Илгээх' : 'Дараах'}
+          step={step}
+          // onClick={() => step == 2 && <CustomModal />}
+        />
+      </ContainerX>
+    </div>
+  );
+  // router.push("/login");
+}
+export async function getServerSideProps({ req, res }) {
+  const response = await fetch(`${urls['test']}/category`);
+  const categories = await response.json();
+  const token = getCookie('token', { req, res });
 
-                  <GridItem colStart={1} colEnd={{ base: 2, md: 4 }}>
-                    <Center>
-                      <Button width="250px" onClick={() => createAd(true)}>
-                        Илгээх
-                      </Button>
-                    </Center>
-                  </GridItem>
-                </>
-              )}
-            </Grid>
-          </Box>
-        </MainContainer>
-      </Box>
-    );
-  } else {
-    return;
-  }
+  if (!token)
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  return {
+    props: { categories },
+  };
 }
