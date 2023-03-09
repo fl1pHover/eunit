@@ -37,6 +37,7 @@ export default function CreateAd({ categories }) {
   });
 
   const [map, setMap] = useState();
+  const [selectedParent, setSelectedParent] = useState([]);
   // FILTER INFORMATION - FOR WHICH DATA TO DISPLAY
   const [filters, setFilters] = useState([]);
   const [subCategory, setSubCategory] = useState([]);
@@ -174,7 +175,6 @@ export default function CreateAd({ categories }) {
           router.reload();
           // router.push('/');
         });
-      console.log(ad);
     } catch (error) {
       setIsLoading(false);
     }
@@ -186,7 +186,6 @@ export default function CreateAd({ categories }) {
     if (emptyAd === undefined) {
       await sendAd();
     }
-    console.log(emptyAd);
     setIsLoading(false);
   };
 
@@ -243,7 +242,11 @@ export default function CreateAd({ categories }) {
 
               return (
                 <div key={index}>
-                  <Step4 filter={filter} />
+                  <Step4
+                    filter={filter}
+                    selectedParent={selectedParent}
+                    setSelectedParent={setSelectedParent}
+                  />
                   {isLoaded && (
                     <GoogleMap
                       className="aspect-video"
@@ -282,7 +285,11 @@ export default function CreateAd({ categories }) {
                 <div key={index}>
                   <FormTitle>Дэлгэрэнгүй мэдээлэл</FormTitle>
                   <div className="bg-white min-h-[40vh] rounded-xl py-10 md:px-10 px-2">
-                    <Step4 filter={filter} />
+                    <Step4
+                      filter={filter}
+                      selectedParent={selectedParent}
+                      setSelectedParent={setSelectedParent}
+                    />
                   </div>
                 </div>
               );
@@ -292,7 +299,7 @@ export default function CreateAd({ categories }) {
         <StepButtons
           onNext={handleNextStep}
           onPrev={handlePrevStep}
-          data={subCategory.steps}
+          data={selectedParent}
           generalData={generalData}
           loading={isLoading}
           txt={step == 2 ? 'Илгээх' : 'Дараах'}

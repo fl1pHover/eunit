@@ -1,17 +1,13 @@
 import React from 'react';
 import { BiArea, BiDoorOpen } from 'react-icons/bi';
 
-import { FiCamera } from 'react-icons/fi';
+import { FiCamera, FiDelete } from 'react-icons/fi';
 import { IoBedOutline } from 'react-icons/io5';
 import { TbBath } from 'react-icons/tb';
 
 import mergeNames from '@/util/mergeNames';
-<<<<<<< HEAD
 import { Skeleton } from '@chakra-ui/react';
 import Image from 'next/image';
-=======
-
->>>>>>> e79836650fbce11193457ba57c2093e3c5749a87
 import { useRouter } from 'next/router';
 import AdCardButton from './adCardButton';
 
@@ -19,7 +15,7 @@ import AdCardButton from './adCardButton';
 //   return `${src}?w=${width}&q=${quality || 75}`;
 // };
 
-function Card({ item }) {
+function Card({ item, deleteFunc = () => {}, isDelete = false }) {
   const router = useRouter();
 
   return (
@@ -60,7 +56,6 @@ function Card({ item }) {
         <div className="relative z-0 flex w-full h-full px-3 py-2">
           <div className="absolute top-0 left-0 z-10 flex items-start justify-between flex-1 w-full p-2">
             <div className="px-2 py-1 rounded-md bg-mainBlossom w-fit">
-<<<<<<< HEAD
               <p className="h-4 text-sm font-semibold text-white md:h-6">
                 <Image
                   src="/images/logo/bom-white.png"
@@ -72,23 +67,23 @@ function Card({ item }) {
                   // layout="fill"
                 />
               </p>
-=======
-              <Image
-                src="/images/logo/bom-white.png"
-                alt="BOM logo"
-                layout="fill"
-                objectFit="contain "
-                className="w-full h-4 md:h-6"
-              />
->>>>>>> e79836650fbce11193457ba57c2093e3c5749a87
             </div>
 
-            <button
-              className="flex items-center justify-center w-6 h-6 bg-gray-600 rounded-full md:w-8 md:h-8"
-              onClick={() => console.log('asdf')}
-            >
-              <FiCamera size={16} className="text-white" />
-            </button>
+            {isDelete ? (
+              <button
+                className="flex items-center justify-center w-6 h-6 bg-gray-600 rounded-full md:w-8 md:h-8"
+                onClick={deleteFunc}
+              >
+                <FiDelete size={16} className="text-white" />
+              </button>
+            ) : (
+              <button
+                className="flex items-center justify-center w-6 h-6 bg-gray-600 rounded-full md:w-8 md:h-8"
+                onClick={() => console.log('asdf')}
+              >
+                <FiCamera size={16} className="text-white" />
+              </button>
+            )}
           </div>
         </div>
 

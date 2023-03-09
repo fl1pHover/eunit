@@ -16,13 +16,13 @@ import { useState } from 'react';
 import ButtonSelectItem from '../formButtonSelectItem';
 import FormLabel from '../formLabel';
 
-const Step3 = ({ filter }) => {
+const Step3 = ({ filter, selectedParent, setSelectedParent }) => {
   const [usedYear, setUsedYear] = useState(false);
   const [selected, setSelected] = useState({
     bathroom: '',
     masterRoom: '',
   });
-  const [selectedParent, setSelectedParent] = useState([]);
+
   // const [filters, setFilters] = useState(filter)
 
   return (
@@ -194,6 +194,8 @@ const Step3 = ({ filter }) => {
                           selectedArr[isNull] = {
                             id,
                             parent: f.type,
+                            name: f.name,
+                            input: data,
                             index: i,
                           };
                           setSelectedParent(selectedArr);
@@ -204,6 +206,8 @@ const Step3 = ({ filter }) => {
                               id: id,
                               parent: f.type,
                               index: i,
+                              input: data,
+                              name: f.name,
                             },
                           ]);
                         }
@@ -248,6 +252,8 @@ const Step3 = ({ filter }) => {
                             id,
                             parent: f.type,
                             index: i,
+                            input: data,
+                            name: f.name,
                           };
                           setSelectedParent(selectedArr);
                         } else {
@@ -257,6 +263,8 @@ const Step3 = ({ filter }) => {
                               id: id,
                               parent: f.type,
                               index: i,
+                              input: data,
+                              name: f.name,
                             },
                           ]);
                         }
@@ -307,6 +315,8 @@ const Step3 = ({ filter }) => {
                             id,
                             parent: f.type,
                             index: i,
+                            input: data,
+                            name: f.name,
                           };
                           setSelectedParent(selectedArr);
                         } else {
@@ -316,6 +326,8 @@ const Step3 = ({ filter }) => {
                               id: id,
                               parent: f.type,
                               index: i,
+                              input: data,
+                              name: f.name,
                             },
                           ]);
                         }
@@ -334,7 +346,38 @@ const Step3 = ({ filter }) => {
               ) != undefined && (
                 <>
                   <Box h={4} />
-                  <Input onChange={(e) => (f.input = e.target.value)} />
+                  <Input
+                    onChange={(e) => {
+                      f.input = e.target.value;
+                      let isNull = selectedParent.findIndex(
+                        (s) => s.parent == f.type
+                      );
+
+                      if (isNull > -1) {
+                        let selectedArr = [...selectedParent];
+
+                        selectedArr[isNull] = {
+                          id: 'other',
+                          parent: f.type,
+                          index: 0,
+                          input: e.target.value,
+                          name: f.name,
+                        };
+                        setSelectedParent(selectedArr);
+                      } else {
+                        setSelectedParent([
+                          ...selectedParent,
+                          {
+                            id: 'other',
+                            parent: f.type,
+                            index: 0,
+                            input: e.target.value,
+                            name: f.name,
+                          },
+                        ]);
+                      }
+                    }}
+                  />
                 </>
               )}
             </ItemContainer>
@@ -379,10 +422,34 @@ const Step3 = ({ filter }) => {
                       {...props}
                       onClick={() => {
                         f.input = data;
-                        let isNull = selectedParent.find((s) => s == id);
-                        if (isNull == undefined) {
-                          setSelectedParent((prev) => [...prev, id]);
+                        let isNull = selectedParent.findIndex(
+                          (s) => s.parent == f.type
+                        );
+
+                        if (isNull > -1) {
+                          let selectedArr = [...selectedParent];
+
+                          selectedArr[isNull] = {
+                            id,
+                            parent: f.type,
+                            index: i,
+                            input: data,
+                            name: f.name,
+                          };
+                          setSelectedParent(selectedArr);
+                        } else {
+                          setSelectedParent([
+                            ...selectedParent,
+                            {
+                              id: id,
+                              parent: f.type,
+                              index: i,
+                              input: data,
+                              name: f.name,
+                            },
+                          ]);
                         }
+
                         onClick();
                       }}
                     >

@@ -25,6 +25,7 @@ const StepButtons = ({
   txt = 'Дараах',
   onClick = () => {},
   step,
+  selectedParent,
 }) => {
   return (
     <div className="mt-4">
@@ -46,7 +47,7 @@ const StepButtons = ({
               </>
             }
             onclick={onNext}
-            btnClose={<LoadingButton text="Нэмэх" />}
+            btnClose={<LoadingButton text="Нэмэх" isLoading={loading} />}
             btnClose2="Буцах"
             header="Баталгаажуулах хэсэг"
           >
@@ -92,21 +93,17 @@ const StepButtons = ({
                         Ерөнхий мэдээлэл
                       </p>
 
-                      {data?.filters?.map((p, i) => {
-                        if (p.type != null) {
-                          return (
-                            <ProductInfo
-                              key={i}
-                              title={p.name}
-                              id={p.type}
-                              value={p.input}
-                              onClick={() => getFilterByItem(p.type, p.input)}
-                            />
-                          );
-                        }
+                      {data?.map((p, i) => {
+                        return (
+                          <ProductInfo
+                            key={i}
+                            title={p.name ?? ''}
+                            id={p.parent ?? ''}
+                            value={p.input ?? ''}
+                            onClick={() => {}}
+                          />
+                        );
                       })}
-                      <div>Lorem ipsum dolor sit amet.</div>
-                      <div>Lorem ipsum dolor sit amet.</div>
                     </div>
                   )}
                   {/* <StepProgress /> */}

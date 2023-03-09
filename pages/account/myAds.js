@@ -3,8 +3,10 @@ import FilterAd from '@/components/Profile/filterAd';
 import urls from '@/constants/api';
 import { brk, STYLES } from '@/styles/index';
 import mergeNames from '@/util/mergeNames';
-import { Checkbox } from '@chakra-ui/react';
+import { Checkbox, useToast } from '@chakra-ui/react';
 import axios from 'axios';
+import { getCookie } from 'cookies-next';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 const MyAds = ({ user }) => {
@@ -15,6 +17,8 @@ const MyAds = ({ user }) => {
   const [checker, setChecker] = useState(false);
   const [num, setNum] = useState(0);
   const [data, setData] = useState([]);
+  const router = useRouter();
+  const toast = useToast();
   const getData = async () => {
     setIsLoading(true);
     try {
@@ -88,6 +92,31 @@ const MyAds = ({ user }) => {
       setProducts();
     }
   };
+  const deleteAd = async (id) => {
+    const token = getCookie('token');
+    try {
+      if (token) {
+        let ad = await axios
+          .delete(`${urls['test']}/ad/${id}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Access-Control-Allow-Headers': '*',
+            },
+          })
+          .then((d) => {
+            toast({
+              title: 'Зар устгагдлаа.',
+              status: 'warning',
+              duration: 5000,
+              isClosable: true,
+            });
+            router.reload();
+          });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <>
       <div className={mergeNames('flex flex-col gap-4 mt-5', brk)}>
@@ -159,9 +188,16 @@ const MyAds = ({ user }) => {
       </div>
 
       <div className="grid grid-cols-2 gap-5 mt-5 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-3">
-        {products?.ads?.map((item, key) => (
-          <AdCard key={key} item={item || {}} />
-        ))}
+        {products?.ads?.map((item, key) => {
+          return (
+            <AdCard
+              key={key}
+              item={item || {}}
+              isDelete={true}
+              deleteFunc={() => deleteAd(item._id)}
+            />
+          );
+        })}
       </div>
       <ul className="flex float-right list-style-none">
         <li className="mx-2">
