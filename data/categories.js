@@ -47,7 +47,7 @@ export const categories = [
     ],
   },
   {
-    image: '/images/category/vehicle.jpg',
+    image: '/images/Category/vehicle.jpg',
     icon: ({ size, className = '' }) => (
       <AiOutlineCar {...{ size, className }} />
     ),
@@ -70,7 +70,7 @@ export const categories = [
     ],
   },
   {
-    image: '/images/category/computer.jpg',
+    image: '/images/Category/computer.jpg',
     icon: ({ size, className = '' }) => <MdComputer {...{ size, className }} />,
     categoryName: 'Компьютер',
     id: 'computer',
@@ -87,7 +87,7 @@ export const categories = [
     ],
   },
   {
-    image: '/images/category/phone.jpg',
+    image: '/images/Category/phone.jpg',
     icon: () => <BsPhone />,
     categoryName: 'Гар утас',
     id: 'phone',
@@ -108,7 +108,7 @@ export const categories = [
     ],
   },
   {
-    image: '/images/category/electronics.jpg',
+    image: '/images/Category/electronics.jpg',
     icon: ({ size, className = '' }) => (
       <CgSmartHomeWashMachine {...{ size, className }} />
     ),
@@ -123,7 +123,7 @@ export const categories = [
     ],
   },
   {
-    image: '/images/category/householditems.jpg',
+    image: '/images/Category/householditems.jpg',
     icon: ({ size, className = '' }) => (
       <RiHomeSmile2Line {...{ size, className }} />
     ),
