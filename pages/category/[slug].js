@@ -13,19 +13,16 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-  useDisclosure
+  useDisclosure,
 } from '@chakra-ui/react';
 
 import { ContainerX } from '@/lib/Container';
-<<<<<<< HEAD
-=======
 import SkeletonContent from '@/util/SkeletonContent';
->>>>>>> e79836650fbce11193457ba57c2093e3c5749a87
 import {
   GoogleMap,
   InfoWindow,
   MarkerF,
-  useLoadScript
+  useLoadScript,
 } from '@react-google-maps/api';
 import axios from 'axios';
 import { useRouter } from 'next/router';
