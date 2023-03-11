@@ -5,6 +5,7 @@ import {
   Heading,
   HStack,
   IconButton,
+  Image,
   Link,
   Select,
   Stack,
@@ -36,6 +37,7 @@ import axios from 'axios';
 import { getCookie } from 'cookies-next';
 import currency from 'currency.js';
 import moment from 'moment/moment';
+
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import urls from '../../constants/api';
@@ -47,8 +49,9 @@ export const ProductInfo = ({
   value,
   id,
   children,
-
+  href = true,
   tt = 'capitalize',
+  func,
 }) => {
   return (
     <Fragment>
@@ -71,6 +74,7 @@ export const ProductInfo = ({
         <Stack
           direction={'row'}
           className={mergeNames('p-2 border-2 rounded-md border-bgGrey')}
+          onClick={href ? () => {} : func}
         >
           <Text
             fontSize={{ base: '13px', xl: '15px' }}
@@ -79,14 +83,17 @@ export const ProductInfo = ({
             {title}:{' '}
           </Text>
           <NextLink
-            href={{
-              pathname: `/category/filter/${id}`,
-              query: { num: 0, value: value },
-            }}
+            href={
+              href
+                ? {
+                    pathname: `/category/filter/${id}`,
+                    query: { num: 0, value: value },
+                  }
+                : {}
+            }
           >
             <Link
               fontSize={{ base: '13px', xl: '15px' }}
-              textTransform={tt}
               cursor={'pointer'}
               fontWeight={'bold'}
             >
@@ -111,6 +118,7 @@ const Product = ({ propAds }) => {
   const [suggestion, setSuggestion] = useState(
     propAds?.subCategory?.suggessionType[0] ?? 'location'
   );
+  const user = getCookie('user');
   const [sData, setsData] = useState([]);
   const libraries = useMemo(() => ['places'], []);
   const [markerActive, setMarkerActive] = useState(null);
@@ -128,23 +136,21 @@ const Product = ({ propAds }) => {
     []
   );
   const mapCenter = useMemo(() => data?.location, [data]);
-  const getSuggestion = async (suggest, sdata) => {
+  const getSuggestion = async (suggest, sd) => {
     if (suggest != 'map') {
       try {
         let type, id;
         switch (suggest) {
           case 'location':
-            type = sdata?.filters?.filter((d) => d.type == 'district')[0]
-              ?.input;
+            type = sd?.filters?.filter((d) => d.type == 'district')[0]?.input;
             id = 'district';
             break;
           case 'usage':
-            type = sdata?.filters?.filter((d) => d.type == 'landUsage')[0]
-              ?.input;
+            type = sd?.filters?.filter((d) => d.type == 'landUsage')[0]?.input;
             id = 'landUsage';
             break;
           default:
-            (type = sdata?.filters?.filter((f) => f.type == suggest)[0]?.input),
+            (type = sd?.filters?.filter((f) => f.type == suggest)[0]?.input),
               (id = suggest);
             break;
         }
@@ -152,8 +158,8 @@ const Product = ({ propAds }) => {
           .get(`${urls['test']}/ad/suggesstion/${id}/${type}/0`)
           .then((d) => {
             setsData([]);
-            let ads = d.data?.ads?.filter((da) => da._id != sdata._id);
-            setsData({ ads, limit: sdata.limit - 1 });
+            let ads = d.data?.ads?.filter((da) => da._id != sd._id);
+            setsData({ ads, limit: sd.limit - 1 });
           });
       } catch (error) {
         console.log(error);
@@ -204,7 +210,9 @@ const Product = ({ propAds }) => {
                       </Text>
                       <Text>Зарын дугаар: {data.num}</Text>
                     </div>
-
+                    {data?.views?.length > 0 && (
+                      <Text>Үзсэн хүний тоо: {data.views.length}</Text>
+                    )}
                     <Text>
                       <IconButton
                         aria-label="Search database"
@@ -213,7 +221,17 @@ const Product = ({ propAds }) => {
                           color: 'red',
                         }}
                         size={{ base: 'xs', sm: 'md' }}
+                        color={
+                          user
+                            ? JSON.parse(user).bookmarks.find(
+                                (b) => b == data._id
+                              ) != undefined
+                              ? 'text-red-500/90'
+                              : 'text-slate-200/90'
+                            : 'text-slate-200/90'
+                        }
                         onClick={async () => {
+                          console.log(data._id);
                           await axios
                             .post(
                               `${urls['test']}/bookmark/ad`,
@@ -226,13 +244,24 @@ const Product = ({ propAds }) => {
                                 },
                               }
                             )
-                            .then((d) => console.log(d));
-                          toast({
-                            title: 'Зар хадгалагдлаа.',
-                            status: 'success',
-                            duration: 5000,
-                            isClosable: true,
-                          });
+                            .then((d) => {
+                              if (d.data) {
+                                toast({
+                                  title: 'Зар хүсэлд нэмэгдлээ.',
+                                  status: 'success',
+                                  duration: 5000,
+                                  isClosable: true,
+                                });
+                              } else {
+                                toast({
+                                  title: 'Зар хүслээс хасагдлаа.',
+                                  status: 'warning',
+                                  duration: 5000,
+                                  isClosable: true,
+                                });
+                              }
+                              router.reload();
+                            });
                         }}
                       />
                       {/* Хандалт: lorem */}
@@ -256,7 +285,9 @@ const Product = ({ propAds }) => {
                       </AspectRatio>
                     )}
                   </Box>
-                  <Text mt={5}>{data.description}</Text>
+                  <Text mt={5} as="span" whiteSpace={'pre-line'}>
+                    {data.description}
+                  </Text>
                 </div>
 
                 {/*  //TODO  ENDING LEFT SIDE IMAGES AND DESC */}
@@ -269,7 +300,10 @@ const Product = ({ propAds }) => {
                       <UserInfo
                         id={data.user._id}
                         username={data.user?.username}
-                        phone={data.user?.phone}
+                        phone={
+                          data.filters?.filter((f) => f.type == 'phone')[0]
+                            .input
+                        }
                         avatar={
                           data.user?.profileImg ??
                           'https://www.pikpng.com/pngl/m/80-805068_my-profile-icon-blank-profile-picture-circle-clipart.png'
@@ -281,7 +315,7 @@ const Product = ({ propAds }) => {
                       </p>
 
                       {data?.filters?.map((p, i) => {
-                        if (p.type != null) {
+                        if (p.type != null && p.type != 'phone') {
                           return (
                             <ProductInfo
                               key={i}
@@ -393,7 +427,7 @@ const Product = ({ propAds }) => {
               mapContainerStyle={{ width: '100%', height: '50vh' }}
             >
               {isLoaded &&
-                sData?.map((m, i) => {
+                sData?.ads?.map((m, i) => {
                   return (
                     <HStack key={i}>
                       <MarkerF
@@ -402,27 +436,52 @@ const Product = ({ propAds }) => {
                           lng: parseFloat(m.location?.lng ?? 107.341515),
                         }}
                         // onMouseOver={() => setMarkerActive(i)}
-                        onClick={() => setMarkerActive(i)}
+                        onMouseOver={() => setMarkerActive(i)}
                         animation={google.maps.Animation.DROP}
                       >
-                        <InfoWindow
-                          position={{
-                            lat: parseFloat(m.location?.lat ?? 47.74604),
-                            lng: parseFloat(m.location?.lng ?? 107.341515),
-                          }} // onLoad={(info) => console.log(info)}
-                        >
-                          {/* end zasna */}
-                          {/* <Image
+                        {/* end zasna */}
+                        {/* <Image
                           src="/images/logo/404.pmg"
                           alt="map image"
                           className="w-full h-[100px]"
                         /> */}
-                          <button
-                            onClick={() => router.push(`/product/${m.num}`)}
+                        {markerActive == i && (
+                          <InfoWindow
+                            position={{
+                              lat: parseFloat(m.location?.lat ?? 47.74604),
+                              lng: parseFloat(m.location?.lng ?? 107.341515),
+                            }}
                           >
-                            <div>{m.title}</div>
-                          </button>
-                        </InfoWindow>
+                            <div
+                              onClick={() => router.push(`/product/${m.num}`)}
+                              className={mergeNames(
+                                'h-[125px] aspect-4/3 flex flex-col cursor-pointer justify-end relative',
+                                'group-hover:block '
+                              )}
+                            >
+                              <Image
+                                src={
+                                  m.images[0] ?? '/images/HeaderSlider/1.jpg'
+                                }
+                                alt="map image"
+                                className={mergeNames(
+                                  'absolute top-0 left-0 object-cover w-full h-full ',
+                                  ''
+                                )}
+                              />
+                              <div className="absolute top-0 left-0 object-cover w-full h-full bg-gradient-to-b from-slate-700/0 via-slate-700/50 to-slate-900/100 "></div>
+                              <p className="z-10 text-base font-bold text-white">
+                                {m.title}
+                              </p>
+                              <p className="z-10 text-base font-bold text-white">
+                                {
+                                  m.filters.filter((f) => f.type == 'price')[0]
+                                    ?.input
+                                }
+                              </p>
+                            </div>
+                          </InfoWindow>
+                        )}
                       </MarkerF>
                     </HStack>
                   );

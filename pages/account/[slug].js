@@ -13,9 +13,11 @@ import urls from '../../constants/api';
 const Accounts = ({ propUser }) => {
   const [ads, setAds] = useState([]);
   const getAds = async () => {
-    await axios.post(`${urls['test']}/ad/many/0/false`, propUser.ads).then((d) => {
-      setAds(d.data.ads);
-    });
+    await axios
+      .post(`${urls['test']}/ad/many/0/false`, propUser.ads)
+      .then((d) => {
+        setAds(d.data.ads);
+      });
   };
 
   useEffect(() => {
@@ -61,7 +63,13 @@ const Accounts = ({ propUser }) => {
                     {propUser.username}
                   </h1>
                   <h3 className="font-bold text-blue-600 capitalize text-md">
-                    {propUser.userType}
+                    {propUser.userType == 'default'
+                      ? 'Энгийн'
+                      : propUser.userType == 'agent'
+                      ? 'Агент'
+                      : propUser.userType == 'organization'
+                      ? 'Байгууллага'
+                      : propUser.userType}
                   </h3>
                 </div>
                 <p

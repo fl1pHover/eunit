@@ -65,7 +65,7 @@ const BodyDrawer = () => {
             // src={user?.image}
             src={
               user?.profileImg ??
-              'https://newprofilepic2.photo-cdn.net//assets/images/article/profile.jpg'
+              'https://www.pikpng.com/pngl/m/80-805068_my-profile-icon-blank-profile-picture-circle-clipart.png'
             }
             alt="user image"
             className="w-[100px] aspect-square rounded-full bg-gray-400 object-contain mt-10"

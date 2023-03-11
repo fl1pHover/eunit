@@ -7,20 +7,22 @@ import mergeNames from '@/util/mergeNames';
 import { Tooltip, useToast } from '@chakra-ui/react';
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
+import { useRouter } from 'next/router';
 import { BiGitCompare } from 'react-icons/bi';
-const AdCardButton = ({ id }) => {
+const AdCardButton = ({ id, adId }) => {
   const { compareAds, setCompareAds } = useAuth();
   const toast = useToast();
   const [isLiked, setIsLiked] = React.useState(false);
   const token = getCookie('token');
+  const router = useRouter();
+  const user = getCookie('user');
   const addToBookmark = async () => {
     try {
-      console.log(id);
       await axios
         .post(
           `${urls['test']}/bookmark/ad`,
           {
-            adId: id,
+            adId: adId,
           },
           {
             headers: {
@@ -28,7 +30,24 @@ const AdCardButton = ({ id }) => {
             },
           }
         )
-        .then((d) => console.log(d));
+        .then((d) => {
+          if (d.data) {
+            toast({
+              title: 'Зар хүсэлд нэмэгдлээ.',
+              status: 'success',
+              duration: 5000,
+              isClosable: true,
+            });
+          } else {
+            toast({
+              title: 'Зар хүслээс хасагдлаа.',
+              status: 'warning',
+              duration: 5000,
+              isClosable: true,
+            });
+          }
+          router.reload();
+        });
     } catch (err) {
       console.log(err.response.data.message);
     }
@@ -65,21 +84,19 @@ const AdCardButton = ({ id }) => {
         <button
           className={mergeNames(cardIcon.div)}
           onClick={() => {
-            console.log('asdff');
             setIsLiked(true);
-            toast({
-              title: 'Хүсэл рүү нэмэгдлээ.',
-              status: 'success',
-              duration: 9000,
-              isClosable: true,
-            });
+            addToBookmark();
           }}
         >
           <FaHeart
             className={mergeNames(
               'hover:text-red-400 ',
               cardIcon.icon,
-              isLiked ? 'text-red-500/90' : 'text-slate-200/90'
+              isLiked ||
+                (user &&
+                  JSON.parse(user).bookmarks.find((b) => b == adId) != undefined)
+                ? 'text-red-500/90'
+                : 'text-slate-200/90'
             )}
           />
         </button>

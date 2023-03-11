@@ -6,7 +6,6 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  useDisclosure,
 } from '@chakra-ui/react';
 
 function CustomModal({
@@ -16,11 +15,12 @@ function CustomModal({
   btnClose2,
   btnOpen,
   alert,
+  isOpen,
+  onOpen,
+  onClose,
   func,
   onclick,
 }) {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
   return (
     <>
       <button

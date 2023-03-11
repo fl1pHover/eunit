@@ -6,6 +6,7 @@ import { STYLES } from '@/styles/index';
 import mergeNames from '@/util/mergeNames';
 import { Image } from '@chakra-ui/react';
 import axios from 'axios';
+import { getCookie } from 'cookies-next';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -27,7 +28,7 @@ const CompareItem = ({ item, onClick }) => {
   );
 };
 
-const CompareSelect = () => {
+const CompareSelect = (category, subCategory, setProducts) => {
   const { compareAds, setCompareAds } = useAuth();
   const router = useRouter();
   const [expand, setExpand] = useState(false);
@@ -35,11 +36,48 @@ const CompareSelect = () => {
   return (
     <div>
       <div className="grid grid-cols-1 gap-4 mt-5 sm:grid-cols-2">
-        <FilterAd plc="Бүх төрөл" onChange={(e) => {}}>
-          <option value=""></option>
+        <FilterAd
+          plc="Бүх төрөл"
+          onChange={(e) => {
+            if (e.target.value != '') {
+              let ads = data.ads.filter(
+                (d) => d.category.name == e.target.value
+              );
+              setProducts({ ads, limit: data.limit });
+            } else {
+              setProducts(data);
+            }
+          }}
+        >
+          <option value="">{JSON.stringify(category)}</option>
+          {/* {category?.map((p, i) => {
+            return (
+              <option value={p} key={i}>
+                {p}
+              </option>
+            );
+          })} */}
         </FilterAd>
-        <FilterAd plc="Бүх дэд төрөл" onChange={(e) => {}}>
-          <option value=""></option>
+        <FilterAd
+          plc="Бүх дэд төрөл"
+          onChange={(e) => {
+            if (e.target.value != '') {
+              let ads = data.ads.filter(
+                (d) => d.subCategory.name == e.target.value
+              );
+              setProducts({ ads, limit: data.limit });
+            } else {
+              setProducts(data);
+            }
+          }}
+        >
+          {/* {subCategory?.map((p, i) => {
+            return (
+              <option value={p} key={i}>
+                {p}
+              </option>
+            );
+          })} */}
         </FilterAd>
       </div>
       <div
@@ -101,20 +139,49 @@ const CompareSelect = () => {
 const Bookmark = () => {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const { user } = useAuth();
+  const user = getCookie('user');
+  const [category, setCategory] = useState([]);
+  const [subCategory, setSubCategory] = useState([]);
+  const [data, setData] = useState([]);
   const getData = async () => {
     setIsLoading(true);
-    try {
-      await axios
-        .post(`${urls['test']}/ad/many/${0}/false`, user.bookmarks)
-        .then((d) => {
-          setProducts(d.data.ads);
-        })
-        .then((a) => setIsLoading(false));
-    } catch (error) {
-      console.log(error);
-      setIsLoading(false);
-    }
+    if (user)
+      try {
+        await axios
+          .post(
+            `${urls['test']}/ad/many/${0}/false`,
+            JSON.parse(user).bookmarks
+          )
+          .then((d) => {
+            setProducts(d.data.ads);
+            setData(d.data);
+            // setCategory(d.data.ads.fi)
+            let c = [],
+              s = [];
+            d.data.ads.map((ad) => {
+              if (c.length > 0) {
+                if (c.find((a) => a == ad.category.name) === undefined) {
+                  c.push(ad.category.name);
+                }
+              } else {
+                c.push(ad.category.name);
+              }
+              if (s.length > 0) {
+                if (s.find((a) => a == ad.subCategory.name) === undefined) {
+                  s.push(ad.subCategory.name);
+                }
+              } else {
+                s.push(ad.subCategory.name);
+              }
+            });
+            setCategory(c);
+            setSubCategory(s);
+          })
+          .then((a) => setIsLoading(false));
+      } catch (error) {
+        console.log(error);
+        setIsLoading(false);
+      }
   };
 
   const toLowerCase = (text) => {
@@ -124,11 +191,15 @@ const Bookmark = () => {
   };
   useEffect(() => {
     getData();
-  }, []);
+  }, [user]);
 
   return (
     <>
-      <CompareSelect />
+      <CompareSelect
+        setProducts={setProducts}
+        category={category}
+        subCategory={subCategory}
+      />
 
       {/* <AdContent
         data={products}

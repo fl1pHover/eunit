@@ -199,7 +199,7 @@ export const SignUpComp = ({ credential, setCredential, fc }) => {
       />
       <Box h={4} />
       <InputComp
-        lbl={'Та нэрээ оруулна уу'}
+        lbl={'Та хэрэглэгчийн нэрээ оруулна уу'}
         type="text"
         value={credential.username}
         setValue={setCredential}
@@ -234,7 +234,7 @@ export const SignUpComp = ({ credential, setCredential, fc }) => {
         className={mergeNames('w-full h-auto py-3', STYLES.blueButton)}
         onClick={() => fc()}
       >
-        Бүртүүлэх
+        Бүртгүүлэх
       </button>
     </FormControl>
   );

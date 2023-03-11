@@ -1,8 +1,10 @@
+import urls from '@/constants/api';
 import { useAuth } from '@/context/auth';
 import { NavContainer } from '@/lib/Container';
 import { STYLES } from '@/styles/index';
 import mergeNames from '@/util/mergeNames';
 import { Image } from '@chakra-ui/react';
+import axios from 'axios';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -38,6 +40,7 @@ const Bottom = ({ sticky }) => {
     setSearch('');
     console.log('clear input');
   };
+
   // Search end
 
   return (
@@ -112,7 +115,20 @@ const Bottom = ({ sticky }) => {
             )}
           >
             <div className="relative flex flex-row items-center w-2/5 h-10">
-              <HiOutlineSearch />
+              <HiOutlineSearch
+                onClick={async () => {
+                  try {
+                    await axios
+                      .get(`${urls['test']}/ad/search/{value}?value=${search}`)
+                      .then((d) => {
+                        setAds(d.data);
+                        router.push('/search');
+                      });
+                  } catch (error) {
+                    console.error(error);
+                  }
+                }}
+              />
               <input
                 onChange={(e) => setSearch(e.target.value)}
                 type="text"

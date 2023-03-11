@@ -3,8 +3,6 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { useMemo, useState } from 'react';
 
-import { useAuth } from 'context/auth';
-
 import Step1 from '@/components/createAd/step1';
 import Step4 from '@/components/createAd/step4';
 
@@ -19,7 +17,7 @@ import { GoogleMap, MarkerF, useLoadScript } from '@react-google-maps/api';
 import { getCookie } from 'cookies-next';
 export default function CreateAd({ categories }) {
   const toast = useToast();
-  const { user } = useAuth(); // TODOs: user: 403 BAD REQUEST
+  const user = getCookie('user');
 
   const router = useRouter();
   // // if (!user) router.push("/login");
@@ -50,7 +48,7 @@ export default function CreateAd({ categories }) {
     desc: false,
     imgSelected: false,
     images: [],
-    phone: parseInt(user?.phone ?? 0),
+    phone: parseInt(user ? JSON.parse(user).phone : 0),
   });
   // STEP 3IIN RAW IMAGE FILES
   const [images, setImages] = useState([]);
@@ -163,6 +161,8 @@ export default function CreateAd({ categories }) {
           headers: {
             Authorization: `Bearer ${token}`,
             'Access-Control-Allow-Headers': '*',
+            'Content-Type': 'application/json',
+            charset: 'UTF-8',
           },
         })
         .then((d) => {
@@ -297,6 +297,7 @@ export default function CreateAd({ categories }) {
         })}
 
         <StepButtons
+          setStep={setStep}
           onNext={handleNextStep}
           onPrev={handlePrevStep}
           data={selectedParent}
@@ -304,6 +305,7 @@ export default function CreateAd({ categories }) {
           loading={isLoading}
           txt={step == 2 ? 'Илгээх' : 'Дараах'}
           step={step}
+          map={map}
           // onClick={() => step == 2 && <CustomModal />}
         />
       </ContainerX>

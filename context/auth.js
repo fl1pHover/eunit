@@ -17,6 +17,7 @@ export const AuthProvider = ({ children }) => {
   const [compareAds, setCompareAds] = useState([]);
   async function loadUserFromCookies() {
     const token = getCookie('token');
+    const user = getCookie('user');
     setLoading(true);
     try {
       const { data: category } = await axios.get(`${urls['test']}/category`);
@@ -35,6 +36,7 @@ export const AuthProvider = ({ children }) => {
         });
 
         setUser(data);
+        setCookie('user', data);
       } catch (error) {
         console.log(error.response.data.message);
         logout();
@@ -57,25 +59,40 @@ export const AuthProvider = ({ children }) => {
           email,
           password,
         });
-        if (data?.token && data.user.status == 'active') {
-          setCookie('token', data.token);
 
-          setUser(data.user);
+        if (!data) {
           toast({
-            title: 'Амжилттай нэвтэрлээ',
-            status: 'success',
+            title: 'И-майл хаяг эсвэл нууц үг буруу байна.',
+            status: 'warning',
             duration: 5000,
             isClosable: true,
           });
-          if (data.user.userType == 'admin' || data.user.userType == 'system')
-            window.location.pathname = '/admin';
-          else window.location.pathname = '/account';
         } else {
-          window.location.pathname = '/account/check';
+          if (data?.token && data.user.status == 'active') {
+            setCookie('token', data.token);
+
+            setUser(data.user);
+            toast({
+              title: 'Амжилттай нэвтэрлээ',
+              status: 'success',
+              duration: 5000,
+              isClosable: true,
+            });
+            if (data.user.userType == 'admin' || data.user.userType == 'system')
+              window.location.pathname = '/admin';
+            else window.location.pathname = '/account';
+          } else {
+            window.location.pathname = '/account/check';
+          }
         }
       } catch (error) {
         setLoading(false);
-        console.log(error);
+        toast({
+          title: error.message,
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+        });
       }
       setLoading(false);
     }

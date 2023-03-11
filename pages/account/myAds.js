@@ -82,7 +82,15 @@ const MyAds = ({ user }) => {
           ads,
           limit: products.limit,
         });
-      } else await getData();
+      } else {
+        if (checker.deleted && products) {
+          let ads = products.ads.filter((p) => p.adStatus == 'deleted');
+          setProducts({
+            ads,
+            limit: products.limit,
+          });
+        } else await getData();
+      }
     }
   };
   const filterCategory = async (cate, value) => {
@@ -183,6 +191,15 @@ const MyAds = ({ user }) => {
             }}
           >
             Хүлээгдэж байгаа
+          </Checkbox>
+          <Checkbox
+            className="font-bold text-red-400 whitespace-nowrap"
+            isChecked={checker.deleted}
+            onChange={(e) => {
+              setChecker((prev) => ({ ...prev, deleted: e.target.checked }));
+            }}
+          >
+            Устгасан зарууд
           </Checkbox>
         </div>
       </div>

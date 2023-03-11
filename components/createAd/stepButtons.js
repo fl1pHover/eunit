@@ -1,8 +1,16 @@
 import { LoadingButton } from '@/lib/Button';
 import CustomModal from '@/util/CustomModal';
 import mergeNames from '@/util/mergeNames';
-import { AspectRatio, Box, Heading, Text } from '@chakra-ui/react';
+import {
+  AspectRatio,
+  Box,
+  Heading,
+  Text,
+  useDisclosure,
+} from '@chakra-ui/react';
+import { GoogleMap, MarkerF, useLoadScript } from '@react-google-maps/api';
 import { ProductInfo } from 'pages/product/[slug]';
+import { useMemo } from 'react';
 import { FiArrowLeft, FiArrowRight } from 'react-icons/fi';
 import ImageGallery from 'react-image-gallery';
 const ButtonProcess = () => {
@@ -25,8 +33,33 @@ const StepButtons = ({
   txt = 'Дараах',
   onClick = () => {},
   step,
+  setStep,
+  map,
   selectedParent,
 }) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const libraries = useMemo(() => ['places'], []);
+  // const { categories, setAds } = useAuth();
+
+  const { isLoaded } = useLoadScript({
+    googleMapsApiKey: 'AIzaSyC2u2OzBNo53GxJJdN3Oc_W6Yc42OmdZcE',
+    libraries: libraries,
+  });
+  const mapOptions = useMemo(
+    () => ({
+      disableDefaultUI: true,
+      clickableIcons: true,
+      scrollwheel: true,
+    }),
+    []
+  );
+  const mapCenter = useMemo(
+    () => ({
+      lat: parseFloat(map?.lat ?? 47.74604),
+      lng: parseFloat(map?.lng ?? 107.341515),
+    }),
+    []
+  );
   return (
     <div className="mt-4">
       {/* <ButtonProcess /> */}
@@ -41,6 +74,9 @@ const StepButtons = ({
 
         {step == 2 ? (
           <CustomModal
+            isOpen={isOpen}
+            onClose={onClose}
+            onOpen={onOpen}
             btnOpen={
               <>
                 Илгээх <FiArrowRight size={20} />
@@ -55,7 +91,13 @@ const StepButtons = ({
               <Box className="p-3 bg-white shadow-md md:p-10 rounded-xl">
                 {/*Product */}
                 {generalData.title && (
-                  <Heading variant={'mediumHeading'} mb={5}>
+                  <Heading
+                    variant={'mediumHeading'}
+                    mb={5}
+                    onClick={() => {
+                      onClose(), setStep(1);
+                    }}
+                  >
                     {generalData.title}
                   </Heading>
                 )}
@@ -70,7 +112,12 @@ const StepButtons = ({
                       )}
                     >
                       {generalData?.images ? (
-                        <AspectRatio ratio={1}>
+                        <AspectRatio
+                          ratio={1}
+                          onClick={() => {
+                            onClose(), setStep(1);
+                          }}
+                        >
                           <ImageGallery
                             items={generalData?.images.map((i) => ({
                               original: i,
@@ -84,7 +131,14 @@ const StepButtons = ({
                         <div className="w-full bg-red-500 aspect-square" />
                       )}
                     </Box>
-                    <Text mt={5}>{generalData.description}</Text>
+                    <Text
+                      mt={5}
+                      onClick={() => {
+                        onClose(), setStep(1);
+                      }}
+                    >
+                      {generalData.desc}
+                    </Text>
                   </div>
 
                   {data && (
@@ -92,7 +146,42 @@ const StepButtons = ({
                       <p className="text-xl font-bold col-span-full">
                         Ерөнхий мэдээлэл
                       </p>
-
+                      <ProductInfo
+                        title={'Үнэ'}
+                        id={generalData.price ?? ''}
+                        value={generalData.price ?? ''}
+                        func={() => {
+                          onClose(), setStep(1);
+                        }}
+                        href={false}
+                      />
+                      <ProductInfo
+                        title={'Нэгж талбайн үнэ'}
+                        id={generalData.unitPrice ?? ''}
+                        value={generalData.unitPrice ?? ''}
+                        func={() => {
+                          onClose(), setStep(1);
+                        }}
+                        href={false}
+                      />
+                      <ProductInfo
+                        title={'Талбай'}
+                        id={generalData.area ?? ''}
+                        value={generalData.area ?? ''}
+                        func={() => {
+                          onClose(), setStep(1);
+                        }}
+                        href={false}
+                      />
+                      <ProductInfo
+                        title={'Утас'}
+                        id={generalData.phone ?? ''}
+                        value={generalData.phone ?? ''}
+                        func={() => {
+                          onClose(), setStep(1);
+                        }}
+                        href={false}
+                      />
                       {data?.map((p, i) => {
                         return (
                           <ProductInfo
@@ -100,13 +189,39 @@ const StepButtons = ({
                             title={p.name ?? ''}
                             id={p.parent ?? ''}
                             value={p.input ?? ''}
-                            onClick={() => {}}
+                            func={() => {
+                              onClose(), setStep(2);
+                            }}
+                            href={false}
                           />
                         );
                       })}
                     </div>
                   )}
                   {/* <StepProgress /> */}
+                  <GoogleMap
+                    onClick={() => {
+                      onClose(), setStep(0);
+                    }}
+                    options={mapOptions}
+                    zoom={14}
+                    center={mapCenter}
+                    mapTypeId={google.maps.MapTypeId.ROADMAP}
+                    mapContainerStyle={{ width: '100%', height: '50vh' }}
+                  >
+                    {isLoaded && (
+                      <div>
+                        <MarkerF
+                          position={{
+                            lat: parseFloat(map?.lat ?? 47.74604),
+                            lng: parseFloat(map?.lng ?? 107.341515),
+                          }}
+                          animation={google.maps.Animation.DROP}
+                          className={mergeNames('group')}
+                        />
+                      </div>
+                    )}
+                  </GoogleMap>
                 </div>
               </Box>
             </Box>

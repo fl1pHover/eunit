@@ -140,7 +140,7 @@ const Category = ({ propAds }) => {
                             lat: parseFloat(m.location?.lat ?? 47.74604),
                             lng: parseFloat(m.location?.lng ?? 107.341515),
                           }}
-                          onClick={() => setMarkerActive(i)}
+                          onMouseOver={() => setMarkerActive(i)}
                           animation={google.maps.Animation.DROP}
                           className={mergeNames('group')}
                         >
@@ -150,12 +150,11 @@ const Category = ({ propAds }) => {
                                 lat: parseFloat(m.location?.lat ?? 47.74604),
                                 lng: parseFloat(m.location?.lng ?? 107.341515),
                               }}
-                              className="relative"
                             >
                               <div
                                 onClick={() => router.push(`/product/${m.num}`)}
                                 className={mergeNames(
-                                  'h-[125px] aspect-4/3 flex flex-col cursor-pointer justify-end',
+                                  'h-[125px] aspect-4/3 flex flex-col cursor-pointer justify-end relative',
                                   'group-hover:block '
                                 )}
                               >

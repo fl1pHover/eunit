@@ -5,8 +5,11 @@ import { FiCamera, FiDelete } from 'react-icons/fi';
 import { IoBedOutline } from 'react-icons/io5';
 import { TbBath } from 'react-icons/tb';
 
+import urls from '@/constants/api';
 import mergeNames from '@/util/mergeNames';
 import { Skeleton } from '@chakra-ui/react';
+import axios from 'axios';
+import { getCookie } from 'cookies-next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import AdCardButton from './adCardButton';
@@ -17,7 +20,7 @@ import AdCardButton from './adCardButton';
 
 function Card({ item, deleteFunc = () => {}, isDelete = false }) {
   const router = useRouter();
-
+  const user = getCookie('user');
   return (
     // <Skeleton>
     <Skeleton isLoaded>
@@ -28,9 +31,16 @@ function Card({ item, deleteFunc = () => {}, isDelete = false }) {
         {/* zarin zurag absolute  */}
         <div
           className="absolute top-0 bottom-0 left-0 right-0 z-0 w-full h-full cursor-pointer"
-          onClick={() =>
-            item && item._id && router.push(`/product/${item.num}`)
-          }
+          onClick={async () => {
+            user &&
+              item &&
+              item._id &&
+              (await axios
+                .get(
+                  `${urls['test']}/ad/view/${item.num}/${JSON.parse(user)._id}`
+                )
+                .then((d) => router.push(`/product/${item.num}`)));
+          }}
         >
           {item?.images && (
             <Image
@@ -94,7 +104,7 @@ function Card({ item, deleteFunc = () => {}, isDelete = false }) {
               title={item.title}
               description={item.positions?.location_id ?? ''}
             />
-            <AdCardButton id={item?.num} />
+            <AdCardButton id={item?.num} adId={item?._id} />
           </div>
           <div className="flex flex-wrap items-end justify-between gap-x-1">
             {item?.filters?.map((p, i) => {
@@ -119,6 +129,16 @@ function Card({ item, deleteFunc = () => {}, isDelete = false }) {
             >
               {/* {item.adStatus} */}
               Хүлээгдэж байна...
+            </p>
+          )}
+          {item?.adStatus == 'deleted' && (
+            <p
+              className={mergeNames(
+                'text-teal-300 px-3 rounded-md font-bold mx-auto'
+              )}
+            >
+              {/* {item.adStatus} */}
+              Устгагдсан байна...
             </p>
           )}
         </div>

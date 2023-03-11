@@ -40,7 +40,35 @@ const Step3 = ({ filter, selectedParent, setSelectedParent }) => {
               <DateYearSelector
                 defValue={usedYear}
                 placeholder={f.name}
-                onSelect={(num) => (f.input = num)}
+                onSelect={(num) => {
+                  let isNull = selectedParent.findIndex(
+                    (s) => s.parent == f.type
+                  );
+
+                  if (isNull > -1) {
+                    let selectedArr = [...selectedParent];
+
+                    selectedArr[isNull] = {
+                      id: num,
+                      parent: f.type,
+                      index: i,
+                      input: num,
+                      name: f.name,
+                    };
+                    setSelectedParent(selectedArr);
+                  } else {
+                    setSelectedParent([
+                      ...selectedParent,
+                      {
+                        id: num,
+                        parent: f.type,
+                        index: i,
+                        input: num,
+                        name: f.name,
+                      },
+                    ]);
+                  }
+                }}
               />
             </ItemContainer>
           );
@@ -53,7 +81,36 @@ const Step3 = ({ filter, selectedParent, setSelectedParent }) => {
                 allowMouseWheel
                 min={0}
                 className="flex flex-row justify-between mx-auto overflow-hidden border-2 border-blue-500 rounded-full md:w-2/3"
-                onChange={(e) => (f.input = e)}
+                onChange={(e) => {
+                  f.input = e;
+                  let isNull = selectedParent.findIndex(
+                    (s) => s.parent == f.type
+                  );
+
+                  if (isNull > -1) {
+                    let selectedArr = [...selectedParent];
+
+                    selectedArr[isNull] = {
+                      id: e,
+                      parent: f.type,
+                      index: i,
+                      input: e,
+                      name: f.name,
+                    };
+                    setSelectedParent(selectedArr);
+                  } else {
+                    setSelectedParent([
+                      ...selectedParent,
+                      {
+                        id: e,
+                        parent: f.type,
+                        index: i,
+                        input: e,
+                        name: f.name,
+                      },
+                    ]);
+                  }
+                }}
               >
                 <NumberInputField />
                 <NumberInputStepper>
@@ -73,7 +130,36 @@ const Step3 = ({ filter, selectedParent, setSelectedParent }) => {
               <Counter
                 limit={parseInt(f.value[f.value.length - 2].value)}
                 maxValue={f.value[f.value.length - 1].value}
-                setValue={(val) => (f.input = val)}
+                setValue={(val) => {
+                  f.input = val;
+                  let isNull = selectedParent.findIndex(
+                    (s) => s.parent == f.type
+                  );
+
+                  if (isNull > -1) {
+                    let selectedArr = [...selectedParent];
+
+                    selectedArr[isNull] = {
+                      id: val,
+                      parent: f.type,
+                      index: i,
+                      input: val,
+                      name: f.name,
+                    };
+                    setSelectedParent(selectedArr);
+                  } else {
+                    setSelectedParent([
+                      ...selectedParent,
+                      {
+                        id: val,
+                        parent: f.type,
+                        index: i,
+                        input: val,
+                        name: f.name,
+                      },
+                    ]);
+                  }
+                }}
               />
             </ItemContainer>
           );
@@ -88,6 +174,33 @@ const Step3 = ({ filter, selectedParent, setSelectedParent }) => {
                 ph={f.name}
                 onChange={(e) => {
                   f.input = e.target.value;
+                  let isNull = selectedParent.findIndex(
+                    (s) => s.parent == f.type
+                  );
+
+                  if (isNull > -1) {
+                    let selectedArr = [...selectedParent];
+
+                    selectedArr[isNull] = {
+                      id: e.target.value,
+                      parent: f.type,
+                      index: i,
+                      input: e.target.value,
+                      name: f.name,
+                    };
+                    setSelectedParent(selectedArr);
+                  } else {
+                    setSelectedParent([
+                      ...selectedParent,
+                      {
+                        id: e.target.value,
+                        parent: f.type,
+                        index: i,
+                        input: e.target.value,
+                        name: f.name,
+                      },
+                    ]);
+                  }
                 }}
               />
             </ItemContainer>
@@ -105,6 +218,33 @@ const Step3 = ({ filter, selectedParent, setSelectedParent }) => {
                       isSelected={text.value == selected.bathroom}
                       onClick={() => {
                         f.input = text.value;
+                        let isNull = selectedParent.findIndex(
+                          (s) => s.parent == f.type
+                        );
+
+                        if (isNull > -1) {
+                          let selectedArr = [...selectedParent];
+
+                          selectedArr[isNull] = {
+                            id,
+                            parent: f.type,
+                            index: i,
+                            input: text.value,
+                            name: f.name,
+                          };
+                          setSelectedParent(selectedArr);
+                        } else {
+                          setSelectedParent([
+                            ...selectedParent,
+                            {
+                              id: id,
+                              parent: f.type,
+                              index: i,
+                              input: text.value,
+                              name: f.name,
+                            },
+                          ]);
+                        }
                         setSelected((prev) => ({
                           ...prev,
                           bathroom: text.value,
@@ -134,6 +274,33 @@ const Step3 = ({ filter, selectedParent, setSelectedParent }) => {
                       isSelected={text.value == selected.masterRoom}
                       onClick={() => {
                         f.input = text.value;
+                        let isNull = selectedParent.findIndex(
+                          (s) => s.parent == f.type
+                        );
+
+                        if (isNull > -1) {
+                          let selectedArr = [...selectedParent];
+
+                          selectedArr[isNull] = {
+                            id,
+                            parent: f.type,
+                            index: i,
+                            input: text.value,
+                            name: f.name,
+                          };
+                          setSelectedParent(selectedArr);
+                        } else {
+                          setSelectedParent([
+                            ...selectedParent,
+                            {
+                              id: id,
+                              parent: f.type,
+                              index: i,
+                              input: text.value,
+                              name: f.name,
+                            },
+                          ]);
+                        }
                         setSelected((prev) => ({
                           ...prev,
                           masterRoom: text.value,
@@ -396,24 +563,32 @@ const Step3 = ({ filter, selectedParent, setSelectedParent }) => {
                           if (index != undefined) {
                             if (ind == index.index) {
                               let value = fv.input;
-                              console.log(value);
                               return fv;
                             }
                           }
                         })[0]
                         ?.value.push({ id: 'other', value: 'Бусад' })
-                    : filter?.values?.filter((fv, ind) => {
-                        let index = selectedParent.find(
-                          (sf) => sf.parent == f.parentId
-                        );
-                        if (index != undefined) {
-                          if (ind == index.index) {
-                            let value = fv.input;
-                            console.log(value);
-                            return fv;
+                    : filter?.values
+                        ?.map((fv, ind) => {
+                          let index = selectedParent.find(
+                            (sf) => sf.parent == f.parentId
+                          );
+                          if (index != undefined) {
+                            if (ind == index.index) {
+                              let valueC = { ...fv };
+                              let indexIndex = valueC.value.findIndex(
+                                (fvf) => fvf.value == index.input
+                              );
+                              valueC.value = valueC.value.slice(
+                                0,
+                                indexIndex + 1
+                              );
+
+                              return valueC;
+                            }
                           }
-                        }
-                      })[0]?.value
+                        })
+                        .filter((a) => a != undefined)[0]?.value
                 }
                 label={f.input != '' ? f.input : f.name}
                 Item={({ data, onClick, id, ...props }) => {
