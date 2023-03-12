@@ -4,6 +4,9 @@ import { BiArea, BiDoorOpen } from 'react-icons/bi';
 import { IoBedOutline } from 'react-icons/io5';
 import { TbBath } from 'react-icons/tb';
 
+import { DButton, ImageCount } from '@/lib/Button';
+import Tip from '@/lib/Tip';
+import Alerting from '@/util/Alert';
 import mergeNames from '@/util/mergeNames';
 import { Skeleton } from '@chakra-ui/react';
 import Image from 'next/image';
@@ -12,7 +15,7 @@ import AdCardButton from './adCardButton';
 
 function Card({ item, deleteFunc = () => {}, isDelete = false }) {
   const router = useRouter();
-
+  console.log(item);
   return (
     // <Skeleton>
     <Skeleton isLoaded>
@@ -40,32 +43,34 @@ function Card({ item, deleteFunc = () => {}, isDelete = false }) {
           <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-slate-700/0 via-slate-700/30 to-slate-900/100"></div>
         </div>
         {/* Zariin body  */}
-        <div className="relative z-10 flex items-start justify-between flex-1 w-full h-full px-3 py-2">
-          <div className="relative w-8 h-6 rounded-md md:w-10 md:h-8 bg-mainBlossom">
-            <Image
-              src="/images/logo/bom-white.png"
-              alt="BOM logo"
-              objectFit="contain"
-              layout="fill"
-              className="p-1"
+        <div className="relative z-10 flex items-center justify-between flex-1 w-full h-full px-3 py-2">
+          <Tip lbl="Зарын эзэн">
+            <button className="relative rounded-full w-9 h-9 bg-mainBlossom ">
+              <Image
+                // Eniig user bolgood darahaar ordgoor
+                src={
+                  // useriinZurag ??
+                  '/images/logo/bom-white.png'
+                }
+                alt="BOM logo"
+                objectFit="contain"
+                layout="fill"
+                className="p-2"
+                onClick={() => router.push(`account/${item.user}`)}
+              />
+            </button>
+          </Tip>
+          {isDelete ? (
+            // <DButton onClick={deleteFunc} />
+            <Alerting
+              btn={<DButton onClick={deleteFunc} />}
+              onclick={() => console.log('ust *** mini ')}
             />
-          </div>
-
-          {/* {isDelete ? (
-            <button
-              className="flex items-center justify-center w-6 h-6 bg-gray-600 rounded-full md:w-8 md:h-8"
-              onClick={deleteFunc}
-            >
-              <FiDelete size={16} className="text-white" />
-            </button>
           ) : (
-            <button
-              className="flex items-center justify-center w-6 h-6 bg-gray-600 rounded-full md:w-8 md:h-8"
-              onClick={() => console.log('asdf')}
-            >
-              <FiCamera size={16} className="text-white" />
-            </button>
-          )} */}
+            <ImageCount onClick={() => console.log('Zurag')}>
+              {item?.images?.length}
+            </ImageCount>
+          )}
         </div>
 
         {/* Zariin info  */}
@@ -82,8 +87,10 @@ function Card({ item, deleteFunc = () => {}, isDelete = false }) {
               return (
                 <React.Fragment key={i}>
                   <ApartmentIconInfo p={p} />
+
                   {p.type === 'area' && (
                     <ItemContainer
+                      lbl={p.name}
                       Icon={(props) => <BiArea {...props} text="" />}
                       text={calcValue(p.input, 'байхгүй', 'м.кв')}
                     />
@@ -113,18 +120,21 @@ const ApartmentIconInfo = ({ p }) => {
     <React.Fragment>
       {p && p.type === 'room' && (
         <ItemContainer
+          lbl={p.name}
           text={calcValue(p.input, 'байхгүй')}
           Icon={(props) => <BiDoorOpen {...props} text="" />}
         />
       )}
       {p && p.type === 'masterBedroom' && (
         <ItemContainer
+          lbl={p.name}
           Icon={(props) => <IoBedOutline {...props} text="" />}
           text={calcValue(p.input, 'байхгүй')}
         />
       )}
       {p && p.type === 'bathroom' && (
         <ItemContainer
+          lbl={p.name}
           Icon={(props) => <TbBath {...props} text="" />}
           text={calcValue(p.input, 'байхгүй')}
         />
@@ -133,12 +143,14 @@ const ApartmentIconInfo = ({ p }) => {
   );
 };
 
-const ItemContainer = ({ Icon = () => <></>, text = '' }) => {
+const ItemContainer = ({ Icon = () => <></>, text = '', lbl }) => {
   return (
-    <div className="flex flex-row items-center gap-1">
-      <Icon className="text-white" />
-      <p className="text-white md:text-sm text-[12px]">{text}</p>
-    </div>
+    <Tip lbl={lbl}>
+      <div className="flex flex-row items-center gap-1">
+        <Icon className="text-white" />
+        <p className="text-white md:text-sm text-[12px]">{text}</p>
+      </div>
+    </Tip>
   );
 };
 

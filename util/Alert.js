@@ -5,27 +5,29 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogOverlay,
+  useDisclosure,
 } from '@chakra-ui/react';
-import React from 'react';
+import { useRef } from 'react';
 import { STYLES } from '../styles';
 import mergeNames from './mergeNames';
 
-const Alert = () => {
+const Alerting = ({ btn, onclick, body }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const cancelRef = React.useRef();
+  const cancelRef = useRef();
   return (
     <>
       <button
         className={mergeNames(STYLES.button, 'bg-red-500 hover:bg-red-900')}
         onClick={onOpen}
       >
-        Зар устгах
+        {btn}
       </button>
 
       <AlertDialog
         isOpen={isOpen}
         leastDestructiveRef={cancelRef}
         onClose={onClose}
+        isCentered
       >
         <AlertDialogOverlay>
           <AlertDialogContent>
@@ -33,13 +35,15 @@ const Alert = () => {
               Зар устгах
             </AlertDialogHeader>
 
-            <AlertDialogBody>Та итгэлтэй байна уу?</AlertDialogBody>
+            <AlertDialogBody>
+              {body ?? <p>Та итгэлтэй байна уу?</p>}
+            </AlertDialogBody>
 
             <AlertDialogFooter>
               <button
                 className={mergeNames(
                   STYLES.button,
-                  'bg-gray-300 hover:bg-gray-400 ml-3'
+                  'bg-gray-300 hover:bg-gray-400 ml-3 px-4 py-2'
                 )}
                 ref={cancelRef}
                 onClick={onClose}
@@ -49,9 +53,9 @@ const Alert = () => {
               <button
                 className={mergeNames(
                   STYLES.button,
-                  'bg-red-500 hover:bg-red-900 ml-3'
+                  'bg-red-500 hover:bg-red-900 ml-3 px-4 py-2'
                 )}
-                onClick={onClose}
+                onClick={(onClose, onclick)}
               >
                 Устгах
               </button>
@@ -63,4 +67,4 @@ const Alert = () => {
   );
 };
 
-export default Alert;
+export default Alerting;

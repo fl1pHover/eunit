@@ -4,7 +4,6 @@ import urls from '@/constants/api';
 import { useAuth } from '@/context/auth';
 import { ContainerX } from '@/lib/Container';
 import { useEffect, useState } from 'react';
-
 // import required modules
 import AdContent from '@/components/home/adContent';
 
@@ -36,6 +35,7 @@ export default function Home({ propAds }) {
     <>
       <SwiperHeader />
       <CategorySelect />
+
       <ContainerX classname="py-6">
         {/* <Heading className="">Шинэ зарууд</Heading> */}
         {ads && <AdContent data={ads} showLink="" pg={false} inCat={false} />}
