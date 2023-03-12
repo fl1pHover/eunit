@@ -20,16 +20,19 @@ const Account = ({ user }) => {
     {
       tabHeader: 'Хувийн мэдээлэл',
       title: 'Profile',
+
       comp: <Profile user={user} />,
     },
     {
       tabHeader: 'Миний зарууд',
       title: 'MyAds',
+
       comp: <MyAds user={user} />,
     },
     {
       tabHeader: 'Миний хүслүүд',
       title: 'Bookmark',
+
       comp: <Bookmark user={user} />,
     },
   ];
@@ -56,10 +59,10 @@ const Account = ({ user }) => {
           )}
         >
           <div className="flex flex-row gap-5 border-b cursor-pointer border-b-bgGrey lg:text-base text-[12px]">
-            {tabs.map((tab, i) => {
+            {tabs.map((tab, index) => {
               return (
                 <button
-                  key={i}
+                  key={index}
                   className={mergeNames(
                     'pb-3',
                     content === tab.title
@@ -77,11 +80,11 @@ const Account = ({ user }) => {
           </div>
           {/* Lorem ipsum dolor sit amet. */}
 
-          {tabs.map((tab, i) => {
+          {tabs.map((tab, index) => {
             return (
               tab.title && (
                 <>
-                  <div key={i}>{content === tab.title && tab.comp}</div>
+                  <div key={index}>{content === tab.title && tab.comp}</div>
                 </>
               )
             );

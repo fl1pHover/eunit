@@ -15,7 +15,7 @@ import AdCardButton from './adCardButton';
 
 function Card({ item, deleteFunc = () => {}, isDelete = false }) {
   const router = useRouter();
-  console.log(item);
+  // console.log(item);
   return (
     // <Skeleton>
     <Skeleton isLoaded>
@@ -29,8 +29,8 @@ function Card({ item, deleteFunc = () => {}, isDelete = false }) {
         >
           {item?.images && (
             <Image
-              src={item?.images[0] ?? ''}
-              alt="Зураггүй зар"
+              src={item?.images[0] ?? '/images/noImage.png'}
+              alt=" зар"
               layout="fill"
               objectFit="cover"
               className={mergeNames(
