@@ -1,6 +1,7 @@
 import {
   AspectRatio,
   Box,
+  Button,
   GridItem,
   Heading,
   HStack,
@@ -10,7 +11,8 @@ import {
   Select,
   Stack,
   Text,
-  useToast,
+  useDisclosure,
+  useToast
 } from '@chakra-ui/react';
 import { Fragment, useEffect, useMemo, useState } from 'react';
 
@@ -31,18 +33,47 @@ import {
   GoogleMap,
   InfoWindow,
   MarkerF,
-  useLoadScript,
+  useLoadScript
 } from '@react-google-maps/api';
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
 import currency from 'currency.js';
 import moment from 'moment/moment';
 
+import EditAd from '@/components/ad/edit';
+
+import { FiltersContainer } from '@/components/createAd/step4/filter';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import urls from '../../constants/api';
-import { useAuth } from '../../context/auth';
 import UserInfo from './userInfo';
+
+export const ProductInfoValue = ({ href, value, id }) => {
+  return (
+    <NextLink
+      href={
+        href
+          ? {
+              pathname: `/category/filter/${id}`,
+              query: { num: 0, value: value },
+            }
+          : {}
+      }
+    >
+      <Link
+        fontSize={{ base: '13px', xl: '15px' }}
+        cursor={'pointer'}
+        fontWeight={'bold'}
+      >
+        {id === 'price' || id === 'unitPrice'
+          ? currency(value, { separator: ',', symbol: '₮ ' })
+              .format()
+              .toString()
+          : value}
+      </Link>
+    </NextLink>
+  );
+};
 
 export const ProductInfo = ({
   title,
@@ -50,9 +81,18 @@ export const ProductInfo = ({
   id,
   children,
   href = true,
+  type = '',
   tt = 'capitalize',
-  func,
+  func = () => {},
+  setEditData,
+  edit = false,
+  editData,
+  editFunc = () => {},
 }) => {
+  const [selectedParent, setSelectedParent] = useState([]);
+  const [localData, setData] = useState();
+  const [other, setOther] = useState(false);
+  let dummy = { ...editData };
   return (
     <Fragment>
       <p
@@ -82,28 +122,71 @@ export const ProductInfo = ({
           >
             {title}:{' '}
           </Text>
-          <NextLink
-            href={
-              href
-                ? {
-                    pathname: `/category/filter/${id}`,
-                    query: { num: 0, value: value },
-                  }
-                : {}
-            }
-          >
-            <Link
-              fontSize={{ base: '13px', xl: '15px' }}
-              cursor={'pointer'}
-              fontWeight={'bold'}
+          <ProductInfoValue href={href} id={id} value={value} />
+          {localData && (
+            <FiltersContainer
+              selectedOther={other}
+              other={localData.other ?? false}
+              value={localData.value}
+              name={localData.name}
+              defValue={value}
+              types={localData.types}
+              ph={value}
+              label={value}
+              onChange={(e) => {
+                if (typeof e == 'string' || typeof e == 'number') {
+                  dummy?.filters.map((df) => {
+                    if (df.type == localData.type) {
+                      df.input = e;
+                    }
+                  });
+                  setEditData(dummy);
+                } else {
+                  dummy?.filters.map((df) => {
+                    if (df.type == localData.type) {
+                      df.input = e.target.value;
+                    }
+                  });
+                  setEditData(dummy);
+                }
+              }}
+              Item={({ data, onClick, id, ...props }) => {
+                return (
+                  <button
+                    {...props}
+                    onClick={() => {
+                      if (data == 'Бусад') {
+                        setOther(true);
+                      } else {
+                        setOther(false);
+                        dummy?.filters.map((df) => {
+                          if (df.type == localData.type) {
+                            df.input = data;
+                          }
+                        });
+                        setEditData(dummy);
+                      }
+                      onClick();
+                    }}
+                  >
+                    {data}
+                    {props.children}
+                  </button>
+                );
+              }}
+            />
+          )}
+          {edit && (
+            <Button
+              onClick={async () => {
+                await axios.get(`${urls['test']}/items/${type}`).then((d) => {
+                  setData(d.data);
+                });
+              }}
             >
-              {id === 'price' || id === 'unitPrice'
-                ? currency(value, { separator: ',', symbol: '₮ ' })
-                    .format()
-                    .toString()
-                : value}
-            </Link>
-          </NextLink>
+              edit
+            </Button>
+          )}
         </Stack>
       </GridItem>
     </Fragment>
@@ -112,12 +195,13 @@ export const ProductInfo = ({
 
 const Product = ({ propAds }) => {
   const toast = useToast();
-  const { districts, locations } = useAuth();
   const router = useRouter();
   const [data, setData] = useState('');
   const [suggestion, setSuggestion] = useState(
     propAds?.subCategory?.suggessionType[0] ?? 'location'
   );
+  const dummyData = [];
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const user = getCookie('user');
   const [sData, setsData] = useState([]);
   const libraries = useMemo(() => ['places'], []);
@@ -169,6 +253,7 @@ const Product = ({ propAds }) => {
 
   const getData = async () => {
     setData(propAds);
+    dummyData = propAds;
     await getSuggestion(suggestion, propAds);
   };
   useEffect(() => {
@@ -183,6 +268,27 @@ const Product = ({ propAds }) => {
       <ScrollTop />
       <MainContainer>
         <Stack direction={'row'} py={2} gap={3}>
+          {user && JSON.parse(user)._id == data?.user?._id && (
+            <EditAd
+              isOpen={isOpen}
+              onClose={onClose}
+              data={data}
+              setData={setData}
+              onOpen={onOpen}
+              onNext={async () => {
+                await axios
+                  .put(`${urls['test']}/ad/${data._id}`, data, {
+                    headers: {
+                      Authorization: `Bearer ${token}`,
+                      'Access-Control-Allow-Headers': '*',
+                      'Content-Type': 'application/json',
+                      charset: 'UTF-8',
+                    },
+                  })
+                  .then((d) => console.log(d.data));
+              }}
+            />
+          )}
           {/* //TODO Filter Box */}
           {/* {data?.subCategory && <FilterLayout data={data.subCategory}/>} */}
 

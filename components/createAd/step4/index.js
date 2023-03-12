@@ -1,18 +1,16 @@
 import { Committee } from '@/constants/enums';
-import Counter from '@/lib/Counter';
-import { DateYearSelector } from '@/lib/DateSelector';
 import Input from '@/lib/Input';
 import Select from '@/lib/Select';
 import mergeNames from '@/util/mergeNames';
-import {
-  Box,
-  NumberDecrementStepper,
-  NumberIncrementStepper,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-} from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import { useState } from 'react';
+import FilterDate, {
+  FilterButtonSelector,
+  FilterCounter,
+  FilterSelect,
+  FilterText,
+  FilterYear,
+} from '../filters';
 import ButtonSelectItem from '../formButtonSelectItem';
 import FormLabel from '../formLabel';
 
@@ -22,6 +20,7 @@ const Step3 = ({ filter, selectedParent, setSelectedParent }) => {
     bathroom: '',
     masterRoom: '',
   });
+  console.log(filter);
 
   // const [filters, setFilters] = useState(filter)
 
@@ -35,417 +34,392 @@ const Step3 = ({ filter, selectedParent, setSelectedParent }) => {
           f.value.push({ id: 'other', value: 'Бусад' });
         if (f.types == 'date')
           return (
-            <ItemContainer key={i}>
-              <FormLabel title={f.name} />
-              <DateYearSelector
-                defValue={usedYear}
-                placeholder={f.name}
-                onSelect={(num) => {
-                  let isNull = selectedParent.findIndex(
-                    (s) => s.parent == f.type
-                  );
+            <FilterDate
+              key={i}
+              title={f.name}
+              defValue={usedYear}
+              name={f.name}
+              onSelect={(num) => {
+                let isNull = selectedParent.findIndex(
+                  (s) => s.parent == f.type
+                );
 
-                  if (isNull > -1) {
-                    let selectedArr = [...selectedParent];
+                if (isNull > -1) {
+                  let selectedArr = [...selectedParent];
 
-                    selectedArr[isNull] = {
+                  selectedArr[isNull] = {
+                    id: num,
+                    parent: f.type,
+                    index: i,
+                    input: num,
+                    name: f.name,
+                  };
+                  setSelectedParent(selectedArr);
+                } else {
+                  setSelectedParent([
+                    ...selectedParent,
+                    {
                       id: num,
                       parent: f.type,
                       index: i,
                       input: num,
                       name: f.name,
-                    };
-                    setSelectedParent(selectedArr);
-                  } else {
-                    setSelectedParent([
-                      ...selectedParent,
-                      {
-                        id: num,
-                        parent: f.type,
-                        index: i,
-                        input: num,
-                        name: f.name,
-                      },
-                    ]);
-                  }
-                }}
-              />
-            </ItemContainer>
+                    },
+                  ]);
+                }
+              }}
+            />
           );
         if (f.types == 'year')
           return (
-            <ItemContainer key={i}>
-              <FormLabel title={f.name + ' / жил'} />
-              <NumberInput
-                size="md"
-                allowMouseWheel
-                min={0}
-                className="flex flex-row justify-between mx-auto overflow-hidden border-2 border-blue-500 rounded-full md:w-2/3"
-                onChange={(e) => {
-                  f.input = e;
-                  let isNull = selectedParent.findIndex(
-                    (s) => s.parent == f.type
-                  );
+            <FilterYear
+              key={i}
+              title={f.name}
+              onChange={(e) => {
+                f.input = e;
+                let isNull = selectedParent.findIndex(
+                  (s) => s.parent == f.type
+                );
 
-                  if (isNull > -1) {
-                    let selectedArr = [...selectedParent];
+                if (isNull > -1) {
+                  let selectedArr = [...selectedParent];
 
-                    selectedArr[isNull] = {
+                  selectedArr[isNull] = {
+                    id: e,
+                    parent: f.type,
+                    index: i,
+                    input: e,
+                    name: f.name,
+                  };
+                  setSelectedParent(selectedArr);
+                } else {
+                  setSelectedParent([
+                    ...selectedParent,
+                    {
                       id: e,
                       parent: f.type,
                       index: i,
                       input: e,
                       name: f.name,
-                    };
-                    setSelectedParent(selectedArr);
-                  } else {
-                    setSelectedParent([
-                      ...selectedParent,
-                      {
-                        id: e,
-                        parent: f.type,
-                        index: i,
-                        input: e,
-                        name: f.name,
-                      },
-                    ]);
-                  }
-                }}
-              >
-                <NumberInputField />
-                <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
-                </NumberInputStepper>
-              </NumberInput>
-            </ItemContainer>
+                    },
+                  ]);
+                }
+              }}
+            />
           );
         if (f.type === 'room')
           return (
-            <ItemContainer
+            <FilterCounter
               key={i}
-              className={'flex flex-col items-center justify-center'}
-            >
-              <FormLabel title="Өрөөний тоо" />
-              <Counter
-                limit={parseInt(f.value[f.value.length - 2].value)}
-                maxValue={f.value[f.value.length - 1].value}
-                setValue={(val) => {
-                  f.input = val;
-                  let isNull = selectedParent.findIndex(
-                    (s) => s.parent == f.type
-                  );
+              title={'Өрөөний тоо'}
+              limit={f.value[f.value.length - 2].value}
+              maxValue={f.value[f.value.length - 1].value}
+              setValue={(val) => {
+                f.input = val;
+                let isNull = selectedParent.findIndex(
+                  (s) => s.parent == f.type
+                );
 
-                  if (isNull > -1) {
-                    let selectedArr = [...selectedParent];
+                if (isNull > -1) {
+                  let selectedArr = [...selectedParent];
 
-                    selectedArr[isNull] = {
+                  selectedArr[isNull] = {
+                    id: val,
+                    parent: f.type,
+                    index: i,
+                    input: val,
+                    name: f.name,
+                  };
+                  setSelectedParent(selectedArr);
+                } else {
+                  setSelectedParent([
+                    ...selectedParent,
+                    {
                       id: val,
                       parent: f.type,
                       index: i,
                       input: val,
                       name: f.name,
-                    };
-                    setSelectedParent(selectedArr);
-                  } else {
-                    setSelectedParent([
-                      ...selectedParent,
-                      {
-                        id: val,
-                        parent: f.type,
-                        index: i,
-                        input: val,
-                        name: f.name,
-                      },
-                    ]);
-                  }
-                }}
-              />
-            </ItemContainer>
+                    },
+                  ]);
+                }
+              }}
+            />
           );
         if (f.types == 'text')
           return (
-            <ItemContainer
+            <FilterText
               key={i}
-              className={'flex flex-col items-center justify-center'}
-            >
-              <FormLabel title={f.name} />
-              <Input
-                ph={f.name}
-                onChange={(e) => {
-                  f.input = e.target.value;
-                  let isNull = selectedParent.findIndex(
-                    (s) => s.parent == f.type
-                  );
+              title={f.name}
+              ph={f.name}
+              onChange={(e) => {
+                f.input = e.target.value;
+                let isNull = selectedParent.findIndex(
+                  (s) => s.parent == f.type
+                );
 
-                  if (isNull > -1) {
-                    let selectedArr = [...selectedParent];
+                if (isNull > -1) {
+                  let selectedArr = [...selectedParent];
 
-                    selectedArr[isNull] = {
+                  selectedArr[isNull] = {
+                    id: e.target.value,
+                    parent: f.type,
+                    index: i,
+                    input: e.target.value,
+                    name: f.name,
+                  };
+                  setSelectedParent(selectedArr);
+                } else {
+                  setSelectedParent([
+                    ...selectedParent,
+                    {
                       id: e.target.value,
                       parent: f.type,
                       index: i,
                       input: e.target.value,
                       name: f.name,
-                    };
-                    setSelectedParent(selectedArr);
-                  } else {
-                    setSelectedParent([
-                      ...selectedParent,
-                      {
-                        id: e.target.value,
-                        parent: f.type,
-                        index: i,
-                        input: e.target.value,
-                        name: f.name,
-                      },
-                    ]);
-                  }
-                }}
-              />
-            </ItemContainer>
+                    },
+                  ]);
+                }
+              }}
+            />
           );
         if (f.type === 'bathroom')
           return (
-            <ItemContainer key={i}>
-              <FormLabel title="Угаалгын өрөөний тоо" />
-              <div className="flex flex-row justify-center gap-4">
-                {f?.value?.map((text, id) => {
-                  return (
-                    <ButtonSelectItem
-                      key={id}
-                      text={text.value}
-                      isSelected={text.value == selected.bathroom}
-                      onClick={() => {
-                        f.input = text.value;
-                        let isNull = selectedParent.findIndex(
-                          (s) => s.parent == f.type
-                        );
+            <FilterButtonSelector
+              key={i}
+              title={'Угаалгын өрөөний тоо'}
+              data={f?.value}
+              selected={selected.bathroom}
+              Item={({ text, onClick, id, isSelected, ...props }) => {
+                return (
+                  <ButtonSelectItem
+                    text={text}
+                    key={id}
+                    isSelected={isSelected}
+                    {...props}
+                    onClick={() => {
+                      f.input = text;
+                      let isNull = selectedParent.findIndex(
+                        (s) => s.parent == f.type
+                      );
 
-                        if (isNull > -1) {
-                          let selectedArr = [...selectedParent];
+                      if (isNull > -1) {
+                        let selectedArr = [...selectedParent];
 
-                          selectedArr[isNull] = {
-                            id,
+                        selectedArr[isNull] = {
+                          id,
+                          parent: f.type,
+                          index: i,
+                          input: text,
+                          name: f.name,
+                        };
+                        setSelectedParent(selectedArr);
+                      } else {
+                        setSelectedParent([
+                          ...selectedParent,
+                          {
+                            id: id,
                             parent: f.type,
                             index: i,
-                            input: text.value,
+                            input: text,
                             name: f.name,
-                          };
-                          setSelectedParent(selectedArr);
-                        } else {
-                          setSelectedParent([
-                            ...selectedParent,
-                            {
-                              id: id,
-                              parent: f.type,
-                              index: i,
-                              input: text.value,
-                              name: f.name,
-                            },
-                          ]);
-                        }
-                        setSelected((prev) => ({
-                          ...prev,
-                          bathroom: text.value,
-                        }));
-                      }}
-                    />
-                  );
-                })}
-              </div>
-              {/* <Counter
-            limit={3}
-            maxValue="3+"
-            setValue={(val) => setRoomNumber(val)}
-          /> */}
-            </ItemContainer>
+                          },
+                        ]);
+                      }
+                      setSelected((prev) => ({
+                        ...prev,
+                        bathroom: text,
+                      }));
+                      onClick();
+                    }}
+                  >
+                    {text}
+                    {props.children}
+                  </ButtonSelectItem>
+                );
+              }}
+            />
           );
         if (f.type === 'masterBedroom')
           return (
-            <ItemContainer key={i}>
-              <FormLabel title="Мастер унтлагын өрөөний тоо" />
-              <div className="flex flex-row justify-center gap-4">
-                {f?.value?.map((text, id) => {
-                  return (
-                    <ButtonSelectItem
-                      text={text.value}
-                      key={id}
-                      isSelected={text.value == selected.masterRoom}
-                      onClick={() => {
-                        f.input = text.value;
-                        let isNull = selectedParent.findIndex(
-                          (s) => s.parent == f.type
-                        );
+            <FilterButtonSelector
+              key={i}
+              title={'Мастер унтлагын өрөөний тоо'}
+              data={f?.value}
+              selected={selected.masterRoom}
+              Item={({ text, onClick, id, isSelected, ...props }) => {
+                return (
+                  <ButtonSelectItem
+                    text={text}
+                    key={id}
+                    isSelected={isSelected}
+                    {...props}
+                    onClick={() => {
+                      f.input = text;
+                      let isNull = selectedParent.findIndex(
+                        (s) => s.parent == f.type
+                      );
 
-                        if (isNull > -1) {
-                          let selectedArr = [...selectedParent];
+                      if (isNull > -1) {
+                        let selectedArr = [...selectedParent];
 
-                          selectedArr[isNull] = {
-                            id,
+                        selectedArr[isNull] = {
+                          id,
+                          parent: f.type,
+                          index: i,
+                          input: text,
+                          name: f.name,
+                        };
+                        setSelectedParent(selectedArr);
+                      } else {
+                        setSelectedParent([
+                          ...selectedParent,
+                          {
+                            id: id,
                             parent: f.type,
                             index: i,
-                            input: text.value,
+                            input: text,
                             name: f.name,
-                          };
-                          setSelectedParent(selectedArr);
-                        } else {
-                          setSelectedParent([
-                            ...selectedParent,
-                            {
-                              id: id,
-                              parent: f.type,
-                              index: i,
-                              input: text.value,
-                              name: f.name,
-                            },
-                          ]);
-                        }
-                        setSelected((prev) => ({
-                          ...prev,
-                          masterRoom: text.value,
-                        }));
-                      }}
-                    />
-                  );
-                })}
-              </div>
-            </ItemContainer>
+                          },
+                        ]);
+                      }
+                      setSelected((prev) => ({
+                        ...prev,
+                        masterRoom: text,
+                      }));
+                      onClick();
+                    }}
+                  >
+                    {text}
+                    {props.children}
+                  </ButtonSelectItem>
+                );
+              }}
+            />
           );
         if (f.type == 'committee') {
           return (
-            <ItemContainer
+            <FilterSelect
               key={i}
-              //  className="bg-red-100"
-            >
-              <FormLabel title={f.name} />
+              label={f.input != '' ? f.input : f.name}
+              title={f.name}
+              data={
+                selectedParent.find(
+                  (s) => s.parent == f.parentId && s.id == 'country'
+                ) == undefined
+                  ? Committee
+                  : f.value.find((s) =>
+                      selectedParent.findIndex(
+                        (se) => se.parent == s.parent && s.parentId == se.id
+                      ) > -1
+                        ? 0
+                        : undefined
+                    ) !== undefined
+                  ? Committee
+                  : f.value.filter((v) => {
+                      let index = selectedParent.findIndex(
+                        (s) => s.id == v.parentId
+                      );
 
-              <Select
-                width="long"
-                data={
-                  selectedParent.find(
-                    (s) => s.parent == f.parentId && s.id == 'country'
-                  ) == undefined
-                    ? Committee
-                    : f.value.find((s) =>
-                        selectedParent.findIndex(
-                          (se) => se.parent == s.parent && s.parentId == se.id
-                        ) > -1
-                          ? 0
-                          : undefined
-                      ) !== undefined
-                    ? Committee
-                    : f.value.filter((v) => {
-                        let index = selectedParent.findIndex(
-                          (s) => s.id == v.parentId
-                        );
+                      if (index > -1)
+                        return v.parentId == selectedParent[index]?.id;
+                    })
+              }
+              Item={({ data, onClick, id, ...props }) => {
+                return (
+                  <button
+                    {...props}
+                    onClick={() => {
+                      f.input = data;
+                      let isNull = selectedParent.findIndex(
+                        (s) => s.parent == f.type
+                      );
 
-                        if (index > -1)
-                          return v.parentId == selectedParent[index]?.id;
-                      })
-                }
-                label={f.input != '' ? f.input : f.name}
-                Item={({ data, onClick, id, ...props }) => {
-                  return (
-                    <button
-                      {...props}
-                      onClick={() => {
-                        f.input = data;
-                        let isNull = selectedParent.findIndex(
-                          (s) => s.parent == f.type
-                        );
+                      if (isNull > -1) {
+                        let selectedArr = [...selectedParent];
 
-                        if (isNull > -1) {
-                          let selectedArr = [...selectedParent];
-
-                          selectedArr[isNull] = {
-                            id,
+                        selectedArr[isNull] = {
+                          id,
+                          parent: f.type,
+                          name: f.name,
+                          input: data,
+                          index: i,
+                        };
+                        setSelectedParent(selectedArr);
+                      } else {
+                        setSelectedParent([
+                          ...selectedParent,
+                          {
+                            id: id,
                             parent: f.type,
-                            name: f.name,
-                            input: data,
                             index: i,
-                          };
-                          setSelectedParent(selectedArr);
-                        } else {
-                          setSelectedParent([
-                            ...selectedParent,
-                            {
-                              id: id,
-                              parent: f.type,
-                              index: i,
-                              input: data,
-                              name: f.name,
-                            },
-                          ]);
-                        }
-                        onClick();
-                      }}
-                    >
-                      {data}
-                      {props.children}
-                    </button>
-                  );
-                }}
-              />
-            </ItemContainer>
+                            input: data,
+                            name: f.name,
+                          },
+                        ]);
+                      }
+                      onClick();
+                    }}
+                  >
+                    {data}
+                    {props.children}
+                  </button>
+                );
+              }}
+            />
           );
         }
         if (f.types == 'dropdown')
           return f.parentId == null ? (
-            <ItemContainer
+            <FilterSelect
               key={i}
-              //  className="bg-red-100"
-            >
-              <FormLabel title={f.name} />
+              title={f.name}
+              data={f.value}
+              label={f.input != '' ? f.input : f.name}
+              Item={({ data, onClick, id, ...props }) => {
+                return (
+                  <button
+                    {...props}
+                    onClick={() => {
+                      f.input = data;
+                      let isNull = selectedParent.findIndex(
+                        (s) => s.parent == f.type
+                      );
 
-              <Select
-                width="long"
-                data={f.value}
-                label={f.input != '' ? f.input : f.name}
-                Item={({ data, onClick, id, ...props }) => {
-                  return (
-                    <button
-                      {...props}
-                      onClick={() => {
-                        f.input = data;
-                        let isNull = selectedParent.findIndex(
-                          (s) => s.parent == f.type
-                        );
+                      if (isNull > -1) {
+                        let selectedArr = [...selectedParent];
 
-                        if (isNull > -1) {
-                          let selectedArr = [...selectedParent];
-
-                          selectedArr[isNull] = {
-                            id,
+                        selectedArr[isNull] = {
+                          id,
+                          parent: f.type,
+                          index: i,
+                          input: data,
+                          name: f.name,
+                        };
+                        setSelectedParent(selectedArr);
+                      } else {
+                        setSelectedParent([
+                          ...selectedParent,
+                          {
+                            id: id,
                             parent: f.type,
                             index: i,
                             input: data,
                             name: f.name,
-                          };
-                          setSelectedParent(selectedArr);
-                        } else {
-                          setSelectedParent([
-                            ...selectedParent,
-                            {
-                              id: id,
-                              parent: f.type,
-                              index: i,
-                              input: data,
-                              name: f.name,
-                            },
-                          ]);
-                        }
+                          },
+                        ]);
+                      }
 
-                        onClick();
-                      }}
-                    >
-                      {data}
-                      {props.children}
-                    </button>
-                  );
-                }}
-              />
-            </ItemContainer>
+                      onClick();
+                    }}
+                  >
+                    {data}
+                    {props.children}
+                  </button>
+                );
+              }}
+            />
           ) : selectedParent.find((d) => d.parent == f.parentId) != undefined &&
             f.value.length > 0 ? (
             <ItemContainer
@@ -653,7 +627,7 @@ const Col = (props) => (
   <div className="flex flex-col items-center">{props.children}</div>
 );
 
-const ItemContainer = ({ children, className }) => (
+export const ItemContainer = ({ children, className }) => (
   <div className={mergeNames('mb-10', className)}>{children}</div>
 );
 
