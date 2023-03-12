@@ -1,7 +1,6 @@
 import React from 'react';
 import { BiArea, BiDoorOpen } from 'react-icons/bi';
 
-import { FiCamera, FiDelete } from 'react-icons/fi';
 import { IoBedOutline } from 'react-icons/io5';
 import { TbBath } from 'react-icons/tb';
 
@@ -11,20 +10,13 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import AdCardButton from './adCardButton';
 
-// const custom = ({ src, width, quality }) => {
-//   return `${src}?w=${width}&q=${quality || 75}`;
-// };
-
 function Card({ item, deleteFunc = () => {}, isDelete = false }) {
   const router = useRouter();
-
+  console.log(item);
   return (
     // <Skeleton>
     <Skeleton isLoaded>
-      <div
-        className="relative overflow-hidden rounded-md md:min-h-[35vh] min-h-[30vh]  shadow-md bg-zinc-200 group "
-        // onClick={() => item && item._id && router.push(`/product/${item.num}`)}
-      >
+      <div className="relative overflow-hidden rounded-md md:min-h-[35vh] min-h-[30vh]  shadow-md bg-zinc-200 group ">
         {/* zarin zurag absolute  */}
         <div
           className="absolute top-0 bottom-0 left-0 right-0 z-0 w-full h-full cursor-pointer"
@@ -34,57 +26,46 @@ function Card({ item, deleteFunc = () => {}, isDelete = false }) {
         >
           {item?.images && (
             <Image
-              src={item?.images[0] ?? '/images/HeaderSlider/1.jpg'}
-              alt="product image"
+              src={item?.images[0] ?? ''}
+              alt="Зураг байхгүй"
               layout="fill"
               objectFit="cover"
-              className="group-hover:scale-125 transition-all w-full object-cover h-full ease-in-out duration-400 aspect-[4/5] relative z-0"
+              className={mergeNames(
+                'group-hover:scale-125 transition-all w-full object-cover h-full ease-in-out duration-400 aspect-[4/5] relative z-0 ',
+                'text-center grid place-items-center font-bold'
+              )}
             />
-            // <div className="group-hover:scale-125 transition-all w-full object-cover h-full ease-in-out duration-400 aspect-[4/5] relative z-0">
-            //   <Image
-            //     loader={custom}
-            //     src={item?.images[0] ?? '/images/HeaderSlider/1.jpg'}
-            //     alt="product image"
-            //     layout="fill"
-            //     objectFit="cover"
-            //   />
-            // </div>
           )}
+
           <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-slate-700/0 via-slate-700/30 to-slate-900/100"></div>
         </div>
         {/* Zariin body  */}
-        <div className="relative z-0 flex w-full h-full px-3 py-2">
-          <div className="absolute top-0 left-0 z-10 flex items-start justify-between flex-1 w-full p-2">
-            <div className="px-2 py-1 rounded-md bg-mainBlossom w-fit">
-              <p className="h-4 text-sm font-semibold text-white md:h-6">
-                <Image
-                  src="/images/logo/bom-white.png"
-                  alt="BOM logo"
-                  objectFit="contain"
-                  className="h-full"
-                  width={32}
-                  height={24}
-                  // layout="fill"
-                />
-              </p>
-            </div>
-
-            {isDelete ? (
-              <button
-                className="flex items-center justify-center w-6 h-6 bg-gray-600 rounded-full md:w-8 md:h-8"
-                onClick={deleteFunc}
-              >
-                <FiDelete size={16} className="text-white" />
-              </button>
-            ) : (
-              <button
-                className="flex items-center justify-center w-6 h-6 bg-gray-600 rounded-full md:w-8 md:h-8"
-                onClick={() => console.log('asdf')}
-              >
-                <FiCamera size={16} className="text-white" />
-              </button>
-            )}
+        <div className="relative z-10 flex items-start justify-between flex-1 w-full h-full px-3 py-2">
+          <div className="relative w-8 h-6 rounded-md md:w-10 md:h-8 bg-mainBlossom">
+            <Image
+              src="/images/logo/bom-white.png"
+              alt="BOM logo"
+              objectFit="contain"
+              layout="fill"
+              className="p-1"
+            />
           </div>
+
+          {/* {isDelete ? (
+            <button
+              className="flex items-center justify-center w-6 h-6 bg-gray-600 rounded-full md:w-8 md:h-8"
+              onClick={deleteFunc}
+            >
+              <FiDelete size={16} className="text-white" />
+            </button>
+          ) : (
+            <button
+              className="flex items-center justify-center w-6 h-6 bg-gray-600 rounded-full md:w-8 md:h-8"
+              onClick={() => console.log('asdf')}
+            >
+              <FiCamera size={16} className="text-white" />
+            </button>
+          )} */}
         </div>
 
         {/* Zariin info  */}

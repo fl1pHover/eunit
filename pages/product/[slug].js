@@ -1,5 +1,4 @@
 import {
-  AspectRatio,
   Box,
   GridItem,
   Heading,
@@ -52,7 +51,7 @@ export const ProductInfo = ({
 }) => {
   return (
     <Fragment>
-      <p
+      {/* <p
         className={mergeNames(
           id === 'price'
             ? 'mt-3 text-xl font-bold col-span-full block'
@@ -60,7 +59,7 @@ export const ProductInfo = ({
         )}
       >
         Бусад мэдээлэл
-      </p>
+      </p> */}
       <GridItem
         className={
           title.length + value?.length > 30
@@ -172,6 +171,7 @@ const Product = ({ propAds }) => {
   }, [propAds]);
 
   const [open, setOpen] = useState(false);
+
   return (
     <Box m={2} as="section" id="main__product">
       <ScrollTop />
@@ -242,21 +242,30 @@ const Product = ({ propAds }) => {
                   <Box
                     className={mergeNames(
                       'product__image',
-                      'border-2 border-blue-900/20  mb-[120px] shadow-md'
+                      'border-2 border-blue-900/20 shadow-md'
+                      // data?.images.length && 'mb-[120px]'
                     )}
                   >
-                    {data?.images && (
-                      <AspectRatio ratio={1}>
+                    {data?.images?.length > 0 ? (
+                      // ?.length !== 0 ?
+                      <div className="object-contain">
                         <ImageGallery
-                          items={data?.images.map((i) => ({
+                          items={data?.images?.map((i) => ({
                             original: i,
                             thumbnail: i,
                           }))}
                         />
-                      </AspectRatio>
+                      </div>
+                    ) : (
+                      <div className="grid w-full aspect-square place-items-center">
+                        Зураг байхгүй байна
+                      </div>
                     )}
                   </Box>
-                  <Text mt={5}>{data.description}</Text>
+                  <div className="flex flex-col gap-2 pt-5">
+                    <p className="text-xl font-bold">Зарын дэлгэрэнгүй</p>
+                    <p mt={5}>{data.description}</p>
+                  </div>
                 </div>
 
                 {/*  //TODO  ENDING LEFT SIDE IMAGES AND DESC */}
@@ -276,9 +285,9 @@ const Product = ({ propAds }) => {
                         }
                       />
 
-                      <p className="text-xl font-bold col-span-full">
+                      {/* <p className="text-xl font-bold col-span-full">
                         Ерөнхий мэдээлэл
-                      </p>
+                      </p> */}
 
                       {data?.filters?.map((p, i) => {
                         if (p.type != null) {

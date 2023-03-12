@@ -20,6 +20,7 @@ export default function Login() {
     username: '',
   });
   const router = useRouter();
+
   const [credential, setCredential] = useState({ email: '', password: '' });
   const signUp = () => {
     if (
@@ -80,8 +81,9 @@ export default function Login() {
               setCredential={setCredential}
               fc={signIn}
             />
+            
             <p className="my-10 text-sm font-bold text-gray-600">
-              Та бүртгүүлээгүй юм биш биз?
+              Та бүртгүүлээгүй юм биш биз?{' '}
               <button className="text-blue-800" onClick={() => setSign(2)}>
                 Бүртгүүлэх
               </button>
@@ -179,6 +181,14 @@ export const LoginComp = ({ credential, setCredential, fc }) => {
 };
 
 export const SignUpComp = ({ credential, setCredential, fc }) => {
+  const [match, setMatch] = useState(true);
+  const hm = () => {
+    if (credential.password == credential.confirmPassword) {
+      setMatch(match);
+    }
+    setMatch(!match);
+  };
+
   return (
     <FormControl>
       <Box h={3} />
@@ -221,6 +231,10 @@ export const SignUpComp = ({ credential, setCredential, fc }) => {
         setValue={setCredential}
         v="confirmPassword"
       />
+      {!match && (
+        <p className="text-red-500"> Баталгаажуулах нууц үг таараагүй байна</p>
+      )}
+
       <Box h={7} />
       {/* <CustomToast
         onclick={() => fc()}
@@ -232,7 +246,9 @@ export const SignUpComp = ({ credential, setCredential, fc }) => {
 
       <button
         className={mergeNames('w-full h-auto py-3', STYLES.blueButton)}
-        onClick={() => fc()}
+        onClick={() => {
+          fc(), hm();
+        }}
       >
         Бүртүүлэх
       </button>
@@ -246,11 +262,14 @@ export const InputComp = ({ lbl, type, value, setValue, v }) => {
 
   return (
     <Box bg={'bg.input'} borderRadius={12} w="full">
-      <FormControl variant="floating" id="first-name" isRequired>
+      <FormControl variant={'floating'} id="first-name" isRequired>
         <Input
           placeholder=" "
           border="1px solid #d9d9d9 "
-          className="relative text-[14px] rounded-full"
+          className={mergeNames(
+            'relative text-[14px] rounded-full',
+            value.length == 0 ? 'border-red-500' : 'border-blue-600'
+          )}
           type={type === 'password' ? (!show ? 'password' : 'text') : 'text'}
           value={value}
           onChange={(e) => {
@@ -290,6 +309,10 @@ export const InputComp = ({ lbl, type, value, setValue, v }) => {
             }
           }}
         />
+        <FormLabel className={mergeNames('text-[14px] md:text-base ')}>
+          {lbl}
+        </FormLabel>
+
         {type === 'password' && (
           <button
             onClick={handleClick}
@@ -298,7 +321,6 @@ export const InputComp = ({ lbl, type, value, setValue, v }) => {
             {show ? <BiHide /> : <BiShow />}
           </button>
         )}
-        <FormLabel className="text-[14px] md:text-base">{lbl}</FormLabel>
       </FormControl>
     </Box>
   );

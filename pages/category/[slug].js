@@ -17,10 +17,7 @@ import {
 } from '@chakra-ui/react';
 
 import { ContainerX } from '@/lib/Container';
-<<<<<<< HEAD
-=======
 import SkeletonContent from '@/util/SkeletonContent';
->>>>>>> e79836650fbce11193457ba57c2093e3c5749a87
 import {
   GoogleMap,
   InfoWindow,

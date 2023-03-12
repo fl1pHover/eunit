@@ -1,3 +1,4 @@
+import { ContainerX } from '@/lib/Container';
 import { motion } from 'framer-motion';
 import Head from 'next/head';
 import Footer from '../components/footer/index';
@@ -18,9 +19,11 @@ const Layout = ({ children }) => {
       >
         {children}
       </motion.div>
-      <div className="hidden md:block">
-        <Footer />
-      </div>
+
+        <div className="hidden md:block">
+          <Footer />
+        </div>
+ 
       <div className="block h-20 md:hidden" />
     </>
   );

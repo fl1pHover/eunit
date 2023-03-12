@@ -1,6 +1,6 @@
 import React from "react";
 
-import { NavContainer } from "@/lib/Container";
+import { ContainerX, NavContainer } from "@/lib/Container";
 
 import LinkGrid from "./linkGrid";
 import ContactGrid from "./contactGrid";
@@ -12,12 +12,12 @@ const Footer = () => {
   // console.log("pt", pt);
   return (
     <section className="bg-white">
-      <NavContainer>
-        <div className="grid lg:grid-cols-6 md:grid-cols-4 xs:grid-cols-2 grid-cols-1 sm:gap-10 gap-5 md:py-10 py-5">
+      <ContainerX>
+        <div className="grid grid-cols-1 gap-5 py-5 lg:grid-cols-6 md:grid-cols-4 xs:grid-cols-2 sm:gap-10 md:py-10">
           <LinkGrid />
           <ContactGrid />
         </div>
-      </NavContainer>
+      </ContainerX>
       <Bottom />
     </section>
   );

@@ -173,8 +173,6 @@ const Profile = ({
 
         <Socials edit={edit} socials={socials} setSocials={setSocials} />
 
-
-        
         <GroupLayout title="Профайл зураг" className="col-span-1/2">
           {edit ? (
             <ProfileImage
@@ -183,7 +181,7 @@ const Profile = ({
             />
           ) : (
             <Image
-              className="object-cover object-center  h-[25vh] overflow-hidden bg-gray-300 rounded-md aspect-square"
+              className="object-cover object-center  h-[25vh] overflow-hidden bg-gray-300 rounded-md aspect-square border border-red-500"
               alt="Current Profile"
               src={
                 user?.profileImg ??
