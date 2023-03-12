@@ -25,9 +25,9 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <AuthProvider>
-      {isLoading && <MainLoader />}
       <ChakraProvider theme={theme}>
         <AnimatePresence>
+          {isLoading && <MainLoader />}
           <Layout>
             <Navbar />
             <Component {...pageProps} />

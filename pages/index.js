@@ -38,7 +38,7 @@ export default function Home({ propAds }) {
       <CategorySelect />
       <ContainerX classname="py-6">
         {/* <Heading className="">Шинэ зарууд</Heading> */}
-        {ads && <AdContent data={ads} showLink="" pg={false} />}
+        {ads && <AdContent data={ads} showLink="" pg={false} inCat={false} />}
       </ContainerX>
     </>
   );

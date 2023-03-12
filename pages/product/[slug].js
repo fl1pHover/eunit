@@ -257,8 +257,8 @@ const Product = ({ propAds }) => {
                         />
                       </div>
                     ) : (
-                      <div className="grid w-full aspect-square place-items-center">
-                        Зураг байхгүй байна
+                      <div className="grid w-full font-bold bg-gray-200 aspect-square place-items-center text-md">
+                        Энэ заранд зураг байхгүй байна
                       </div>
                     )}
                   </Box>

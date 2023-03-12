@@ -180,14 +180,16 @@ const Profile = ({
               setSelectedImage={setSelectedImage}
             />
           ) : (
-            <Image
-              className="object-cover object-center  h-[25vh] overflow-hidden bg-gray-300 rounded-md aspect-square border border-red-500"
-              alt="Current Profile"
-              src={
-                user?.profileImg ??
-                'https://www.pikpng.com/pngl/m/80-805068_my-profile-icon-blank-profile-picture-circle-clipart.png'
-              }
-            />
+            <div className="border-2 border-blue-200 rounded-md border-500">
+              <Image
+                className="object-cover object-center  h-[25vh] overflow-hidden bg-gray-300 aspect-square "
+                alt="Current Profile"
+                src={
+                  user?.profileImg ??
+                  'https://www.pikpng.com/pngl/m/80-805068_my-profile-icon-blank-profile-picture-circle-clipart.png'
+                }
+              />
+            </div>
           )}
         </GroupLayout>
         <GroupLayout title="Бүртгэлтэй Имэйл" className="col-span-1/2">

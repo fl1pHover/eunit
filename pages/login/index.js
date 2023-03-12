@@ -81,7 +81,7 @@ export default function Login() {
               setCredential={setCredential}
               fc={signIn}
             />
-            
+
             <p className="my-10 text-sm font-bold text-gray-600">
               Та бүртгүүлээгүй юм биш биз?{' '}
               <button className="text-blue-800" onClick={() => setSign(2)}>
@@ -140,8 +140,9 @@ export async function getServerSideProps({ req, res }) {
 
 export const LoginComp = ({ credential, setCredential, fc }) => {
   return (
-    <FormControl>
+    <form>
       <Box h={3} />
+
       <InputComp
         lbl={'Та И-Мэйл хаягаа оруулна уу'}
         type="email"
@@ -171,26 +172,27 @@ export const LoginComp = ({ credential, setCredential, fc }) => {
       /> */}
 
       <button
+        type="submit"
         className={mergeNames('w-full h-auto py-3 ', STYLES.blueButton)}
         onClick={() => fc()}
       >
         Нэвтрэх
       </button>
-    </FormControl>
+    </form>
   );
 };
 
+const MatchPass = () => {};
+
 export const SignUpComp = ({ credential, setCredential, fc }) => {
   const [match, setMatch] = useState(true);
+
   const hm = () => {
-    if (credential.password == credential.confirmPassword) {
-      setMatch(match);
-    }
-    setMatch(!match);
+    setMatch(credential.password == credential.confirmPassword);
   };
 
   return (
-    <FormControl>
+    <form>
       <Box h={3} />
       <InputComp
         lbl={'Та И-Мэйл хаягаа оруулна уу'}
@@ -231,8 +233,9 @@ export const SignUpComp = ({ credential, setCredential, fc }) => {
         setValue={setCredential}
         v="confirmPassword"
       />
+
       {!match && (
-        <p className="text-red-500"> Баталгаажуулах нууц үг таараагүй байна</p>
+        <p className={mergeNames('text-red-500')}>Нууц үгийг адил бичнэ үү</p>
       )}
 
       <Box h={7} />
@@ -243,8 +246,8 @@ export const SignUpComp = ({ credential, setCredential, fc }) => {
         stats="success"
         toastH="Амжилттай бүртгэгдлээ"
       /> */}
-
       <button
+        type="submit"
         className={mergeNames('w-full h-auto py-3', STYLES.blueButton)}
         onClick={() => {
           fc(), hm();
@@ -252,7 +255,7 @@ export const SignUpComp = ({ credential, setCredential, fc }) => {
       >
         Бүртүүлэх
       </button>
-    </FormControl>
+    </form>
   );
 };
 
@@ -267,11 +270,12 @@ export const InputComp = ({ lbl, type, value, setValue, v }) => {
           placeholder=" "
           border="1px solid #d9d9d9 "
           className={mergeNames(
-            'relative text-[14px] rounded-full',
-            value.length == 0 ? 'border-red-500' : 'border-blue-600'
+            'relative text-[14px] rounded-full'
+            // value.length == 0 ? 'border-red-500' : 'border-blue-600'
           )}
-          type={type === 'password' ? (!show ? 'password' : 'text') : 'text'}
+          type={type === 'password' ? (!show ? 'password' : 'text') : type}
           value={value}
+          required
           onChange={(e) => {
             switch (v) {
               case 'email':
@@ -313,13 +317,14 @@ export const InputComp = ({ lbl, type, value, setValue, v }) => {
           {lbl}
         </FormLabel>
 
+        {/* Show password */}
         {type === 'password' && (
-          <button
+          <div
             onClick={handleClick}
-            className="absolute top-[50%] -translate-y-[50%] right-0 w-[40px] h-[40px] z-10 grid place-items-center "
+            className="absolute top-[50%] -translate-y-[50%] right-0 w-[40px] h-[40px] z-10 grid place-items-center cursor-pointer"
           >
             {show ? <BiHide /> : <BiShow />}
-          </button>
+          </div>
         )}
       </FormControl>
     </Box>
