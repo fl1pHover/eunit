@@ -4,7 +4,7 @@ import urls from '@/constants/api';
 import { useAuth } from '@/context/auth';
 import { brk, STYLES } from '@/styles/index';
 import mergeNames from '@/util/mergeNames';
-import { Checkbox, useDisclosure } from '@chakra-ui/react';
+import { Checkbox } from '@chakra-ui/react';
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
 import Cookies from 'js-cookie';
@@ -38,6 +38,7 @@ const Admin = ({ propAds }) => {
   const [data, setData] = useState({});
   const [checker, setChecker] = useState(false);
   const [num, setNum] = useState(0);
+  let dummy = [];
   const getData = async () => {
     fetch(`${urls['test']}/ad/admin/${num}`, {
       headers: {
@@ -74,6 +75,7 @@ const Admin = ({ propAds }) => {
   useEffect(() => {
     setAds(propAds);
     setData(propAds);
+
     let c = [],
       s = [];
     propAds.ads.map((ad) => {
@@ -108,7 +110,6 @@ const Admin = ({ propAds }) => {
     await fetch(`${urls['test']}/ad/delete/${id}`).then((d) => getData());
   };
   const [content, setContent] = useState('');
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const [collapsedId, setCollapsed] = useState(false);
   const adStatusChecker = async () => {
     if (checker.pending) {
@@ -208,7 +209,7 @@ const Admin = ({ propAds }) => {
             );
           })} 
         </div> */}
-        <div className=" p-5">
+        <div className="p-5 ">
           {/* <Text>Zariin dugaar: {a.num}</Text>
             <Button onClick={() => verify(a._id)}>verify</Button>
             <Button onClick={() => deleteAd(a._id)}>delete</Button> */}
@@ -315,6 +316,7 @@ const Admin = ({ propAds }) => {
               </thead>
               <tbody>
                 {ads?.ads?.map((a, i) => {
+                  let adData = { ...a };
                   return (
                     <tr key={i}>
                       <td className="w-[30px]">{a.num}</td>
@@ -339,11 +341,10 @@ const Admin = ({ propAds }) => {
                       </td>
                       <td>
                         <EditAd
-                          isOpen={isOpen}
-                          onClose={onClose}
+                        setData={setAds}
+                        ads={ads}
                           data={a}
                           admin={true}
-                          onOpen={onOpen}
                           onNext={async () => {
                             await axios
                               .put(`${urls['test']}/ad/${a._id}`, a, {

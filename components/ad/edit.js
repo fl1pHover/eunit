@@ -1,7 +1,7 @@
 import { LoadingButton } from '@/lib/Button';
 import CustomModal from '@/util/CustomModal';
 import mergeNames from '@/util/mergeNames';
-import { AspectRatio, Box, Input } from '@chakra-ui/react';
+import { AspectRatio, Box, Input, useDisclosure } from '@chakra-ui/react';
 import { GoogleMap, MarkerF, useLoadScript } from '@react-google-maps/api';
 import { Textarea } from 'flowbite-react';
 import { ProductInfo } from 'pages/product/[slug]';
@@ -9,16 +9,14 @@ import { useMemo, useState } from 'react';
 import ImageGallery from 'react-image-gallery';
 
 const EditAd = ({
-  isOpen,
-  onClose,
-  onOpen,
   onNext = () => {},
   data,
   setData,
   admin = false,
+  ads = [],
 }) => {
   const libraries = useMemo(() => ['places'], []);
-
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [markerActive, setMarkerActive] = useState(null);
   const [loading, setLoading] = useState(false);
   const { isLoaded } = useLoadScript({
@@ -59,21 +57,25 @@ const EditAd = ({
       <Box maxWidth={'100%'} flex="0 0 100%" borderRadius="5px">
         <Box className="p-3 bg-white shadow-md md:p-10 rounded-xl">
           {/*Product */}
-          {data.title && (
+          {
             <Input
               variant={'mediumHeading'}
               onChange={(e) => {
-                dummyData.title = e.target.value;
+                console.log(e.target.value);
                 if (!admin) {
+                  dummyData.title = e.target.value;
                   setData(dummyData);
                 } else {
-                  data = dummyData;
+                  let d = { ...ads };
+                  d.ads.find((a) => data == a).title = e.target.value;
+
+                  setData(d);
                 }
               }}
               mb={5}
               value={data.title}
             />
-          )}
+          }
 
           {/* product image and information */}
           <div className="flex flex-col ">
@@ -88,7 +90,7 @@ const EditAd = ({
                   <AspectRatio
                     ratio={1}
                     onClick={() => {
-                      onClose();
+                      // onClose();
                     }}
                   >
                     <ImageGallery
@@ -104,11 +106,15 @@ const EditAd = ({
               <Textarea
                 mt={5}
                 onChange={(e) => {
+   
                   dummyData.description = e.target.value;
                   if (!admin) {
-                    setEditData(dummy);
+                    setData(dummy);
                   } else {
-                    data = dummyData;
+                    let d = { ...ads };
+                    d.ads.find((a) => data == a).title = e.target.value;
+
+                    setData(d);
                   }
                 }}
               >
@@ -145,7 +151,7 @@ const EditAd = ({
               onClick={(e) => {
                 dummyData.location = e.latLng.toJSON();
                 if (!admin) {
-                  setEditData(dummy);
+                  setData(dummyData);
                 } else {
                   data = dummyData;
                 }

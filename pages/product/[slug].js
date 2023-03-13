@@ -10,7 +10,6 @@ import {
   Select,
   Stack,
   Text,
-  useDisclosure,
   useToast,
 } from '@chakra-ui/react';
 import { Fragment, useEffect, useMemo, useState } from 'react';
@@ -48,16 +47,12 @@ import urls from '../../constants/api';
 import UserInfo from './userInfo';
 
 export const ProductInfoValue = ({ href, value, id }) => {
-  return (
+  return href ? (
     <NextLink
-      href={
-        href
-          ? {
-              pathname: `/category/filter/${id}`,
-              query: { num: 0, value: value },
-            }
-          : {}
-      }
+      href={{
+        pathname: `/category/filter/${id}`,
+        query: { num: 0, value: value },
+      }}
     >
       <Link
         fontSize={{ base: '13px', xl: '15px' }}
@@ -71,6 +66,12 @@ export const ProductInfoValue = ({ href, value, id }) => {
           : value}
       </Link>
     </NextLink>
+  ) : (
+    <Text fontSize={{ base: '13px', xl: '15px' }} fontWeight={'bold'}>
+      {id === 'price' || id === 'unitPrice'
+        ? currency(value, { separator: ',', symbol: '₮ ' }).format().toString()
+        : value}
+    </Text>
   );
 };
 
@@ -115,7 +116,7 @@ export const ProductInfo = ({
           direction={'row'}
           justifyContent="space-between"
           className={mergeNames('p-2 border-2 rounded-md border-bgGrey')}
-          onClick={href ? () => {} : func}
+          onClick={!href ? () => {} : func}
         >
           <div className="flex items-center gap-1">
             <Text
@@ -124,7 +125,11 @@ export const ProductInfo = ({
             >
               {title}:{' '}
             </Text>
-            <ProductInfoValue href={href} id={id} value={value} />
+
+            {!localData && (
+              <ProductInfoValue href={href} id={id} value={value} />
+            )}
+
             {localData && (
               <FiltersContainer
                 selectedOther={other}
@@ -210,7 +215,7 @@ const Product = ({ propAds }) => {
     propAds?.subCategory?.suggessionType[0] ?? 'location'
   );
   const dummyData = [];
-  const { isOpen, onOpen, onClose } = useDisclosure();
+
   const user = getCookie('user');
   const [sData, setsData] = useState([]);
   const libraries = useMemo(() => ['places'], []);
@@ -281,11 +286,8 @@ const Product = ({ propAds }) => {
           {user && JSON.parse(user)._id == data?.user?._id && (
             <div className="absolute right-0 top-4">
               <EditAd
-                isOpen={isOpen}
-                onClose={onClose}
                 data={data}
                 setData={setData}
-                onOpen={onOpen}
                 onNext={async () => {
                   await axios
                     .put(`${urls['test']}/ad/${data._id}`, data, {
@@ -350,7 +352,6 @@ const Product = ({ propAds }) => {
                             : 'text-slate-200/90'
                         }
                         onClick={async () => {
-                          console.log(data._id);
                           await axios
                             .post(
                               `${urls['test']}/bookmark/ad`,
@@ -443,6 +444,7 @@ const Product = ({ propAds }) => {
                       </p>
 
                       {data?.filters?.map((p, i) => {
+                        console.log(p.type);
                         if (p.type != null && p.type != 'phone') {
                           return (
                             <ProductInfo
@@ -466,7 +468,9 @@ const Product = ({ propAds }) => {
               {/* <Estimator /> */}
               {data && (
                 <ECalculator
-                  data={data?.filters?.filter((f) => f.id === 'price')}
+                  data={
+                    data?.filters?.filter((f) => f.type === 'price')[0]?.input
+                  }
                 />
               )}
             </Box>
