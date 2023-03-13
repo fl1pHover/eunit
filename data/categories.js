@@ -123,7 +123,7 @@ export const categories = [
     ],
   },
   {
-    image: '/images/Category/householditems.jpg',
+    image: '/images/Category/householdItems.jpg',
     icon: ({ size, className = '' }) => (
       <RiHomeSmile2Line {...{ size, className }} />
     ),
