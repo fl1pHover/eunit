@@ -25,10 +25,10 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <AuthProvider>
-      {isLoading && <MainLoader />}
       <ChakraProvider theme={theme}>
         <AnimatePresence>
           <Layout>
+            {isLoading && <MainLoader />}
             <Navbar />
             <Component {...pageProps} />
             <ScrollTop />

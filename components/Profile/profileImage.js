@@ -36,7 +36,7 @@ const ProfileImage = ({ selectedImage, setSelectedImage }) => {
       />
 
       {selectedImage ? (
-        <div className="h-[25vh] relative rounded-md flex-col justify-center items-center">
+        <div className="h-[25vh] relative rounded-md flex-col justify-center items-center ">
           <Image
             src={
               URL.createObjectURL(selectedImage) ??

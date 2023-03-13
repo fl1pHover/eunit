@@ -62,6 +62,7 @@ const AdCardButton = ({ id, adId }) => {
               : toast({
                   status: `warning`,
                   title: `Ижил төрлийн зар сонгоно уу`,
+                  duration: 1000,
                 });
           } else {
             setCompareAds((prev) => [...prev, d.data]);

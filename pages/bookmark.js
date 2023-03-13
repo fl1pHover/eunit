@@ -11,7 +11,7 @@ const Bookmark = () => {
           {/* //TODO Filter Box */}
           {/* <FilterLayout /> */}
           <div className="min-h-[600px] basis-1/4 p-5 bg-white rounded-xl shadow-md sticky ">
-            <BomSelect placeholder="Үл хөдлөх" onChange={null} value={null}>
+          <BomSelect placeholder="Үл хөдлөх" onChange={null} value={null}>
               <option value={'option1'}>coming</option>
             </BomSelect>
           </div>

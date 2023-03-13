@@ -20,6 +20,7 @@ export default function Login() {
     username: '',
   });
   const router = useRouter();
+
   const [credential, setCredential] = useState({ email: '', password: '' });
   const signUp = () => {
     if (
@@ -80,8 +81,9 @@ export default function Login() {
               setCredential={setCredential}
               fc={signIn}
             />
+
             <p className="my-10 text-sm font-bold text-gray-600">
-              Та бүртгүүлээгүй юм биш биз?
+              Та бүртгүүлээгүй юм биш биз?{' '}
               <button className="text-blue-800" onClick={() => setSign(2)}>
                 Бүртгүүлэх
               </button>
@@ -138,8 +140,9 @@ export async function getServerSideProps({ req, res }) {
 
 export const LoginComp = ({ credential, setCredential, fc }) => {
   return (
-    <FormControl>
+    <form>
       <Box h={3} />
+
       <InputComp
         lbl={'Та И-Мэйл хаягаа оруулна уу'}
         type="email"
@@ -169,18 +172,27 @@ export const LoginComp = ({ credential, setCredential, fc }) => {
       /> */}
 
       <button
+        type="submit"
         className={mergeNames('w-full h-auto py-3 ', STYLES.blueButton)}
         onClick={() => fc()}
       >
         Нэвтрэх
       </button>
-    </FormControl>
+    </form>
   );
 };
 
+const MatchPass = () => {};
+
 export const SignUpComp = ({ credential, setCredential, fc }) => {
+  const [match, setMatch] = useState(true);
+
+  const hm = () => {
+    setMatch(credential.password == credential.confirmPassword);
+  };
+
   return (
-    <FormControl>
+    <form>
       <Box h={3} />
       <InputComp
         lbl={'Та И-Мэйл хаягаа оруулна уу'}
@@ -221,6 +233,11 @@ export const SignUpComp = ({ credential, setCredential, fc }) => {
         setValue={setCredential}
         v="confirmPassword"
       />
+
+      {!match && (
+        <p className={mergeNames('text-red-500')}>Нууц үгийг адил бичнэ үү</p>
+      )}
+
       <Box h={7} />
       {/* <CustomToast
         onclick={() => fc()}
@@ -229,14 +246,16 @@ export const SignUpComp = ({ credential, setCredential, fc }) => {
         stats="success"
         toastH="Амжилттай бүртгэгдлээ"
       /> */}
-
       <button
+        type="submit"
         className={mergeNames('w-full h-auto py-3', STYLES.blueButton)}
-        onClick={() => fc()}
+        onClick={() => {
+          fc(), hm();
+        }}
       >
         Бүртгүүлэх
       </button>
-    </FormControl>
+    </form>
   );
 };
 
@@ -246,13 +265,17 @@ export const InputComp = ({ lbl, type, value, setValue, v }) => {
 
   return (
     <Box bg={'bg.input'} borderRadius={12} w="full">
-      <FormControl variant="floating" id="first-name" isRequired>
+      <FormControl variant={'floating'} id="first-name" isRequired>
         <Input
           placeholder=" "
           border="1px solid #d9d9d9 "
-          className="relative text-[14px] rounded-full"
-          type={type === 'password' ? (!show ? 'password' : 'text') : 'text'}
+          className={mergeNames(
+            'relative text-[14px] rounded-full'
+            // value.length == 0 ? 'border-red-500' : 'border-blue-600'
+          )}
+          type={type === 'password' ? (!show ? 'password' : 'text') : type}
           value={value}
+          required
           onChange={(e) => {
             switch (v) {
               case 'email':
@@ -290,15 +313,19 @@ export const InputComp = ({ lbl, type, value, setValue, v }) => {
             }
           }}
         />
+        <FormLabel className={mergeNames('text-[14px] md:text-base ')}>
+          {lbl}
+        </FormLabel>
+
+        {/* Show password */}
         {type === 'password' && (
-          <button
+          <div
             onClick={handleClick}
-            className="absolute top-[50%] -translate-y-[50%] right-0 w-[40px] h-[40px] z-10 grid place-items-center "
+            className="absolute top-[50%] -translate-y-[50%] right-0 w-[40px] h-[40px] z-10 grid place-items-center cursor-pointer"
           >
             {show ? <BiHide /> : <BiShow />}
-          </button>
+          </div>
         )}
-        <FormLabel className="text-[14px] md:text-base">{lbl}</FormLabel>
       </FormControl>
     </Box>
   );
