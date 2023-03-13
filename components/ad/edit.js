@@ -15,6 +15,7 @@ const EditAd = ({
   onNext = () => {},
   data,
   setData,
+  admin = false
 }) => {
   const libraries = useMemo(() => ['places'], []);
 
@@ -50,7 +51,7 @@ const EditAd = ({
       onOpen={onOpen}
       btnOpen={
         <>
-          Илгээх <FiArrowRight size={20} />
+          Засах 
         </>
       }
       onclick={onNext}
@@ -66,7 +67,11 @@ const EditAd = ({
               variant={'mediumHeading'}
               onChange={(e) => {
                 dummyData.title = e.target.value;
-                setData(dummyData);
+                if(!admin) {
+                  setData(dummyData);
+                } else {
+                  data = dummyData
+                }
               }}
               mb={5}
               value={data.title}
@@ -106,7 +111,11 @@ const EditAd = ({
                 mt={5}
                 onChange={(e) => {
                   dummyData.description = e.target.value;
-                  setData(dummyData);
+                  if(!admin) {
+                    setEditData(dummy);
+                  } else {
+                    data = dummyData
+                  }
                 }}
               >
                 {data.description}
@@ -129,6 +138,7 @@ const EditAd = ({
                       edit={true}
                       href={false}
                       type={p.type}
+                      admin={admin}
                       setEditData={setData}
                       editData={data}
                     />
@@ -140,7 +150,11 @@ const EditAd = ({
             <GoogleMap
               onClick={(e) => {
                 dummyData.location = e.latLng.toJSON();
-                setData(dummyData);
+                if(!admin) {
+                  setEditData(dummy);
+                } else {
+                  data = dummyData
+                }
               }}
               options={mapOptions}
               zoom={14}

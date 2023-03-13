@@ -87,6 +87,7 @@ export const ProductInfo = ({
   setEditData,
   edit = false,
   editData,
+  admin,
   editFunc = () => {},
 }) => {
   const [selectedParent, setSelectedParent] = useState([]);
@@ -140,14 +141,18 @@ export const ProductInfo = ({
                       df.input = e;
                     }
                   });
-                  setEditData(dummy);
+                  if(!admin) {
+                    setEditData(dummy);
+                  }
                 } else {
                   dummy?.filters.map((df) => {
                     if (df.type == localData.type) {
                       df.input = e.target.value;
                     }
                   });
-                  setEditData(dummy);
+                  if(!admin) {
+                    setEditData(dummy);
+                  }
                 }
               }}
               Item={({ data, onClick, id, ...props }) => {
@@ -164,7 +169,9 @@ export const ProductInfo = ({
                             df.input = data;
                           }
                         });
-                        setEditData(dummy);
+                        if(!admin) {
+                          setEditData(dummy);
+                        }
                       }
                       onClick();
                     }}

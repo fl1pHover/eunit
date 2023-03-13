@@ -1,13 +1,14 @@
+import EditAd from '@/components/ad/edit';
 import FilterAd from '@/components/Profile/filterAd';
 import urls from '@/constants/api';
 import { useAuth } from '@/context/auth';
-import { brk } from '@/styles/index';
+import { brk, STYLES } from '@/styles/index';
 import mergeNames from '@/util/mergeNames';
-import { Checkbox } from '@chakra-ui/react';
+import { Checkbox, useDisclosure } from '@chakra-ui/react';
+import axios from 'axios';
 import { getCookie } from 'cookies-next';
 import Cookies from 'js-cookie';
 import { useEffect, useState } from 'react';
-import { CgChevronRight } from 'react-icons/cg';
 import { MdDelete } from 'react-icons/md';
 import { SiVerizon } from 'react-icons/si';
 const Tab = ({ num, children }) => {
@@ -32,19 +33,74 @@ const Admin = ({ propAds }) => {
   const [ads, setAds] = useState([]);
   const { user } = useAuth();
   const token = Cookies.get('token');
+  const [categories, setCategories] = useState([]);
+  const [subCategory, setSubCategory] = useState([]);
+  const [data, setData] = useState({});
+  const [checker, setChecker] = useState(false);
+  const [num, setNum] = useState(0);
   const getData = async () => {
-    fetch(`${urls['test']}/ad/notVerify/${0}`, {
+    fetch(`${urls['test']}/ad/admin/${num}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     })
       .then((d) => d.json())
-      .then((d) => setAds(d?.ads));
+      .then((d) => {
+        setAds(d);
+        setData(d);
+        let c = [],
+          s = [];
+        d?.ads.map((ad) => {
+          if (c.length > 0) {
+            if (c.find((a) => a == ad.category.name) === undefined) {
+              c.push(ad.category.name);
+            }
+          } else {
+            c.push(ad.category.name);
+          }
+          if (s.length > 0) {
+            if (s.find((a) => a == ad.subCategory.name) === undefined) {
+              s.push(ad.subCategory.name);
+            }
+          } else {
+            s.push(ad.subCategory.name);
+          }
+        });
+        setCategories(c);
+        setSubCategory(s);
+      });
   };
+
   useEffect(() => {
-    setAds(propAds?.ads);
-    console.log(propAds);
+    setAds(propAds);
+    setData(propAds);
+    let c = [],
+      s = [];
+    propAds.ads.map((ad) => {
+      if (c.length > 0) {
+        if (c.find((a) => a == ad.category.name) === undefined) {
+          c.push(ad.category.name);
+        }
+      } else {
+        c.push(ad.category.name);
+      }
+      if (s.length > 0) {
+        if (s.find((a) => a == ad.subCategory.name) === undefined) {
+          s.push(ad.subCategory.name);
+        }
+      } else {
+        s.push(ad.subCategory.name);
+      }
+    });
+    setCategories(c);
+    setSubCategory(s);
   }, [propAds]);
+  useEffect(() => {
+    adStatusChecker();
+  }, [checker]);
+  useEffect(() => {
+    getData();
+  }, [num]);
   const verify = async (id) => {
     await fetch(`${urls['test']}/ad/check/${id}`).then((d) => getData());
   };
@@ -52,109 +108,37 @@ const Admin = ({ propAds }) => {
     await fetch(`${urls['test']}/ad/delete/${id}`).then((d) => getData());
   };
   const [content, setContent] = useState('');
-
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [collapsedId, setCollapsed] = useState(false);
-  const { categories } = useAuth();
+  const adStatusChecker = async () => {
+    if (checker.pending) {
+      let ad = ads.ads.filter((p) => p.adStatus == 'pending');
+      setAds({
+        ads: ad,
+        limit: ads.limit,
+      });
+    } else {
+      if (checker.create && ads) {
+        let ad = ads.ads.filter((p) => p.adStatus == 'created');
+        setAds({
+          ads: ad,
+          limit: ads.limit,
+        });
+      } else {
+        if (checker.deleted && ads) {
+          let ad = ads.ads.filter((p) => p.adStatus == 'deleted');
+          setAds({
+            ads: ad,
+            limit: ads.limit,
+          });
+        } else await getData();
+      }
+    }
+  };
   if (user?.userType == 'admin' || user?.userType == 'system') {
     return (
-      // <div className="flex flex-row p-5" key={i}>
-      //   {/* Dashboard */}
-      //   <div className="flex flex-col  text-white bg-mainBlossom w-[20%] p-4 rounded-xl">
-      //     <div className="flex flex-col">
-      //       <Tab
-      //         num={1}
-      //         className={mergeNames(
-      //           'flex justify-between py-2 font-bold cursor-pointer'
-      //         )}
-      //       >
-      //         Verify
-      //       </Tab>
-      //     </div>
-      //     {categories?.map(({ categoryName, submenu }, key) => {
-      //       return (
-      //         <div className="flex flex-col" key={key}>
-      //           <Tab
-      //             num={2}
-      //             className={mergeNames(
-      //               'flex justify-between py-2 font-bold cursor-pointer'
-      //             )}
-      //           >
-      //             {categoryName}
-      //             <button
-      //               // onClick={handleExpand}
-      //               onClick={() => {
-      //                 setCollapsed((prev) => {
-      //                   if (prev === categoryName.id) return false;
-      //                   return categoryName.id;
-      //                 });
-      //               }}
-      //             >
-      //               <AiFillCaretDown />
-      //             </button>
-      //           </Tab>
-      //           <ul
-      //             className={mergeNames(
-      //               'cursor-pointer ml-10',
-      //               expand ? 'block' : 'hidden'
-      //             )}
-      //           >
-      //             {collapsedId &&
-      //               collapsedId === categoryName.id &&
-      //               submenu?.map(({ category, href }, key) => {
-      //                 return (
-      //                   <li
-      //                     key={key}
-
-      //                     // className="px-4 py-3 text-sm font-medium text-white transition-colors ease-in hover:bg-blue-700 first-letter:uppercase whitespace-nowrap"
-      //                   >
-      //                     {category}
-      //                   </li>
-      //                 );
-      //               })}
-
-      //             {/* {submenu && (
-      //               <li onClick={() => setContent(a + 1)}>{submenu}</li>
-      //             )} */}
-      //           </ul>
-      //         </div>
-      //       );
-      //     })}
-      //     {/* <div className="flex flex-col">
-      //       <Tab
-      //         num={2}
-      //         className={mergeNames(
-      //           'flex justify-between py-2 font-bold cursor-pointer'
-      //         )}
-      //       >
-      //         Realstate
-      //         <button onClick={handleExpand}>
-      //           <AiFillCaretDown />
-      //         </button>
-      //       </Tab>
-      //       <ul
-      //         className={mergeNames(
-      //           'cursor-pointer ml-10',
-      //           expand ? 'block' : 'hidden'
-      //         )}
-      //       >
-      //         {categories?.map(({ categoryName, submenu }, i) => {
-      //           return (
-      //             <>
-
-      //               <li onClick={() => setContent(a + 1)}>{categoryName}</li>
-      //             </>
-      //           );
-      //         })}
-      //       </ul>
-      //     </div> */}
-      //   </div>
-      //   <div>
-      //     {content == 2 && <p>adasd</p>}
-      //     {content == 3 && <p>adafgdfgsd</p>}
-      //   </div>
-      // </div>
       <div className="flex flex-row p-5 min-h-[60vh]">
-        <div className="w-[20%] text-[#b8cde9] rounded-md bg-mainBlossom">
+        {/* <div className="w-[20%] text-[#b8cde9] rounded-md bg-mainBlossom">
           <div>
             <button
               className={mergeNames(
@@ -166,7 +150,7 @@ const Admin = ({ propAds }) => {
               Verify Ads
             </button>
           </div>
-          {categories?.map((tab, key) => {
+          {/* {categories?.map((tab, key) => {
             return (
               <div className="" key={key}>
                 <button
@@ -188,7 +172,7 @@ const Admin = ({ propAds }) => {
                   <CgChevronRight
                     size={20}
                     className={mergeNames(
-                      collapsedId === tab.id && 'rotate-90',
+                      collapsedId === tab?.id && 'rotate-90',
                       'transition-all ease-in-out'
                     )}
                   />
@@ -222,31 +206,98 @@ const Admin = ({ propAds }) => {
                 </div>
               </div>
             );
-          })}
-        </div>
-        <div className="w-[80%] p-5">
+          })} 
+        </div> */}
+        <div className=" p-5">
           {/* <Text>Zariin dugaar: {a.num}</Text>
             <Button onClick={() => verify(a._id)}>verify</Button>
             <Button onClick={() => deleteAd(a._id)}>delete</Button> */}
           {/* {content && <> {content} </>} */}
           <div className={mergeNames('flex flex-col gap-4 mt-5', brk)}>
             <div className="flex w-full gap-4">
-              <FilterAd plc="Бүх төрөл" onChange={(e) => {}}>
-                <option value=""></option>
+              <FilterAd
+                plc="Бүх төрөл"
+                onChange={(e) => {
+                  if (e.target.value != '') {
+                    let ad = data.ads.filter(
+                      (d) => d.category.name == e.target.value
+                    );
+                    setAds({
+                      ads: ad,
+                      limit: ads.limit,
+                    });
+                  } else {
+                    setAds(data);
+                  }
+                }}
+              >
+                {categories?.map((p, i) => {
+                  return (
+                    <option value={p} key={i}>
+                      {p}
+                    </option>
+                  );
+                })}
               </FilterAd>
-              <FilterAd plc="Бүх дэд төрөл" onChange={(e) => {}}>
-                <option value=""></option>
+              <FilterAd
+                plc="Бүх дэд төрөл"
+                onChange={(e) => {
+                  if (e.target.value != '') {
+                    let ad = data.ads.filter(
+                      (d) => d.subCategory.name == e.target.value
+                    );
+                    setAds({
+                      ads: ad,
+                      limit: ads.limit,
+                    });
+                  } else {
+                    setAds(data);
+                  }
+                }}
+              >
+                {subCategory?.map((p, i) => {
+                  return (
+                    <option value={p} key={i}>
+                      {p}
+                    </option>
+                  );
+                })}
               </FilterAd>
             </div>
             <div className="flex flex-col justify-end">
               <Checkbox
                 colorScheme="green"
                 className="font-bold text-green-400 whitespace-nowrap"
+                onChange={(e) => {
+                  setChecker((prev) => ({ ...prev, create: e.target.checked }));
+                }}
+                isChecked={checker.create}
               >
-                Нэмэгдсэн зарууд
+                Нэмсэн зарууд
               </Checkbox>
-              <Checkbox className="font-bold text-primary whitespace-nowrap">
+              <Checkbox
+                className="font-bold text-primary whitespace-nowrap"
+                isChecked={checker.pending}
+                onChange={(e) => {
+                  setChecker((prev) => ({
+                    ...prev,
+                    pending: e.target.checked,
+                  }));
+                }}
+              >
                 Хүлээгдэж байгаа
+              </Checkbox>
+              <Checkbox
+                className="font-bold text-red-400 whitespace-nowrap"
+                isChecked={checker.deleted}
+                onChange={(e) => {
+                  setChecker((prev) => ({
+                    ...prev,
+                    deleted: e.target.checked,
+                  }));
+                }}
+              >
+                Устгасан зарууд
               </Checkbox>
             </div>
           </div>
@@ -263,7 +314,7 @@ const Admin = ({ propAds }) => {
                 </tr>
               </thead>
               <tbody>
-                {ads?.map((a, i) => {
+                {ads?.ads?.map((a, i) => {
                   return (
                     <tr key={i}>
                       <td className="w-[30px]">{a.num}</td>
@@ -286,11 +337,82 @@ const Admin = ({ propAds }) => {
                           <MdDelete />
                         </button>
                       </td>
+                      <td>
+                        <EditAd
+                          isOpen={isOpen}
+                          onClose={onClose}
+                          data={a}
+                          admin={true}
+                          onOpen={onOpen}
+                          onNext={async () => {
+                            await axios
+                              .put(`${urls['test']}/ad/${a._id}`, a, {
+                                headers: {
+                                  Authorization: `Bearer ${token}`,
+                                  'Access-Control-Allow-Headers': '*',
+                                  'Content-Type': 'application/json',
+                                  charset: 'UTF-8',
+                                },
+                              })
+                              .then((d) => console.log(d.data));
+                          }}
+                        />
+                      </td>
                     </tr>
                   );
                 })}
               </tbody>
             </table>
+            {data?.limit && (
+              <ul className="flex float-right list-style-none">
+                <li className="mx-2 disabled">
+                  <button
+                    className={mergeNames(STYLES.notActive)}
+                    onClick={() => {
+                      if (num > 0) {
+                        let n = num - 1;
+                        setNum(n);
+                      }
+                    }}
+                  >
+                    Өмнөх
+                  </button>
+                </li>
+
+                {data?.limit &&
+                  [...Array(Math.ceil(data.limit / 20)).keys()].map((l, i) => {
+                    // [...Array(Math.ceil(data.limit / n)).keys()].map((l) => {
+                    return (
+                      <li className={l == num ? 'active' : ''} key={i}>
+                        <button
+                          className={mergeNames(
+                            l == num ? STYLES.active : STYLES.notActive
+                          )}
+                          onClick={() => {
+                            setNum(l);
+                          }}
+                        >
+                          {l + 1}
+                        </button>
+                      </li>
+                    );
+                  })}
+
+                <li className="mx-2 disabled">
+                  <button
+                    className={mergeNames(STYLES.notActive)}
+                    onClick={() => {
+                      if (data.limit > 20) {
+                        let n = num + 1;
+                        setNum(n);
+                      }
+                    }}
+                  >
+                    Дараах
+                  </button>
+                </li>
+              </ul>
+            )}
           </div>
         </div>
       </div>
@@ -312,7 +434,7 @@ export async function getServerSideProps({ req, res }) {
       const user = await response.json();
       // const adRes = await
       if (user?.userType == 'admin' || user?.userType == 'system') {
-        const ads = await fetch(`${urls['test']}/ad/notVerify/${0}`, {
+        const ads = await fetch(`${urls['test']}/ad/admin/${0}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -348,3 +470,99 @@ export async function getServerSideProps({ req, res }) {
     };
   }
 }
+// <div className="flex flex-row p-5" key={i}>
+//   {/* Dashboard */}
+//   <div className="flex flex-col  text-white bg-mainBlossom w-[20%] p-4 rounded-xl">
+//     <div className="flex flex-col">
+//       <Tab
+//         num={1}
+//         className={mergeNames(
+//           'flex justify-between py-2 font-bold cursor-pointer'
+//         )}
+//       >
+//         Verify
+//       </Tab>
+//     </div>
+//     {categories?.map(({ categoryName, submenu }, key) => {
+//       return (
+//         <div className="flex flex-col" key={key}>
+//           <Tab
+//             num={2}
+//             className={mergeNames(
+//               'flex justify-between py-2 font-bold cursor-pointer'
+//             )}
+//           >
+//             {categoryName}
+//             <button
+//               // onClick={handleExpand}
+//               onClick={() => {
+//                 setCollapsed((prev) => {
+//                   if (prev === categoryName.id) return false;
+//                   return categoryName.id;
+//                 });
+//               }}
+//             >
+//               <AiFillCaretDown />
+//             </button>
+//           </Tab>
+//           <ul
+//             className={mergeNames(
+//               'cursor-pointer ml-10',
+//               expand ? 'block' : 'hidden'
+//             )}
+//           >
+//             {collapsedId &&
+//               collapsedId === categoryName.id &&
+//               submenu?.map(({ category, href }, key) => {
+//                 return (
+//                   <li
+//                     key={key}
+
+//                     // className="px-4 py-3 text-sm font-medium text-white transition-colors ease-in hover:bg-blue-700 first-letter:uppercase whitespace-nowrap"
+//                   >
+//                     {category}
+//                   </li>
+//                 );
+//               })}
+
+//             {/* {submenu && (
+//               <li onClick={() => setContent(a + 1)}>{submenu}</li>
+//             )} */}
+//           </ul>
+//         </div>
+//       );
+//     })}
+//     {/* <div className="flex flex-col">
+//       <Tab
+//         num={2}
+//         className={mergeNames(
+//           'flex justify-between py-2 font-bold cursor-pointer'
+//         )}
+//       >
+//         Realstate
+//         <button onClick={handleExpand}>
+//           <AiFillCaretDown />
+//         </button>
+//       </Tab>
+//       <ul
+//         className={mergeNames(
+//           'cursor-pointer ml-10',
+//           expand ? 'block' : 'hidden'
+//         )}
+//       >
+//         {categories?.map(({ categoryName, submenu }, i) => {
+//           return (
+//             <>
+
+//               <li onClick={() => setContent(a + 1)}>{categoryName}</li>
+//             </>
+//           );
+//         })}
+//       </ul>
+//     </div> */}
+//   </div>
+//   <div>
+//     {content == 2 && <p>adasd</p>}
+//     {content == 3 && <p>adafgdfgsd</p>}
+//   </div>
+// </div>
