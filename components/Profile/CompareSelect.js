@@ -5,7 +5,6 @@ import { Image } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { MdCompareArrows } from 'react-icons/md';
-import FilterAd from './filterAd';
 
 const CompareItem = ({ item, onClick }) => {
   return (
@@ -31,20 +30,22 @@ const CompareSelect = () => {
 
   return (
     <div>
-      <div className="grid grid-cols-1 gap-4 mt-5 sm:grid-cols-2">
+      {/* <div className="grid grid-cols-1 gap-4 mt-5 sm:grid-cols-2">
         <FilterAd plc="Бүх төрөл" onChange={(e) => {}}>
           <option value=""></option>
         </FilterAd>
         <FilterAd plc="Бүх дэд төрөл" onChange={(e) => {}}>
           <option value=""></option>
         </FilterAd>
-      </div>
+      </div> */}
       <div
         className={mergeNames(
           'fixed px-[10%] bottom-0 left-0',
           'bg-secondary/90 w-screen transition-all ease-in-out pb-[68px] md:pb-0',
           ' text-[12px] sm:text-base  z-20',
-          compareAds.length > 0 ? 'h-[250px]' : 'h-0'
+          compareAds.length > 0 && router?.pathname != '/compare'
+            ? 'h-[250px]'
+            : 'h-0'
         )}
       >
         <button

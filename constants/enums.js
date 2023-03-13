@@ -290,7 +290,7 @@ export const Filters = {
 export const swiperBreakpoints = {
   // sm
   1: {
-    slidesPerView: 2,
+    slidesPerView: 1,
     grid: {
       rows: 2,
       fill: 'row',

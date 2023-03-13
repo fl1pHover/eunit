@@ -95,7 +95,8 @@ const AdCardButton = ({ id, adId }) => {
               cardIcon.icon,
               isLiked ||
                 (user &&
-                  JSON.parse(user).bookmarks.find((b) => b == adId) != undefined)
+                  JSON.parse(user).bookmarks.find((b) => b == adId) !=
+                    undefined)
                 ? 'text-red-500/90'
                 : 'text-slate-200/90'
             )}

@@ -70,7 +70,15 @@ const Account = ({ user }) => {
                       : 'border-none'
                   )}
                   onClick={() => {
-                    setContent(tab.title);
+                    setContent(tab.title),
+                      router.push(
+                        {
+                          pathname: '/account',
+                          query: { tab: `${tab.title}` },
+                        },
+                        null,
+                        { shallow: true }
+                      );
                   }}
                 >
                   {tab.tabHeader}

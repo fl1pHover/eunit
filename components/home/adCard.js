@@ -7,6 +7,7 @@ import { TbBath } from 'react-icons/tb';
 import urls from '@/constants/api';
 import { DButton, ImageCount } from '@/lib/Button';
 import Tip from '@/lib/Tip';
+import { STYLES } from '@/styles/index';
 import Alerting from '@/util/Alert';
 import mergeNames from '@/util/mergeNames';
 import { Skeleton } from '@chakra-ui/react';
@@ -19,11 +20,11 @@ import AdCardButton from './adCardButton';
 function Card({ item, deleteFunc = () => {}, isDelete = false }) {
   const router = useRouter();
   const user = getCookie('user');
-
+  // console.log(item.filters);
   return (
     // <Skeleton>
     <Skeleton isLoaded>
-      <div className="relative overflow-hidden rounded-md md:min-h-[35vh] min-h-[30vh]  shadow-md bg-zinc-200 group ">
+      <div className="relative overflow-hidden rounded-md md:min-h-[350px] min-h-[300px]  shadow-md bg-zinc-200 group ">
         {/* zarin zurag absolute  */}
         <div
           className="absolute top-0 bottom-0 left-0 right-0 z-0 w-full h-full cursor-pointer"
@@ -86,6 +87,10 @@ function Card({ item, deleteFunc = () => {}, isDelete = false }) {
 
         {/* Zariin info  */}
         <div className="absolute bottom-0 left-0 z-20 flex flex-col justify-end w-full p-2 mb-2 space-y-2 ">
+          <div className="flex justify-between gap-4 px-2 py-1 text-sm rounded-full bg-white/50">
+            <p className={mergeNames(STYLES.button, '')}>Зарах</p>
+            <p className={mergeNames(STYLES.button, 'truncate')}>Орон сууц</p>
+          </div>
           <div className="relative flex flex-row justify-between w-full">
             <TextContainer
               title={item.title}

@@ -1,7 +1,12 @@
+import CompareSelect from '@/components/Profile/CompareSelect';
+import { useAuth } from '@/context/auth';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import Footer from '../components/footer/index';
 
 const Layout = ({ children }) => {
+  const { compareAds } = useAuth();
+  const router = useRouter();
   return (
     <>
       <Head>
@@ -15,6 +20,12 @@ const Layout = ({ children }) => {
       // exit={{ opacity: 0 }}
       >
         {children}
+        {compareAds &&
+          (router?.pathname == '/' ||
+            router?.pathname == '/category' ||
+            router?.pathname == '/category/[slug]' ||
+            (router?.pathname == '/account' && (router?.query?.tab == 'MyAds' || router?.query?.tab == 'Bookmark'))
+            ) && <CompareSelect />}
       </div>
 
       <div className="hidden md:block">
