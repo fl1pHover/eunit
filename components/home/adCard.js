@@ -19,7 +19,7 @@ import AdCardButton from './adCardButton';
 function Card({ item, deleteFunc = () => {}, isDelete = false }) {
   const router = useRouter();
   const user = getCookie('user');
-  // console.log(item.filters);
+  console.log((item.filters.type == 'price') & item.filters.input);
   return (
     // <Skeleton>
     <Skeleton isLoaded>
@@ -87,7 +87,7 @@ function Card({ item, deleteFunc = () => {}, isDelete = false }) {
         {/* Zariin info  */}
         <div className="absolute bottom-0 left-0 z-20 flex flex-col justify-end w-full p-2 mb-2 space-y-2 ">
           <div className="flex items-center justify-between gap-4 text-sm text-white font-md">
-            <p className={mergeNames('font-bold text-xl')}>14,000,000₮</p>
+            <p className={mergeNames('font-bold text-xl')}>Price</p>
           </div>
           <div className="relative flex flex-row justify-between w-full">
             <TextContainer
@@ -98,9 +98,11 @@ function Card({ item, deleteFunc = () => {}, isDelete = false }) {
           </div>
           <div className="flex items-center justify-between gap-4 text-sm text-white font-md">
             <p className={mergeNames('font-semibold text-white mt-0')}>
-              Орон сууц
+              SubCat
             </p>
-            <p className={mergeNames('font-semibold text-white mt-0')}>Зарах</p>
+            <p className={mergeNames('font-semibold text-white mt-0')}>
+              Buy/sell/rent
+            </p>
           </div>
 
           <div className="flex flex-wrap items-end justify-between gap-x-1">

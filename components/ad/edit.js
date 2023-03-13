@@ -6,8 +6,8 @@ import { GoogleMap, MarkerF, useLoadScript } from '@react-google-maps/api';
 import { Textarea } from 'flowbite-react';
 import { ProductInfo } from 'pages/product/[slug]';
 import { useMemo, useState } from 'react';
-import { FiArrowRight } from 'react-icons/fi';
 import ImageGallery from 'react-image-gallery';
+
 const EditAd = ({
   isOpen,
   onClose,
@@ -15,7 +15,7 @@ const EditAd = ({
   onNext = () => {},
   data,
   setData,
-  admin = false
+  admin = false,
 }) => {
   const libraries = useMemo(() => ['places'], []);
 
@@ -44,16 +44,13 @@ const EditAd = ({
     return <p>Loading...</p>;
   }
   let dummyData = { ...data };
+
   return (
     <CustomModal
       isOpen={isOpen}
       onClose={onClose}
       onOpen={onOpen}
-      btnOpen={
-        <>
-          Засах 
-        </>
-      }
+      btnOpen={<>Засах</>}
       onclick={onNext}
       btnClose={<LoadingButton text="Нэмэх" isLoading={loading} />}
       btnClose2="Буцах"
@@ -67,10 +64,10 @@ const EditAd = ({
               variant={'mediumHeading'}
               onChange={(e) => {
                 dummyData.title = e.target.value;
-                if(!admin) {
+                if (!admin) {
                   setData(dummyData);
                 } else {
-                  data = dummyData
+                  data = dummyData;
                 }
               }}
               mb={5}
@@ -79,15 +76,15 @@ const EditAd = ({
           )}
 
           {/* product image and information */}
-          <div className="grid grid-cols-1 gap-10 md:grid-cols-2 product__content-wrapper">
+          <div className="flex flex-col ">
             <div>
               <Box
                 className={mergeNames(
-                  'product__image',
+                  'edit-product__image',
                   'border-2 border-blue-900/20 mb-[120px] shadow-md'
                 )}
               >
-                {data?.images ? (
+                {data?.images && (
                   <AspectRatio
                     ratio={1}
                     onClick={() => {
@@ -102,19 +99,16 @@ const EditAd = ({
                       className="object-contain"
                     />
                   </AspectRatio>
-                ) : (
-                  // ene er ustgagdah ulaan shuu
-                  <div className="w-full bg-red-500 aspect-square" />
                 )}
               </Box>
               <Textarea
                 mt={5}
                 onChange={(e) => {
                   dummyData.description = e.target.value;
-                  if(!admin) {
+                  if (!admin) {
                     setEditData(dummy);
                   } else {
-                    data = dummyData
+                    data = dummyData;
                   }
                 }}
               >
@@ -123,7 +117,7 @@ const EditAd = ({
             </div>
 
             {data && (
-              <div className="flex flex-col gap-3">
+              <div className="grid grid-cols-2 gap-3">
                 <p className="text-xl font-bold col-span-full">
                   Ерөнхий мэдээлэл
                 </p>
@@ -150,10 +144,10 @@ const EditAd = ({
             <GoogleMap
               onClick={(e) => {
                 dummyData.location = e.latLng.toJSON();
-                if(!admin) {
+                if (!admin) {
                   setEditData(dummy);
                 } else {
-                  data = dummyData
+                  data = dummyData;
                 }
               }}
               options={mapOptions}

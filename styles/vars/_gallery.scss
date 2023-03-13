@@ -20,3 +20,33 @@
 .image-gallery-slide-wrapper {
   overflow: hidden;
 }
+
+.image-gallery-thumbnail-image {
+  object-fit: cover;
+}
+
+// product slug hevtee uyd
+// .product__image {
+//   margin-bottom: 10vh;
+// }
+// .product__image,
+// .image-gallery-swipe {
+//   height: 59vh;
+// }
+// .image-gallery-slides,
+// .image-gallery {
+//   height: 100%;
+// }
+.edit-product__image {
+  margin-bottom: 10vh;
+  height: 50vh;
+  .image-gallery-swipe {
+    height: 50vh;
+  }
+  .image-gallery-slides {
+    height: 100%;
+  }
+  .image-gallery {
+    height: 50vh;
+  }
+}

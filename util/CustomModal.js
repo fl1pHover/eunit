@@ -7,6 +7,7 @@ import {
   ModalHeader,
   ModalOverlay,
 } from '@chakra-ui/react';
+import { useState } from 'react';
 
 function CustomModal({
   children,
@@ -21,6 +22,7 @@ function CustomModal({
   func,
   onclick,
 }) {
+  const [scrollBehavior, setScrollBehavior] = useState('inside');
   return (
     <>
       <button
@@ -35,6 +37,7 @@ function CustomModal({
         isCentered
         size={{ base: 'sm', sm: 'xl', md: '2xl', lg: '5xl' }}
         className="overflow-hidden "
+        scrollBehavior={scrollBehavior}
       >
         <ModalOverlay />
         <ModalContent>

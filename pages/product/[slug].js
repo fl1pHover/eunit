@@ -95,7 +95,7 @@ export const ProductInfo = ({
   let dummy = { ...editData };
   return (
     <Fragment>
-      {/* <p
+      <p
         className={mergeNames(
           id === 'price'
             ? 'mt-3 text-xl font-bold col-span-full block'
@@ -103,7 +103,7 @@ export const ProductInfo = ({
         )}
       >
         Бусад мэдээлэл
-      </p> */}
+      </p>
       <GridItem
         className={
           title.length + value?.length > 30
@@ -113,75 +113,78 @@ export const ProductInfo = ({
       >
         <Stack
           direction={'row'}
+          justifyContent="space-between"
           className={mergeNames('p-2 border-2 rounded-md border-bgGrey')}
           onClick={href ? () => {} : func}
         >
-          <Text
-            fontSize={{ base: '13px', xl: '15px' }}
-            textTransform={'capitalize'}
-          >
-            {title}:{' '}
-          </Text>
-          <ProductInfoValue href={href} id={id} value={value} />
-          {localData && (
-            <FiltersContainer
-              selectedOther={other}
-              other={localData.other ?? false}
-              value={localData.value}
-              name={localData.name}
-              defValue={value}
-              types={localData.types}
-              ph={value}
-              label={value}
-              onChange={(e) => {
-                if (typeof e == 'string' || typeof e == 'number') {
-                  dummy?.filters.map((df) => {
-                    if (df.type == localData.type) {
-                      df.input = e;
-                    }
-                  });
-                  if (!admin) {
-                    setEditData(dummy);
-                  }
-                } else {
-                  dummy?.filters.map((df) => {
-                    if (df.type == localData.type) {
-                      df.input = e.target.value;
-                    }
-                  });
-                  if (!admin) {
-                    setEditData(dummy);
-                  }
-                }
-              }}
-              Item={({ data, onClick, id, ...props }) => {
-                return (
-                  <button
-                    {...props}
-                    onClick={() => {
-                      if (data == 'Бусад') {
-                        setOther(true);
-                      } else {
-                        setOther(false);
-                        dummy?.filters.map((df) => {
-                          if (df.type == localData.type) {
-                            df.input = data;
-                          }
-                        });
-                        if (!admin) {
-                          setEditData(dummy);
-                        }
+          <div className="flex items-center gap-1">
+            <Text
+              fontSize={{ base: '13px', xl: '15px' }}
+              textTransform={'capitalize'}
+            >
+              {title}:{' '}
+            </Text>
+            <ProductInfoValue href={href} id={id} value={value} />
+            {localData && (
+              <FiltersContainer
+                selectedOther={other}
+                other={localData.other ?? false}
+                value={localData.value}
+                name={localData.name}
+                defValue={value}
+                types={localData.types}
+                ph={value}
+                label={value}
+                onChange={(e) => {
+                  if (typeof e == 'string' || typeof e == 'number') {
+                    dummy?.filters.map((df) => {
+                      if (df.type == localData.type) {
+                        df.input = e;
                       }
-                      onClick();
-                    }}
-                  >
-                    {data}
-                    {props.children}
-                  </button>
-                );
-              }}
-            />
-          )}
+                    });
+                    if (!admin) {
+                      setEditData(dummy);
+                    }
+                  } else {
+                    dummy?.filters.map((df) => {
+                      if (df.type == localData.type) {
+                        df.input = e.target.value;
+                      }
+                    });
+                    if (!admin) {
+                      setEditData(dummy);
+                    }
+                  }
+                }}
+                Item={({ data, onClick, id, ...props }) => {
+                  return (
+                    <button
+                      {...props}
+                      onClick={() => {
+                        if (data == 'Бусад') {
+                          setOther(true);
+                        } else {
+                          setOther(false);
+                          dummy?.filters.map((df) => {
+                            if (df.type == localData.type) {
+                              df.input = data;
+                            }
+                          });
+                          if (!admin) {
+                            setEditData(dummy);
+                          }
+                        }
+                        onClick();
+                      }}
+                    >
+                      {data}
+                      {props.children}
+                    </button>
+                  );
+                }}
+              />
+            )}
+          </div>
           {edit && (
             <Button
               onClick={async () => {
@@ -274,27 +277,29 @@ const Product = ({ propAds }) => {
     <Box m={2} as="section" id="main__product">
       <ScrollTop />
       <MainContainer>
-        <Stack direction={'row'} py={2} gap={3}>
+        <Stack direction={'row'} py={2} gap={3} pos="relative">
           {user && JSON.parse(user)._id == data?.user?._id && (
-            <EditAd
-              isOpen={isOpen}
-              onClose={onClose}
-              data={data}
-              setData={setData}
-              onOpen={onOpen}
-              onNext={async () => {
-                await axios
-                  .put(`${urls['test']}/ad/${data._id}`, data, {
-                    headers: {
-                      Authorization: `Bearer ${token}`,
-                      'Access-Control-Allow-Headers': '*',
-                      'Content-Type': 'application/json',
-                      charset: 'UTF-8',
-                    },
-                  })
-                  .then((d) => console.log(d.data));
-              }}
-            />
+            <div className="absolute right-0 top-4">
+              <EditAd
+                isOpen={isOpen}
+                onClose={onClose}
+                data={data}
+                setData={setData}
+                onOpen={onOpen}
+                onNext={async () => {
+                  await axios
+                    .put(`${urls['test']}/ad/${data._id}`, data, {
+                      headers: {
+                        Authorization: `Bearer ${token}`,
+                        'Access-Control-Allow-Headers': '*',
+                        'Content-Type': 'application/json',
+                        charset: 'UTF-8',
+                      },
+                    })
+                    .then((d) => console.log(d.data));
+                }}
+              />
+            </div>
           )}
           {/* //TODO Filter Box */}
           {/* {data?.subCategory && <FilterLayout data={data.subCategory}/>} */}
@@ -309,8 +314,9 @@ const Product = ({ propAds }) => {
                 </Heading>
               )}
 
-              {/* product image and information */}
               <div className="grid grid-cols-1 gap-10 md:grid-cols-2 product__content-wrapper">
+                {/*//TODO product slug hevtee uyd  */}
+                {/* <div className="flex flex-col"> */}
                 {/*  //TODO LEFT SIDE IMAGES AND DESC */}
 
                 <div>
@@ -432,9 +438,9 @@ const Product = ({ propAds }) => {
                         }
                       />
 
-                      {/* <p className="text-xl font-bold col-span-full">
+                      <p className="text-xl font-bold col-span-full">
                         Ерөнхий мэдээлэл
-                      </p> */}
+                      </p>
 
                       {data?.filters?.map((p, i) => {
                         if (p.type != null && p.type != 'phone') {
