@@ -16,10 +16,9 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import AdCardButton from './adCardButton';
 
-function Card({ item, deleteFunc = () => {}, isDelete = false }) {
+function Card({ item, deleteFunc = {}, isDelete = false }) {
   const router = useRouter();
   const user = getCookie('user');
-  console.log((item.filters.type == 'price') & item.filters.input);
   return (
     // <Skeleton>
     <Skeleton isLoaded>
@@ -75,7 +74,7 @@ function Card({ item, deleteFunc = () => {}, isDelete = false }) {
             // <DButton onClick={deleteFunc} />
             <Alerting
               btn={<DButton onClick={deleteFunc} />}
-              onclick={() => console.log('ust *** mini ')}
+              onclick={deleteFunc}
             />
           ) : (
             <ImageCount onClick={() => console.log('Zurag')}>

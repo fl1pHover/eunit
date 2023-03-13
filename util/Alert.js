@@ -11,9 +11,10 @@ import { useRef } from 'react';
 import { STYLES } from '../styles';
 import mergeNames from './mergeNames';
 
-const Alerting = ({ btn, onclick, body }) => {
+const Alerting = ({ btn, onclick = {}, body }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef();
+
   return (
     <>
       <button
@@ -55,7 +56,10 @@ const Alerting = ({ btn, onclick, body }) => {
                   STYLES.button,
                   'bg-red-500 hover:bg-red-900 ml-3 px-4 py-2'
                 )}
-                onClick={(onClose, onclick)}
+                onClick={() => {
+                  onclick();
+                  onClose();
+                }}
               >
                 Устгах
               </button>

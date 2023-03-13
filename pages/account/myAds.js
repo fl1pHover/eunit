@@ -2,6 +2,7 @@ import AdCard from '@/components/home/adCard';
 import FilterAd from '@/components/Profile/filterAd';
 import urls from '@/constants/api';
 import { brk, STYLES } from '@/styles/index';
+import Alerting from '@/util/Alert';
 import mergeNames from '@/util/mergeNames';
 import { Checkbox, useToast } from '@chakra-ui/react';
 import axios from 'axios';
@@ -203,7 +204,7 @@ const MyAds = ({ user }) => {
           </Checkbox>
         </div>
       </div>
-
+      <Alerting />
       <div className="grid grid-cols-2 gap-5 mt-5 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-3">
         {products?.ads?.map((item, key) => {
           return (
@@ -211,7 +212,9 @@ const MyAds = ({ user }) => {
               key={key}
               item={item || {}}
               isDelete={true}
-              deleteFunc={() => deleteAd(item._id)}
+              deleteFunc={() => {
+                deleteAd(item._id);
+              }}
             />
           );
         })}
