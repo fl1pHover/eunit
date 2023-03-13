@@ -28,7 +28,9 @@ const Socials = ({ edit, socials, setSocials }) => {
                         {capitalizeFirst(s.name)}
                       </p>
                       <Image
-                        src={`./utils/socials/` + s.name + `.svg`}
+                        src={
+                          `./utils/socials/` + capitalizeFirst(s.name) + `.svg`
+                        }
                         alt="social icon"
                         className="w-[30px]"
                       />
