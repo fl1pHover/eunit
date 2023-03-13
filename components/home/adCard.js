@@ -7,7 +7,6 @@ import { TbBath } from 'react-icons/tb';
 import urls from '@/constants/api';
 import { DButton, ImageCount } from '@/lib/Button';
 import Tip from '@/lib/Tip';
-import { STYLES } from '@/styles/index';
 import Alerting from '@/util/Alert';
 import mergeNames from '@/util/mergeNames';
 import { Skeleton } from '@chakra-ui/react';
@@ -87,9 +86,8 @@ function Card({ item, deleteFunc = () => {}, isDelete = false }) {
 
         {/* Zariin info  */}
         <div className="absolute bottom-0 left-0 z-20 flex flex-col justify-end w-full p-2 mb-2 space-y-2 ">
-          <div className="flex justify-between gap-4 px-2 py-1 text-sm rounded-full bg-white/50">
-            <p className={mergeNames(STYLES.button, '')}>Зарах</p>
-            <p className={mergeNames(STYLES.button, 'truncate')}>Орон сууц</p>
+          <div className="flex items-center justify-between gap-4 text-sm text-white font-md">
+            <p className={mergeNames('font-bold text-xl')}>14,000,000₮</p>
           </div>
           <div className="relative flex flex-row justify-between w-full">
             <TextContainer
@@ -98,6 +96,13 @@ function Card({ item, deleteFunc = () => {}, isDelete = false }) {
             />
             <AdCardButton id={item?.num} adId={item?._id} />
           </div>
+          <div className="flex items-center justify-between gap-4 text-sm text-white font-md">
+            <p className={mergeNames('font-semibold text-white mt-0')}>
+              Орон сууц
+            </p>
+            <p className={mergeNames('font-semibold text-white mt-0')}>Зарах</p>
+          </div>
+
           <div className="flex flex-wrap items-end justify-between gap-x-1">
             {item?.filters?.map((p, i) => {
               return (
@@ -183,7 +188,7 @@ const ItemContainer = ({ Icon = () => <></>, text = '', lbl }) => {
 const TextContainer = ({ title = '', description = '' }) => {
   return (
     <div className="w-2/3">
-      <p className="text-sm font-bold text-white uppercase truncate md:text-lg">
+      <p className="text-sm font-semibold text-white uppercase truncate md:text-[16px]">
         {title}
       </p>
       <p className="text-[12px] md:text-base font-semibold truncate text-slate-200/90 first-letter:uppercase">

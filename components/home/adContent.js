@@ -44,7 +44,7 @@ const AdContent = ({
       </div>
 
       {inCat ? (
-        <div className="grid grid-cols-1 gap-5 xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-3">
+        <div className="grid grid-cols-1 gap-5 2xl:grid-cols-5 xl:grid-cols-4 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-3">
           {data?.ads?.map((item, i) => {
             return <AdCard key={i} item={item || {}} />;
           })}
