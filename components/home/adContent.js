@@ -75,7 +75,7 @@ const AdContent = ({
       )}
       {!data && <Skeleton height={'300px'} />}
 
-      {pg && data?.limit && (
+      {pg && data?.limit < n && (
         <ul className="flex float-right list-style-none">
           <li className="mx-2 disabled">
             <button

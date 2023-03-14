@@ -14,6 +14,7 @@ const EditAd = ({
   setData,
   admin = false,
   ads = [],
+  children,
 }) => {
   const libraries = useMemo(() => ['places'], []);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -48,7 +49,7 @@ const EditAd = ({
       isOpen={isOpen}
       onClose={onClose}
       onOpen={onOpen}
-      btnOpen={<>Засах</>}
+      btnOpen={<>{children ?? 'Засах'}</>}
       onclick={onNext}
       btnClose={<LoadingButton text="Нэмэх" isLoading={loading} />}
       btnClose2="Буцах"
@@ -61,7 +62,6 @@ const EditAd = ({
             <Input
               variant={'mediumHeading'}
               onChange={(e) => {
-                console.log(e.target.value);
                 if (!admin) {
                   dummyData.title = e.target.value;
                   setData(dummyData);
@@ -106,7 +106,6 @@ const EditAd = ({
               <Textarea
                 mt={5}
                 onChange={(e) => {
-   
                   dummyData.description = e.target.value;
                   if (!admin) {
                     setData(dummy);

@@ -12,14 +12,26 @@ import mergeNames from '@/util/mergeNames';
 import { Skeleton } from '@chakra-ui/react';
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
+import currency from 'currency.js';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { Fragment } from 'react';
+import { AiFillEdit } from 'react-icons/ai';
+import EditAd from '../ad/edit';
 import AdCardButton from './adCardButton';
 
-function Card({ item, deleteFunc = {}, isDelete = false }) {
+function Card({
+  item,
+  deleteFunc = {},
+  isDelete = false,
+  data,
+  setData,
+  admin = false,
+}) {
   const router = useRouter();
   const user = getCookie('user');
   // console.log(item.types);
+  const token = getCookie('token');
   return (
     // <Skeleton>
     <Skeleton isLoaded>
@@ -28,14 +40,18 @@ function Card({ item, deleteFunc = {}, isDelete = false }) {
         <div
           className="absolute top-0 bottom-0 left-0 right-0 z-0 w-full h-full cursor-pointer"
           onClick={async () => {
-            user &&
-              item &&
-              item._id &&
-              (await axios
-                .get(
-                  `${urls['test']}/ad/view/${item.num}/${JSON.parse(user)._id}`
-                )
-                .then((d) => router.push(`/product/${item.num}`)));
+            if (user) {
+              item?._id &&
+                (await axios
+                  .get(
+                    `${urls['test']}/ad/view/${item.num}/${
+                      JSON.parse(user)._id
+                    }`
+                  )
+                  .then((d) => router.push(`/product/${item.num}`)));
+            } else {
+              item?._id && router.push(`/product/${item.num}`);
+            }
           }}
         >
           {item?.images && (
@@ -73,10 +89,32 @@ function Card({ item, deleteFunc = {}, isDelete = false }) {
           </Tip>
           {isDelete ? (
             // <DButton onClick={deleteFunc} />
-            <Alerting
-              btn={<DButton onClick={deleteFunc} />}
-              onclick={deleteFunc}
-            />
+            <Fragment>
+              <EditAd
+                ads={data}
+                setData={setData}
+                admin={admin}
+                data={item}
+                onNext={async () => {
+                  await axios
+                    .put(`${urls['test']}/ad/${item._id}`, item, {
+                      headers: {
+                        Authorization: `Bearer ${token}`,
+                        'Access-Control-Allow-Headers': '*',
+                        'Content-Type': 'application/json',
+                        charset: 'UTF-8',
+                      },
+                    })
+                    .then((d) => console.log(d.data));
+                }}
+              >
+                <AiFillEdit />
+              </EditAd>
+              <Alerting
+                btn={<DButton onClick={deleteFunc} />}
+                onclick={deleteFunc}
+              />
+            </Fragment>
           ) : (
             <ImageCount onClick={() => console.log('Zurag')}>
               {item?.images?.length}
@@ -87,7 +125,18 @@ function Card({ item, deleteFunc = {}, isDelete = false }) {
         {/* Zariin info  */}
         <div className="absolute bottom-0 left-0 z-20 flex flex-col justify-end w-full p-2 mb-2 space-y-2 ">
           <div className="flex items-center justify-between gap-4 text-sm text-white font-md">
-            <p className={mergeNames('font-bold text-xl')}>Price</p>
+            <p className={mergeNames('font-bold text-xl')}>
+              {currency(
+                `${item?.filters?.find((f) => f.type == 'price')?.input}`,
+                {
+                  separator: ',',
+                  symbol: '₮ ',
+                  pattern: `# !`,
+                }
+              )
+                .format()
+                .toString() ?? 0}
+            </p>
           </div>
           <div className="relative flex flex-row justify-between w-full">
             <TextContainer
@@ -98,10 +147,10 @@ function Card({ item, deleteFunc = {}, isDelete = false }) {
           </div>
           <div className="flex items-center justify-between gap-4 text-sm text-white font-md">
             <p className={mergeNames('font-semibold text-white mt-0')}>
-              SubCat
+              {item?.subCategory?.name ?? ''}
             </p>
             <p className={mergeNames('font-semibold text-white mt-0')}>
-              Buy/sell/rent
+              {item?.types[0] ?? ''}
             </p>
           </div>
 

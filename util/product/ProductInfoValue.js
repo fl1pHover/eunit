@@ -2,7 +2,6 @@ import { Text } from '@chakra-ui/react';
 import currency from 'currency.js';
 import Link from 'next/link';
 
-
 const ProductInfoValue = ({ href, value, id }) => {
   return href ? (
     <Link

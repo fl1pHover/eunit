@@ -142,7 +142,7 @@ const Socials = ({ propUser }) => {
             >
               <Image
                 className="h-[30px] w-[30px]"
-                src={`/utils/socials/` + s.name + `.svg`}
+                src={`/utils/socials/` + capitalizeFirst(s.name) + `.svg`}
                 alt="social icon"
               />
               <p className="font-bold text-md">{capitalizeFirst(s.name)}</p>

@@ -184,7 +184,6 @@ export const ProductInfo = ({
 
 const Product = ({ propAds }) => {
   const { asPath, pathname } = useRouter();
-  console.log(asPath);
   const toast = useToast();
   const router = useRouter();
   const [data, setData] = useState('');
@@ -394,8 +393,16 @@ const Product = ({ propAds }) => {
                          
                         </Fragment>;
                       })} */}
+
                     {data?.filters?.map((p, i) => {
-                      if (p.type != null && p.type == 'district') {
+                      if (
+                        p.type == 'committee' ||
+                        p.type == 'district' ||
+                        p.type == 'location' ||
+                        p.type == 'town' ||
+                        p.type == 'officeName' ||
+                        p.type == 'buildingName'
+                      ) {
                         return (
                           <ProductInfo
                             key={i}
@@ -407,20 +414,6 @@ const Product = ({ propAds }) => {
                         );
                       }
                     })}
-                    {data?.filters?.map((p, i) => {
-                      if (p.type != null && p.type == 'committee') {
-                        return (
-                          <ProductInfo
-                            key={i}
-                            title={p.name}
-                            id={p.type}
-                            value={p.input}
-                            onClick={() => getFilterByItem(p.type, p.input)}
-                          />
-                        );
-                      }
-                    })}
-                    officener
                   </WhiteBox>
                 </div>
                 <WhiteBox
@@ -432,7 +425,14 @@ const Product = ({ propAds }) => {
                       p.type != 'phone' &&
                       p.type != 'district' &&
                       p.type != 'committee' &&
-                      p.type != 'officeName'
+                      p.type != 'officeName' &&
+                      p.type != 'town' &&
+                      p.type != 'room' &&
+                      p.type != 'masterBedroom' &&
+                      p.type != 'bathroom' &&
+                      p.type != 'price' &&
+                      p.type != 'unitPrice' &&
+                      p.type != 'location'
                     ) {
                       return (
                         <ProductInfo
@@ -452,16 +452,13 @@ const Product = ({ propAds }) => {
                   <>
                     <div>
                       <ProductHeader
-                        data={data}
                         price={
-                          data?.filters?.filter((f) => {
-                            f.type == 'price';
-                          })[0]?.input
+                          data?.filters?.find((d) => d.type == 'price')
+                            ?.input ?? 0
                         }
                         unitPrice={
-                          data?.filters?.filter((f) => {
-                            f.type == 'unitPrice';
-                          })[0]?.input
+                          data?.filters?.find((d) => d.type == 'unitPrice')
+                            ?.input ?? 0
                         }
                       />
 
@@ -708,7 +705,7 @@ const Product = ({ propAds }) => {
                 })}
             </GoogleMap>
           ) : (
-            <AdContent data={sData} />
+            <AdContent data={sData} n={10} />
           )}
         </MainContainer>
       )}

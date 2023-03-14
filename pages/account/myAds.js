@@ -209,6 +209,9 @@ const MyAds = ({ user }) => {
         {products?.ads?.map((item, key) => {
           return (
             <AdCard
+              setData={setProducts}
+              data={products}
+              admin={true}
               key={key}
               item={item || {}}
               isDelete={true}

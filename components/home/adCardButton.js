@@ -46,7 +46,6 @@ const AdCardButton = ({ id, adId }) => {
               isClosable: true,
             });
           }
-          router.reload();
         });
     } catch (err) {
       console.log(err.response.data.message);
