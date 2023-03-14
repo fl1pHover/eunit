@@ -2,15 +2,19 @@ import {
   Box,
   Button,
   GridItem,
+  Heading,
   HStack,
   IconButton,
   Image,
+  Link,
   Select,
   Stack,
   Text,
   useToast,
 } from '@chakra-ui/react';
 import { Fragment, useEffect, useMemo, useState } from 'react';
+
+import { FaHeart } from 'react-icons/fa';
 
 import MainContainer from '../../layout/mainContainer';
 import ECalculator from '../calculator';
@@ -31,23 +35,45 @@ import {
 } from '@react-google-maps/api';
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
+import currency from 'currency.js';
 import moment from 'moment/moment';
 
 import EditAd from '@/components/ad/edit';
 
 import { FiltersContainer } from '@/components/createAd/step4/filter';
-import Engage from '@/components/product/Engage';
-import ProductHeader from '@/components/product/ProductHeader';
-import ItemContainer from '@/util/product/ItemContainer';
-import ProductInfoValue from '@/util/product/ProductInfoValue';
-import WhiteBox from '@/util/product/WhiteBox';
+import NextLink from 'next/link';
 import { useRouter } from 'next/router';
-import { BiArea, BiDoorOpen } from 'react-icons/bi';
-import { FaCopy, FaHeart } from 'react-icons/fa';
-import { IoBedOutline } from 'react-icons/io5';
-import { TbBath } from 'react-icons/tb';
 import urls from '../../constants/api';
 import UserInfo from './userInfo';
+
+export const ProductInfoValue = ({ href, value, id }) => {
+  return href ? (
+    <NextLink
+      href={{
+        pathname: `/category/filter/${id}`,
+        query: { num: 0, value: value },
+      }}
+    >
+      <Link
+        fontSize={{ base: '13px', xl: '15px' }}
+        cursor={'pointer'}
+        fontWeight={'bold'}
+      >
+        {id === 'price' || id === 'unitPrice'
+          ? currency(value, { separator: ',', symbol: '₮ ' })
+              .format()
+              .toString()
+          : value}
+      </Link>
+    </NextLink>
+  ) : (
+    <Text fontSize={{ base: '13px', xl: '15px' }} fontWeight={'bold'}>
+      {id === 'price' || id === 'unitPrice'
+        ? currency(value, { separator: ',', symbol: '₮ ' }).format().toString()
+        : value}
+    </Text>
+  );
+};
 
 export const ProductInfo = ({
   title,
@@ -183,8 +209,6 @@ export const ProductInfo = ({
 };
 
 const Product = ({ propAds }) => {
-  const { asPath, pathname } = useRouter();
-  console.log(asPath);
   const toast = useToast();
   const router = useRouter();
   const [data, setData] = useState('');
@@ -254,30 +278,10 @@ const Product = ({ propAds }) => {
   }, [propAds]);
 
   const [open, setOpen] = useState(false);
-  const copyToClipboard = (e) => {
-    navigator.clipboard.writeText(window.location.toString());
-  };
+
   return (
     <Box m={2} as="section" id="main__product">
       <ScrollTop />
-      <div className="relative overflow-hidden bg-gray-900 rounded-lg gallery ">
-        {data?.images?.length > 0 ? (
-          // ?.length !== 0 ?
-          <div className="object-contain ">
-            <ImageGallery
-              thumbnailPosition="left"
-              items={data?.images?.map((i) => ({
-                original: i,
-                thumbnail: i,
-              }))}
-            />
-          </div>
-        ) : (
-          <div className="grid w-full font-bold h-[50vh] bg-gray-700 text-white aspect-square place-items-center text-md">
-            Энэ заранд зураг байхгүй байна
-          </div>
-        )}
-      </div>
       <MainContainer>
         <Stack direction={'row'} py={2} gap={3} pos="relative">
           {user && JSON.parse(user)._id == data?.user?._id && (
@@ -300,174 +304,40 @@ const Product = ({ propAds }) => {
               />
             </div>
           )}
+          {/* //TODO Filter Box */}
+          {/* {data?.subCategory && <FilterLayout data={data.subCategory}/>} */}
 
+          {/* //TODO Main product */}
           <Box maxWidth={'100%'} flex="0 0 100%" borderRadius="5px">
-            <div
-              className={mergeNames(
-                '-translate-y-[50px] relative z-10',
-                ' py-5 px-6  w-full   font-semibold',
-                'lg:flex-row gap-5 flex-col flex justify-between whitespace-nowrap',
-                'backdrop-blur-md  bg-white/90 rounded-md'
+            <Box className="p-3 bg-white shadow-md md:p-10 rounded-xl">
+              {/*Product */}
+              {data.title && (
+                <Heading variant={'mediumHeading'} mb={5}>
+                  {data.title}
+                </Heading>
               )}
-            >
-              <Engage
-                date={moment(data.createdAt).format('lll')}
-                num={data.num}
-                view={
-                  data?.views?.length > 0 && (
-                    <p>Үзсэн хүний тоо: {data.views.length}</p>
-                  )
-                }
-              />
 
-              <div className="grid items-center justify-between w-full grid-cols-2 gap-3 md:grid-cols-4">
-                {data?.filters?.map((p, i) => {
-                  return (
-                    <Fragment key={i}>
-                      {p && p.type === 'room' && (
-                        <ItemContainer
-                          lbl={p.name}
-                          name={p.name}
-                          Icon={(props) => (
-                            <BiDoorOpen
-                              {...props}
-                              text=""
-                              className="text-xl"
-                            />
-                          )}
-                          text={calcValue(p.input, 'байхгүй')}
-                        />
-                      )}
-                      {p && p.type === 'masterBedroom' && (
-                        <ItemContainer
-                          lbl={p.name}
-                          name={p.name}
-                          Icon={(props) => (
-                            <IoBedOutline
-                              {...props}
-                              text=""
-                              className="text-xl"
-                            />
-                          )}
-                          text={calcValue(p.input, 'байхгүй')}
-                        />
-                      )}
-                      {p && p.type === 'bathroom' && (
-                        <ItemContainer
-                          lbl={p.name}
-                          name={p.name}
-                          Icon={(props) => (
-                            <TbBath {...props} text="" className="text-xl" />
-                          )}
-                          text={calcValue(p.input, 'байхгүй')}
-                        />
-                      )}
-                      {p.type === 'area' && (
-                        <ItemContainer
-                          lbl={p.name}
-                          name={p.name}
-                          Icon={(props) => <BiArea {...props} text="" />}
-                          text={calcValue(p.input, 'байхгүй', 'м.кв')}
-                        />
-                      )}
-                    </Fragment>
-                  );
-                })}
-              </div>
-            </div>
+              <div className="grid grid-cols-1 gap-10 md:grid-cols-2 product__content-wrapper">
+                {/*//TODO product slug hevtee uyd  */}
+                {/* <div className="flex flex-col"> */}
+                {/*  //TODO LEFT SIDE IMAGES AND DESC */}
 
-            <div className="flex gap-7">
-              <div className="flex flex-col w-full gap-7">
-                <h1 className="mb-10 text-3xl font-semibold">{data.title}</h1>
-                <div className="flex flex-row gap-7">
-                  <WhiteBox
-                    heading="Зарын дэлгэрэнгүй"
-                    classnames="flex flex-col gap-3 "
+                <div>
+                  <Stack
+                    className={mergeNames(STYLES.flexBetween, 'flex-row mb-2')}
                   >
-                    <Text className="text-[#5c727d] whitespace-pre-line">
-                      {data.description}
-                    </Text>
-                  </WhiteBox>
-                  <WhiteBox heading="Хаяг" classnames="flex flex-col gap-3 ">
-                    {/* {['committee, district'].map((choose, i) => {
-                        <Fragment key={i}>
-                         
-                        </Fragment>;
-                      })} */}
-                    {data?.filters?.map((p, i) => {
-                      if (p.type != null && p.type == 'district') {
-                        return (
-                          <ProductInfo
-                            key={i}
-                            title={p.name}
-                            id={p.type}
-                            value={p.input}
-                            onClick={() => getFilterByItem(p.type, p.input)}
-                          />
-                        );
-                      }
-                    })}
-                    {data?.filters?.map((p, i) => {
-                      if (p.type != null && p.type == 'committee') {
-                        return (
-                          <ProductInfo
-                            key={i}
-                            title={p.name}
-                            id={p.type}
-                            value={p.input}
-                            onClick={() => getFilterByItem(p.type, p.input)}
-                          />
-                        );
-                      }
-                    })}
-                    officener
-                  </WhiteBox>
-                </div>
-                <WhiteBox
-                  heading="Мэдээлэл"
-                  classnames="grid grid-cols-2 gap-3"
-                >
-                  {data?.filters?.map((p, i) => {
-                    if (
-                      p.type != 'phone' &&
-                      p.type != 'district' &&
-                      p.type != 'committee' &&
-                      p.type != 'officeName'
-                    ) {
-                      return (
-                        <ProductInfo
-                          key={i}
-                          title={p.name}
-                          id={p.type}
-                          value={p.input}
-                          onClick={() => getFilterByItem(p.type, p.input)}
-                        />
-                      );
-                    }
-                  })}
-                </WhiteBox>
-              </div>
-              <div className="sticky flex-col hidden h-full gap-3 top-20 lg:flex">
-                {data && (
-                  <>
-                    <div>
-                      <ProductHeader
-                        data={data}
-                        price={
-                          data?.filters?.filter((f) => {
-                            f.type == 'price';
-                          })[0]?.input
-                        }
-                        unitPrice={
-                          data?.filters?.filter((f) => {
-                            f.type == 'unitPrice';
-                          })[0]?.input
-                        }
-                      />
-
+                    <div className="flex flex-col justify-center sm:flex-row">
+                      <Text className="mr-[10px]">
+                        Зарын огноо: {moment(data.createdAt).format('lll')}
+                      </Text>
+                      <Text>Зарын дугаар: {data.num}</Text>
+                    </div>
+                    {data?.views?.length > 0 && (
+                      <Text>Үзсэн хүний тоо: {data.views.length}</Text>
+                    )}
+                    <Text>
                       <IconButton
-                        className="float-right bg-white border-2 border-gray-200"
-                        aria-label="Bookmark add"
+                        aria-label="Search database"
                         icon={<FaHeart />}
                         _hover={{
                           color: 'red',
@@ -515,24 +385,48 @@ const Product = ({ propAds }) => {
                             });
                         }}
                       />
-                      <IconButton
-                        className="float-right bg-white border-2 border-gray-200 hover:text-blue-600"
-                        aria-label="Get link"
-                        icon={<FaCopy />}
-                        onClick={() => {
-                          copyToClipboard(),
-                            toast({
-                              title: `Холбоосыг хуулж авлаа`,
-                              status: 'info',
-                              isClosable: true,
-                              duration: 1500,
-                            });
-                        }}
-                        size={{ base: 'xs', sm: 'md' }}
-                      />
-                    </div>
+                      {/* Хандалт: lorem */}
+                    </Text>
+                  </Stack>
 
-                    <div className="p-2 bg-white rounded-md">
+                  <Box
+                    className={mergeNames(
+                      'product__image',
+                      'border-2 border-blue-900/20 shadow-md'
+                      // data?.images.length && 'mb-[120px]'
+                    )}
+                  >
+                    {data?.images?.length > 0 ? (
+                      // ?.length !== 0 ?
+                      <div className="object-contain">
+                        <ImageGallery
+                          items={data?.images?.map((i) => ({
+                            original: i,
+                            thumbnail: i,
+                          }))}
+                        />
+                      </div>
+                    ) : (
+                      <div className="grid w-full font-bold bg-gray-200 aspect-square place-items-center text-md">
+                        Энэ заранд зураг байхгүй байна
+                      </div>
+                    )}
+                  </Box>
+                  <div className="flex flex-col gap-2 pt-5">
+                    <p className="text-xl font-bold">Зарын дэлгэрэнгүй</p>
+                    <Text whiteSpace={'pre-line'} mt={5}>
+                      {data.description}
+                    </Text>
+                  </div>
+                </div>
+
+                {/*  //TODO  ENDING LEFT SIDE IMAGES AND DESC */}
+
+                {/*  //TODO  STARTS RIGHT SIDE INFOS */}
+
+                <div className="block w-full">
+                  {data && (
+                    <div className="grid grid-cols-1 gap-1 md:gap-3 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2">
                       <UserInfo
                         id={data.user._id}
                         username={data.user?.username}
@@ -540,17 +434,36 @@ const Product = ({ propAds }) => {
                           data.filters?.filter((f) => f.type == 'phone')[0]
                             .input
                         }
-                        agent={'agenttype'}
                         avatar={
                           data.user?.profileImg ??
                           'https://www.pikpng.com/pngl/m/80-805068_my-profile-icon-blank-profile-picture-circle-clipart.png'
                         }
                       />
+
+                      <p className="text-xl font-bold col-span-full">
+                        Ерөнхий мэдээлэл
+                      </p>
+
+                      {data?.filters?.map((p, i) => {
+                        console.log(p.type);
+                        if (p.type != null && p.type != 'phone') {
+                          return (
+                            <ProductInfo
+                              key={i}
+                              title={p.name}
+                              id={p.type}
+                              value={p.input}
+                              onClick={() => getFilterByItem(p.type, p.input)}
+                            />
+                          );
+                        }
+                      })}
                     </div>
-                  </>
-                )}
+                  )}
+                </div>
               </div>
-            </div>
+              {/*  //TODO  ENDING RIGHT SIDE INFOS */}
+            </Box>
 
             <Box>
               {/* <Estimator /> */}
@@ -729,14 +642,3 @@ export async function getServerSideProps(ctx) {
     },
   };
 }
-
-const calcValue = (props, checker = 'Байхгүй', suffix) => {
-  // p?.value?.toLowerCase() === "байхгүй"
-
-  if (props.toString().toLowerCase() === checker) return 0;
-  if (props) {
-    if (suffix) return `${props} ${suffix}`;
-    return props;
-  }
-  return '-';
-};

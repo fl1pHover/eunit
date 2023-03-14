@@ -19,6 +19,7 @@ import AdCardButton from './adCardButton';
 function Card({ item, deleteFunc = {}, isDelete = false }) {
   const router = useRouter();
   const user = getCookie('user');
+  // console.log(item.types);
   return (
     // <Skeleton>
     <Skeleton isLoaded>
