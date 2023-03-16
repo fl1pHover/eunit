@@ -6,11 +6,13 @@ import mergeNames from '@/util/mergeNames';
 import { useRouter } from 'next/router';
 import { AiOutlineArrowRight } from 'react-icons/ai';
 
+import { useAuth } from '@/context/auth';
 import { STYLES } from '@/styles/index';
 import SwiperNav from '@/util/SwiperNav';
 import { Skeleton } from '@chakra-ui/react';
 import { useState } from 'react';
 import { SwiperSlide } from 'swiper/react';
+import ProCard from './proCard';
 
 // import required modules
 
@@ -28,6 +30,8 @@ const AdContent = ({
 }) => {
   const [num, setNum] = useState(nm);
   const router = useRouter();
+  const user = useAuth();
+  console.log(user);
   return (
     <ContainerXP key={key} classname="pb-10">
       <div className="flex flex-row items-end justify-between mt-4 mb-4 md:mt-6">
@@ -44,15 +48,20 @@ const AdContent = ({
       </div>
 
       {inCat ? (
-        <div className="grid grid-cols-1 gap-5 2xl:grid-cols-5 xl:grid-cols-4 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-3">
-          {data?.ads?.map((item, i) => {
-            return <AdCard key={i} item={item || {}} />;
-          })}
+        // <div className="grid grid-cols-1 gap-5 2xl:grid-cols-5 xl:grid-cols-4 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-3">
 
-          {data?.ads === undefined &&
-            data?.map((item, i) => {
-              return <AdCard key={i} item={item || {}} />;
-            })}
+        //   {data?.ads?.map((item, i) => {
+        //     return <AdCard key={i} item={item || {}} />;
+        //   })}
+        //   {data?.ads === undefined &&
+        //     data?.map((item, i) => {
+        //       return <AdCard key={i} item={item || {}} />;
+        //     })}
+        // </div>
+        <div className="grid grid-cols-2 gap-4">
+          {data?.ads?.map((item, i) => {
+            return <ProCard key={i} item={item || {}} />;
+          })}
         </div>
       ) : (
         <SwiperNav>
