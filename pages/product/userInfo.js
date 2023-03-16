@@ -3,7 +3,6 @@ import mergeNames from '@/util/mergeNames';
 import { Avatar } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { FaPhoneAlt } from 'react-icons/fa';
-import { RiMailOpenFill } from 'react-icons/ri';
 
 // const UserInfo = ({ phone, username, avatar, id }) => {
 //   const router = useRouter();
@@ -81,10 +80,11 @@ const UserInfo = ({ phone, username, agent, avatar, email, id }) => {
           className={mergeNames(
             STYLES.flexCenter,
             'relative z-10',
-            'items-center gap-1 bg-white text-blue-600 p-2 rounded-md hover:bg-blue-600 hover:text-white transition-all ease-in-out border border-blue-600'
+            'items-center gap-1 bg-blue-600 text-white p-2 rounded-md hover:bg-blue-900 hover:text-white transition-all ease-in-out border border-blue-600 hover:border-blue-900'
           )}
         >
-          <RiMailOpenFill />:<p className="whitespace-nowrap"> {email}</p>
+          {/* <RiMailOpenFill />: */}
+          <p className="whitespace-nowrap"> Имэйл илгээх</p>
         </button>
       </div>
     </div>

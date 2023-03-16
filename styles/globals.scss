@@ -16,6 +16,19 @@ a {
   text-decoration: none;
 }
 
+.disappear {
+  animation: disappear 0.3s ease-in-out;
+}
+
+@keyframes disappear {
+  0% {
+    width: 100%;
+  }
+  100% {
+    width: 0%;
+  }
+}
+
 .swiper-grid-column > .swiper-wrapper {
   flex-direction: unset !important;
 }

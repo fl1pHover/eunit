@@ -80,16 +80,16 @@ export const ProductInfo = ({
         Бусад мэдээлэл
       </p>
       <GridItem
-        className={
-          (title.length + value?.length > 30
-            ? 'product__info col-span-full'
+        className={mergeNames(
+          title.length + value?.length > 30
+            ? 'product__info col-span-full md:col-span-2 2xl:col-span-2 row-start-1'
             : 'product__info',
-          'bg-white shadow rounded-md')
-        }
+          'bg-white shadow rounded-md'
+        )}
       >
         <Stack
           direction={'row'}
-          className={mergeNames('p-2 rounded-md ')}
+          className={mergeNames('p-2 rounded-md')}
           onClick={!href ? () => {} : func}
         >
           <div className="flex flex-col w-full pl-5 text-left ">
@@ -254,6 +254,7 @@ const Product = ({ propAds }) => {
   const copyToClipboard = (e) => {
     navigator.clipboard.writeText(window.location.toString());
   };
+
   return (
     <Box m={2} as="section" id="main__product">
       <ScrollTop />
@@ -298,9 +299,12 @@ const Product = ({ propAds }) => {
                 <div className="relative overflow-hidden bg-gray-900 rounded-lg gallery">
                   {data?.images?.length > 0 ? (
                     // ?.length !== 0 ?
-                    <div className="object-contain ">
+                    <div className="object-contain">
                       <ImageGallery
-                        thumbnailPosition="left"
+                        // thumbnailPosition="bottom"
+                        showPlayButton={false}
+                        // showBullets={true}
+                        // showThumbnails={false}
                         items={data?.images?.map((i) => ({
                           original: i,
                           thumbnail: i,
@@ -380,7 +384,7 @@ const Product = ({ propAds }) => {
                     })}
                   </div>
                 </div>
-                <div className="flex flex-row gap-7">
+                <div className="flex flex-col md:flex-row lg:flex-col xl:flex-row gap-7">
                   <WhiteBox
                     heading="Зарын дэлгэрэнгүй"
                     classnames="flex flex-col gap-3"
@@ -391,7 +395,10 @@ const Product = ({ propAds }) => {
                   </WhiteBox>
                   <WhiteBox heading="map" />
                 </div>
-                <WhiteBox heading="Хаяг" classnames="grid grid-cols-4 gap-5">
+                <WhiteBox
+                  heading="Хаяг"
+                  classnames="grid xs:grid-cols-2 xl:grid-cols-4 gap-5"
+                >
                   {data?.filters?.map((p, i) => {
                     if (
                       p.type == 'committee' ||
@@ -525,10 +532,11 @@ const Product = ({ propAds }) => {
                         size={{ base: 'xs', sm: 'md' }}
                       />
                     </div>
-
+                    {console.log(data.user)}
                     <div className="p-2 bg-white rounded-md">
                       <UserInfo
                         id={data.user._id}
+                        email={data.user.email}
                         username={data.user?.username}
                         phone={
                           data.filters?.filter((f) => f.type == 'phone')[0]
