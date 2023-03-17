@@ -30,8 +30,9 @@ function Card({
 }) {
   const router = useRouter();
   const user = getCookie('user');
-  // console.log(item.types);
+
   const token = getCookie('token');
+
   return (
     // <Skeleton>
     <Skeleton isLoaded>

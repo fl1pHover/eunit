@@ -33,7 +33,6 @@ import axios from 'axios';
 import { getCookie } from 'cookies-next';
 
 import EditAd from '@/components/ad/edit';
-
 import { FiltersContainer } from '@/components/createAd/step4/filter';
 import Engage from '@/components/product/Engage';
 import ProductHeader from '@/components/product/ProductHeader';
@@ -345,7 +344,7 @@ const Product = ({ propAds }) => {
             <div className="flex gap-7">
               <div className="flex flex-col w-full gap-7">
                 {/* <p className="text-darkBlue">/Үл хөдлөх/Орон сууц</p> */}
-                <h1 className="my-5 text-3xl font-semibold">{data.title}</h1>
+                <h1 className="my-5 text-3xl font-semibold">{data.title} </h1>
                 <Engage
                   date={moment(data.createdAt).format('lll')}
                   num={data.num}
@@ -375,7 +374,7 @@ const Product = ({ propAds }) => {
                       Энэ заранд зураг байхгүй байна
                     </div>
                   )}
-                </div>{' '}
+                </div>
                 <div
                   className={mergeNames(
                     // '-translate-y-[50px] relative z-10',
@@ -653,6 +652,30 @@ const Product = ({ propAds }) => {
                         }
                       />
                     </div>
+                    {user && JSON.parse(user)._id == data?.user?._id && (
+                      <EditAd
+                        data={data}
+                        setData={setData}
+                        generalData={generalData}
+                        setGeneralData={setGeneralData}
+                        setImages={setImages}
+                        onNext={async () => {
+                          let dummyData = { ...data };
+                          dummyData.images = images;
+                          setData(dummyData);
+                          await axios
+                            .put(`${urls['test']}/ad/${data._id}`, data, {
+                              headers: {
+                                Authorization: `Bearer ${token}`,
+                                'Access-Control-Allow-Headers': '*',
+                                'Content-Type': 'application/json',
+                                charset: 'UTF-8',
+                              },
+                            })
+                            .then((d) => router.reload());
+                        }}
+                      />
+                    )}
                   </>
                 )}
               </div>

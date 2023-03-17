@@ -16,7 +16,7 @@ import currency from 'currency.js';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { Fragment } from 'react';
-import { AiFillEdit } from 'react-icons/ai';
+import { AiFillEdit, AiOutlineCheckCircle } from 'react-icons/ai';
 import { SwiperSlide } from 'swiper/react';
 import EditAd from '../ad/edit';
 import AdCardButton from './adCardButton';
@@ -39,9 +39,9 @@ function ProCard({
 }) {
   const router = useRouter();
   const user = getCookie('user');
-  // console.log(item.user);
   const token = getCookie('token');
   const [image, setImage] = useState(1);
+
   return (
     // <Skeleton>
     <Skeleton isLoaded>
@@ -105,6 +105,20 @@ function ProCard({
                   className={mergeNames(
                     'transition-all w-full object-cover h-full ease-in-out duration-400 relative'
                   )}
+                  onClick={async () => {
+                    if (user) {
+                      item?._id &&
+                        (await axios
+                          .get(
+                            `${urls['test']}/ad/view/${item.num}/${
+                              JSON.parse(user)._id
+                            }`
+                          )
+                          .then((d) => router.push(`/product/${item.num}`)));
+                    } else {
+                      item?._id && router.push(`/product/${item.num}`);
+                    }
+                  }}
                 />
               )}
 
@@ -119,75 +133,76 @@ function ProCard({
                       className={mergeNames(
                         'transition-all w-full object-cover h-full ease-in-out duration-400 relative'
                       )}
-                      onClick={async () => {
-                        if (user) {
-                          item?._id &&
-                            (await axios
-                              .get(
-                                `${urls['test']}/ad/view/${item.num}/${
-                                  JSON.parse(user)._id
-                                }`
-                              )
-                              .then((d) =>
-                                router.push(`/product/${item.num}`)
-                              ));
-                        } else {
-                          item?._id && router.push(`/product/${item.num}`);
-                        }
-                      }}
                     />
                   </SwiperSlide>
                 );
               })}
             </Swiper>
 
-            <div className="absolute top-0 left-0 z-0 w-full h-full bg-gradient-to-b from-slate-700/0 via-slate-700/30 to-slate-900/100"></div>
+            <div className="absolute top-0 left-0 z-20 w-full h-full pointer-events-none bg-gradient-to-b from-slate-700/0 via-slate-700/10 to-slate-900/50"></div>
           </div>
-          <div className="relative flex flex-col w-full p-4 py-10 space-y-2 bom-bg">
-            <div className="flex items-center justify-between gap-4 text-sm font-md">
-              <p className={mergeNames('font-bold text-xl')}>
-                {currency(
-                  `${item?.filters?.find((f) => f.type == 'price')?.input}`,
-                  {
-                    separator: ',',
-                    symbol: '₮ ',
-                    pattern: `# !`,
-                  }
-                )
-                  .format()
-                  .toString() ?? 0}
-              </p>
+          <div className="relative flex flex-col justify-between w-full h-full p-4 space-y-2 bg-white bom-bg">
+            {/* <Box className="absolute w-full h-full scale-y-150 scale-x-125 bg-[#0c0e23] rotate-6" /> */}
+            <div className="z-0 flex flex-col gap-2">
+              <div className="z-10 flex items-center justify-between gap-4 text-sm font-md">
+                <p className={mergeNames('font-bold text-xl')}>
+                  {currency(
+                    `${item?.filters?.find((f) => f.type == 'price')?.input}`,
+                    {
+                      separator: ',',
+                      symbol: '₮ ',
+                      pattern: `# !`,
+                    }
+                  )
+                    .format()
+                    .toString() ?? 0}
+                </p>
+              </div>
+              <div className="flex flex-wrap items-end gap-5 my-3">
+                {item?.filters?.map((p, i) => {
+                  return (
+                    <React.Fragment key={i}>
+                      <ApartmentIconInfo p={p} />
+                      {p.type === 'area' && (
+                        <ItemContainer
+                          lbl={p.name}
+                          Icon={(props) => <BiArea {...props} text="" />}
+                          text={calcValue(p.input, 'байхгүй', 'м.кв')}
+                        />
+                      )}
+                    </React.Fragment>
+                  );
+                })}
+              </div>
+              <div className="relative flex flex-row justify-between w-full">
+                <TextContainer
+                  dark={true}
+                  title={item.title}
+                  description={item.positions?.location_id ?? ''}
+                />
+              </div>
+              <div className="flex items-center justify-between gap-4 text-sm text-mainBLossom font-md">
+                <p
+                  className={mergeNames(
+                    'font-semibold flex gap-1 items-center mt-0'
+                  )}
+                >
+                  {/* <RxDotFilled />  */}
+                  <AiOutlineCheckCircle className="text-blue-600" />
+                  {item?.subCategory?.name ?? ''}
+                </p>
+                <p
+                  className={mergeNames(
+                    'font-semibold flex gap-1 items-center mt-0'
+                  )}
+                >
+                  <AiOutlineCheckCircle className="text-blue-600" />
+                  {item?.types[0] ?? ''}
+                </p>
+              </div>
             </div>
-            <div className="relative flex flex-row justify-between w-full">
-              <TextContainer
-                dark={true}
-                title={item.title}
-                description={item.positions?.location_id ?? ''}
-              />
-            </div>
-            <div className="flex items-center justify-between gap-4 text-sm text-mainBLossom font-md">
-              <p className={mergeNames('font-semibold  mt-0')}>
-                {item?.subCategory?.name ?? ''}
-              </p>
-              <p className={mergeNames('font-semibold  mt-0')}>
-                {item?.types[0] ?? ''}
-              </p>
-            </div>
-            <div className="flex flex-wrap items-end gap-5">
-              {item?.filters?.map((p, i) => {
-                return (
-                  <React.Fragment key={i}>
-                    <ApartmentIconInfo p={p} />
-                    {p.type === 'area' && (
-                      <ItemContainer
-                        lbl={p.name}
-                        Icon={(props) => <BiArea {...props} text="" />}
-                        text={calcValue(p.input, 'байхгүй', 'м.кв')}
-                      />
-                    )}
-                  </React.Fragment>
-                );
-              })}
+            <div className="flex items-end h-full">
+              <p>Огноо</p>
             </div>
             {item?.adStatus == 'pending' && (
               <p
@@ -230,7 +245,7 @@ function ProCard({
                   className="p-2"
                 />
               </div>
-              <p className="font-semibold">Username</p>
+              <p className="font-semibold">username</p>
             </button>
           </Tip>
           <div className="flex gap-2">
@@ -295,7 +310,7 @@ const ItemContainer = ({ Icon = () => <></>, text = '', lbl }) => {
   return (
     <Tip lbl={lbl}>
       <div className="flex flex-row items-center gap-1">
-        <Icon className="text-mainBlossom" />
+        <Icon className="text-xl text-mainBlossom" />
         <p className="text-mainBlossom md:text-sm text-[12px]">{text}</p>
       </div>
     </Tip>
