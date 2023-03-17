@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BiArea, BiDoorOpen } from 'react-icons/bi';
 
 import { IoBedOutline } from 'react-icons/io5';
@@ -21,14 +21,12 @@ import { SwiperSlide } from 'swiper/react';
 import EditAd from '../ad/edit';
 import AdCardButton from './adCardButton';
 
-// Import Swiper React components
 import { Swiper } from 'swiper/react';
 
-// Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/navigation';
 
-// import required modules
+import { STYLES } from '@/styles/index';
 import { Navigation } from 'swiper';
 
 function ProCard({
@@ -43,16 +41,20 @@ function ProCard({
   const user = getCookie('user');
   // console.log(item.user);
   const token = getCookie('token');
-
+  const [image, setImage] = useState(1);
   return (
     // <Skeleton>
     <Skeleton isLoaded>
-      <div className="relative overflow-hidden rounded-2xl md:min-h-[350px] min-h-[300px]  shadow-md bg-zinc-200 group flex flex-col w-full h-full ">
+      <div className="relative overflow-hidden rounded-2xl md:min-h-[350px] min-h-[300px]  shadow-md bg-zinc-200 group flex flex-col w-full h-full">
         <div className="grid w-full h-full grid-cols-2">
           <div className="absolute top-0 left-0 z-10 flex items-center justify-between flex-1 w-full px-3 py-2">
-            <ImageCount onClick={() => console.log('Zurag')}>
-              {item?.images?.length}
-            </ImageCount>
+            {item?.images.length != 0 ? (
+              <ImageCount onClick={() => console.log('Zurag')}>
+                {image}/{item?.images?.length}
+              </ImageCount>
+            ) : (
+              <ImageCount onClick={() => console.log('Zurag')}>0</ImageCount>
+            )}
             {isDelete ? (
               // <DButton onClick={deleteFunc} />
               <Fragment>
@@ -90,6 +92,8 @@ function ProCard({
             <Swiper
               navigation={true}
               modules={[Navigation]}
+              onSlideChange={(swiper) => setImage(swiper.realIndex + 1)}
+              // loop={true}
               className="mySwiper cardSwiper"
             >
               {item?.images.length == 0 && (
@@ -106,7 +110,7 @@ function ProCard({
 
               {item?.images.map((c, i) => {
                 return (
-                  <SwiperSlide key={i}>
+                  <SwiperSlide key={i} onClick={() => setImage(i + 1)}>
                     <Image
                       src={c ?? '/images/noImage.png'}
                       alt=" зар"
@@ -137,9 +141,9 @@ function ProCard({
               })}
             </Swiper>
 
-            {/* <div className="absolute top-0 left-0 z-10 w-full h-full bg-gradient-to-b from-slate-700/0 via-slate-700/30 to-slate-900/100"></div> */}
+            <div className="absolute top-0 left-0 z-0 w-full h-full bg-gradient-to-b from-slate-700/0 via-slate-700/30 to-slate-900/100"></div>
           </div>
-          <div className="relative flex flex-col w-full p-2 pt-10 space-y-2 bom-bg">
+          <div className="relative flex flex-col w-full p-4 py-10 space-y-2 bom-bg">
             <div className="flex items-center justify-between gap-4 text-sm font-md">
               <p className={mergeNames('font-bold text-xl')}>
                 {currency(
@@ -169,7 +173,7 @@ function ProCard({
                 {item?.types[0] ?? ''}
               </p>
             </div>
-            <div className="flex flex-wrap items-end justify-between gap-x-1">
+            <div className="flex flex-wrap items-end gap-5">
               {item?.filters?.map((p, i) => {
                 return (
                   <React.Fragment key={i}>
@@ -207,7 +211,7 @@ function ProCard({
             )}
           </div>
         </div>
-        <div className="h-[50px] absolute bottom-0 border border-top-bgGrey left-0 w-full backdrop-blur-sm p-2 bg-white/90">
+        <div className="h-[50px] relative border border-top-bgGrey w-full backdrop-blur-sm p-2 bg-white/90 flex justify-between">
           <Tip lbl="Зарын эзэн">
             <button
               className="flex items-center gap-2"
@@ -229,6 +233,26 @@ function ProCard({
               <p className="font-semibold">Username</p>
             </button>
           </Tip>
+          <div className="flex gap-2">
+            <button
+              className={mergeNames(
+                ' bg-white text-blue-600 border rounded-full border-blue-600',
+                'px-3 hover:bg-blue-600 hover:text-white transition-all ease-in-out'
+              )}
+              onClick={() => router.push(`tel:`)}
+            >
+              phone
+            </button>
+            <button
+              className={mergeNames(
+                STYLES.blueButton,
+                'px-3 whitespace-nowrap'
+              )}
+              onClick={() => router.push(`mailto:`)}
+            >
+              Имэйл
+            </button>
+          </div>
         </div>
       </div>
 
