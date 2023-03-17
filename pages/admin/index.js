@@ -104,10 +104,16 @@ const Admin = ({ propAds }) => {
     getData();
   }, [num]);
   const verify = async (id) => {
-    await fetch(`${urls['test']}/ad/check/${id}`).then((d) => getData());
+    try {
+      await axios
+        .get(`${urls['test']}/ad/update/check/${id}/created`)
+        .then((d) => getData());
+    } catch (error) {
+      console.error(error);
+    }
   };
   const deleteAd = async (id) => {
-    await fetch(`${urls['test']}/ad/delete/${id}`).then((d) => getData());
+    await fetch(`${urls['test']}/ad/update/${id}/deleted`).then((d) => getData());
   };
   const [content, setContent] = useState('');
   const [collapsedId, setCollapsed] = useState(false);
@@ -341,8 +347,8 @@ const Admin = ({ propAds }) => {
                       </td>
                       <td>
                         <EditAd
-                        setData={setAds}
-                        ads={ads}
+                          setData={setAds}
+                          ads={ads}
                           data={a}
                           admin={true}
                           onNext={async () => {

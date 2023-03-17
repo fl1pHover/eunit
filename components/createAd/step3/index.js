@@ -42,7 +42,7 @@ const Step3 = ({
                 }
                 value={generalData.phone}
               >
-                <NumberInputField className="w-full px-4 py-2 border-2 rounded-full border-blue-400/70 ring-blue-400 invalid:border-blue-400 outline-blue-400" />
+                <NumberInputField className="w-full px-4 py-2 border-2 rounded-full border-blue-400/70 ring-blue-400 " />
               </NumberInput>
             </div>
             <div className="hidden md:block">

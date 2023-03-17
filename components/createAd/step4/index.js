@@ -20,7 +20,6 @@ const Step3 = ({ filter, selectedParent, setSelectedParent }) => {
     bathroom: '',
     masterRoom: '',
   });
-  console.log(filter);
 
   // const [filters, setFilters] = useState(filter)
 
@@ -40,6 +39,7 @@ const Step3 = ({ filter, selectedParent, setSelectedParent }) => {
               defValue={usedYear}
               name={f.name}
               onSelect={(num) => {
+                f.input = num;
                 let isNull = selectedParent.findIndex(
                   (s) => s.parent == f.type
                 );
@@ -48,7 +48,7 @@ const Step3 = ({ filter, selectedParent, setSelectedParent }) => {
                   let selectedArr = [...selectedParent];
 
                   selectedArr[isNull] = {
-                    id: num,
+                    id: i,
                     parent: f.type,
                     index: i,
                     input: num,
@@ -59,7 +59,7 @@ const Step3 = ({ filter, selectedParent, setSelectedParent }) => {
                   setSelectedParent([
                     ...selectedParent,
                     {
-                      id: num,
+                      id: i,
                       parent: f.type,
                       index: i,
                       input: num,

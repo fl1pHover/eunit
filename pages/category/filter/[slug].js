@@ -59,8 +59,8 @@ const CategoryFilter = ({ propAds }) => {
   );
   const mapCenter = useMemo(
     () => ({
-      lat: ads ? parseFloat(ads[0]?.location?.lat ?? 47.74604) : 47.74604,
-      lng: ads ? parseFloat(ads[0]?.location?.lng ?? 107.341515) : 107.341515,
+      lat: ads ? parseFloat(ads[0]?.location?.lat ?? 47.91887307876936) : 47.91887307876936,
+      lng: ads ? parseFloat(ads[0]?.location?.lng ?? 106.91757202148438) : 106.91757202148438,
     }),
     []
   );

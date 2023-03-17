@@ -24,8 +24,11 @@ const Layout = ({ children }) => {
           (router?.pathname == '/' ||
             router?.pathname == '/category' ||
             router?.pathname == '/category/[slug]' ||
-            (router?.pathname == '/account' && (router?.query?.tab == 'MyAds' || router?.query?.tab == 'Bookmark'))
-            ) && <CompareSelect />}
+            (router?.pathname == '/account' &&
+              (router?.query?.tab == 'MyAds' ||
+                router?.query?.tab == 'Bookmark'))) && (
+            <CompareSelect btnView={false} />
+          )}
       </div>
 
       <div className="hidden md:block">

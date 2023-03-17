@@ -128,7 +128,7 @@ const Socials = ({ propUser }) => {
     <div className="grid flex-row grid-cols-2 gap-2 md:gap-5 xs:flex">
       {socials?.map((s, i) => {
         return (
-          <Link href={s.url} key={i}>
+          <Link href={s.url} key={i} target="_blank">
             <a
               className={mergeNames(
                 STYLES.flexCenter,

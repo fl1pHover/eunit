@@ -55,8 +55,9 @@ const StepButtons = ({
   );
   const mapCenter = useMemo(
     () => ({
-      lat: parseFloat(map?.lat ?? 47.74604),
-      lng: parseFloat(map?.lng ?? 107.341515),
+      
+      lat: parseFloat(map?.lat ?? 47.91887307876936),
+      lng: parseFloat(map?.lng ?? 106.91757202148438),
     }),
     []
   );

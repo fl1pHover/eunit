@@ -112,6 +112,7 @@ export default function CreateAd({ categories }) {
 
   const sendAd = async () => {
     const token = getCookie('token');
+    console.log(token);
     const f = new FormData();
     const selectedFilters = subCategory.steps[0].values;
     selectedFilters.splice(0, 0, {
@@ -155,6 +156,7 @@ export default function CreateAd({ categories }) {
       f.append('images', prev);
     });
     let ad;
+    console.log(f);
     try {
       ad = await axios
         .post(`${urls['test']}/ad`, f, {
@@ -177,6 +179,7 @@ export default function CreateAd({ categories }) {
         });
     } catch (error) {
       setIsLoading(false);
+      console.error(error);
     }
   };
   const validateStep4 = async () => {
@@ -185,6 +188,8 @@ export default function CreateAd({ categories }) {
     let emptyAd = subCategory.steps[2].values.find((f) => f.input == '');
     if (emptyAd === undefined) {
       await sendAd();
+    } else {
+      console.log(emptyAd);
     }
     setIsLoading(false);
   };
@@ -212,8 +217,8 @@ export default function CreateAd({ categories }) {
   );
   const mapCenter = useMemo(
     () => ({
-      lat: 47.9186367,
-      lng: 106.9164856,
+      lat: 47.91887307876936,
+      lng: 106.91757202148438,
     }),
     []
   );

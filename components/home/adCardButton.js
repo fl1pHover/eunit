@@ -84,7 +84,7 @@ const AdCardButton = ({ id, adId }) => {
         <button
           className={mergeNames(cardIcon.div)}
           onClick={() => {
-            setIsLiked(true);
+            setIsLiked(!isLiked);
             addToBookmark();
           }}
         >

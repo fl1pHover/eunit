@@ -54,7 +54,7 @@ export const ProductInfo = ({
   value,
   id,
   children,
-  href = true,
+  href = false,
   type = '',
   tt = 'capitalize',
   func = () => {},
@@ -64,6 +64,7 @@ export const ProductInfo = ({
   admin,
   editFunc = () => {},
 }) => {
+  console.log(href);
   const [selectedParent, setSelectedParent] = useState([]);
   const [localData, setData] = useState();
   const [other, setOther] = useState(false);
@@ -209,7 +210,13 @@ const Product = ({ propAds }) => {
     }),
     []
   );
-  const mapCenter = useMemo(() => data?.location, [data]);
+  const mapCenter = useMemo(
+    () => ({
+      lat: parseFloat(data?.location?.lat ?? 47.91887307876936),
+      lng: parseFloat(data?.location?.lng ?? 106.91757202148438),
+    }),
+    [data]
+  );
   const getSuggestion = async (suggest, sd) => {
     if (suggest != 'map') {
       try {
@@ -405,6 +412,7 @@ const Product = ({ propAds }) => {
                       ) {
                         return (
                           <ProductInfo
+                            href={p.isSearch}
                             key={i}
                             title={p.name}
                             id={p.type}

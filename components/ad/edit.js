@@ -34,8 +34,8 @@ const EditAd = ({
   );
   const mapCenter = useMemo(
     () => ({
-      lat: data?.location?.lat ?? 47.9186367,
-      lng: data?.location?.lng ?? 106.9164856,
+      lat: data?.location?.lat ?? 47.91887307876936,
+      lng: data?.location?.lng ?? 106.91757202148438,
     }),
     []
   );
