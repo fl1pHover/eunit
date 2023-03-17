@@ -16,6 +16,26 @@ a {
   text-decoration: none;
 }
 
+.disappear {
+  animation: disappear 0.3s ease-in-out;
+}
+
+// .bom-bg {
+//   background: url(../public/images/logo/bom-white.png);
+//   background-size: cover;
+//   background-repeat: no-repeat;
+//   background-position: center;
+// }
+
+@keyframes disappear {
+  0% {
+    width: 100%;
+  }
+  100% {
+    width: 0%;
+  }
+}
+
 .swiper-grid-column > .swiper-wrapper {
   flex-direction: unset !important;
 }

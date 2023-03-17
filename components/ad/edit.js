@@ -1,12 +1,12 @@
 import { LoadingButton } from '@/lib/Button';
 import CustomModal from '@/util/CustomModal';
 import mergeNames from '@/util/mergeNames';
-import { AspectRatio, Box, Input, useDisclosure } from '@chakra-ui/react';
+import { Box, Input, useDisclosure } from '@chakra-ui/react';
 import { GoogleMap, MarkerF, useLoadScript } from '@react-google-maps/api';
 import { Textarea } from 'flowbite-react';
 import { ProductInfo } from 'pages/product/[slug]';
 import { useMemo, useState } from 'react';
-import ImageGallery from 'react-image-gallery';
+import FieldPhotoUpload from '../createAd/step3/fieldPhotoUpload';
 
 const EditAd = ({
   onNext = () => {},
@@ -14,12 +14,16 @@ const EditAd = ({
   setData,
   admin = false,
   ads = [],
+  setGeneralData,
+  setImages,
+  generalData,
   children,
 }) => {
   const libraries = useMemo(() => ['places'], []);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [markerActive, setMarkerActive] = useState(null);
   const [loading, setLoading] = useState(false);
+
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: 'AIzaSyC2u2OzBNo53GxJJdN3Oc_W6Yc42OmdZcE',
     libraries: libraries,
@@ -51,7 +55,7 @@ const EditAd = ({
       onOpen={onOpen}
       btnOpen={<>{children ?? 'Засах'}</>}
       onclick={onNext}
-      btnClose={<LoadingButton text="Нэмэх" isLoading={loading} />}
+      btnClose={<LoadingButton text="Засах" isLoading={loading} />}
       btnClose2="Буцах"
       header="Баталгаажуулах хэсэг"
     >
@@ -80,35 +84,21 @@ const EditAd = ({
           {/* product image and information */}
           <div className="flex flex-col ">
             <div>
-              <Box
-                className={mergeNames(
-                  'edit-product__image',
-                  'border-2 border-blue-900/20 mb-[120px] shadow-md'
-                )}
-              >
-                {data?.images && (
-                  <AspectRatio
-                    ratio={1}
-                    onClick={() => {
-                      // onClose();
-                    }}
-                  >
-                    <ImageGallery
-                      items={data?.images.map((i) => ({
-                        original: i,
-                        thumbnail: i,
-                      }))}
-                      className="object-contain"
-                    />
-                  </AspectRatio>
-                )}
-              </Box>
+              {data?.images && (
+                <FieldPhotoUpload
+                  setImages={setImages}
+                  generalData={generalData}
+                  setGeneralData={setGeneralData}
+                />
+              )}
+
+              <Box h={4} />
               <Textarea
                 mt={5}
                 onChange={(e) => {
                   dummyData.description = e.target.value;
                   if (!admin) {
-                    setData(dummy);
+                    setData(dummyData);
                   } else {
                     let d = { ...ads };
                     d.ads.find((a) => data == a).title = e.target.value;
@@ -120,6 +110,7 @@ const EditAd = ({
                 {data.description}
               </Textarea>
             </div>
+            <Box h={4} />
 
             {data && (
               <div className="grid grid-cols-2 gap-3">

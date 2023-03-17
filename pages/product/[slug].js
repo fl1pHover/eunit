@@ -31,7 +31,6 @@ import {
 } from '@react-google-maps/api';
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
-import moment from 'moment/moment';
 
 import EditAd from '@/components/ad/edit';
 
@@ -41,6 +40,7 @@ import ProductHeader from '@/components/product/ProductHeader';
 import ItemContainer from '@/util/product/ItemContainer';
 import ProductInfoValue from '@/util/product/ProductInfoValue';
 import WhiteBox from '@/util/product/WhiteBox';
+import moment from 'moment';
 import { useRouter } from 'next/router';
 import { BiArea, BiDoorOpen } from 'react-icons/bi';
 import { FaCopy, FaHeart } from 'react-icons/fa';
@@ -64,7 +64,6 @@ export const ProductInfo = ({
   admin,
   editFunc = () => {},
 }) => {
-  console.log(href);
   const [selectedParent, setSelectedParent] = useState([]);
   const [localData, setData] = useState();
   const [other, setOther] = useState(false);
@@ -81,30 +80,28 @@ export const ProductInfo = ({
         Бусад мэдээлэл
       </p>
       <GridItem
-        className={
+        className={mergeNames(
           title.length + value?.length > 30
-            ? 'product__info col-span-full'
-            : 'product__info'
-        }
+            ? 'product__info col-span-full md:col-span-2 2xl:col-span-2 row-start-1'
+            : 'product__info',
+          'bg-white shadow rounded-md'
+        )}
       >
         <Stack
           direction={'row'}
-          justifyContent="space-between"
-          className={mergeNames('p-2 border-2 rounded-md border-bgGrey')}
+          className={mergeNames('p-2 rounded-md')}
           onClick={!href ? () => {} : func}
         >
-          <div className="flex items-center gap-1">
+          <div className="flex flex-col w-full pl-5 text-left ">
             <Text
               fontSize={{ base: '13px', xl: '15px' }}
               textTransform={'capitalize'}
             >
               {title}:{' '}
             </Text>
-
             {!localData && (
               <ProductInfoValue href={href} id={id} value={value} />
             )}
-
             {localData && (
               <FiltersContainer
                 selectedOther={other}
@@ -117,6 +114,7 @@ export const ProductInfo = ({
                 label={value}
                 onChange={(e) => {
                   if (typeof e == 'string' || typeof e == 'number') {
+                    console.log(e.target.value);
                     dummy?.filters.map((df) => {
                       if (df.type == localData.type) {
                         df.input = e;
@@ -169,9 +167,32 @@ export const ProductInfo = ({
           {edit && (
             <Button
               onClick={async () => {
-                await axios.get(`${urls['test']}/items/${type}`).then((d) => {
-                  setData(d.data);
-                });
+                if (type != 'sellType') {
+                  await axios.get(`${urls['test']}/items/${type}`).then((d) => {
+                    setData(d.data);
+                  });
+                } else {
+                  setData({
+                    value: [
+                      {
+                        id: 'sell',
+                        value: 'Зарах',
+                      },
+                      {
+                        id: 'rent',
+                        value: 'Түрээслэх',
+                      },
+                      {
+                        id: 'sellRent',
+                        name: 'Зарах, түрээслэх',
+                      },
+                    ],
+                    name: 'Борлуулах төрөл',
+                    types: 'dropdown',
+                    type: type,
+                    input: value,
+                  });
+                }
               }}
             >
               edit
@@ -197,6 +218,11 @@ const Product = ({ propAds }) => {
   const [sData, setsData] = useState([]);
   const libraries = useMemo(() => ['places'], []);
   const [markerActive, setMarkerActive] = useState(null);
+  const [generalData, setGeneralData] = useState({
+    imgSelected: false,
+    images: [],
+  });
+  const [images, setImages] = useState([]);
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: 'AIzaSyC2u2OzBNo53GxJJdN3Oc_W6Yc42OmdZcE',
     libraries: libraries,
@@ -255,6 +281,12 @@ const Product = ({ propAds }) => {
   };
   useEffect(() => {
     if (propAds) {
+      setGeneralData((prev) => ({
+        ...prev,
+        imgSelected: propAds.image ? true : false,
+        images: [...propAds.images],
+      }));
+      setImages(propAds.images ?? []);
       getData();
     }
   }, [propAds]);
@@ -263,35 +295,25 @@ const Product = ({ propAds }) => {
   const copyToClipboard = (e) => {
     navigator.clipboard.writeText(window.location.toString());
   };
+
   return (
     <Box m={2} as="section" id="main__product">
       <ScrollTop />
-      <div className="relative overflow-hidden bg-gray-900 rounded-lg gallery ">
-        {data?.images?.length > 0 ? (
-          // ?.length !== 0 ?
-          <div className="object-contain ">
-            <ImageGallery
-              thumbnailPosition="left"
-              items={data?.images?.map((i) => ({
-                original: i,
-                thumbnail: i,
-              }))}
-            />
-          </div>
-        ) : (
-          <div className="grid w-full font-bold h-[50vh] bg-gray-700 text-white aspect-square place-items-center text-md">
-            Энэ заранд зураг байхгүй байна
-          </div>
-        )}
-      </div>
+
       <MainContainer>
         <Stack direction={'row'} py={2} gap={3} pos="relative">
           {user && JSON.parse(user)._id == data?.user?._id && (
-            <div className="absolute right-0 top-4">
+            <div className="absolute right-64 top-4 z-10">
               <EditAd
                 data={data}
                 setData={setData}
+                generalData={generalData}
+                setGeneralData={setGeneralData}
+                setImages={setImages}
                 onNext={async () => {
+                  let dummyData = { ...data };
+                  dummyData.images = images;
+                  setData(dummyData);
                   await axios
                     .put(`${urls['test']}/ad/${data._id}`, data, {
                       headers: {
@@ -301,132 +323,190 @@ const Product = ({ propAds }) => {
                         charset: 'UTF-8',
                       },
                     })
-                    .then((d) => console.log(d.data));
+                    .then((d) => router.reload());
                 }}
               />
             </div>
           )}
 
           <Box maxWidth={'100%'} flex="0 0 100%" borderRadius="5px">
-            <div
-              className={mergeNames(
-                '-translate-y-[50px] relative z-10',
-                ' py-5 px-6  w-full   font-semibold',
-                'lg:flex-row gap-5 flex-col flex justify-between whitespace-nowrap',
-                'backdrop-blur-md  bg-white/90 rounded-md'
-              )}
-            >
-              <Engage
-                date={moment(data.createdAt).format('lll')}
-                num={data.num}
-                view={
-                  data?.views?.length > 0 && (
-                    <p>Үзсэн хүний тоо: {data.views.length}</p>
-                  )
-                }
-              />
-
-              <div className="grid items-center justify-between w-full grid-cols-2 gap-3 md:grid-cols-4">
-                {data?.filters?.map((p, i) => {
-                  return (
-                    <Fragment key={i}>
-                      {p && p.type === 'room' && (
-                        <ItemContainer
-                          lbl={p.name}
-                          name={p.name}
-                          Icon={(props) => (
-                            <BiDoorOpen
-                              {...props}
-                              text=""
-                              className="text-xl"
-                            />
-                          )}
-                          text={calcValue(p.input, 'байхгүй')}
-                        />
-                      )}
-                      {p && p.type === 'masterBedroom' && (
-                        <ItemContainer
-                          lbl={p.name}
-                          name={p.name}
-                          Icon={(props) => (
-                            <IoBedOutline
-                              {...props}
-                              text=""
-                              className="text-xl"
-                            />
-                          )}
-                          text={calcValue(p.input, 'байхгүй')}
-                        />
-                      )}
-                      {p && p.type === 'bathroom' && (
-                        <ItemContainer
-                          lbl={p.name}
-                          name={p.name}
-                          Icon={(props) => (
-                            <TbBath {...props} text="" className="text-xl" />
-                          )}
-                          text={calcValue(p.input, 'байхгүй')}
-                        />
-                      )}
-                      {p.type === 'area' && (
-                        <ItemContainer
-                          lbl={p.name}
-                          name={p.name}
-                          Icon={(props) => <BiArea {...props} text="" />}
-                          text={calcValue(p.input, 'байхгүй', 'м.кв')}
-                        />
-                      )}
-                    </Fragment>
-                  );
-                })}
-              </div>
-            </div>
-
             <div className="flex gap-7">
               <div className="flex flex-col w-full gap-7">
-                <h1 className="mb-10 text-3xl font-semibold">{data.title}</h1>
-                <div className="flex flex-row gap-7">
+                {/* <p className="text-darkBlue">/Үл хөдлөх/Орон сууц</p> */}
+                <h1 className="my-5 text-3xl font-semibold">{data.title}</h1>
+                <Engage
+                  date={moment(data.createdAt).format('lll')}
+                  num={data.num}
+                  view={
+                    data?.views?.length > 0 && (
+                      <p>Үзсэн хүний тоо: {data.views.length}</p>
+                    )
+                  }
+                />
+                <div className="relative overflow-hidden bg-gray-900 rounded-lg gallery">
+                  {data?.images?.length > 0 ? (
+                    // ?.length !== 0 ?
+                    <div className="object-contain">
+                      <ImageGallery
+                        // thumbnailPosition="bottom"
+                        showPlayButton={false}
+                        // showBullets={true}
+                        // showThumbnails={false}
+                        items={data?.images?.map((i) => ({
+                          original: i,
+                          thumbnail: i,
+                        }))}
+                      />
+                    </div>
+                  ) : (
+                    <div className="grid w-full font-bold h-[50vh] bg-gray-700 text-white aspect-square place-items-center text-md">
+                      Энэ заранд зураг байхгүй байна
+                    </div>
+                  )}
+                </div>{' '}
+                <div
+                  className={mergeNames(
+                    // '-translate-y-[50px] relative z-10',
+                    ' py-5 px-6  w-full   font-semibold',
+                    'lg:flex-row gap-5 flex-col flex justify-between whitespace-nowrap',
+                    ' bg-white/90 rounded-md'
+                  )}
+                >
+                  <div className="grid items-center justify-between w-full grid-cols-2 gap-3 md:grid-cols-4">
+                    {data?.filters?.map((p, i) => {
+                      return (
+                        <Fragment key={i}>
+                          {p && p.type === 'room' && (
+                            <ItemContainer
+                              lbl={p.name}
+                              name={p.name}
+                              href={true}
+                              value={p.input}
+                              id={p.type}
+                              Icon={(props) => (
+                                <BiDoorOpen
+                                  {...props}
+                                  text=""
+                                  className="text-xl"
+                                />
+                              )}
+                              text={calcValue(p.input, 'байхгүй')}
+                            />
+                          )}
+                          {p && p.type === 'masterBedroom' && (
+                            <ItemContainer
+                              lbl={p.name}
+                              name={p.name}
+                              href={true}
+                              value={p.input}
+                              id={p.type}
+                              Icon={(props) => (
+                                <IoBedOutline
+                                  {...props}
+                                  text=""
+                                  className="text-xl"
+                                />
+                              )}
+                              text={calcValue(p.input, 'байхгүй')}
+                            />
+                          )}
+                          {p && p.type === 'bathroom' && (
+                            <ItemContainer
+                              lbl={p.name}
+                              name={p.name}
+                              href={true}
+                              value={p.input}
+                              id={p.type}
+                              Icon={(props) => (
+                                <TbBath
+                                  {...props}
+                                  text=""
+                                  className="text-xl"
+                                />
+                              )}
+                              text={calcValue(p.input, 'байхгүй')}
+                            />
+                          )}
+                          {p.type === 'area' && (
+                            <ItemContainer
+                              lbl={p.name}
+                              name={p.name}
+                              href={true}
+                              value={p.input}
+                              id={p.type}
+                              Icon={(props) => <BiArea {...props} text="" />}
+                              text={calcValue(p.input, 'байхгүй', 'м.кв')}
+                            />
+                          )}
+                        </Fragment>
+                      );
+                    })}
+                  </div>
+                </div>
+                <div className="flex flex-col md:flex-row lg:flex-col xl:flex-row gap-7">
                   <WhiteBox
                     heading="Зарын дэлгэрэнгүй"
-                    classnames="flex flex-col gap-3 "
+                    classnames="flex flex-col gap-3"
                   >
                     <Text className="text-[#5c727d] whitespace-pre-line">
                       {data.description}
                     </Text>
                   </WhiteBox>
-                  <WhiteBox heading="Хаяг" classnames="flex flex-col gap-3 ">
-                    {/* {['committee, district'].map((choose, i) => {
-                        <Fragment key={i}>
-                         
-                        </Fragment>;
-                      })} */}
+                  <WhiteBox heading="Газрын зураг">
+                    {isLoaded && (
+                      <GoogleMap
+                        options={mapOptions}
+                        zoom={14}
+                        center={mapCenter}
+                        mapTypeId={google.maps.MapTypeId.ROADMAP}
+                        mapContainerStyle={{ width: '100%', height: '30vh' }}
+                      >
+                        {isLoaded && (
+                          <MarkerF
+                            position={{
+                              lat: parseFloat(data?.location?.lat ?? 47.74604),
+                              lng: parseFloat(
+                                data?.location?.lng ?? 107.341515
+                              ),
+                            }}
+                            // onMouseOver={() => setMarkerActive(i)}
 
-                    {data?.filters?.map((p, i) => {
-                      if (
-                        p.type == 'committee' ||
-                        p.type == 'district' ||
-                        p.type == 'location' ||
-                        p.type == 'town' ||
-                        p.type == 'officeName' ||
-                        p.type == 'buildingName'
-                      ) {
-                        return (
-                          <ProductInfo
-                            href={p.isSearch}
-                            key={i}
-                            title={p.name}
-                            id={p.type}
-                            value={p.input}
-                            onClick={() => getFilterByItem(p.type, p.input)}
+                            animation={google.maps.Animation.DROP}
                           />
-                        );
-                      }
-                    })}
+                        )}
+                      </GoogleMap>
+                    )}
                   </WhiteBox>
                 </div>
                 <WhiteBox
+                  heading="Хаяг"
+                  classnames="grid xs:grid-cols-2 xl:grid-cols-4 gap-5"
+                >
+                  {data?.filters?.map((p, i) => {
+                    if (
+                      p.type == 'committee' ||
+                      p.type == 'district' ||
+                      p.type == 'location' ||
+                      p.type == 'town' ||
+                      p.type == 'officeName' ||
+                      p.type == 'buildingName'
+                    ) {
+                      return (
+                        <ProductInfo
+                          href={true}
+                          key={i}
+                          title={p.name}
+                          id={p.type}
+                          value={p.input}
+                          onClick={() => getFilterByItem(p.type, p.input)}
+                        />
+                      );
+                    }
+                  })}
+                </WhiteBox>
+                <WhiteBox
                   heading="Мэдээлэл"
-                  classnames="grid grid-cols-2 gap-3"
+                  classnames="grid grid-cols-2 md:grid-cols-3 2xl:grid-cols-4 gap-3"
                 >
                   {data?.filters?.map((p, i) => {
                     if (
@@ -445,6 +525,7 @@ const Product = ({ propAds }) => {
                       return (
                         <ProductInfo
                           key={i}
+                          href={(p.isSearch || p.type == 'sellType') ?? false}
                           title={p.name}
                           id={p.type}
                           value={p.input}
@@ -536,16 +617,24 @@ const Product = ({ propAds }) => {
                         size={{ base: 'xs', sm: 'md' }}
                       />
                     </div>
-
                     <div className="p-2 bg-white rounded-md">
                       <UserInfo
                         id={data.user._id}
+                        email={data.user.email}
                         username={data.user?.username}
                         phone={
                           data.filters?.filter((f) => f.type == 'phone')[0]
                             .input
                         }
-                        agent={'agenttype'}
+                        agent={
+                          data.user?.userType == 'default'
+                            ? 'Энгийн'
+                            : data.user?.userType == 'organization'
+                            ? 'Байгууллага'
+                            : data.user?.userType == 'agent'
+                            ? 'Агент'
+                            : data.user?.userType
+                        }
                         avatar={
                           data.user?.profileImg ??
                           'https://www.pikpng.com/pngl/m/80-805068_my-profile-icon-blank-profile-picture-circle-clipart.png'
@@ -556,7 +645,6 @@ const Product = ({ propAds }) => {
                 )}
               </div>
             </div>
-
             <Box>
               {/* <Estimator /> */}
               {data && (

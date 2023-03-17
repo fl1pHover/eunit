@@ -106,7 +106,7 @@ const Admin = ({ propAds }) => {
   const verify = async (id) => {
     try {
       await axios
-        .get(`${urls['test']}/ad/update/check/${id}/created`)
+        .get(`${urls['test']}/ad/update/${id}/created`)
         .then((d) => getData());
     } catch (error) {
       console.error(error);

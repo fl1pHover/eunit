@@ -136,7 +136,7 @@ const Profile = ({
               edit ? ' ' : 'cursor-not-allowed'
             )}
           >
-            {['default', 'agent', 'orgazation'].map((text, id) => {
+            {['default', 'agent', 'organization'].map((text, id) => {
               return (
                 <ButtonSelectItem
                   key={id}

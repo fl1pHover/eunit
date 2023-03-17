@@ -14,6 +14,7 @@ const ProductInfoValue = ({ href, value, id }) => {
         fontSize={{ base: '13px', xl: '15px' }}
         cursor={'pointer'}
         fontWeight={'bold'}
+        className="duration-200 ease-in-out hover:text-blue-600"
       >
         {id === 'price' || id === 'unitPrice'
           ? currency(value, { separator: ',', symbol: '₮ ' })

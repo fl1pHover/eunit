@@ -73,8 +73,7 @@ const Category = ({ propAds }) => {
         await axios
           .get(`${urls['test']}/ad/category/${router.query.slug}/${id}`)
           .then((d) => {
-            console.log(d.data);
-            // setAds(d.data)
+            setAds(d.data);
           });
     } catch (error) {}
   };
@@ -96,7 +95,7 @@ const Category = ({ propAds }) => {
 
           <Box className="max-w-[100%] w-full rounded-[5px]">
             {/* //TODO Engiin zar */}
-            {ads?.ads?.length > 0 ? (
+            {ads?.limit > 0 ? (
               <AdContent
                 data={ads}
                 tlc={toLowerCase}
