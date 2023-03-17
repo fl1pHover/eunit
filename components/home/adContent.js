@@ -31,7 +31,7 @@ const AdContent = ({
   const [num, setNum] = useState(nm);
   const router = useRouter();
   const user = useAuth();
-  console.log(user);
+
   return (
     <ContainerXP key={key} classname="pb-10">
       <div className="flex flex-row items-end justify-between mt-4 mb-4 md:mt-6">

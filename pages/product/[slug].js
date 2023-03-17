@@ -33,7 +33,6 @@ import axios from 'axios';
 import { getCookie } from 'cookies-next';
 
 import EditAd from '@/components/ad/edit';
-
 import { FiltersContainer } from '@/components/createAd/step4/filter';
 import Engage from '@/components/product/Engage';
 import ProductHeader from '@/components/product/ProductHeader';
@@ -261,32 +260,11 @@ const Product = ({ propAds }) => {
 
       <MainContainer>
         <Stack direction={'row'} py={2} gap={3} pos="relative">
-          {user && JSON.parse(user)._id == data?.user?._id && (
-            <div className="absolute right-0 top-4">
-              <EditAd
-                data={data}
-                setData={setData}
-                onNext={async () => {
-                  await axios
-                    .put(`${urls['test']}/ad/${data._id}`, data, {
-                      headers: {
-                        Authorization: `Bearer ${token}`,
-                        'Access-Control-Allow-Headers': '*',
-                        'Content-Type': 'application/json',
-                        charset: 'UTF-8',
-                      },
-                    })
-                    .then((d) => console.log(d.data));
-                }}
-              />
-            </div>
-          )}
-
           <Box maxWidth={'100%'} flex="0 0 100%" borderRadius="5px">
             <div className="flex gap-7">
               <div className="flex flex-col w-full gap-7">
                 {/* <p className="text-darkBlue">/Үл хөдлөх/Орон сууц</p> */}
-                <h1 className="my-5 text-3xl font-semibold">{data.title}</h1>
+                <h1 className="my-5 text-3xl font-semibold">{data.title} </h1>
                 <Engage
                   date={moment(data.createdAt).format('lll')}
                   num={data.num}
@@ -316,7 +294,7 @@ const Product = ({ propAds }) => {
                       Энэ заранд зураг байхгүй байна
                     </div>
                   )}
-                </div>{' '}
+                </div>
                 <div
                   className={mergeNames(
                     // '-translate-y-[50px] relative z-10',
@@ -532,7 +510,7 @@ const Product = ({ propAds }) => {
                         size={{ base: 'xs', sm: 'md' }}
                       />
                     </div>
-                    {console.log(data.user)}
+
                     <div className="p-2 bg-white rounded-md">
                       <UserInfo
                         id={data.user._id}
@@ -549,6 +527,24 @@ const Product = ({ propAds }) => {
                         }
                       />
                     </div>
+                    {user && JSON.parse(user)._id == data?.user?._id && (
+                      <EditAd
+                        data={data}
+                        setData={setData}
+                        onNext={async () => {
+                          await axios
+                            .put(`${urls['test']}/ad/${data._id}`, data, {
+                              headers: {
+                                Authorization: `Bearer ${token}`,
+                                'Access-Control-Allow-Headers': '*',
+                                'Content-Type': 'application/json',
+                                charset: 'UTF-8',
+                              },
+                            })
+                            .then((d) => console.log(d.data));
+                        }}
+                      />
+                    )}
                   </>
                 )}
               </div>

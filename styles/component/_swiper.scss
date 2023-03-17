@@ -4,6 +4,10 @@
   height: 100% !important;
 }
 
+.image-gallery {
+  margin-top: 20px !important;
+}
+
 .swiper,
 .headerSwiper {
   .swiper-button-prev,
@@ -71,4 +75,22 @@
 
 .cardSwiper {
   height: 100%;
+  .swiper-button-prev,
+  .swiper-button-next {
+    background: url(../../public/utils/swiper-arrow.png);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 30px;
+    height: 30px;
+    z-index: 11 !important;
+    &::after {
+      display: none !important;
+    }
+  }
+  &:hover {
+    .swiper-slide img {
+      transform: scale(1.1);
+    }
+  }
 }
