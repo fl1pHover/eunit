@@ -234,7 +234,10 @@ const Product = ({ propAds }) => {
     }),
     []
   );
-  const mapCenter = useMemo(() => data?.location, [data]);
+  const mapCenter = useMemo(() => ({
+    lat: parseFloat(data?.location?.lat ?? 47.91887307876936),
+    lng: parseFloat(data?.location?.lng ?? 106.91757202148438),
+  }), [data]);
   const getSuggestion = async (suggest, sd) => {
     if (suggest != 'map') {
       try {

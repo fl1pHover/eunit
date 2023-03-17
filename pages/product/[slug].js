@@ -53,7 +53,7 @@ export const ProductInfo = ({
   value,
   id,
   children,
-  href = true,
+  href = false,
   type = '',
   tt = 'capitalize',
   func = () => {},
@@ -113,6 +113,7 @@ export const ProductInfo = ({
                 label={value}
                 onChange={(e) => {
                   if (typeof e == 'string' || typeof e == 'number') {
+                    console.log(e.target.value);
                     dummy?.filters.map((df) => {
                       if (df.type == localData.type) {
                         df.input = e;
@@ -165,9 +166,32 @@ export const ProductInfo = ({
           {edit && (
             <Button
               onClick={async () => {
-                await axios.get(`${urls['test']}/items/${type}`).then((d) => {
-                  setData(d.data);
-                });
+                if (type != 'sellType') {
+                  await axios.get(`${urls['test']}/items/${type}`).then((d) => {
+                    setData(d.data);
+                  });
+                } else {
+                  setData({
+                    value: [
+                      {
+                        id: 'sell',
+                        value: 'Зарах',
+                      },
+                      {
+                        id: 'rent',
+                        value: 'Түрээслэх',
+                      },
+                      {
+                        id: 'sellRent',
+                        name: 'Зарах, түрээслэх',
+                      },
+                    ],
+                    name: 'Борлуулах төрөл',
+                    types: 'dropdown',
+                    type: type,
+                    input: value,
+                  });
+                }
               }}
             >
               edit
@@ -193,6 +217,11 @@ const Product = ({ propAds }) => {
   const [sData, setsData] = useState([]);
   const libraries = useMemo(() => ['places'], []);
   const [markerActive, setMarkerActive] = useState(null);
+  const [generalData, setGeneralData] = useState({
+    imgSelected: false,
+    images: [],
+  });
+  const [images, setImages] = useState([]);
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: 'AIzaSyC2u2OzBNo53GxJJdN3Oc_W6Yc42OmdZcE',
     libraries: libraries,
@@ -206,7 +235,13 @@ const Product = ({ propAds }) => {
     }),
     []
   );
-  const mapCenter = useMemo(() => data?.location, [data]);
+  const mapCenter = useMemo(
+    () => ({
+      lat: parseFloat(data?.location?.lat ?? 47.91887307876936),
+      lng: parseFloat(data?.location?.lng ?? 106.91757202148438),
+    }),
+    [data]
+  );
   const getSuggestion = async (suggest, sd) => {
     if (suggest != 'map') {
       try {
@@ -245,6 +280,12 @@ const Product = ({ propAds }) => {
   };
   useEffect(() => {
     if (propAds) {
+      setGeneralData((prev) => ({
+        ...prev,
+        imgSelected: propAds.image ? true : false,
+        images: [...propAds.images],
+      }));
+      setImages(propAds.images ?? []);
       getData();
     }
   }, [propAds]);
@@ -311,6 +352,9 @@ const Product = ({ propAds }) => {
                             <ItemContainer
                               lbl={p.name}
                               name={p.name}
+                              href={true}
+                              value={p.input}
+                              id={p.type}
                               Icon={(props) => (
                                 <BiDoorOpen
                                   {...props}
@@ -325,6 +369,9 @@ const Product = ({ propAds }) => {
                             <ItemContainer
                               lbl={p.name}
                               name={p.name}
+                              href={true}
+                              value={p.input}
+                              id={p.type}
                               Icon={(props) => (
                                 <IoBedOutline
                                   {...props}
@@ -339,6 +386,9 @@ const Product = ({ propAds }) => {
                             <ItemContainer
                               lbl={p.name}
                               name={p.name}
+                              href={true}
+                              value={p.input}
+                              id={p.type}
                               Icon={(props) => (
                                 <TbBath
                                   {...props}
@@ -353,6 +403,9 @@ const Product = ({ propAds }) => {
                             <ItemContainer
                               lbl={p.name}
                               name={p.name}
+                              href={true}
+                              value={p.input}
+                              id={p.type}
                               Icon={(props) => <BiArea {...props} text="" />}
                               text={calcValue(p.input, 'байхгүй', 'м.кв')}
                             />
@@ -371,7 +424,31 @@ const Product = ({ propAds }) => {
                       {data.description}
                     </Text>
                   </WhiteBox>
-                  <WhiteBox heading="map" />
+                  <WhiteBox heading="Газрын зураг">
+                    {isLoaded && (
+                      <GoogleMap
+                        options={mapOptions}
+                        zoom={14}
+                        center={mapCenter}
+                        mapTypeId={google.maps.MapTypeId.ROADMAP}
+                        mapContainerStyle={{ width: '100%', height: '30vh' }}
+                      >
+                        {isLoaded && (
+                          <MarkerF
+                            position={{
+                              lat: parseFloat(data?.location?.lat ?? 47.74604),
+                              lng: parseFloat(
+                                data?.location?.lng ?? 107.341515
+                              ),
+                            }}
+                            // onMouseOver={() => setMarkerActive(i)}
+
+                            animation={google.maps.Animation.DROP}
+                          />
+                        )}
+                      </GoogleMap>
+                    )}
+                  </WhiteBox>
                 </div>
                 <WhiteBox
                   heading="Хаяг"
@@ -388,6 +465,7 @@ const Product = ({ propAds }) => {
                     ) {
                       return (
                         <ProductInfo
+                          href={true}
                           key={i}
                           title={p.name}
                           id={p.type}
@@ -419,6 +497,7 @@ const Product = ({ propAds }) => {
                       return (
                         <ProductInfo
                           key={i}
+                          href={(p.isSearch || p.type == 'sellType') ?? false}
                           title={p.name}
                           id={p.type}
                           value={p.input}
@@ -510,7 +589,6 @@ const Product = ({ propAds }) => {
                         size={{ base: 'xs', sm: 'md' }}
                       />
                     </div>
-
                     <div className="p-2 bg-white rounded-md">
                       <UserInfo
                         id={data.user._id}
@@ -520,7 +598,15 @@ const Product = ({ propAds }) => {
                           data.filters?.filter((f) => f.type == 'phone')[0]
                             .input
                         }
-                        agent={'agenttype'}
+                        agent={
+                          data.user?.userType == 'default'
+                            ? 'Энгийн'
+                            : data.user?.userType == 'organization'
+                            ? 'Байгууллага'
+                            : data.user?.userType == 'agent'
+                            ? 'Агент'
+                            : data.user?.userType
+                        }
                         avatar={
                           data.user?.profileImg ??
                           'https://www.pikpng.com/pngl/m/80-805068_my-profile-icon-blank-profile-picture-circle-clipart.png'
@@ -531,7 +617,13 @@ const Product = ({ propAds }) => {
                       <EditAd
                         data={data}
                         setData={setData}
+                        generalData={generalData}
+                        setGeneralData={setGeneralData}
+                        setImages={setImages}
                         onNext={async () => {
+                          let dummyData = { ...data };
+                          dummyData.images = images;
+                          setData(dummyData);
                           await axios
                             .put(`${urls['test']}/ad/${data._id}`, data, {
                               headers: {
@@ -541,7 +633,7 @@ const Product = ({ propAds }) => {
                                 charset: 'UTF-8',
                               },
                             })
-                            .then((d) => console.log(d.data));
+                            .then((d) => router.reload());
                         }}
                       />
                     )}

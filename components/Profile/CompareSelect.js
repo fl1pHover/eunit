@@ -23,7 +23,7 @@ const CompareItem = ({ item, onClick }) => {
   );
 };
 
-const CompareSelect = () => {
+const CompareSelect = ({ btnView = true }) => {
   const { compareAds, setCompareAds } = useAuth();
   const router = useRouter();
   const [expand, setExpand] = useState(false);
@@ -48,18 +48,20 @@ const CompareSelect = () => {
             : 'h-0'
         )}
       >
-        <button
-          className="h-[50px] gap-2 px-5 bg-secondary/90 absolute -top-[65px] rounded-2xl left-[15px] flex place-items-center text-white  z-30"
-          onClick={() => setExpand(!expand)}
-        >
-          <MdCompareArrows
-            className={mergeNames(
-              'text-xl ',
-              expand ? 'rotate-0' : 'rotate-180'
-            )}
-          />
-          <p className="text-[12px]">Харьцуулах</p>
-        </button>
+        {btnView && (
+          <button
+            className="h-[50px] gap-2 px-5 bg-secondary/90 absolute -top-[65px] rounded-2xl left-[15px] flex place-items-center text-white  z-30"
+            onClick={() => setExpand(!expand)}
+          >
+            <MdCompareArrows
+              className={mergeNames(
+                'text-xl ',
+                expand ? 'rotate-0' : 'rotate-180'
+              )}
+            />
+            <p className="text-[12px]">Харьцуулах</p>
+          </button>
+        )}
         <div
           className={mergeNames(STYLES.flexBetween, 'pt-5 text-white w-full')}
         >

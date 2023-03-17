@@ -75,10 +75,7 @@ const Bottom = ({ sticky }) => {
             <WhiteHeartIcon onClick={() => router.push('/account?Bookmark')} />
 
             {user == undefined ? (
-              <UserIcon
-                text="Бүртгүүлэх"
-                onClick={() => router.push('/login')}
-              />
+              <UserIcon text="Нэвтрэх" onClick={() => router.push('/login')} />
             ) : (
               <UserDrawer user={user} logout={logout} />
             )}

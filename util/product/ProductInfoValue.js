@@ -11,7 +11,7 @@ const ProductInfoValue = ({ href, value, id }) => {
       }}
     >
       <Text
-        fontSize={{ base: '13px', xl: '20px' }}
+        fontSize={{ base: '13px', xl: '15px' }}
         cursor={'pointer'}
         fontWeight={'bold'}
         className="duration-200 ease-in-out hover:text-blue-600"

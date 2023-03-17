@@ -62,8 +62,8 @@ const Category = ({ propAds }) => {
   );
   const mapCenter = useMemo(
     () => ({
-      lat: parseFloat(ads ? ads[0]?.location?.lat ?? 47.74604 : 47.74604),
-      lng: parseFloat(ads ? ads[0]?.location?.lng ?? 107.341515 : 107.341515),
+      lat: 47.91887307876936,
+      lng: 106.91757202148438,
     }),
     []
   );
@@ -73,8 +73,7 @@ const Category = ({ propAds }) => {
         await axios
           .get(`${urls['test']}/ad/category/${router.query.slug}/${id}`)
           .then((d) => {
-            console.log(d.data);
-            // setAds(d.data)
+            setAds(d.data);
           });
     } catch (error) {}
   };
@@ -96,7 +95,7 @@ const Category = ({ propAds }) => {
 
           <Box className="max-w-[100%] w-full rounded-[5px]">
             {/* //TODO Engiin zar */}
-            {ads?.ads?.length > 0 ? (
+            {ads?.limit > 0 ? (
               <AdContent
                 data={ads}
                 tlc={toLowerCase}
