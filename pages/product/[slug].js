@@ -303,7 +303,7 @@ const Product = ({ propAds }) => {
       <MainContainer>
         <Stack direction={'row'} py={2} gap={3} pos="relative">
           {user && JSON.parse(user)._id == data?.user?._id && (
-            <div className="absolute right-64 top-4 z-10">
+            <div className="absolute z-10 right-64 top-4">
               <EditAd
                 data={data}
                 setData={setData}
@@ -311,19 +311,31 @@ const Product = ({ propAds }) => {
                 setGeneralData={setGeneralData}
                 setImages={setImages}
                 onNext={async () => {
-                  let dummyData = { ...data };
-                  dummyData.images = images;
-                  setData(dummyData);
-                  await axios
-                    .put(`${urls['test']}/ad/${data._id}`, data, {
+                  const f = new FormData();
+                  console.log(data);
+                  console.log(images);
+                  f.append('title', data.title);
+                  f.append('description', data.description);
+                  f.append('filters', data.filters);
+                  f.append('subCategory', data.subCategory._id);
+                  f.append('category', data.category);
+                  f.append('types', data.types);
+                  f.append('adType', data.adType);
+                  f.append('location', data.location);
+                  images?.map((prev) => {
+                    f.append('images', prev);
+                  });
+                  console.log(f);
+                  try {
+                    await axios.put(`${urls['test']}/ad/${data._id}`, f, {
                       headers: {
                         Authorization: `Bearer ${token}`,
                         'Access-Control-Allow-Headers': '*',
                         'Content-Type': 'application/json',
                         charset: 'UTF-8',
                       },
-                    })
-                    .then((d) => router.reload());
+                    });
+                  } catch (error) {}
                 }}
               />
             </div>

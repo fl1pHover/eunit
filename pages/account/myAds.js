@@ -20,6 +20,7 @@ const MyAds = ({ user }) => {
   const [data, setData] = useState([]);
   const router = useRouter();
   const toast = useToast();
+  const token = getCookie('token');
   const getData = async () => {
     setIsLoading(true);
     try {
@@ -101,8 +102,32 @@ const MyAds = ({ user }) => {
       setProducts();
     }
   };
+  const restoreAd = async (id) => {
+    try {
+      if(token) {
+        let ad = await axios
+          .get(`${urls['test']}/ad/update/${id}/pending`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Access-Control-Allow-Headers': '*',
+            },
+          })
+          .then((d) => {
+            toast({
+              title: 'Зар сэргээгдлээ.',
+              status: 'success',
+              duration: 5000,
+              isClosable: true,
+            });
+            router.reload();
+          });
+      }
+    } catch (error) {
+      
+    }
+  }
   const deleteAd = async (id) => {
-    const token = getCookie('token');
+    
     try {
       if (token) {
         let ad = await axios
@@ -216,7 +241,11 @@ const MyAds = ({ user }) => {
               item={item || {}}
               isDelete={true}
               deleteFunc={() => {
-                deleteAd(item._id);
+                if(item.adStatus == 'deleted') {
+                  restoreAd(item._id);
+                } else {
+                  deleteAd(item._id);
+                }
               }}
             />
           );
