@@ -7,6 +7,7 @@ import { STYLES } from '@/styles/index';
 import mergeNames from '@/util/mergeNames';
 import { getCookie } from 'cookies-next';
 import { useRouter } from 'next/router';
+import WalletPage from 'pages/wallet';
 import { useEffect, useState } from 'react';
 import Bookmark from './bookmark';
 import MyAds from './myAds';
@@ -34,6 +35,12 @@ const Account = ({ user }) => {
       title: 'Bookmark',
 
       comp: <Bookmark user={user} />,
+    },
+    {
+      tabHeader: 'Хэтэвч',
+      title: 'WalletPage',
+
+      comp: <WalletPage user={user} />,
     },
   ];
   useEffect(() => {
