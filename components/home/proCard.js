@@ -88,46 +88,64 @@ function ProCard({
             )}
           </div>
           <div className="relative z-0 w-full h-full bg-gray-800 cursor-pointer ">
+            <div className="absolute z-20 p-2 text-center text-white -rotate-45 top-[30px] w-52 -left-[50px] bg-mainBlossom">
+              {/* <Image src="/utils/vip.png" layout="fill" /> */}
+              <p className="font-bold tracking-wide">VIP</p>
+            </div>
             {/* {item?.images && ( */}
+            {item?.images.length == 0 && (
+              <Image
+                src={'/images/noImage.png'}
+                alt=" зар"
+                layout="fill"
+                objectFit="cover"
+                className={mergeNames(
+                  'transition-all w-full object-cover h-full ease-in-out duration-400 relative'
+                )}
+                onClick={async () => {
+                  if (user) {
+                    item?._id &&
+                      (await axios
+                        .get(
+                          `${urls['test']}/ad/view/${item.num}/${
+                            JSON.parse(user)._id
+                          }`
+                        )
+                        .then((d) => router.push(`/product/${item.num}`)));
+                  } else {
+                    item?._id && router.push(`/product/${item.num}`);
+                  }
+                }}
+              />
+            )}
             <Swiper
               navigation={true}
               modules={[Navigation]}
               onSlideChange={(swiper) => setImage(swiper.realIndex + 1)}
               // loop={true}
               className="mySwiper cardSwiper"
+              onClick={async () => {
+                if (user) {
+                  item?._id &&
+                    (await axios
+                      .get(
+                        `${urls['test']}/ad/view/${item.num}/${
+                          JSON.parse(user)._id
+                        }`
+                      )
+                      .then((d) => router.push(`/product/${item.num}`)));
+                } else {
+                  item?._id && router.push(`/product/${item.num}`);
+                }
+              }}
             >
-              {item?.images.length == 0 && (
-                <Image
-                  src={'/images/noImage.png'}
-                  alt=" зар"
-                  layout="fill"
-                  objectFit="cover"
-                  className={mergeNames(
-                    'transition-all w-full object-cover h-full ease-in-out duration-400 relative'
-                  )}
-                  onClick={async () => {
-                    if (user) {
-                      item?._id &&
-                        (await axios
-                          .get(
-                            `${urls['test']}/ad/view/${item.num}/${
-                              JSON.parse(user)._id
-                            }`
-                          )
-                          .then((d) => router.push(`/product/${item.num}`)));
-                    } else {
-                      item?._id && router.push(`/product/${item.num}`);
-                    }
-                  }}
-                />
-              )}
-
               {item?.images.map((c, i) => {
+                const a = '/images/noImage.png';
                 return (
                   <SwiperSlide key={i} onClick={() => setImage(i + 1)}>
                     <Image
-                      src={c ?? '/images/noImage.png'}
-                      alt=" зар"
+                      src={c ?? a}
+                      alt="Зарын зураг"
                       layout="fill"
                       objectFit="cover"
                       className={mergeNames(
@@ -139,7 +157,7 @@ function ProCard({
               })}
             </Swiper>
 
-            <div className="absolute top-0 left-0 z-20 w-full h-full pointer-events-none bg-gradient-to-b from-slate-700/0 via-slate-700/10 to-slate-900/50"></div>
+            <div className="absolute bottom-0 left-0 z-20 w-full pointer-events-none h-1/2 bg-gradient-to-b from-slate-700/0 via-slate-700/10 to-slate-900/40"></div>
           </div>
           <div className="relative flex flex-col justify-between w-full h-full p-4 space-y-2 bg-white bom-bg">
             {/* <Box className="absolute w-full h-full scale-y-150 scale-x-125 bg-[#0c0e23] rotate-6" /> */}
@@ -201,11 +219,7 @@ function ProCard({
                   {item?.subCategory?.name ?? ''}
                 </p>
               </div>
-              <p className="text-gray-500 line-clamp-3">
-                {item.description} Lorem ipsum, dolor sit amet consectetur
-                adipisicing elit. Eaque aperiam dolorem enim veritatis magni
-                natus suscipit? Nihil minima quaerat rem.
-              </p>
+              <p className="text-gray-500 line-clamp-3">{item.description}</p>
             </div>
             <div className="flex items-end h-full">
               <p>Огноо</p>

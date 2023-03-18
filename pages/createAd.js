@@ -1,4 +1,4 @@
-import { useToast } from '@chakra-ui/react';
+import { Heading, useToast } from '@chakra-ui/react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { useMemo, useState } from 'react';
@@ -156,7 +156,7 @@ export default function CreateAd({ categories }) {
       f.append('images', prev);
     });
     let ad;
- 
+
     try {
       ad = await axios
         .post(`${urls['test']}/ad`, f, {
@@ -252,9 +252,12 @@ export default function CreateAd({ categories }) {
                     selectedParent={selectedParent}
                     setSelectedParent={setSelectedParent}
                   />
+                  <Heading variant="mediumHeading" className="mb-5 text-center">
+                    Газрын зураг дээр байршлаа сонгоно уу
+                  </Heading>
                   {isLoaded && (
                     <GoogleMap
-                      className="aspect-video"
+                      className="shadow aspect-video"
                       options={mapOptions}
                       onClick={(e) => {
                         setMap(e.latLng.toJSON());

@@ -86,17 +86,17 @@ const Comparing = () => {
                             );
                           }
                         })}
-                        {/* &nbsp; */}
+
                         {c.filters?.map((f, index) => {
                           console.log(c.filters);
                           return (
                             <p
                               key={index}
                               className={`${
-                                index % 2 == 0 ? '' : 'bg-gray-100  '
+                                index % 2 == 0 ? '' : 'bg-gray-100  line-camp-1'
                               } whitespace-nowrap py-2 px-5`}
                             >
-                              {f.input}
+                              {f.input.length == 0 ? <span>-</span> : f.input}
                             </p>
                           );
                         })}

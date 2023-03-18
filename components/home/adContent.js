@@ -57,7 +57,7 @@ const AdContent = ({
         //       return <AdCard key={i} item={item || {}} />;
         //     })}
         // </div>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
           {data?.ads?.map((item, i) => {
             return <ProCard key={i} item={item || {}} />;
           })}

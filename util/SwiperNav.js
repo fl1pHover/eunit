@@ -20,9 +20,9 @@ const SwiperNav = ({ children }) => {
       fill="column"
       modules={[Grid, Navigation, Pagination]}
       className="mySwiper"
-      pagination={{
-        type: 'progressbar',
-      }}
+      // pagination={{
+      //   type: 'progressbar',
+      // }}
     >
       {children}
     </Swiper>

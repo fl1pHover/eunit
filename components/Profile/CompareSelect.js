@@ -10,7 +10,7 @@ const CompareItem = ({ item, onClick }) => {
   return (
     <div className="w-full h-full bg-white max-w-[250px] relative ">
       <Image
-        src={item?.images[0] ?? '/images/HeaderSlider/1.jpg'}
+        src={item?.images[0] ?? '/images/noImage.png'}
         alt="compare ads image"
       />
 
