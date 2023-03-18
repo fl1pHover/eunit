@@ -1,8 +1,47 @@
+import urls from '@/constants/api';
 import mergeNames from '@/util/mergeNames';
-import { Heading, Image } from '@chakra-ui/react';
+import { Box, Heading, Image, useToast } from '@chakra-ui/react';
+import axios from 'axios';
+import { getCookie } from 'cookies-next';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
 import { STYLES } from '../styles';
 
-const WalletPage = () => {
+const WalletPage = ({ user }) => {
+  const [point, setPoint] = useState({
+    email: '',
+    point: '',
+  });
+  const toast = useToast();
+  const token = getCookie('token');
+  const router = useRouter();
+  const sendPoint = async () => {
+    try {
+      if (token) {
+        await axios
+          .get(
+            `${urls['test']}/user/point/${point.email}/${parseFloat(
+              point.point
+            )}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                'Access-Control-Allow-Headers': '*',
+              },
+            }
+          )
+          .then((d) => {
+            toast({
+              title: 'Амжилттай илгээлээ.',
+              status: 'success',
+              duration: 1000,
+              isClosable: true,
+            });
+            router.reload();
+          });
+      }
+    } catch (error) {}
+  };
   return (
     <div className={mergeNames('grid xl:grid-cols-2 grid-cols-1 gap-10 mt-5')}>
       {/* Card */}
@@ -19,12 +58,32 @@ const WalletPage = () => {
           <h1 className="">Нэр</h1>
           <div>
             <h1 className="text-white/80">Үлдэгдэл</h1>
-            <h1 className="text-xl">00000 ₮</h1>
+            <h1 className="text-xl">{user.point ?? 0} ₮</h1>
           </div>
         </div>
         <div className="mt-5">
-          <input placeholder="Дүн" className={mergeNames(STYLES.input)} />
-          <button className={mergeNames(STYLES.blueButton ,'p-2')}>Шилжүүлэх</button>
+          <input
+            placeholder="Шилжүүлэх хүний и-мэйл"
+            className={mergeNames(STYLES.input)}
+            onChange={(e) => {
+              setPoint((prev) => ({ ...prev, email: e.target.value }));
+            }}
+          />
+          <Box h={4} />
+          <input
+            placeholder="Дүн"
+            className={mergeNames(STYLES.input)}
+            onChange={(e) => {
+              setPoint((prev) => ({ ...prev, point: e.target.value }));
+            }}
+          />
+          <Box h={4} />
+          <button
+            className={mergeNames(STYLES.blueButton, 'p-2')}
+            onClick={() => sendPoint()}
+          >
+            Шилжүүлэх
+          </button>
         </div>
       </div>
       <div className="">

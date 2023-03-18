@@ -41,7 +41,7 @@ function ProCard({
   const user = getCookie('user');
   const token = getCookie('token');
   const [image, setImage] = useState(1);
-
+  console.log(item.user);
   return (
     // <Skeleton>
     <Skeleton isLoaded>
@@ -255,17 +255,14 @@ function ProCard({
               <div className="relative rounded-full w-9 h-9 bg-mainBlossom ">
                 <Image
                   // Eniig user bolgood darahaar ordgoor
-                  src={
-                    // useriinZurag ??
-                    '/images/logo/bom-white.png'
-                  }
+                  src={item?.user?.profileImg ?? '/images/logo/bom-white.png'}
                   alt="BOM logo"
                   objectFit="contain"
                   layout="fill"
                   className="p-2"
                 />
               </div>
-              <p className="font-semibold">username</p>
+              <p className="font-semibold">{item?.user?.username ?? ''}</p>
             </button>
           </Tip>
           <div className="flex gap-2">
@@ -274,16 +271,16 @@ function ProCard({
                 ' bg-white text-blue-600 border rounded-full border-blue-600',
                 'px-3 hover:bg-blue-600 hover:text-white transition-all ease-in-out'
               )}
-              onClick={() => router.push(`tel:`)}
+              onClick={() => router.push(`tel: ${item?.user?.phone ?? ''}`)}
             >
-              phone
+              {item?.user?.phone ?? ''}
             </button>
             <button
               className={mergeNames(
                 STYLES.blueButton,
                 'px-3 whitespace-nowrap'
               )}
-              onClick={() => router.push(`mailto:`)}
+              onClick={() => router.push(`mailto: ${item?.user?.email ?? ''}`)}
             >
               Имэйл
             </button>
