@@ -111,10 +111,19 @@ function Card({
               >
                 <AiFillEdit />
               </EditAd>
-              <Alerting
-                btn={<DButton onClick={deleteFunc} />}
-                onclick={deleteFunc}
-              />
+              {item.adStatus == 'deleted' ? (
+                <Alerting
+                isDelete={true}
+                  btn={<DButton onClick={deleteFunc} isDelete={true} />}
+                  onclick={deleteFunc}
+                />
+              ) : (
+                <Alerting
+                isDelete={false}
+                  btn={<DButton onClick={deleteFunc} isDelete={false} />}
+                  onclick={deleteFunc}
+                />
+              )}
             </Fragment>
           ) : (
             <ImageCount onClick={() => console.log('Zurag')}>
