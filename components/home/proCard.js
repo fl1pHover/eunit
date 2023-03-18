@@ -16,7 +16,7 @@ import currency from 'currency.js';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { Fragment } from 'react';
-import { AiFillEdit, AiOutlineCheckCircle } from 'react-icons/ai';
+import { AiFillEdit } from 'react-icons/ai';
 import { SwiperSlide } from 'swiper/react';
 import EditAd from '../ad/edit';
 import AdCardButton from './adCardButton';
@@ -181,25 +181,31 @@ function ProCard({
                   description={item.positions?.location_id ?? ''}
                 />
               </div>
-              <div className="flex items-center justify-between gap-4 text-sm text-mainBLossom font-md">
+
+              <div className="flex items-center gap-2 my-1 text-sm text-mainBLossom font-md">
                 <p
                   className={mergeNames(
-                    'font-semibold flex gap-1 items-center mt-0'
+                    'font-semibold flex gap-1 items-center mt-0 rounded-sm bg-red-400 text-white px-2'
+                  )}
+                >
+                  {/* <AiOutlineCheckCircle className="text-blue-600" /> */}
+                  {item?.types[0] ?? ''}
+                </p>
+                <p
+                  className={mergeNames(
+                    'font-semibold flex gap-1 items-center mt-0 bg-gray-200 px-1 rounded-sm truncate'
                   )}
                 >
                   {/* <RxDotFilled />  */}
-                  <AiOutlineCheckCircle className="text-blue-600" />
+                  {/* <AiOutlineCheckCircle className="text-blue-600 " /> */}
                   {item?.subCategory?.name ?? ''}
                 </p>
-                <p
-                  className={mergeNames(
-                    'font-semibold flex gap-1 items-center mt-0'
-                  )}
-                >
-                  <AiOutlineCheckCircle className="text-blue-600" />
-                  {item?.types[0] ?? ''}
-                </p>
               </div>
+              <p className="text-gray-500 line-clamp-3">
+                {item.description} Lorem ipsum, dolor sit amet consectetur
+                adipisicing elit. Eaque aperiam dolorem enim veritatis magni
+                natus suscipit? Nihil minima quaerat rem.
+              </p>
             </div>
             <div className="flex items-end h-full">
               <p>Огноо</p>
