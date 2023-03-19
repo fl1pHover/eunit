@@ -252,14 +252,16 @@ function ProCard({
               className="flex items-center gap-2"
               onClick={() => router.push(`/account/${item.user}`)}
             >
-              <div className="relative rounded-full w-9 h-9 bg-mainBlossom ">
+              <div className="relative overflow-hidden border-2 rounded-full w-9 h-9 border-mainBlossom">
                 <Image
                   // Eniig user bolgood darahaar ordgoor
                   src={item?.user?.profileImg ?? '/images/logo/bom-white.png'}
                   alt="BOM logo"
                   objectFit="contain"
                   layout="fill"
-                  className="p-2"
+                  className={mergeNames(
+                    item?.user?.profileImg ? '' : 'p-2 bg-mainBlossom'
+                  )}
                 />
               </div>
               <p className="font-semibold">{item?.user?.username ?? ''}</p>

@@ -415,7 +415,8 @@ const Product = ({ propAds }) => {
                     })}
                   </div>
                 </div>
-                <div className="flex flex-col md:flex-row lg:flex-col xl:flex-row gap-7">
+                <div className="grid grid-cols-1 gap-7 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+                  {/* <div className="flex flex-col md:flex-row lg:flex-col xl:flex-row gap-7"> */}
                   <WhiteBox
                     heading="Зарын дэлгэрэнгүй"
                     classnames="flex flex-col gap-3"
