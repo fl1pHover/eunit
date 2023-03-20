@@ -112,7 +112,6 @@ export default function CreateAd({ categories }) {
 
   const sendAd = async () => {
     const token = getCookie('token');
-    console.log(token);
     const f = new FormData();
     const selectedFilters = subCategory.steps[0].values;
     selectedFilters.splice(0, 0, {
@@ -152,12 +151,22 @@ export default function CreateAd({ categories }) {
     f.append('subCategory', subCategory._id);
     f.append('category', categories[types.categoryId]._id);
     f.append('filters', JSON.stringify(copiedFilters));
+    let fImages = new FormData();
+
     images?.map((prev) => {
-      f.append('images', prev);
+      fImages.append('images', prev);
     });
     let ad;
-
     try {
+      await axios
+        .post(`${urls['test']}/ad/uploadFields`, fImages, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Access-Control-Allow-Headers': '*',
+          },
+        })
+        .then((d) => f.append('images', d.data));
+
       ad = await axios
         .post(`${urls['test']}/ad`, f, {
           headers: {
@@ -175,7 +184,6 @@ export default function CreateAd({ categories }) {
             isClosable: true,
           });
           router.reload();
-          // router.push('/');
         });
     } catch (error) {
       setIsLoading(false);

@@ -4,10 +4,11 @@ import urls from '@/constants/api';
 import { useAuth } from '@/context/auth';
 import { brk, STYLES } from '@/styles/index';
 import mergeNames from '@/util/mergeNames';
-import { Checkbox } from '@chakra-ui/react';
+import { Checkbox, useToast } from '@chakra-ui/react';
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
 import Cookies from 'js-cookie';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { MdDelete } from 'react-icons/md';
 import { SiVerizon } from 'react-icons/si';
@@ -38,6 +39,8 @@ const Admin = ({ propAds }) => {
   const [data, setData] = useState({});
   const [checker, setChecker] = useState(false);
   const [num, setNum] = useState(0);
+  const toast = useToast();
+  const router = useRouter();
   let dummy = [];
   const getData = async () => {
     fetch(`${urls['test']}/ad/admin/${num}`, {
@@ -106,14 +109,38 @@ const Admin = ({ propAds }) => {
   const verify = async (id) => {
     try {
       await axios
-        .get(`${urls['test']}/ad/update/${id}/created`)
-        .then((d) => getData());
+        .get(`${urls['test']}/ad/update/${id}/created`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Access-Control-Allow-Headers': '*',
+          },
+        })
+        .then((d) => {
+          toast({
+            title: `${d?.data?.num ?? ''} Зарыг нэмлээ.`,
+            status: 'success',
+            duration: 3000,
+            isClosable: true,
+          });
+        });
     } catch (error) {
       console.error(error);
     }
   };
   const deleteAd = async (id) => {
-    await fetch(`${urls['test']}/ad/update/${id}/deleted`).then((d) => getData());
+    await fetch(`${urls['test']}/ad/update/${id}/deleted`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Access-Control-Allow-Headers': '*',
+      },
+    }).then((d) => {
+      toast({
+        title: `${d?.data?.num ?? ''} Зарыг устгалаа.`,
+        status: 'warning',
+        duration: 3000,
+        isClosable: true,
+      });
+    });
   };
   const [content, setContent] = useState('');
   const [collapsedId, setCollapsed] = useState(false);
@@ -145,76 +172,6 @@ const Admin = ({ propAds }) => {
   if (user?.userType == 'admin' || user?.userType == 'system') {
     return (
       <div className="flex flex-row p-5 min-h-[60vh]">
-        {/* <div className="w-[20%] text-[#b8cde9] rounded-md bg-mainBlossom">
-          <div>
-            <button
-              className={mergeNames(
-                'p-5',
-                'border-b border-[#313255]',
-                'w-full flex flex-row items-center justify-between'
-              )}
-            >
-              Verify Ads
-            </button>
-          </div>
-          {/* {categories?.map((tab, key) => {
-            return (
-              <div className="" key={key}>
-                <button
-                  onClick={() => {
-                    setCollapsed((prev) => {
-                      if (prev === tab.id) return false;
-                      return tab.id;
-                    });
-                  }}
-                  className={mergeNames(
-                    'p-5',
-                    'border-b border-[#313255]',
-                    'w-full flex flex-row items-center justify-between'
-                  )}
-                >
-                  <div className="flex flex-row items-center gap-2">
-                    <p className="font-semibold ">{tab?.name}</p>
-                  </div>
-                  <CgChevronRight
-                    size={20}
-                    className={mergeNames(
-                      collapsedId === tab?.id && 'rotate-90',
-                      'transition-all ease-in-out'
-                    )}
-                  />
-                </button>
-                <div
-                //  className={mergeNames("sm:px-4 sm:py-4 px-3 py-3")}
-                // className="bg-gray-200"
-                >
-                  {collapsedId === tab.id &&
-                    tab?.subCategory?.map((sub, key) => {
-                      return (
-                        <button
-                          key={key}
-                          className="w-full py-2 pl-10 border-b border-[#313255] hover:bg-mainBlue"
-                          // onClick={() => {
-                          //   setContent(categories.submenu.categoryName);
-                          // }}
-                          onClick={() => {
-                            setContent(() => {
-                              tab.subCategory;
-                            });
-                            console.log(tab.subCategory);
-                          }}
-                        >
-                          <p className="text-xs font-medium text-left text-[#b8cde9]">
-                            {sub.name}
-                          </p>
-                        </button>
-                      );
-                    })}
-                </div>
-              </div>
-            );
-          })} 
-        </div> */}
         <div className="p-5 ">
           {/* <Text>Zariin dugaar: {a.num}</Text>
             <Button onClick={() => verify(a._id)}>verify</Button>
@@ -316,8 +273,10 @@ const Admin = ({ propAds }) => {
                   <th>Гарчиг</th>
                   <th>Дэлгэрэнгүй</th>
                   <th>Зарын төрөл</th>
+                  <th>Зарын статус</th>
                   <th>Зөвшөөрөх</th>
                   <th>Устгах</th>
+                  <th>Засах</th>
                 </tr>
               </thead>
               <tbody>
@@ -329,6 +288,7 @@ const Admin = ({ propAds }) => {
                       <td className="truncate ...">{a.title}</td>
                       <td className="truncate ...">{a.description}</td>
                       <td>{a.adType}</td>
+                      <td className="truncate ...">{a.adStatus}</td>
                       <td>
                         <button
                           onClick={() => verify(a._id)}
@@ -573,3 +533,75 @@ export async function getServerSideProps({ req, res }) {
 //     {content == 3 && <p>adafgdfgsd</p>}
 //   </div>
 // </div>
+{
+  /* <div className="w-[20%] text-[#b8cde9] rounded-md bg-mainBlossom">
+          <div>
+            <button
+              className={mergeNames(
+                'p-5',
+                'border-b border-[#313255]',
+                'w-full flex flex-row items-center justify-between'
+              )}
+            >
+              Verify Ads
+            </button>
+          </div>
+          {/* {categories?.map((tab, key) => {
+            return (
+              <div className="" key={key}>
+                <button
+                  onClick={() => {
+                    setCollapsed((prev) => {
+                      if (prev === tab.id) return false;
+                      return tab.id;
+                    });
+                  }}
+                  className={mergeNames(
+                    'p-5',
+                    'border-b border-[#313255]',
+                    'w-full flex flex-row items-center justify-between'
+                  )}
+                >
+                  <div className="flex flex-row items-center gap-2">
+                    <p className="font-semibold ">{tab?.name}</p>
+                  </div>
+                  <CgChevronRight
+                    size={20}
+                    className={mergeNames(
+                      collapsedId === tab?.id && 'rotate-90',
+                      'transition-all ease-in-out'
+                    )}
+                  />
+                </button>
+                <div
+                //  className={mergeNames("sm:px-4 sm:py-4 px-3 py-3")}
+                // className="bg-gray-200"
+                >
+                  {collapsedId === tab.id &&
+                    tab?.subCategory?.map((sub, key) => {
+                      return (
+                        <button
+                          key={key}
+                          className="w-full py-2 pl-10 border-b border-[#313255] hover:bg-mainBlue"
+                          // onClick={() => {
+                          //   setContent(categories.submenu.categoryName);
+                          // }}
+                          onClick={() => {
+                            setContent(() => {
+                              tab.subCategory;
+                            });
+                            console.log(tab.subCategory);
+                          }}
+                        >
+                          <p className="text-xs font-medium text-left text-[#b8cde9]">
+                            {sub.name}
+                          </p>
+                        </button>
+                      );
+                    })}
+                </div>
+              </div>
+            );
+          })} 
+        </div> */
+}

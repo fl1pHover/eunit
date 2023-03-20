@@ -92,12 +92,7 @@ export const ProductInfo = ({
           onClick={!href ? () => {} : func}
         >
           <div className="flex flex-col w-full pl-5 text-left ">
-            <Text
-              fontSize={{ base: '13px', xl: '15px' }}
-              textTransform={'capitalize'}
-            >
-              {title}:{' '}
-            </Text>
+            <Text fontSize={{ base: '13px', xl: '15px' }}>{title}: </Text>
             {!localData && (
               <ProductInfoValue href={href} id={id} value={value} />
             )}
@@ -615,6 +610,7 @@ const Product = ({ propAds }) => {
                     </div>
                     {user && JSON.parse(user)._id == data?.user?._id && (
                       <EditAd
+                        images={images}
                         data={data}
                         setData={setData}
                         generalData={generalData}
@@ -622,21 +618,32 @@ const Product = ({ propAds }) => {
                         setImages={setImages}
                         onNext={async () => {
                           const f = new FormData();
-                          console.log(data);
-                          console.log(images);
                           f.append('title', data.title);
                           f.append('description', data.description);
                           f.append('filters', data.filters);
                           f.append('subCategory', data.subCategory._id);
                           f.append('category', data.category);
                           f.append('types', data.types);
-                          f.append('adType', data.adType);
+                          f.append('adTypes', data.adType);
                           f.append('location', data.location);
+                          let fImages = new FormData();
                           images?.map((prev) => {
-                            f.append('images', prev);
+                            fImages.append('images', prev);
                           });
-                          console.log(f);
+
                           try {
+                            await axios
+                              .post(
+                                `${urls['test']}/ad/uploadFields`,
+                                fImages,
+                                {
+                                  headers: {
+                                    Authorization: `Bearer ${token}`,
+                                    'Access-Control-Allow-Headers': '*',
+                                  },
+                                }
+                              )
+                              .then((d) => f.append('images', d.data));
                             await axios.put(
                               `${urls['test']}/ad/${data._id}`,
                               f,

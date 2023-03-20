@@ -18,6 +18,7 @@ const EditAd = ({
   setImages,
   generalData,
   children,
+  images
 }) => {
   const libraries = useMemo(() => ['places'], []);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -88,6 +89,7 @@ const EditAd = ({
             <div>
               {data?.images && (
                 <FieldPhotoUpload
+                images={images}
                   setImages={setImages}
                   generalData={generalData}
                   setGeneralData={setGeneralData}

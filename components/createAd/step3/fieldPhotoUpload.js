@@ -7,6 +7,7 @@ import { AtomLabel } from './atom';
 const FieldPhotoUpload = ({
   generalData = {},
   setImages = () => {},
+  images = [],
   setGeneralData = () => {},
 }) => {
   const hiddenFileInput = React.useRef(null);
@@ -49,11 +50,13 @@ const FieldPhotoUpload = ({
       setIsImageSelected(false);
     }
     setSelectedImages(selectedImages.filter((e) => e !== image));
+    if (images) setImages(images.filter((e) => e !== image));
     setGeneralData((prev) => ({
       ...prev,
       imgSelected: true,
       images: selectedImages.filter((e) => e !== image),
     }));
+
     URL.revokeObjectURL(image);
   }
 
