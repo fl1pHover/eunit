@@ -1,6 +1,7 @@
 import { LoadingButton } from '@/lib/Button';
 import CustomModal from '@/util/CustomModal';
 import mergeNames from '@/util/mergeNames';
+import WhiteBox from '@/util/product/WhiteBox';
 import { Box, Input, useDisclosure } from '@chakra-ui/react';
 import { GoogleMap, MarkerF, useLoadScript } from '@react-google-maps/api';
 import { Textarea } from 'flowbite-react';
@@ -18,7 +19,7 @@ const EditAd = ({
   setImages,
   generalData,
   children,
-  images
+  images,
 }) => {
   const libraries = useMemo(() => ['places'], []);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -89,7 +90,7 @@ const EditAd = ({
             <div>
               {data?.images && (
                 <FieldPhotoUpload
-                images={images}
+                  images={images}
                   setImages={setImages}
                   generalData={generalData}
                   setGeneralData={setGeneralData}
@@ -97,32 +98,61 @@ const EditAd = ({
               )}
 
               <Box h={4} />
-              <Textarea
-                mt={5}
-                onChange={(e) => {
-                  dummyData.description = e.target.value;
-                  if (!admin) {
-                    setData(dummyData);
-                  } else {
-                    let d = { ...ads };
-                    d.ads.find((a) => data == a).title = e.target.value;
+              <div className="grid grid-cols-1 gap-7 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+                <Textarea
+                  mt={5}
+                  onChange={(e) => {
+                    dummyData.description = e.target.value;
+                    if (!admin) {
+                      setData(dummyData);
+                    } else {
+                      let d = { ...ads };
+                      d.ads.find((a) => data == a).title = e.target.value;
 
-                    setData(d);
-                  }
-                }}
-              >
-                {data.description}
-              </Textarea>
+                      setData(d);
+                    }
+                  }}
+                >
+                  {data.description}
+                </Textarea>
+                <GoogleMap
+                  onClick={(e) => {
+                    dummyData.location = e.latLng.toJSON();
+                    if (!admin) {
+                      setData(dummyData);
+                    } else {
+                      data = dummyData;
+                    }
+                  }}
+                  options={mapOptions}
+                  zoom={14}
+                  center={mapCenter}
+                  mapTypeId={google.maps.MapTypeId.ROADMAP}
+                  mapContainerStyle={{ width: '100%', height: '40vh' }}
+                >
+                  {isLoaded && (
+                    <div>
+                      <MarkerF
+                        position={{
+                          lat: parseFloat(data?.location?.lat ?? 47.74604),
+                          lng: parseFloat(data?.location?.lng ?? 107.341515),
+                        }}
+                        animation={google.maps.Animation.DROP}
+                        className={mergeNames('group')}
+                      />
+                    </div>
+                  )}
+                </GoogleMap>
+              </div>
             </div>
             <Box h={4} />
 
             {data && (
-              <div className="grid grid-cols-2 gap-3">
-                <p className="text-xl font-bold col-span-full">
-                  Ерөнхий мэдээлэл
-                </p>
-
-                {data.filters?.map((p, i) => {
+              <WhiteBox
+                heading="Мэдээлэл"
+                classnames="grid xs:grid-cols-2 xl:grid-cols-4 gap-5"
+              >
+                {data?.filters?.map((p, i) => {
                   return (
                     <ProductInfo
                       key={i}
@@ -135,40 +165,20 @@ const EditAd = ({
                       admin={admin}
                       setEditData={setData}
                       editData={data}
+                      // classnames={mergeNames(
+                      //   (p.type == 'committee' ||
+                      //     p.type == 'district' ||
+                      //     p.type == 'location' ||
+                      //     p.type == 'town' ||
+                      //     p.type == 'officeName' ||
+                      //     p.type == 'buildingName') &&
+                      //     'bg-red-500 row-start'
+                      // )}
                     />
                   );
                 })}
-              </div>
+              </WhiteBox>
             )}
-
-            <GoogleMap
-              onClick={(e) => {
-                dummyData.location = e.latLng.toJSON();
-                if (!admin) {
-                  setData(dummyData);
-                } else {
-                  data = dummyData;
-                }
-              }}
-              options={mapOptions}
-              zoom={14}
-              center={mapCenter}
-              mapTypeId={google.maps.MapTypeId.ROADMAP}
-              mapContainerStyle={{ width: '100%', height: '50vh' }}
-            >
-              {isLoaded && (
-                <div>
-                  <MarkerF
-                    position={{
-                      lat: parseFloat(data?.location?.lat ?? 47.74604),
-                      lng: parseFloat(data?.location?.lng ?? 107.341515),
-                    }}
-                    animation={google.maps.Animation.DROP}
-                    className={mergeNames('group')}
-                  />
-                </div>
-              )}
-            </GoogleMap>
           </div>
         </Box>
       </Box>

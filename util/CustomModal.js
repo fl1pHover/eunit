@@ -35,7 +35,7 @@ function CustomModal({
         onClose={onClose}
         isOpen={isOpen}
         isCentered
-        size={{ base: 'sm', sm: 'xl', md: '2xl', lg: '5xl' }}
+        size={{ base: 'sm', sm: 'xl', md: '2xl', lg: '6xl', xl: '6xl' }}
         className="overflow-hidden "
         scrollBehavior={scrollBehavior}
       >

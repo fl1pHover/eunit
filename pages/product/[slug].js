@@ -60,6 +60,7 @@ export const ProductInfo = ({
   setEditData,
   edit = false,
   editData,
+  classnames,
   admin,
   editFunc = () => {},
 }) => {
@@ -83,7 +84,8 @@ export const ProductInfo = ({
           title.length + value?.length > 30
             ? 'product__info col-span-full md:col-span-2 2xl:col-span-2 row-start-1'
             : 'product__info',
-          'bg-white shadow rounded-md'
+          'bg-white shadow rounded-md',
+          classnames
         )}
       >
         <Stack

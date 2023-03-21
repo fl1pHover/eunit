@@ -1,13 +1,8 @@
 import { LoadingButton } from '@/lib/Button';
 import CustomModal from '@/util/CustomModal';
 import mergeNames from '@/util/mergeNames';
-import {
-  AspectRatio,
-  Box,
-  Heading,
-  Text,
-  useDisclosure,
-} from '@chakra-ui/react';
+import WhiteBox from '@/util/product/WhiteBox';
+import { Box, Heading, Text, useDisclosure } from '@chakra-ui/react';
 import { GoogleMap, MarkerF, useLoadScript } from '@react-google-maps/api';
 import { ProductInfo } from 'pages/product/[slug]';
 import { useMemo } from 'react';
@@ -55,7 +50,6 @@ const StepButtons = ({
   );
   const mapCenter = useMemo(
     () => ({
-      
       lat: parseFloat(map?.lat ?? 47.91887307876936),
       lng: parseFloat(map?.lng ?? 106.91757202148438),
     }),
@@ -89,7 +83,7 @@ const StepButtons = ({
             header="Баталгаажуулах хэсэг"
           >
             <Box maxWidth={'100%'} flex="0 0 100%" borderRadius="5px">
-              <Box className="p-3 bg-white shadow-md md:p-10 rounded-xl">
+              <div className="flex flex-col w-full p-3 shadow-md gap-7 bg-bgGrey md:p-10 rounded-xl">
                 {/*Product */}
                 {generalData.title && (
                   <Heading
@@ -102,129 +96,160 @@ const StepButtons = ({
                     {generalData.title}
                   </Heading>
                 )}
-
-                {/* product image and information */}
-                <div className="grid grid-cols-1 gap-10 md:grid-cols-2 product__content-wrapper">
-                  <div>
-                    <Box
-                      className={mergeNames(
-                        'product__image',
-                        'border-2 border-blue-900/20 mb-[120px] shadow-md'
-                      )}
-                    >
-                      {generalData?.images ? (
-                        <AspectRatio
-                          ratio={1}
-                          onClick={() => {
-                            onClose(), setStep(1);
+                <Box
+                  className={mergeNames(
+                    'product__image',
+                    'border-2 border-blue-900/20 shadow-md gallery'
+                  )}
+                  onClick={() => {
+                    onClose(), setStep(1);
+                  }}
+                >
+                  {generalData?.images ? (
+                    <ImageGallery
+                      thumbnailPosition="left"
+                      items={generalData?.images.map((i) => ({
+                        original: i,
+                        thumbnail: i,
+                      }))}
+                      className="object-contain"
+                    />
+                  ) : (
+                    // ene er ustgagdah ulaan shuu
+                    <div className="grid w-full font-bold h-[30vh] bg-gray-700 text-white aspect-square place-items-center text-md">
+                      Энэ заранд зураг байхгүй байна
+                    </div>
+                  )}
+                </Box>
+                <WhiteBox
+                  heading="Хаяг"
+                  classnames="grid xs:grid-cols-2 xl:grid-cols-4 gap-5"
+                >
+                  {data?.map((p, i) => {
+                    if (
+                      p.parent == 'committee' ||
+                      p.parent == 'district' ||
+                      p.parent == 'location' ||
+                      p.parent == 'town' ||
+                      p.parent == 'officeName' ||
+                      p.parent == 'buildingName'
+                    ) {
+                      return (
+                        <ProductInfo
+                          key={i}
+                          title={p.name ?? ''}
+                          id={p.parent ?? ''}
+                          value={p.input ?? ''}
+                          func={() => {
+                            onClose(), setStep(2);
                           }}
-                        >
-                          <ImageGallery
-                            items={generalData?.images.map((i) => ({
-                              original: i,
-                              thumbnail: i,
-                            }))}
-                            className="object-contain"
-                          />
-                        </AspectRatio>
-                      ) : (
-                        // ene er ustgagdah ulaan shuu
-                        <div className="w-full bg-red-500 aspect-square" />
-                      )}
-                    </Box>
+                          href={false}
+                        />
+                      );
+                    }
+                  })}
+                </WhiteBox>
+
+                <div className="grid grid-cols-1 gap-7 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+                  <WhiteBox
+                    heading="Зарын дэлгэрэнгүй"
+                    classnames="flex flex-col gap-3"
+                  >
                     <Text
-                      mt={5}
+                      className="text-[#5c727d] whitespace-pre-line"
                       onClick={() => {
                         onClose(), setStep(1);
                       }}
                     >
                       {generalData.desc}
                     </Text>
-                  </div>
-
-                  {data && (
-                    <div className="flex flex-col gap-3">
-                      <p className="text-xl font-bold col-span-full">
-                        Ерөнхий мэдээлэл
-                      </p>
-                      <ProductInfo
-                        title={'Үнэ'}
-                        id={generalData.price ?? ''}
-                        value={generalData.price ?? ''}
-                        func={() => {
-                          onClose(), setStep(1);
-                        }}
-                        href={false}
-                      />
-                      <ProductInfo
-                        title={'Нэгж талбайн үнэ'}
-                        id={generalData.unitPrice ?? ''}
-                        value={generalData.unitPrice ?? ''}
-                        func={() => {
-                          onClose(), setStep(1);
-                        }}
-                        href={false}
-                      />
-                      <ProductInfo
-                        title={'Талбай'}
-                        id={generalData.area ?? ''}
-                        value={generalData.area ?? ''}
-                        func={() => {
-                          onClose(), setStep(1);
-                        }}
-                        href={false}
-                      />
-                      <ProductInfo
-                        title={'Утас'}
-                        id={generalData.phone ?? ''}
-                        value={generalData.phone ?? ''}
-                        func={() => {
-                          onClose(), setStep(1);
-                        }}
-                        href={false}
-                      />
-                      {data?.map((p, i) => {
-                        return (
-                          <ProductInfo
-                            key={i}
-                            title={p.name ?? ''}
-                            id={p.parent ?? ''}
-                            value={p.input ?? ''}
-                            func={() => {
-                              onClose(), setStep(2);
+                  </WhiteBox>
+                  <WhiteBox heading="Газрын зураг">
+                    <GoogleMap
+                      onClick={() => {
+                        onClose(), setStep(0);
+                      }}
+                      options={mapOptions}
+                      zoom={14}
+                      center={mapCenter}
+                      mapTypeId={google.maps.MapTypeId.ROADMAP}
+                      mapContainerStyle={{ width: '100%', height: '30vh' }}
+                    >
+                      {isLoaded && (
+                        <div>
+                          <MarkerF
+                            position={{
+                              lat: parseFloat(map?.lat ?? 47.74604),
+                              lng: parseFloat(map?.lng ?? 107.341515),
                             }}
-                            href={false}
+                            animation={google.maps.Animation.DROP}
+                            className={mergeNames('group')}
                           />
-                        );
-                      })}
-                    </div>
-                  )}
-                  {/* <StepProgress /> */}
-                  <GoogleMap
-                    onClick={() => {
-                      onClose(), setStep(0);
-                    }}
-                    options={mapOptions}
-                    zoom={14}
-                    center={mapCenter}
-                    mapTypeId={google.maps.MapTypeId.ROADMAP}
-                    mapContainerStyle={{ width: '100%', height: '50vh' }}
-                  >
-                    {isLoaded && (
-                      <div>
-                        <MarkerF
-                          position={{
-                            lat: parseFloat(map?.lat ?? 47.74604),
-                            lng: parseFloat(map?.lng ?? 107.341515),
-                          }}
-                          animation={google.maps.Animation.DROP}
-                          className={mergeNames('group')}
-                        />
-                      </div>
-                    )}
-                  </GoogleMap>
+                        </div>
+                      )}
+                    </GoogleMap>
+                  </WhiteBox>
                 </div>
-              </Box>
+                {data && (
+                  <WhiteBox
+                    heading="Мэдээлэл"
+                    classnames="grid grid-cols-2 gap-3 md:grid-cols-3 2xl:grid-cols-4"
+                  >
+                    <ProductInfo
+                      title={'Үнэ'}
+                      id={generalData.price ?? ''}
+                      value={generalData.price ?? ''}
+                      func={() => {
+                        onClose(), setStep(1);
+                      }}
+                      href={false}
+                    />
+                    <ProductInfo
+                      title={'Нэгж талбайн үнэ'}
+                      id={generalData.unitPrice ?? ''}
+                      value={generalData.unitPrice ?? ''}
+                      func={() => {
+                        onClose(), setStep(1);
+                      }}
+                      href={false}
+                    />
+                    <ProductInfo
+                      title={'Талбай'}
+                      id={generalData.area ?? ''}
+                      value={generalData.area ?? ''}
+                      func={() => {
+                        onClose(), setStep(1);
+                      }}
+                      href={false}
+                    />
+                    <ProductInfo
+                      title={'Утас'}
+                      id={generalData.phone ?? ''}
+                      value={generalData.phone ?? ''}
+                      func={() => {
+                        onClose(), setStep(1);
+                      }}
+                      href={false}
+                    />
+
+                    {data?.map((p, i) => {
+                      return (
+                        <ProductInfo
+                          key={i}
+                          title={p.name ?? ''}
+                          id={p.parent ?? ''}
+                          value={p.input ?? ''}
+                          func={() => {
+                            onClose(), setStep(2);
+                          }}
+                          href={false}
+                        />
+                      );
+                    })}
+                  </WhiteBox>
+                )}
+                {/* <StepProgress /> */}
+              </div>
             </Box>
           </CustomModal>
         ) : (
