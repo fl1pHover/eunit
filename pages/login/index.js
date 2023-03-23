@@ -201,7 +201,7 @@ export const SignUpComp = ({ credential, setCredential, fc }) => {
   };
 
   return (
-    <form>
+    <div>
       <Box h={3} />
       <InputComp
         lbl={'Та И-Мэйл хаягаа оруулна уу'}
@@ -264,7 +264,7 @@ export const SignUpComp = ({ credential, setCredential, fc }) => {
       >
         Бүртгүүлэх
       </button>
-    </form>
+    </div>
   );
 };
 
