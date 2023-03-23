@@ -39,7 +39,15 @@ const WalletPage = ({ user }) => {
                 isClosable: true,
               });
             }
-            if (d.data.status == 400) {
+            if (d.data.message == 'not found receiver') {
+              toast({
+                title: 'Хүлээн авагч олдсонгүй',
+                status: 'warning',
+                duration: 1000,
+                isClosable: true,
+              });
+            }
+            if (d.data.message == 'not enough points') {
               toast({
                 title: 'Үлдэгдэл хүрэлцэхгүй байна',
                 status: 'warning',
