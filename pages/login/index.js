@@ -2,14 +2,21 @@ import { ContainerXP } from '@/lib/Container';
 import { STYLES } from '@/styles/index';
 
 import mergeNames from '@/util/mergeNames';
-import { Box, FormControl, FormLabel, Image, Input } from '@chakra-ui/react';
+import {
+  Box,
+  FormControl,
+  FormLabel,
+  Image,
+  Input,
+  Link,
+} from '@chakra-ui/react';
 import { useAuth } from 'context/auth';
 import { getCookie } from 'cookies-next';
 
+import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { BiHide, BiShow } from 'react-icons/bi';
-
 export default function Login() {
   const { logout, login, signup } = useAuth();
   const [signupCredential, setSignupcredential] = useState({
@@ -159,9 +166,11 @@ export const LoginComp = ({ credential, setCredential, fc }) => {
         v="password"
       />
 
-      <button className="float-right my-4 text-sm font-bold text-blue-800">
-        Нууц үг мартсан?
-      </button>
+      <NextLink href={'/forget'}>
+        <Link className="float-right my-4 text-sm font-bold text-blue-800">
+          Нууц үг мартсан?
+        </Link>
+      </NextLink>
       <Box h={10}></Box>
       {/* <CustomToast
         onclick={() => fc()}

@@ -1,12 +1,25 @@
+import urls from '@/constants/api';
 import { ContainerXP } from '@/lib/Container';
 import { STYLES } from '@/styles/index';
 import mergeNames from '@/util/mergeNames';
-import { Box, FormControl, FormLabel, Image, Input } from '@chakra-ui/react';
+import {
+  Box,
+  FormControl,
+  FormLabel,
+  Image,
+  Input,
+  useToast,
+} from '@chakra-ui/react';
+import axios from 'axios';
+
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 
 const ForgetPassword = () => {
   const router = useRouter();
-
+  const [password, setPassword] = useState();
+  const [vPassword, setVPassword] = useState();
+  const toast = useToast();
   return (
     <ContainerXP
       classname={mergeNames(
@@ -33,17 +46,60 @@ const ForgetPassword = () => {
           <h1 className="my-3 text-2xl font-bold text-center">
             Нууц үг сэргээх
           </h1>
-          <form>
-            <ForgetInput lbl="Шинэ нууц үг" />
+          <div>
+            <ForgetInput
+              lbl="Шинэ нууц үг"
+              onChange={(e) => setPassword(e.target.value)}
+            />
             <Box h={5} />
-            <ForgetInput lbl="Шинэ нууц үг давтах" />
+            <ForgetInput
+              lbl="Шинэ нууц үг давтах"
+              onChange={(e) => setVPassword(e.target.value)}
+            />
             <Box h={7} />
             <button
               className={mergeNames('w-full h-auto py-3', STYLES.blueButton)}
+              onClick={async () => {
+                if (
+                  password.length > 6 &&
+                  password == vPassword &&
+                  router.query.slug
+                ) {
+                  try {
+                    await axios
+                      .post(
+                        `${urls['test']}/auth/forget/${router.query.slug}`,
+                        { password }
+                      )
+                      .then((d) => {
+                        if (d.data || d.data == 'true') {
+                          toast({
+                            title: 'Амжилттай нууц үг солилоо',
+                            duration: 5000,
+                            status: 'success',
+                          });
+                          router.push('/login');
+                        } else {
+                          toast({
+                            title: 'Алдаа гарлаа',
+                            duration: 5000,
+                            status: 'warning',
+                          });
+                        }
+                      });
+                  } catch (error) {
+                    toast({
+                      title: 'Алдаа гарлаа',
+                      duration: 5000,
+                      status: 'error',
+                    });
+                  }
+                }
+              }}
             >
               Шинэчлэх
             </button>
-          </form>
+          </div>
           <p className="my-10 text-sm font-bold text-gray-600">
             <button
               className="text-blue-800"
@@ -55,11 +111,10 @@ const ForgetPassword = () => {
         </div>
       </div>
     </ContainerXP>
-   
   );
 };
 
-export const ForgetInput = ({ lbl }) => {
+export const ForgetInput = ({ lbl, onChange }) => {
   return (
     <Box bg={'bg.input'} borderRadius={12} w="full">
       <FormControl variant={'floating'} id="first-name" isRequired>
@@ -68,7 +123,7 @@ export const ForgetInput = ({ lbl }) => {
           border="1px solid #d9d9d9 "
           className={mergeNames('relative text-[14px] rounded-full')}
           // type={type === 'password' ? (!show ? 'password' : 'text') : type}
-
+          onChange={onChange}
           required
         />
         <FormLabel className={mergeNames('text-[14px] md:text-base ')}>

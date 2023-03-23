@@ -17,7 +17,7 @@ const WalletPage = ({ user }) => {
   const router = useRouter();
   const sendPoint = async () => {
     try {
-      if (token) {
+      if (token && point.email && point.point) {
         await axios
           .get(
             `${urls['test']}/user/point/${point.email}/${parseFloat(
@@ -58,7 +58,7 @@ const WalletPage = ({ user }) => {
           <h1 className="">Нэр</h1>
           <div>
             <h1 className="text-white/80">Үлдэгдэл</h1>
-            <h1 className="text-xl">{user.point ?? 0} ₮</h1>
+            <h1 className="text-xl">{user?.point ?? 0} ₮</h1>
           </div>
         </div>
         <div className="mt-5">
