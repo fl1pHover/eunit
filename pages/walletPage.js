@@ -31,12 +31,22 @@ const WalletPage = ({ user }) => {
             }
           )
           .then((d) => {
-            toast({
-              title: 'Амжилттай илгээлээ.',
-              status: 'success',
-              duration: 1000,
-              isClosable: true,
-            });
+            if (d.data.message == 'success') {
+              toast({
+                title: 'Амжилттай илгээлээ.',
+                status: 'success',
+                duration: 1000,
+                isClosable: true,
+              });
+            }
+            if (d.data.status == 400) {
+              toast({
+                title: 'Үлдэгдэл хүрэлцэхгүй байна',
+                status: 'warning',
+                duration: 1000,
+                isClosable: true,
+              });
+            }
             router.reload();
           });
       }

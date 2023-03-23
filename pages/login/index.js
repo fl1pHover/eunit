@@ -147,7 +147,7 @@ export async function getServerSideProps({ req, res }) {
 
 export const LoginComp = ({ credential, setCredential, fc }) => {
   return (
-    <form>
+    <div>
       <Box h={3} />
 
       <InputComp
@@ -187,7 +187,7 @@ export const LoginComp = ({ credential, setCredential, fc }) => {
       >
         Нэвтрэх
       </button>
-    </form>
+    </div>
   );
 };
 
