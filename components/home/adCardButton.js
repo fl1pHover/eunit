@@ -6,7 +6,7 @@ import { useAuth } from '@/context/auth';
 import mergeNames from '@/util/mergeNames';
 import { Tooltip, useToast } from '@chakra-ui/react';
 import axios from 'axios';
-import { getCookie } from 'cookies-next';
+import { getCookie, setCookie } from 'cookies-next';
 import { useRouter } from 'next/router';
 import { BiGitCompare } from 'react-icons/bi';
 const AdCardButton = ({ id, adId }) => {
@@ -14,12 +14,25 @@ const AdCardButton = ({ id, adId }) => {
   const toast = useToast();
   const [isLiked, setIsLiked] = React.useState(false);
   const token = getCookie('token');
+  let bookmarks = getCookie('bookmarks');
   const router = useRouter();
   const user = getCookie('user');
   const addToBookmark = async () => {
-    try {
-      await axios
-        .post(
+    bookmarks = getCookie('bookmarks');
+    if (bookmarks) {
+      if (JSON.parse(bookmarks).find((b) => b == adId) != undefined) {
+        setIsLiked(false);
+        let arr = [...JSON.parse(bookmarks)];
+        arr = arr.filter((a) => a !== adId);
+
+        setCookie('bookmarks', arr);
+        toast({
+          title: 'Зар хүслээс хасагдлаа.',
+          status: 'warning',
+          duration: 5000,
+          isClosable: true,
+        });
+        await axios.post(
           `${urls['test']}/bookmark/ad`,
           {
             adId: adId,
@@ -29,27 +42,36 @@ const AdCardButton = ({ id, adId }) => {
               Authorization: `Bearer ${token}`,
             },
           }
-        )
-        .then((d) => {
-          if (d.data) {
-            toast({
-              title: 'Зар хүсэлд нэмэгдлээ.',
-              status: 'success',
-              duration: 5000,
-              isClosable: true,
-            });
-          } else {
-            toast({
-              title: 'Зар хүслээс хасагдлаа.',
-              status: 'warning',
-              duration: 5000,
-              isClosable: true,
-            });
-          }
+        );
+      } else {
+        setIsLiked(true);
+        let arr = [...JSON.parse(bookmarks)];
+        arr.push(adId);
+        setCookie('bookmarks', arr);
+        toast({
+          title: 'Зар хүсэлд нэмэгдлээ.',
+          status: 'success',
+          duration: 5000,
+          isClosable: true,
         });
-    } catch (err) {
-      console.log(err.response.data.message);
+        await axios.post(
+          `${urls['test']}/bookmark/ad`,
+          {
+            adId: adId,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+      }
     }
+
+    //   try {
+    // } catch (err) {
+    //   console.log(err.response.data.message);
+    //   }
   };
   const getCompareAd = async () => {
     try {
@@ -84,7 +106,6 @@ const AdCardButton = ({ id, adId }) => {
         <button
           className={mergeNames(cardIcon.div)}
           onClick={() => {
-            setIsLiked(!isLiked);
             addToBookmark();
           }}
         >
@@ -93,9 +114,8 @@ const AdCardButton = ({ id, adId }) => {
               'hover:text-red-400 ',
               cardIcon.icon,
               isLiked ||
-                (user &&
-                  JSON.parse(user).bookmarks.find((b) => b == adId) !=
-                    undefined)
+                (bookmarks &&
+                  JSON.parse(bookmarks).find((b) => b == adId) != undefined)
                 ? 'text-red-500/90'
                 : 'text-slate-200/90'
             )}

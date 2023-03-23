@@ -30,7 +30,7 @@ import {
   useLoadScript,
 } from '@react-google-maps/api';
 import axios from 'axios';
-import { getCookie } from 'cookies-next';
+import { getCookie, setCookie } from 'cookies-next';
 
 import EditAd from '@/components/ad/edit';
 import { FiltersContainer } from '@/components/createAd/step4/filter';
@@ -67,6 +67,7 @@ export const ProductInfo = ({
   const [selectedParent, setSelectedParent] = useState([]);
   const [localData, setData] = useState();
   const [other, setOther] = useState(false);
+
   let dummy = { ...editData };
   return (
     <Fragment>
@@ -204,6 +205,7 @@ const Product = ({ propAds }) => {
   const { asPath, pathname } = useRouter();
   const toast = useToast();
   const router = useRouter();
+  const bookmarks = getCookie('bookmarks');
   const [data, setData] = useState('');
   const [suggestion, setSuggestion] = useState(
     propAds?.subCategory?.suggessionType[0] ?? 'location'
@@ -218,6 +220,7 @@ const Product = ({ propAds }) => {
     imgSelected: false,
     images: [],
   });
+  const [isLiked, setIsLiked] = useState();
   const [images, setImages] = useState([]);
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: 'AIzaSyC2u2OzBNo53GxJJdN3Oc_W6Yc42OmdZcE',
@@ -530,45 +533,67 @@ const Product = ({ propAds }) => {
                         }}
                         size={{ base: 'xs', sm: 'md' }}
                         color={
-                          user
-                            ? JSON.parse(user).bookmarks.find(
-                                (b) => b == data._id
-                              ) != undefined
-                              ? 'text-red-500/90'
-                              : 'text-slate-200/90'
-                            : 'text-slate-200/90'
+                          isLiked ||
+                          (bookmarks &&
+                            JSON.parse(bookmarks).find((b) => b == data._id) !=
+                              undefined)
+                            ? 'red'
+                            : 'gray'
                         }
                         onClick={async () => {
-                          await axios
-                            .post(
-                              `${urls['test']}/bookmark/ad`,
-                              {
-                                adId: data._id,
-                              },
-                              {
-                                headers: {
-                                  Authorization: `Bearer ${token}`,
+                          bookmarks = getCookie('bookmarks');
+                          if (bookmarks) {
+                            if (
+                              JSON.parse(bookmarks).find(
+                                (b) => b == data._id
+                              ) != undefined
+                            ) {
+                              setIsLiked(false);
+                              let arr = [...JSON.parse(bookmarks)];
+                              arr = arr.filter((a) => a !== data._id);
+
+                              setCookie('bookmarks', arr);
+                              toast({
+                                title: 'Зар хүслээс хасагдлаа.',
+                                status: 'warning',
+                                duration: 5000,
+                                isClosable: true,
+                              });
+                              await axios.post(
+                                `${urls['test']}/bookmark/ad`,
+                                {
+                                  adId: data._id,
                                 },
-                              }
-                            )
-                            .then((d) => {
-                              if (d.data) {
-                                toast({
-                                  title: 'Зар хүсэлд нэмэгдлээ.',
-                                  status: 'success',
-                                  duration: 5000,
-                                  isClosable: true,
-                                });
-                              } else {
-                                toast({
-                                  title: 'Зар хүслээс хасагдлаа.',
-                                  status: 'warning',
-                                  duration: 5000,
-                                  isClosable: true,
-                                });
-                              }
-                              router.reload();
-                            });
+                                {
+                                  headers: {
+                                    Authorization: `Bearer ${token}`,
+                                  },
+                                }
+                              );
+                            } else {
+                              setIsLiked(true);
+                              let arr = [...JSON.parse(bookmarks)];
+                              arr.push(data._id);
+                              setCookie('bookmarks', arr);
+                              toast({
+                                title: 'Зар хүсэлд нэмэгдлээ.',
+                                status: 'success',
+                                duration: 5000,
+                                isClosable: true,
+                              });
+                              await axios.post(
+                                `${urls['test']}/bookmark/ad`,
+                                {
+                                  adId: data._id,
+                                },
+                                {
+                                  headers: {
+                                    Authorization: `Bearer ${token}`,
+                                  },
+                                }
+                              );
+                            }
+                          }
                         }}
                       />
                       <IconButton

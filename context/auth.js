@@ -18,6 +18,7 @@ export const AuthProvider = ({ children }) => {
   async function loadUserFromCookies() {
     const token = getCookie('token');
     const user = getCookie('user');
+    const bookmarks = getCookie('bookmarks');
     setLoading(true);
     try {
       const { data: category } = await axios.get(`${urls['test']}/category`);
@@ -37,6 +38,8 @@ export const AuthProvider = ({ children }) => {
 
         setUser(data);
         setCookie('user', data);
+        setCookie('bookmarts', data.bookmarks);
+        // setCookie('bookmarks', data.user.bookmarks)
       } catch (error) {
         console.log(error.response.data.message);
         logout();
@@ -62,20 +65,21 @@ export const AuthProvider = ({ children }) => {
 
         if (!data) {
           toast({
-            title: 'И-майл хаяг эсвэл нууц үг буруу байна.',
+            title: 'И-майл хаяг эсвэл нууц үг буруу байна',
             status: 'warning',
-            duration: 5000,
+            duration: 3000,
             isClosable: true,
           });
         } else {
           if (data?.token && data.user.status == 'active') {
             setCookie('token', data.token);
-
+            setCookie('bookmarks', data.user.bookmarks ?? []);
+            setCookie('user', data.user);
             setUser(data.user);
             toast({
               title: 'Амжилттай нэвтэрлээ',
               status: 'success',
-              duration: 5000,
+              duration: 3000,
               isClosable: true,
             });
             if (data.user.userType == 'admin' || data.user.userType == 'system')
@@ -88,7 +92,8 @@ export const AuthProvider = ({ children }) => {
       } catch (error) {
         setLoading(false);
         toast({
-          title: error.message,
+          // title: error.message,
+          title: 'И-майл хаяг эсвэл нууц үг буруу байна',
           status: 'error',
           duration: 5000,
           isClosable: true,

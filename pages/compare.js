@@ -8,7 +8,7 @@ import { STYLES } from '../styles';
 const Comparing = () => {
   const { compareAds, setCompareAds } = useAuth();
   const router = useRouter();
-
+  console.log(compareAds.filters);
   return (
     <div className="">
       <MainContainer>
