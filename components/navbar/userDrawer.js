@@ -14,6 +14,7 @@ import {
   DrawerContent,
   DrawerOverlay,
 } from '@chakra-ui/react';
+import { getCookie } from 'cookies-next';
 import { useRef } from 'react';
 import { BsGrid } from 'react-icons/bs';
 import { CgProfile } from 'react-icons/cg';
@@ -44,8 +45,9 @@ const drawerItem = [
 ];
 
 const BodyDrawer = () => {
-  const { user, logout } = useAuth();
+  const { logout } = useAuth();
   const router = useRouter();
+  const user = getCookie('user');
 
   return (
     <DrawerBody className="flex flex-col justify-between p-0 bg-bgdark/95">
@@ -55,24 +57,30 @@ const BodyDrawer = () => {
           'flex-col w-full items-center '
         )}
       >
-        <div
-          className={mergeNames(
-            STYLES.flexCenter,
-            'flex-col items-center text-white'
-          )}
-        >
-          <Image
-            // src={user?.image}
-            src={
-              user?.profileImg ??
-              'https://www.pikpng.com/pngl/m/80-805068_my-profile-icon-blank-profile-picture-circle-clipart.png'
-            }
-            alt="user image"
-            className="w-[100px] aspect-square rounded-full bg-gray-400 object-contain mt-10"
-          />
-          <h2 className="text-[22px] mt-2 font-bold">{user?.username}</h2>
-          <h2 className="text-[14px] font-semibold">{user?.email}</h2>
-        </div>
+        {user && (
+          <div
+            className={mergeNames(
+              STYLES.flexCenter,
+              'flex-col items-center text-white'
+            )}
+          >
+            <Image
+              // src={user?.image}
+              src={
+                JSON.parse(user)?.profileImg ??
+                'https://www.pikpng.com/pngl/m/80-805068_my-profile-icon-blank-profile-picture-circle-clipart.png'
+              }
+              alt="user image"
+              className="w-[100px] aspect-square rounded-full bg-gray-400 object-contain mt-10"
+            />
+            <h2 className="text-[22px] mt-2 font-bold">
+              {JSON.parse(user)?.username}
+            </h2>
+            <h2 className="text-[14px] font-semibold">
+              {JSON.parse(user)?.email}
+            </h2>
+          </div>
+        )}
       </div>
       <div className="flex flex-col p-4 text-center bg-white rounded-t-2xl">
         <div className="grid grid-cols-2 gap-4 py-3">
@@ -132,7 +140,7 @@ const DownLink = ({ href, text, className, icon, onClick = () => {} }) => {
   );
 };
 
-const UserDrawer = ({ user, logout }) => {
+const UserDrawer = () => {
   const router = useRouter();
   const [active, setActive] = useState(false);
 

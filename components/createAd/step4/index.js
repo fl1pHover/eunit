@@ -39,7 +39,7 @@ const Step3 = ({ filter, selectedParent, setSelectedParent }) => {
               defValue={usedYear}
               name={f.name}
               onSelect={(num) => {
-                f.input = num;
+                f.input = `${num}`;
                 let isNull = selectedParent.findIndex(
                   (s) => s.parent == f.type
                 );
@@ -76,7 +76,7 @@ const Step3 = ({ filter, selectedParent, setSelectedParent }) => {
               key={i}
               title={f.name}
               onChange={(e) => {
-                f.input = e;
+                f.input = `${e}`;
                 let isNull = selectedParent.findIndex(
                   (s) => s.parent == f.type
                 );

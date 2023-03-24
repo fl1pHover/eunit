@@ -53,7 +53,7 @@ const StepButtons = ({
       lat: parseFloat(map?.lat ?? 47.91887307876936),
       lng: parseFloat(map?.lng ?? 106.91757202148438),
     }),
-    []
+    [map]
   );
   return (
     <div className="mt-4">
@@ -141,7 +141,7 @@ const StepButtons = ({
                           id={p.parent ?? ''}
                           value={p.input ?? ''}
                           func={() => {
-                            onClose(), setStep(2);
+                            onClose(), setStep(0);
                           }}
                           href={false}
                         />
@@ -197,7 +197,7 @@ const StepButtons = ({
                   >
                     <ProductInfo
                       title={'Үнэ'}
-                      id={generalData.price ?? ''}
+                      id={'price'}
                       value={generalData.price ?? ''}
                       func={() => {
                         onClose(), setStep(1);
@@ -206,7 +206,7 @@ const StepButtons = ({
                     />
                     <ProductInfo
                       title={'Нэгж талбайн үнэ'}
-                      id={generalData.unitPrice ?? ''}
+                      id={'unitPrice'}
                       value={generalData.unitPrice ?? ''}
                       func={() => {
                         onClose(), setStep(1);

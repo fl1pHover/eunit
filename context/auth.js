@@ -41,7 +41,7 @@ export const AuthProvider = ({ children }) => {
         setCookie('bookmarts', data.bookmarks);
         // setCookie('bookmarks', data.user.bookmarks)
       } catch (error) {
-        console.log(error.response.data.message);
+        console.error(error);
         logout();
       }
     }
@@ -84,7 +84,7 @@ export const AuthProvider = ({ children }) => {
             });
             if (data.user.userType == 'admin' || data.user.userType == 'system')
               window.location.pathname = '/admin';
-            else window.location.pathname = '/account';
+            else window.location.pathname = '/';
           } else {
             window.location.pathname = '/account/check';
           }
@@ -133,6 +133,8 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     deleteCookie('token');
     setUser(null);
+    deleteCookie('user');
+    deleteCookie('bookmarks');
     setLoading(false);
     window.location.pathname = '/login';
   };

@@ -79,7 +79,7 @@ const Forget = () => {
                         }
                       });
                   } catch (error) {
-                    if (error.response.data.message == 'user not found') {
+                    if (error?.response?.data?.message == 'user not found') {
                       toast({
                         title: 'Бүртгэлгүй имэйл байна',
                         status: 'warning',

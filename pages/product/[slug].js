@@ -92,7 +92,7 @@ export const ProductInfo = ({
         <Stack
           direction={'row'}
           className={mergeNames('p-2 rounded-md')}
-          onClick={!href ? () => {} : func}
+          onClick={href ? () => {} : func}
         >
           <div className="flex flex-col w-full pl-5 text-left ">
             <Text fontSize={{ base: '13px', xl: '15px' }}>{title}: </Text>

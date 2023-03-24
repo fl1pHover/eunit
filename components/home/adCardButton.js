@@ -19,7 +19,7 @@ const AdCardButton = ({ id, adId }) => {
   const user = getCookie('user');
   const addToBookmark = async () => {
     bookmarks = getCookie('bookmarks');
-    if (bookmarks) {
+    if (bookmarks && user && token) {
       if (JSON.parse(bookmarks).find((b) => b == adId) != undefined) {
         setIsLiked(false);
         let arr = [...JSON.parse(bookmarks)];
@@ -115,6 +115,7 @@ const AdCardButton = ({ id, adId }) => {
               cardIcon.icon,
               isLiked ||
                 (bookmarks &&
+                  token &&
                   JSON.parse(bookmarks).find((b) => b == adId) != undefined)
                 ? 'text-red-500/90'
                 : 'text-slate-200/90'

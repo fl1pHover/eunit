@@ -5,6 +5,7 @@ import { STYLES } from '@/styles/index';
 import mergeNames from '@/util/mergeNames';
 import { Image } from '@chakra-ui/react';
 import axios from 'axios';
+import { getCookie } from 'cookies-next';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -18,7 +19,7 @@ import UserDrawer from './userDrawer';
 const Bottom = ({ sticky }) => {
   const { user, logout, setAds } = useAuth();
   const router = useRouter();
-
+  const token = getCookie('token');
   // Visible start
   const [activeSearch, setActiveSearch] = useState(false);
 
@@ -32,7 +33,7 @@ const Bottom = ({ sticky }) => {
         .then((d) => d.json())
         .then((d) => setAds(d));
     } catch (err) {
-      console.log(err.response.data.message);
+      console.error(err);
     }
   };
   const handleClear = (e) => {
@@ -74,10 +75,10 @@ const Bottom = ({ sticky }) => {
 
             <WhiteHeartIcon onClick={() => router.push('/account?Bookmark')} />
 
-            {user == undefined ? (
+            {user == undefined || !token ? (
               <UserIcon text="Нэвтрэх" onClick={() => router.push('/login')} />
             ) : (
-              <UserDrawer user={user} logout={logout} />
+              <UserDrawer />
             )}
 
             <Link href={'/createAd'}>
