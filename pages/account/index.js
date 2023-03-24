@@ -44,7 +44,9 @@ const Account = ({ user }) => {
     },
   ];
   useEffect(() => {
-    setContent(router?.query?.tab);
+    if (router?.query?.tab) {
+      setContent(router?.query?.tab);
+    }
   }, [router?.query?.tab]);
 
   // const { tabs, loading, error } = useRemoteData();
