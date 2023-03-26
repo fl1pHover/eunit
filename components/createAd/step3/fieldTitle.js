@@ -3,7 +3,11 @@ import { AtomLabel } from './atom';
 const FieldTitle = ({ setGeneralData = () => {}, generalData }) => {
   return (
     <div className="flex flex-col items-start w-full">
-      <AtomLabel>Зарын гарчиг</AtomLabel>
+      <div className="flex items-center justify-between w-full">
+        <AtomLabel>Зарын гарчиг</AtomLabel>
+        <p className="font-semibold">{generalData.title.length ?? 0}/100</p>
+      </div>
+
       <input
         value={generalData.title || ''}
         onChange={(e) => {

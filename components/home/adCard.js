@@ -77,7 +77,7 @@ function Card({
               <Image
                 // Eniig user bolgood darahaar ordgoor
                 src={
-                  // useriinZurag ??
+                  item?.user?.profileImg ?? 
                   '/images/logo/bom-white.png'
                 }
                 alt="BOM logo"

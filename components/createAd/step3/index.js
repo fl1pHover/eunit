@@ -55,12 +55,17 @@ const Step3 = ({
             </div>
           </div>
           <div className="flex-1 pb-2">
-            <AtomLabel>Зарын дэлгэрэнгүй</AtomLabel>
+            <div className="flex justify-between">
+              <AtomLabel>Зарын дэлгэрэнгүй</AtomLabel>
+              <p className="font-semibold">
+                {generalData?.desc.length ?? 0}/500
+              </p>
+            </div>
             <textarea
               cols={30}
               rows={13}
               placeholder="Дэлгэрэнгүй"
-              maxLength="500"
+              maxLength="1000"
               value={generalData?.desc || ''}
               onChange={
                 (e) =>

@@ -1,6 +1,7 @@
 import { AiOutlineCar } from 'react-icons/ai';
-import { BsBuilding, BsPhone } from 'react-icons/bs';
+import { BsBuilding } from 'react-icons/bs';
 import { CgSmartHomeWashMachine } from 'react-icons/cg';
+import { IoPhonePortraitOutline } from 'react-icons/io5';
 import { MdComputer } from 'react-icons/md';
 import { RiHomeSmile2Line } from 'react-icons/ri';
 export const SellTypes = {
@@ -172,7 +173,7 @@ export const getIconCategory = ({ item }) => {
     case Category.computer:
       return <MdComputer />;
     case Category.phone:
-      return <BsPhone />;
+      return <IoPhonePortraitOutline />;
     case Category.electronics:
       return <CgSmartHomeWashMachine />;
     case Category.householdItems:
@@ -297,7 +298,7 @@ export const swiperBreakpoints = {
     },
   },
   640: {
-    slidesPerView: 3,
+    slidesPerView: 2,
     grid: {
       rows: 2,
       fill: 'row',
@@ -305,6 +306,13 @@ export const swiperBreakpoints = {
   },
   // md
   768: {
+    slidesPerView: 2,
+    grid: {
+      rows: 2,
+      fill: 'row',
+    },
+  },
+  870: {
     slidesPerView: 3,
     grid: {
       rows: 2,
@@ -313,7 +321,7 @@ export const swiperBreakpoints = {
   },
   // lg
   1024: {
-    slidesPerView: 4,
+    slidesPerView: 3,
     grid: {
       rows: 2,
       fill: 'row',

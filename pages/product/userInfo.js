@@ -17,6 +17,7 @@ const UserInfo = ({ phone, username, agent, avatar, email, id }) => {
           src={avatar}
           size={{ base: 'md', lg: 'lg' }}
           onClick={() => router.push(`/account/${id}`)}
+          className="cursor-pointer"
         />
         <div className="flex flex-col">
           <p

@@ -3,6 +3,8 @@ import React from "react";
 import { AiOutlineCar } from "react-icons/ai";
 import { BsBuilding, BsPhone } from "react-icons/bs";
 import { CgSmartHomeWashMachine } from "react-icons/cg";
+import { FiSmartphone } from "react-icons/fi";
+import { IoPhonePortraitOutline } from "react-icons/io5";
 import { MdComputer, MdOutlineIron } from "react-icons/md";
 
 const CategoryIcon = ({ href, ...props }) => {
@@ -15,7 +17,7 @@ const CategoryIcon = ({ href, ...props }) => {
     case "computer":
       return <MdComputer {...props} />;
     case "phone":
-      return <BsPhone {...props} />;
+      return <IoPhonePortraitOutline {...props} />;
     case "electronics":
     case "electronic":
       return <CgSmartHomeWashMachine {...props} />;

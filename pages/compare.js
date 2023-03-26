@@ -1,5 +1,7 @@
 import { useAuth } from '@/context/auth';
+import mergeNames from '@/util/mergeNames';
 import { Image } from '@chakra-ui/react';
+import currency from 'currency.js';
 import { useRouter } from 'next/router';
 import { BiRightArrowAlt } from 'react-icons/bi';
 import MainContainer from '../layout/mainContainer';
@@ -79,9 +81,17 @@ const Comparing = () => {
                             return (
                               <h2
                                 key={index}
-                                className="relative p-2 font-bold text-green-700"
+                                className={mergeNames(
+                                  'relative p-2 font-bold text-green-700'
+                                )}
                               >
-                                {f.input}
+                                {currency(`${f.input}`, {
+                                  separator: ',',
+                                  symbol: '₮ ',
+                                  pattern: `# !`,
+                                })
+                                  .format()
+                                  .toString() ?? 0}
                               </h2>
                             );
                           }

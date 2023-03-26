@@ -257,10 +257,10 @@ function ProCard({
                   // Eniig user bolgood darahaar ordgoor
                   src={item?.user?.profileImg ?? '/images/logo/bom-white.png'}
                   alt="BOM logo"
-                  objectFit="contain"
+                  objectFit="cover"
                   layout="fill"
                   className={mergeNames(
-                    item?.user?.profileImg ? '' : 'p-2 bg-mainBlossom'
+                    item?.user?.profileImg ? '' : 'p-2 bg-mainBlossom '
                   )}
                 />
               </div>

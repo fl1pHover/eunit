@@ -74,11 +74,11 @@ const StepButtons = ({
             onOpen={onOpen}
             btnOpen={
               <>
-                Илгээх <FiArrowRight size={20} />
+                Дараах <FiArrowRight size={20} />
               </>
             }
             onclick={onNext}
-            btnClose={<LoadingButton text="Нэмэх" isLoading={loading} />}
+            btnClose={<LoadingButton text="Илгээх" isLoading={loading} />}
             btnClose2="Буцах"
             header="Баталгаажуулах хэсэг"
           >

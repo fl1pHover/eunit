@@ -11,6 +11,8 @@ import { BsBuilding, BsPhone } from 'react-icons/bs';
 import { CgSmartHomeWashMachine } from 'react-icons/cg';
 import { MdComputer } from 'react-icons/md';
 import { RiHomeSmile2Line } from 'react-icons/ri';
+import { FiSmartphone } from 'react-icons/fi';
+import { IoPhonePortraitOutline } from 'react-icons/io5';
 
 const Icon = ({ id, ...props }) => {
   switch (id) {
@@ -21,7 +23,7 @@ const Icon = ({ id, ...props }) => {
     case 'computer':
       return <MdComputer {...props} />;
     case 'phone':
-      return <BsPhone {...props} />;
+      return <IoPhonePortraitOutline {...props} />;
     case 'electronic':
       return <CgSmartHomeWashMachine {...props} />;
     case 'household-items':

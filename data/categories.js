@@ -1,6 +1,7 @@
 import { AiOutlineCar } from 'react-icons/ai';
-import { BsBuilding, BsPhone } from 'react-icons/bs';
+import { BsBuilding } from 'react-icons/bs';
 import { CgSmartHomeWashMachine } from 'react-icons/cg';
+import { IoPhonePortraitOutline } from 'react-icons/io5';
 import { MdComputer } from 'react-icons/md';
 import { RiHomeSmile2Line } from 'react-icons/ri';
 
@@ -88,7 +89,9 @@ export const categories = [
   },
   {
     image: '/images/Category/phone.jpg',
-    icon: () => <BsPhone />,
+    icon: ({ size, className = '' }) => (
+      <IoPhonePortraitOutline {...{ size, className }} />
+    ),
     categoryName: 'Гар утас',
     id: 'phone',
     itemCount: '105',
