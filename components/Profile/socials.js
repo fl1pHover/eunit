@@ -20,8 +20,11 @@ const Socials = ({ edit, socials, setSocials }) => {
           {socials?.map((s, i) => {
             return (
               <div key={i}>
-                <Link target="_blank" href={s.url} passHref>
-                  <a className={mergeNames(edit && 'pointer-events-none')}>
+                <Link href={s.url} passHref>
+                  <a
+                    className={mergeNames(edit && 'pointer-events-none')}
+                    target="_blank"
+                  >
                     <Flex alignItems="center" gap={2}>
                       {/* <BsFacebook className="text-blue-600" /> */}
                       <p className="md:text-[16px] text-[12px] font-bold">

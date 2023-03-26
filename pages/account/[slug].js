@@ -16,7 +16,7 @@ const Accounts = ({ propUser }) => {
     await axios
       .post(`${urls['test']}/ad/many/0/false`, propUser.ads)
       .then((d) => {
-        setAds(d.data.ads);
+        setAds(d.data);
       });
   };
 
@@ -84,11 +84,11 @@ const Accounts = ({ propUser }) => {
               </div>
 
               {/* //TODO: Social Hayg */}
-              <Socials />
+              {propUser?.socials && <Socials propUser={propUser} />}
             </div>
           </div>
         </div>
-        {ads.length > 0 && <AdContent data={ads} />}
+        {ads && <AdContent data={ads} />}
       </div>
     </MainContainer>
   );
@@ -128,8 +128,9 @@ const Socials = ({ propUser }) => {
     <div className="grid flex-row grid-cols-2 gap-2 md:gap-5 xs:flex">
       {socials?.map((s, i) => {
         return (
-          <Link href={s.url} key={i} target="_blank">
+          <Link href={s.url} key={i}>
             <a
+              target="_blank"
               className={mergeNames(
                 STYLES.flexCenter,
                 'items-center gap-2',

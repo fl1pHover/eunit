@@ -260,13 +260,18 @@ const Product = ({ propAds }) => {
               (id = suggest);
             break;
         }
-        await axios
-          .get(`${urls['test']}/ad/suggesstion/${id}/${type}/0`)
-          .then((d) => {
-            setsData([]);
-            let ads = d.data?.ads?.filter((da) => da._id != sd._id);
-            setsData({ ads, limit: sd.limit - 1 });
-          });
+
+        if (data?.subCategory?._id) {
+          await axios
+            .get(
+              `${urls['test']}/ad/suggesstion/${data.subCategory._id}/${id}/${type}/0`
+            )
+            .then((d) => {
+              setsData([]);
+              let ads = d.data?.ads?.filter((da) => da._id != sd._id);
+              setsData({ ads, limit: sd.limit - 1 });
+            });
+        }
       } catch (error) {
         console.log(error);
       }

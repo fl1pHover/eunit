@@ -24,6 +24,7 @@ const Layout = ({ children }) => {
           (router?.pathname == '/' ||
             router?.pathname == '/category' ||
             router?.pathname == '/category/[slug]' ||
+            router?.pathname == '/account/[slug]' ||
             (router?.pathname == '/account' &&
               (router?.query?.tab == 'MyAds' ||
                 router?.query?.tab == 'Bookmark'))) && (
