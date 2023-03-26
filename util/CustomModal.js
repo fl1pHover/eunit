@@ -27,7 +27,7 @@ function CustomModal({
     <>
       <button
         onClick={onOpen}
-        className="flex items-center gap-1 px-4 py-2 text-white bg-blue-500 rounded-full"
+        className="flex items-center gap-1 px-2 py-2 text-white bg-blue-500 rounded-full"
       >
         {btnOpen}
       </button>

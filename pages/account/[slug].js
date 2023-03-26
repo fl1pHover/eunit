@@ -9,14 +9,17 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { FaPhoneAlt } from 'react-icons/fa';
 import urls from '../../constants/api';
+import { useRouter } from 'next/router';
+import CustomToast from '@/util/customToast';
 
 const Accounts = ({ propUser }) => {
+  const router = useRouter();
   const [ads, setAds] = useState([]);
   const getAds = async () => {
     await axios
       .post(`${urls['test']}/ad/many/0/false`, propUser.ads)
       .then((d) => {
-        setAds(d.data.ads);
+        setAds(d.data);
       });
   };
 
@@ -78,17 +81,18 @@ const Accounts = ({ propUser }) => {
                     'items-center',
                     'px-4 py-2 text-md md:text-lg font-bold text-white bg-blue-600 rounded-md cursor-pointer gap-1 md:gap-2'
                   )}
+                  onClick={() => router.push(`tel:${propUser.phone}`)}
                 >
                   <FaPhoneAlt /> +976 {propUser.phone}
                 </p>
               </div>
-
               {/* //TODO: Social Hayg */}
-              <Socials />
+              <a href="">adasd</a>
+              {propUser?.socials && <Socials propUser={propUser} />}
             </div>
           </div>
         </div>
-        {ads.length > 0 && <AdContent data={ads} />}
+        {ads && <AdContent data={ads} showLink="hidden" />}
       </div>
     </MainContainer>
   );
@@ -112,11 +116,11 @@ const Socials = ({ propUser }) => {
   const [socials, setSocials] = useState([
     {
       name: 'facebook',
-      url: propUser?.socials[0]?.url ?? 'https://www.facebook.com/',
+      url: propUser?.socials[0]?.url ?? '',
     },
     {
       name: 'instagram',
-      url: propUser?.socials[1]?.url ?? 'https://www.instagram.com',
+      url: propUser?.socials[1]?.url ?? '',
     },
     {
       name: 'telegram',
@@ -128,8 +132,9 @@ const Socials = ({ propUser }) => {
     <div className="grid flex-row grid-cols-2 gap-2 md:gap-5 xs:flex">
       {socials?.map((s, i) => {
         return (
-          <Link href={s.url} key={i} target="_blank">
+          <Link href={s.url} key={i}>
             <a
+              target="_blank"
               className={mergeNames(
                 STYLES.flexCenter,
                 'items-center gap-2',

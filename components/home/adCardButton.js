@@ -75,21 +75,30 @@ const AdCardButton = ({ id, adId }) => {
   };
   const getCompareAd = async () => {
     try {
-      await axios.get(`${urls['test']}/ad/id/${id}`).then((d) => {
-        if (compareAds.length <= 4) {
+      if (compareAds.length <= 4) {
+        await axios.get(`${urls['test']}/ad/id/${id}`).then((d) => {
+          console.log(compareAds);
           if (compareAds.length > 0) {
             compareAds[0].subCategory._id == d.data.subCategory._id
-              ? setCompareAds((prev) => [...prev, d.data])
+              ? compareAds.find((c) => c._id == d.data._id) == undefined
+                ? setCompareAds((prev) => [...prev, d.data])
+                : toast({
+                    status: `warning`,
+                    title: `Сонгогдсон зар байна`,
+                    duration: 1000,
+                  })
               : toast({
                   status: `warning`,
                   title: `Ижил төрлийн зар сонгоно уу`,
                   duration: 1000,
                 });
           } else {
-            setCompareAds((prev) => [...prev, d.data]);
+            if (compareAds.find((c) => c._id == d.data._id) == undefined) {
+              setCompareAds((prev) => [...prev, d.data]);
+            }
           }
-        }
-      });
+        });
+      }
     } catch (error) {
       console.error(error);
     }
@@ -101,7 +110,7 @@ const AdCardButton = ({ id, adId }) => {
   };
 
   return (
-    <div className="flex flex-row items-center space-x-2">
+    <div className="relative flex flex-row items-center space-x-2">
       <Tooltip label="Хадгалах">
         <button
           className={mergeNames(cardIcon.div)}

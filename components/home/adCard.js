@@ -19,6 +19,12 @@ import { Fragment } from 'react';
 import { AiFillEdit } from 'react-icons/ai';
 import EditAd from '../ad/edit';
 import AdCardButton from './adCardButton';
+import { useState } from 'react';
+import { BsThreeDots } from 'react-icons/bs';
+import { motion } from 'framer-motion';
+import { RiVipDiamondFill } from 'react-icons/ri';
+import { STYLES } from '@/styles/index';
+import { Button } from 'flowbite-react';
 
 function Card({
   item,
@@ -32,7 +38,7 @@ function Card({
   const user = getCookie('user');
 
   const token = getCookie('token');
-
+  const [drop, setDrop] = useState(false);
   return (
     // <Skeleton>
     <Skeleton isLoaded>
@@ -71,60 +77,90 @@ function Card({
           <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-slate-700/0 via-slate-700/30 to-slate-900/100"></div>
         </div>
         {/* Zariin body  */}
-        <div className="relative z-10 flex items-center justify-between flex-1 w-full h-full px-3 py-2">
+        <div className="relative flex items-start justify-between flex-1 w-full h-full px-3 py-2">
           <Tip lbl="Зарын эзэн">
-            <button className="relative rounded-full w-9 h-9 bg-mainBlossom ">
+            <button className="relative overflow-hidden rounded-full w-9 h-9 bg-mainBlossom">
               <Image
-                // Eniig user bolgood darahaar ordgoor
-                src={
-                  item?.user?.profileImg ?? 
-                  '/images/logo/bom-white.png'
-                }
+                src={item?.user?.profileImg ?? '/images/logo/bom-white.png'}
                 alt="BOM logo"
-                objectFit="contain"
+                objectFit="cover"
                 layout="fill"
-                className="p-2"
-                onClick={() => router.push(`account/${item.user}`)}
+                className={mergeNames(item?.user?.profileImg ? '' : ' p-2')}
+                onClick={() => router.push(`/account/${item.user}`)}
               />
             </button>
           </Tip>
           {isDelete ? (
             // <DButton onClick={deleteFunc} />
-            <Fragment>
-              <EditAd
-                ads={data}
-                setData={setData}
-                admin={admin}
-                data={item}
-                onNext={async () => {
-                  await axios
-                    .put(`${urls['test']}/ad/${item._id}`, item, {
-                      headers: {
-                        Authorization: `Bearer ${token}`,
-                        'Access-Control-Allow-Headers': '*',
-                        'Content-Type': 'application/json',
-                        charset: 'UTF-8',
-                      },
-                    })
-                    .then((d) => console.log(d.data));
-                }}
+            <div
+              className="relative flex flex-col items-center gap-2 rounded-full "
+              onMouseEnter={() => setDrop(true)}
+              onMouseLeave={() => setDrop(false)}
+            >
+              <button>
+                <BsThreeDots className="z-10 w-8 h-8 p-1 text-lg bg-white rounded-full" />
+              </button>
+
+              <div
+                className={mergeNames(
+                  drop
+                    ? 'h-auto flex flex-col items-center justify-center top-10 cursor-not-allow opacity-100'
+                    : 'invisible opacity-0',
+                  'transition-all ease-in-out duration-300 overflow-hidden bg-white/30 p-1 rounded-full '
+                )}
               >
-                <AiFillEdit />
-              </EditAd>
-              {item.adStatus == 'deleted' ? (
-                <Alerting
-                isDelete={true}
-                  btn={<DButton onClick={deleteFunc} isDelete={true} />}
-                  onclick={deleteFunc}
-                />
-              ) : (
-                <Alerting
-                isDelete={false}
-                  btn={<DButton onClick={deleteFunc} isDelete={false} />}
-                  onclick={deleteFunc}
-                />
-              )}
-            </Fragment>
+                <EditAd
+                  ads={data}
+                  setData={setData}
+                  admin={admin}
+                  data={item}
+                  onNext={async () => {
+                    await axios
+                      .put(`${urls['test']}/ad/${item._id}`, item, {
+                        headers: {
+                          Authorization: `Bearer ${token}`,
+                          'Access-Control-Allow-Headers': '*',
+                          'Content-Type': 'application/json',
+                          charset: 'UTF-8',
+                        },
+                      })
+                      .then((d) => console.log(d.data));
+                  }}
+                >
+                  <AiFillEdit />
+                </EditAd>
+
+                <div className="h-1" />
+                
+                {item.adStatus == 'deleted' ? (
+                  <Alerting
+                    isDelete={true}
+                    btn={<DButton onClick={deleteFunc} isDelete={true} />}
+                    onclick={deleteFunc}
+                  />
+                ) : (
+                  <Alerting
+                    isDelete={false}
+                    btn={<DButton onClick={deleteFunc} isDelete={false} />}
+                    onclick={deleteFunc}
+                  />
+                )}
+                
+                <div className="h-1" />
+
+                <Tip lbl="Онцгой зар болгох">
+                  <button
+                    className={mergeNames(
+                      STYLES.button,
+                      STYLES.flexCenter,
+                      'bg-mainBlossom items-center w-8 h-8 p-1'
+                    )}
+                  >
+                    <RiVipDiamondFill />
+                  </button>
+                </Tip>
+              </div>
+            </div>
           ) : (
             <ImageCount onClick={() => console.log('Zurag')}>
               {item?.images?.length}
@@ -133,7 +169,7 @@ function Card({
         </div>
 
         {/* Zariin info  */}
-        <div className="absolute bottom-0 left-0 z-20 flex flex-col justify-end w-full p-2 mb-2 space-y-2 ">
+        <div className="absolute bottom-0 left-0 flex flex-col justify-end w-full p-2 mb-2 space-y-2 ">
           <div className="flex items-center justify-between gap-4 text-sm text-white font-md">
             <p className={mergeNames('font-bold text-xl')}>
               {currency(

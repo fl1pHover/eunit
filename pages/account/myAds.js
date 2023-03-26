@@ -104,7 +104,7 @@ const MyAds = ({ user }) => {
   };
   const restoreAd = async (id) => {
     try {
-      if(token) {
+      if (token) {
         let ad = await axios
           .get(`${urls['test']}/ad/update/${id}/pending`, {
             headers: {
@@ -122,12 +122,9 @@ const MyAds = ({ user }) => {
             router.reload();
           });
       }
-    } catch (error) {
-      
-    }
-  }
+    } catch (error) {}
+  };
   const deleteAd = async (id) => {
-    
     try {
       if (token) {
         let ad = await axios
@@ -230,7 +227,7 @@ const MyAds = ({ user }) => {
         </div>
       </div>
       <Alerting />
-      <div className="grid grid-cols-2 gap-5 mt-5 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-3">
+      <div className="grid grid-cols-2 gap-5 mt-5 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-4 sm:grid-cols-3">
         {products?.ads?.map((item, key) => {
           return (
             <AdCard
@@ -241,7 +238,7 @@ const MyAds = ({ user }) => {
               item={item || {}}
               isDelete={true}
               deleteFunc={() => {
-                if(item.adStatus == 'deleted') {
+                if (item.adStatus == 'deleted') {
                   restoreAd(item._id);
                 } else {
                   deleteAd(item._id);

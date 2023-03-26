@@ -206,6 +206,12 @@ export default function CreateAd({ categories }) {
     setStep((prev) => {
       return prev > -1 ? prev - 1 : prev;
     });
+    top();
+  };
+
+  const top = () => {
+    window.scrollTo(0, 0);
+    console.log('to top');
   };
   const libraries = useMemo(() => ['places'], []);
 
@@ -314,8 +320,12 @@ export default function CreateAd({ categories }) {
 
         <StepButtons
           setStep={setStep}
-          onNext={handleNextStep}
-          onPrev={handlePrevStep}
+          onNext={() => {
+            handleNextStep(), top();
+          }}
+          onPrev={() => {
+            handlePrevStep(), top();
+          }}
           data={selectedParent}
           generalData={generalData}
           loading={isLoading}

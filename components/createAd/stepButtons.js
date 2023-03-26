@@ -26,7 +26,7 @@ const StepButtons = ({
   data,
   generalData,
   txt = 'Дараах',
-  onClick = () => {},
+  // onClick = () => {},
   step,
   setStep,
   map,
@@ -55,6 +55,11 @@ const StepButtons = ({
     }),
     [map]
   );
+
+  const top = () => {
+    // window.scrollTo(0, 0);
+  };
+
   return (
     <div className="mt-4">
       {/* <ButtonProcess /> */}
@@ -248,7 +253,6 @@ const StepButtons = ({
                     })}
                   </WhiteBox>
                 )}
-                {/* <StepProgress /> */}
               </div>
             </Box>
           </CustomModal>

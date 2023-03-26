@@ -71,7 +71,7 @@ const BodyDrawer = () => {
                 'https://www.pikpng.com/pngl/m/80-805068_my-profile-icon-blank-profile-picture-circle-clipart.png'
               }
               alt="user image"
-              className="w-[100px] aspect-square rounded-full bg-gray-400 object-contain mt-10"
+              className="w-[100px] aspect-square rounded-full bg-gray-400 object-cover mt-10"
             />
             <h2 className="text-[22px] mt-2 font-bold">
               {JSON.parse(user)?.username}

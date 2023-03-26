@@ -42,11 +42,11 @@ const Profile = ({
     },
     {
       name: 'instagram',
-      url: user?.socials[1]?.url ?? 'https://www.instagram.com',
+      url: user?.socials[1]?.url ?? 'https://www.instagram.com/',
     },
     {
       name: 'telegram',
-      url: user?.socials[2]?.url ?? 'https://www.telegram.com/',
+      url: user?.socials[2]?.url ?? 'https://www.telegram.org/',
     },
   ]);
 

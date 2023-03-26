@@ -60,6 +60,7 @@ const WalletPage = ({ user }) => {
       }
     } catch (error) {}
   };
+
   return (
     <div className={mergeNames('grid xl:grid-cols-2 grid-cols-1 gap-10 mt-5')}>
       {/* Card */}
@@ -110,11 +111,30 @@ const WalletPage = ({ user }) => {
           <div className="flex justify-between w-full">
             <p className="font-bold">Огноо</p>
             <button className="mx-5 font-semibold text-gray-500">
-              Шилжүүлсэн хүний нэр
+              Илгээгч
+            </button>
+            <button className="mx-5 font-semibold text-gray-500">
+              Хүлээн авагч
             </button>
             <p className="font-bold text-blue-700">Хэмжээ</p>
           </div>
         </div>
+        {user?.pointHistory?.map((ph, i) => {
+          return (
+            <div className="flex flex-col w-full gap-3 mt-4" key={i}>
+              <div className="flex justify-between w-full">
+                <p className="font-bold">огноо</p>
+                <button className="mx-5 font-semibold text-gray-500">
+                  {ph.sender?._id}
+                </button>
+                <button className="mx-5 font-semibold text-gray-500">
+                  {ph.receiver?._id}
+                </button>
+                <p className="font-bold text-blue-700">{ph.point}</p>
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

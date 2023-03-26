@@ -58,6 +58,7 @@ const EditAd = ({
       btnOpen={
         <p className="w-full text-center">{children ?? 'Зараа засах'}</p>
       }
+      
       onclick={onNext}
       btnClose={<LoadingButton text="Засах" isLoading={loading} />}
       btnClose2="Буцах"

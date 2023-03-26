@@ -58,10 +58,10 @@ const SideMenu = ({
           'absolute z-50',
           show ? 'translate-x-0' : 'translate-x-0',
           'transition-all ease-in-out duration-300',
-          'left right-0 top-0 bottom-0 h-screen'
+          'left right-0 top-0 bottom-0 h-screen '
         )}
       >
-        <div className="flex flex-col items-end h-screen overflow-y-scroll">
+        <div className="static z-50 flex flex-col items-end h-screen overflow-y-scroll">
           <div className="w-3/4 h-screen bg-slate-100">
             <div
               className={mergeNames(
@@ -120,7 +120,7 @@ const SideMenu = ({
                           return (
                             <button
                               onClick={() => {
-                                router.push(`/category/${item.id}/${href}`);
+                                router.push(`/category/${href}`);
                                 closeNav();
                               }}
                               key={key}
