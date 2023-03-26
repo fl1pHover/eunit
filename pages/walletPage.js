@@ -125,10 +125,10 @@ const WalletPage = ({ user }) => {
               <div className="flex justify-between w-full">
                 <p className="font-bold">огноо</p>
                 <button className="mx-5 font-semibold text-gray-500">
-                  {ph.sender}
+                  {ph.sender?._id}
                 </button>
                 <button className="mx-5 font-semibold text-gray-500">
-                  {ph.receiver}
+                  {ph.receiver?._id}
                 </button>
                 <p className="font-bold text-blue-700">{ph.point}</p>
               </div>
