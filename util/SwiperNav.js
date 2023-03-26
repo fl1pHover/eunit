@@ -1,4 +1,4 @@
-import { swiperBreakpoints } from '@/constants/enums';
+import { proSwiperBreakpoints, swiperBreakpoints } from '@/constants/enums';
 
 import { Grid, Navigation, Pagination } from 'swiper';
 import 'swiper/css';
@@ -6,7 +6,7 @@ import 'swiper/css/grid';
 import 'swiper/css/navigation';
 import { Swiper } from 'swiper/react';
 
-const SwiperNav = ({ children }) => {
+const SwiperNav = ({ children, pro }) => {
   return (
     <Swiper
       navigation={true}
@@ -15,7 +15,7 @@ const SwiperNav = ({ children }) => {
         rows: 2,
         fill: 'row',
       }}
-      breakpoints={swiperBreakpoints}
+      breakpoints={pro ? proSwiperBreakpoints : swiperBreakpoints}
       spaceBetween={20}
       fill="column"
       modules={[Grid, Navigation, Pagination]}

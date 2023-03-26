@@ -343,3 +343,21 @@ export const swiperBreakpoints = {
     },
   },
 };
+export const proSwiperBreakpoints = {
+  // sm
+  1: {
+    slidesPerView: 1,
+    grid: {
+      rows: 1,
+      fill: 'row',
+    },
+  },
+
+  870: {
+    slidesPerView: 2,
+    grid: {
+      rows: 1,
+      fill: 'row',
+    },
+  },
+};

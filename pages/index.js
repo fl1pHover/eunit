@@ -6,6 +6,7 @@ import { ContainerX } from '@/lib/Container';
 import { useEffect, useState } from 'react';
 // import required modules
 import AdContent from '@/components/home/adContent';
+import ProAdContent from '@/components/home/proAdContent';
 
 export default function Home({ propAds }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -38,6 +39,15 @@ export default function Home({ propAds }) {
 
       <ContainerX classname="py-6">
         {/* <Heading className="">Шинэ зарууд</Heading> */}
+
+        <ProAdContent
+          title="Онцгой зар"
+          data={ads}
+          showLink=""
+          pg={false}
+          inCat={false}
+        />
+
         {ads && <AdContent data={ads} showLink="" pg={false} inCat={false} />}
       </ContainerX>
     </>

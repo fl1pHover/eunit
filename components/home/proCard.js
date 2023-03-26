@@ -45,8 +45,8 @@ function ProCard({
   return (
     // <Skeleton>
     <Skeleton isLoaded>
-      <div className="relative overflow-hidden rounded-2xl md:min-h-[350px] min-h-[300px]  shadow-md bg-zinc-200 group flex flex-col w-full h-full">
-        <div className="grid w-full h-full grid-cols-2">
+      <div className="relative overflow-hidden rounded-2xl md:min-h-[350px] min-h-[300px]  shadow-md  group flex flex-col w-full h-full mb-2">
+        <div className="grid flex-1 w-full h-full grid-cols-2">
           <div className="absolute top-0 left-0 z-10 flex items-center justify-between flex-1 w-full px-3 py-2">
             {item?.images.length != 0 ? (
               <ImageCount onClick={() => console.log('Zurag')}>
@@ -219,7 +219,9 @@ function ProCard({
                   {item?.subCategory?.name ?? ''}
                 </p>
               </div>
-              <p className="text-gray-500 line-clamp-3">{item.description}</p>
+              <p className="h-full text-gray-500 line-clamp-3">
+                {item.description}
+              </p>
             </div>
             <div className="flex items-end h-full">
               <p>Огноо</p>
