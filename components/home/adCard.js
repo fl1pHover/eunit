@@ -15,16 +15,11 @@ import { getCookie } from 'cookies-next';
 import currency from 'currency.js';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { Fragment } from 'react';
+import { useState } from 'react';
 import { AiFillEdit } from 'react-icons/ai';
+import { BsThreeDots } from 'react-icons/bs';
 import EditAd from '../ad/edit';
 import AdCardButton from './adCardButton';
-import { useState } from 'react';
-import { BsThreeDots } from 'react-icons/bs';
-import { motion } from 'framer-motion';
-import { RiVipDiamondFill } from 'react-icons/ri';
-import { STYLES } from '@/styles/index';
-import { Button } from 'flowbite-react';
 
 function Card({
   item,
@@ -33,6 +28,7 @@ function Card({
   data,
   setData,
   admin = false,
+  changeAd = {},
 }) {
   const router = useRouter();
   const user = getCookie('user');
@@ -131,34 +127,33 @@ function Card({
                 </EditAd>
 
                 <div className="h-1" />
-                
+
                 {item.adStatus == 'deleted' ? (
                   <Alerting
-                    isDelete={true}
+                    isDelete={'Устгах'}
                     btn={<DButton onClick={deleteFunc} isDelete={true} />}
                     onclick={deleteFunc}
                   />
                 ) : (
                   <Alerting
-                    isDelete={false}
+                    isDelete={'Сэргээх'}
                     btn={<DButton onClick={deleteFunc} isDelete={false} />}
                     onclick={deleteFunc}
                   />
                 )}
-                
+
                 <div className="h-1" />
 
-                <Tip lbl="Онцгой зар болгох">
-                  <button
-                    className={mergeNames(
-                      STYLES.button,
-                      STYLES.flexCenter,
-                      'bg-mainBlossom items-center w-8 h-8 p-1'
-                    )}
-                  >
-                    <RiVipDiamondFill />
-                  </button>
-                </Tip>
+                {item.adType == 'default' && (
+                  <Tip lbl="Онцгой зар болгох">
+                    <Alerting
+                      body={'Танаас 10,000 enunit хасагдах болохыг анхаарна уу'}
+                      isDelete={'Онцгой зар болгох'}
+                      btn={<DButton onClick={deleteFunc} isDelete={false} />}
+                      onclick={changeAd}
+                    />
+                  </Tip>
+                )}
               </div>
             </div>
           ) : (

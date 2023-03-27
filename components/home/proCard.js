@@ -28,6 +28,7 @@ import 'swiper/css/navigation';
 
 import { STYLES } from '@/styles/index';
 import { Navigation } from 'swiper';
+import moment from 'moment';
 
 function ProCard({
   item,
@@ -41,7 +42,7 @@ function ProCard({
   const user = getCookie('user');
   const token = getCookie('token');
   const [image, setImage] = useState(1);
-  console.log(item.user);
+
   return (
     // <Skeleton>
     <Skeleton isLoaded>
@@ -224,7 +225,9 @@ function ProCard({
               </p>
             </div>
             <div className="flex items-end h-full">
-              <p>Огноо</p>
+              <p>
+                {moment(item?.createdAt, 'YYYY-MM-DD').format('YYYY-MM-DD')}
+              </p>
             </div>
             {item?.adStatus == 'pending' && (
               <p
@@ -252,7 +255,7 @@ function ProCard({
           <Tip lbl="Зарын эзэн">
             <button
               className="flex items-center gap-2"
-              onClick={() => router.push(`/account/${item.user}`)}
+              onClick={() => router.push(`/account/${item?.user?._id}`)}
             >
               <div className="relative overflow-hidden border-2 rounded-full w-9 h-9 border-mainBlossom">
                 <Image
@@ -269,6 +272,8 @@ function ProCard({
               <p className="font-semibold">{item?.user?.username ?? ''}</p>
             </button>
           </Tip>
+           
+                  <p>Үзсэн хүний тоо: {item.views.length}</p>
           <div className="flex gap-2">
             <button
               className={mergeNames(

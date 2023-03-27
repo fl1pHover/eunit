@@ -40,15 +40,30 @@ export default function Home({ propAds }) {
       <ContainerX classname="py-6">
         {/* <Heading className="">Шинэ зарууд</Heading> */}
 
-        <ProAdContent
-          title="Онцгой зар"
-          data={ads}
-          showLink=""
-          pg={false}
-          inCat={false}
-        />
+        {ads && (
+          <ProAdContent
+            title="Онцгой зар"
+            data={{
+              ads: ads.ads.filter((a) => a.adType == 'special'),
+              limit: ads.ads.filter((a) => a.adType == 'special').length,
+            }}
+            showLink=""
+            pg={false}
+            inCat={false}
+          />
+        )}
 
-        {ads && <AdContent data={ads} showLink="" pg={false} inCat={false} />}
+        {ads && (
+          <AdContent
+            data={{
+              ads: ads.ads.filter((a) => a.adType == 'default'),
+              limit: ads.ads.filter((a) => a.adType == 'default').length,
+            }}
+            showLink=""
+            pg={false}
+            inCat={false}
+          />
+        )}
       </ContainerX>
     </>
   );

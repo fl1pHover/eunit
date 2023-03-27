@@ -148,6 +148,45 @@ const MyAds = ({ user }) => {
       console.error(error);
     }
   };
+
+  const changeAdType = async (id) => {
+    try {
+      if (token) {
+        let ad = await axios
+          .get(`${urls['test']}/ad/adType/${id}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Access-Control-Allow-Headers': '*',
+            },
+          })
+          .then((d) => {
+            if (d.data == 'true' || d.data) {
+              toast({
+                title: 'Амжилттай.',
+                status: 'success',
+                duration: 5000,
+                isClosable: true,
+              });
+            } else {
+              toast({
+                title: 'Таны eunit хүрсэнгүй.',
+                status: 'warning',
+                duration: 5000,
+                isClosable: true,
+              });
+              
+            }
+          });
+      }
+    } catch (error) {
+      toast({
+        title: 'Алдаа гарлаа.',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  };
   return (
     <>
       <div className={mergeNames('flex flex-col gap-4 mt-5', brk)}>
@@ -235,6 +274,9 @@ const MyAds = ({ user }) => {
               data={products}
               admin={true}
               key={key}
+              changeAd={() => {
+                changeAdType(item._id);
+              }}
               item={item || {}}
               isDelete={true}
               deleteFunc={() => {

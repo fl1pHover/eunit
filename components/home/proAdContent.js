@@ -1,4 +1,3 @@
-import AdCard from '@/components/home/adCard';
 import { ContainerXP } from '@/lib/Container';
 import { SectionTitle } from '@/lib/Title';
 // import { BiArrowFromRight } from "react-icons/bi";

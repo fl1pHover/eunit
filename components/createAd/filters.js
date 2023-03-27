@@ -65,11 +65,11 @@ export const FilterCounter = ({
   );
 };
 
-export const FilterText = ({ title, ph, onChange = () => {} }) => {
+export const FilterText = ({ title, ph, onChange = () => {}, value = '' }) => {
   return (
     <ItemContainer className={'flex flex-col items-center justify-center'}>
       <FormLabel title={title} />
-      <Input ph={ph} onChange={onChange} />
+      <Input ph={ph} onChange={onChange} value={value} />
     </ItemContainer>
   );
 };

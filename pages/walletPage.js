@@ -109,28 +109,29 @@ const WalletPage = ({ user }) => {
         <Heading variant="mediumHeading">Гүйлгээний түүх</Heading>
         <div className="flex flex-col w-full gap-3 mt-4">
           <div className="flex justify-between w-full">
-            <p className="font-bold">Огноо</p>
             <button className="mx-5 font-semibold text-gray-500">
               Илгээгч
             </button>
             <button className="mx-5 font-semibold text-gray-500">
               Хүлээн авагч
             </button>
-            <p className="font-bold text-blue-700">Хэмжээ</p>
+            <p className="font-bold text-blue-700">Eunit</p>
           </div>
         </div>
         {user?.pointHistory?.map((ph, i) => {
           return (
             <div className="flex flex-col w-full gap-3 mt-4" key={i}>
               <div className="flex justify-between w-full">
-                <p className="font-bold">огноо</p>
                 <button className="mx-5 font-semibold text-gray-500">
-                  {ph.sender?._id}
+                  {ph.sender?.username}
                 </button>
                 <button className="mx-5 font-semibold text-gray-500">
-                  {ph.receiver?._id}
+                  {ph.receiver?.username}
                 </button>
-                <p className="font-bold text-blue-700">{ph.point}</p>
+                <p className="font-bold text-blue-700">
+                  {ph.type == 'sender' ? '-' : '+'}
+                  {ph.point}
+                </p>
               </div>
             </div>
           );
