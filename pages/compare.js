@@ -1,5 +1,4 @@
 import { useAuth } from '@/context/auth';
-import mergeNames from '@/util/mergeNames';
 import { Image } from '@chakra-ui/react';
 import currency from 'currency.js';
 import { useRouter } from 'next/router';
@@ -130,7 +129,12 @@ const Comparing = () => {
       </div>
     );
   } else {
-    router.push('/');
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
   }
 };
 
