@@ -43,7 +43,7 @@ export default function Home({ propAds }) {
         <ProAdContent
           title="Онцгой зар"
           data={ads}
-          showLink=""
+          showLink="hidden"
           pg={false}
           inCat={false}
         />

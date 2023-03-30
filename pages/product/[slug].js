@@ -82,7 +82,7 @@ export const ProductInfo = ({
       </p>
       <GridItem
         className={mergeNames(
-          title.length + value?.length > 30
+          title.length + value?.length > 35
             ? 'product__info col-span-full md:col-span-2 2xl:col-span-2 row-start-1'
             : 'product__info',
           'bg-white shadow rounded-md',
