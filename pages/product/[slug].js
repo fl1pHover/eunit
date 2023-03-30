@@ -82,8 +82,8 @@ export const ProductInfo = ({
       </p>
       <GridItem
         className={mergeNames(
-          title.length + value?.length > 35
-            ? 'product__info col-span-full md:col-span-2 2xl:col-span-2 row-start-1'
+          title.length > 30
+            ? 'product__info col-span-full md:col-span-2 lg:col-span-1 row-start-1'
             : 'product__info',
           'bg-white shadow rounded-md',
           classnames
@@ -308,7 +308,7 @@ const Product = ({ propAds }) => {
         <Stack direction={'row'} py={2} gap={3} pos="relative">
           <Box maxWidth={'100%'} flex="0 0 100%" borderRadius="5px">
             <div className="flex gap-7">
-              <div className="flex flex-col w-full gap-7">
+              <div className="flex flex-col w-full gap-5">
                 {/* <p className="text-darkBlue">/Үл хөдлөх/Орон сууц</p> */}
                 <h1 className="my-5 text-3xl font-semibold">{data.title} </h1>
                 <Engage
@@ -326,9 +326,11 @@ const Product = ({ propAds }) => {
                     <div className="object-contain">
                       <ImageGallery
                         // thumbnailPosition="bottom"
+
                         showPlayButton={false}
                         // showBullets={true}
                         // showThumbnails={false}
+                        // showIndex={true}
                         items={data?.images?.map((i) => ({
                           original: i,
                           thumbnail: i,

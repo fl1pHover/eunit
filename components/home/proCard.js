@@ -16,7 +16,7 @@ import currency from 'currency.js';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { Fragment } from 'react';
-import { AiFillEdit } from 'react-icons/ai';
+import { AiFillEdit, AiOutlineEye } from 'react-icons/ai';
 import { SwiperSlide } from 'swiper/react';
 import EditAd from '../ad/edit';
 import AdCardButton from './adCardButton';
@@ -28,6 +28,7 @@ import 'swiper/css/navigation';
 
 import { STYLES } from '@/styles/index';
 import { Navigation } from 'swiper';
+import moment from 'moment';
 
 function ProCard({
   item,
@@ -41,7 +42,7 @@ function ProCard({
   const user = getCookie('user');
   const token = getCookie('token');
   const [image, setImage] = useState(1);
-  console.log(item.user);
+
   return (
     // <Skeleton>
     <Skeleton isLoaded>
@@ -219,12 +220,22 @@ function ProCard({
                   {item?.subCategory?.name ?? ''}
                 </p>
               </div>
-              <p className="h-full text-gray-500 line-clamp-3">
+              <p className="h-full text-gray-500 line-clamp-3 ">
                 {item.description}
               </p>
             </div>
-            <div className="flex items-end h-full">
-              <p>Огноо</p>
+            <div className="flex items-end justify-between h-full text-sm">
+              <Tip lbl="Зарын огноо">
+                <p>
+                  {moment(item?.createdAt, 'YYYY-MM-DD').format('YYYY-MM-DD')}
+                </p>
+              </Tip>
+              <Tip lbl="Зарын үзэлтийн тоо">
+                <div className="flex items-center justify-center gap-1">
+                  <AiOutlineEye className="text-[18px]  translate-y-[1px]" />
+                  <p>{item.views.length}</p>
+                </div>
+              </Tip>
             </div>
             {item?.adStatus == 'pending' && (
               <p
@@ -252,7 +263,7 @@ function ProCard({
           <Tip lbl="Зарын эзэн">
             <button
               className="flex items-center gap-2"
-              onClick={() => router.push(`/account/${item.user}`)}
+              onClick={() => router.push(`/account/${item?.user?._id}`)}
             >
               <div className="relative overflow-hidden border-2 rounded-full w-9 h-9 border-mainBlossom">
                 <Image
@@ -269,6 +280,7 @@ function ProCard({
               <p className="font-semibold">{item?.user?.username ?? ''}</p>
             </button>
           </Tip>
+
           <div className="flex gap-2">
             <button
               className={mergeNames(

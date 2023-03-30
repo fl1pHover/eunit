@@ -2,6 +2,7 @@ import Counter from '@/lib/Counter';
 import { DateYearSelector } from '@/lib/DateSelector';
 import Input from '@/lib/Input';
 import Select from '@/lib/Select';
+import mergeNames from '@/util/mergeNames';
 import {
   NumberDecrementStepper,
   NumberIncrementStepper,
@@ -33,8 +34,13 @@ export const FilterYear = ({ title, onChange = () => {} }) => {
       <NumberInput
         size="md"
         allowMouseWheel
-        min={0}
-        className="flex flex-row justify-between mx-auto overflow-hidden border-2 border-blue-500 rounded-full md:w-2/3"
+        keepWithinRange={false}
+        clampValueOnBlur={false}
+        defaultValue={0}
+        className={mergeNames(
+          onChange && 'border-blue-400',
+          'flex flex-row justify-between mx-auto overflow-hidden border-2  rounded-full md:w-2/3'
+        )}
         onChange={onChange}
       >
         <NumberInputField />
@@ -65,11 +71,11 @@ export const FilterCounter = ({
   );
 };
 
-export const FilterText = ({ title, ph, onChange = () => {} }) => {
+export const FilterText = ({ title, ph, onChange = () => {}, value = '' }) => {
   return (
     <ItemContainer className={'flex flex-col items-center justify-center'}>
       <FormLabel title={title} />
-      <Input ph={ph} onChange={onChange} />
+      <Input ph={ph} onChange={onChange} value={value} />
     </ItemContainer>
   );
 };
@@ -82,7 +88,7 @@ export const FilterButtonSelector = ({
 }) => {
   return (
     <ItemContainer>
-      <FormLabel title={title} />
+      <FormLabel req={selected ? false : true} title={title} />
       <div className="flex flex-row justify-center gap-4">
         {data?.map((text, id) => {
           return (

@@ -11,7 +11,7 @@ import { useRef } from 'react';
 import { STYLES } from '../styles';
 import mergeNames from './mergeNames';
 
-const Alerting = ({ btn, onclick = {}, body, isDelete }) => {
+const Alerting = ({ btn, onclick = {}, body, isDelete = '' }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef();
 
@@ -33,7 +33,7 @@ const Alerting = ({ btn, onclick = {}, body, isDelete }) => {
         <AlertDialogOverlay>
           <AlertDialogContent>
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              Зар {!isDelete ? 'устгах' : 'сэргээх'}
+              Зар {isDelete.toLowerCase()}
             </AlertDialogHeader>
 
             <AlertDialogBody>
@@ -61,7 +61,7 @@ const Alerting = ({ btn, onclick = {}, body, isDelete }) => {
                   onClose();
                 }}
               >
-                {!isDelete ? 'Устгах' : 'Сэргээх'}
+                {isDelete}
               </button>
             </AlertDialogFooter>
           </AlertDialogContent>

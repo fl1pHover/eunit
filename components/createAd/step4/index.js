@@ -152,6 +152,10 @@ const Step3 = ({ filter, selectedParent, setSelectedParent }) => {
               key={i}
               title={f.name}
               ph={f.name}
+              value={
+                selectedParent?.filter((s) => s.parent == f.type)[0]?.input ??
+                ''
+              }
               onChange={(e) => {
                 f.input = e.target.value;
                 let isNull = selectedParent.findIndex(

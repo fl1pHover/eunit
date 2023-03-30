@@ -1,5 +1,5 @@
 import { ChakraProvider } from '@chakra-ui/react';
-import { AuthProvider } from 'context/auth';
+import { AuthProvider, useAuth } from 'context/auth';
 import { AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 
@@ -22,14 +22,17 @@ function MyApp({ Component, pageProps }) {
   Router.events.on('routeChangeStart', handleStart);
   Router.events.on('routeChangeComplete', handleComplete);
   Router.events.on('routeChangeError', handleComplete);
-
+  const { user } = useAuth();
+  console.log(user);
   return (
     <AuthProvider>
       <ChakraProvider theme={theme}>
         <AnimatePresence>
           <Layout>
             {isLoading && <MainLoader />}
+
             <Navbar />
+
             <Component {...pageProps} />
             <ScrollTop />
           </Layout>

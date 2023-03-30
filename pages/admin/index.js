@@ -1,4 +1,5 @@
 import EditAd from '@/components/ad/edit';
+import AdminBar from '@/components/admin/AdminBar';
 import FilterAd from '@/components/Profile/filterAd';
 import urls from '@/constants/api';
 import { useAuth } from '@/context/auth';
@@ -171,218 +172,226 @@ const Admin = ({ propAds }) => {
   };
   if (user?.userType == 'admin' || user?.userType == 'system') {
     return (
-      <div className="flex flex-row p-5 min-h-[60vh]">
-        <div className="p-5 ">
-          {/* <Text>Zariin dugaar: {a.num}</Text>
+      <>
+        <AdminBar />
+        <div className="flex flex-row p-5 min-h-[60vh]">
+          <div className="p-5 ">
+            {/* <Text>Zariin dugaar: {a.num}</Text>
             <Button onClick={() => verify(a._id)}>verify</Button>
             <Button onClick={() => deleteAd(a._id)}>delete</Button> */}
-          {/* {content && <> {content} </>} */}
-          <div className={mergeNames('flex flex-col gap-4 mt-5', brk)}>
-            <div className="flex w-full gap-4">
-              <FilterAd
-                plc="Бүх төрөл"
-                onChange={(e) => {
-                  if (e.target.value != '') {
-                    let ad = data.ads.filter(
-                      (d) => d.category.name == e.target.value
-                    );
-                    setAds({
-                      ads: ad,
-                      limit: ads.limit,
-                    });
-                  } else {
-                    setAds(data);
-                  }
-                }}
-              >
-                {categories?.map((p, i) => {
-                  return (
-                    <option value={p} key={i}>
-                      {p}
-                    </option>
-                  );
-                })}
-              </FilterAd>
-              <FilterAd
-                plc="Бүх дэд төрөл"
-                onChange={(e) => {
-                  if (e.target.value != '') {
-                    let ad = data.ads.filter(
-                      (d) => d.subCategory.name == e.target.value
-                    );
-                    setAds({
-                      ads: ad,
-                      limit: ads.limit,
-                    });
-                  } else {
-                    setAds(data);
-                  }
-                }}
-              >
-                {subCategory?.map((p, i) => {
-                  return (
-                    <option value={p} key={i}>
-                      {p}
-                    </option>
-                  );
-                })}
-              </FilterAd>
-            </div>
-            <div className="flex flex-col justify-end">
-              <Checkbox
-                colorScheme="green"
-                className="font-bold text-green-400 whitespace-nowrap"
-                onChange={(e) => {
-                  setChecker((prev) => ({ ...prev, create: e.target.checked }));
-                }}
-                isChecked={checker.create}
-              >
-                Нэмсэн зарууд
-              </Checkbox>
-              <Checkbox
-                className="font-bold text-primary whitespace-nowrap"
-                isChecked={checker.pending}
-                onChange={(e) => {
-                  setChecker((prev) => ({
-                    ...prev,
-                    pending: e.target.checked,
-                  }));
-                }}
-              >
-                Хүлээгдэж байгаа
-              </Checkbox>
-              <Checkbox
-                className="font-bold text-red-400 whitespace-nowrap"
-                isChecked={checker.deleted}
-                onChange={(e) => {
-                  setChecker((prev) => ({
-                    ...prev,
-                    deleted: e.target.checked,
-                  }));
-                }}
-              >
-                Устгасан зарууд
-              </Checkbox>
-            </div>
-          </div>
-          <div className="w-full overflow-scroll">
-            <table className="w-full p-2 text-sm text-left border border-collapse border-gray-400 table-fixed">
-              <thead>
-                <tr>
-                  <th className="w-[30px]">Дугаар</th>
-                  <th>Гарчиг</th>
-                  <th>Дэлгэрэнгүй</th>
-                  <th>Зарын төрөл</th>
-                  <th>Зарын статус</th>
-                  <th>Зөвшөөрөх</th>
-                  <th>Устгах</th>
-                  <th>Засах</th>
-                </tr>
-              </thead>
-              <tbody>
-                {ads?.ads?.map((a, i) => {
-                  let adData = { ...a };
-                  return (
-                    <tr key={i}>
-                      <td className="w-[30px]">{a.num}</td>
-                      <td className="truncate ...">{a.title}</td>
-                      <td className="truncate ...">{a.description}</td>
-                      <td>{a.adType}</td>
-                      <td className="truncate ...">{a.adStatus}</td>
-                      <td>
-                        <button
-                          onClick={() => verify(a._id)}
-                          className="bg-teal-500 hover:bg-teal-600"
-                        >
-                          <SiVerizon />
-                        </button>
-                      </td>
-                      <td>
-                        <button
-                          onClick={() => deleteAd(a._id)}
-                          className="bg-red-500 hover:bg-red-800"
-                        >
-                          <MdDelete />
-                        </button>
-                      </td>
-                      <td>
-                        <EditAd
-                          setData={setAds}
-                          ads={ads}
-                          data={a}
-                          admin={true}
-                          onNext={async () => {
-                            await axios
-                              .put(`${urls['test']}/ad/${a._id}`, a, {
-                                headers: {
-                                  Authorization: `Bearer ${token}`,
-                                  'Access-Control-Allow-Headers': '*',
-                                  'Content-Type': 'application/json',
-                                  charset: 'UTF-8',
-                                },
-                              })
-                              .then((d) => console.log(d.data));
-                          }}
-                        />
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-            {data?.limit && (
-              <ul className="flex float-right list-style-none">
-                <li className="mx-2 disabled">
-                  <button
-                    className={mergeNames(STYLES.notActive)}
-                    onClick={() => {
-                      if (num > 0) {
-                        let n = num - 1;
-                        setNum(n);
-                      }
-                    }}
-                  >
-                    Өмнөх
-                  </button>
-                </li>
-
-                {data?.limit &&
-                  [...Array(Math.ceil(data.limit / 20)).keys()].map((l, i) => {
-                    // [...Array(Math.ceil(data.limit / n)).keys()].map((l) => {
+            {/* {content && <> {content} </>} */}
+            <div className={mergeNames('flex flex-col gap-4 mt-5', brk)}>
+              <div className="flex w-full gap-4">
+                <FilterAd
+                  plc="Бүх төрөл"
+                  onChange={(e) => {
+                    if (e.target.value != '') {
+                      let ad = data.ads.filter(
+                        (d) => d.category.name == e.target.value
+                      );
+                      setAds({
+                        ads: ad,
+                        limit: ads.limit,
+                      });
+                    } else {
+                      setAds(data);
+                    }
+                  }}
+                >
+                  {categories?.map((p, i) => {
                     return (
-                      <li className={l == num ? 'active' : ''} key={i}>
-                        <button
-                          className={mergeNames(
-                            l == num ? STYLES.active : STYLES.notActive
-                          )}
-                          onClick={() => {
-                            setNum(l);
-                          }}
-                        >
-                          {l + 1}
-                        </button>
-                      </li>
+                      <option value={p} key={i}>
+                        {p}
+                      </option>
                     );
                   })}
+                </FilterAd>
+                <FilterAd
+                  plc="Бүх дэд төрөл"
+                  onChange={(e) => {
+                    if (e.target.value != '') {
+                      let ad = data.ads.filter(
+                        (d) => d.subCategory.name == e.target.value
+                      );
+                      setAds({
+                        ads: ad,
+                        limit: ads.limit,
+                      });
+                    } else {
+                      setAds(data);
+                    }
+                  }}
+                >
+                  {subCategory?.map((p, i) => {
+                    return (
+                      <option value={p} key={i}>
+                        {p}
+                      </option>
+                    );
+                  })}
+                </FilterAd>
+              </div>
+              <div className="flex flex-col justify-end">
+                <Checkbox
+                  colorScheme="green"
+                  className="font-bold text-green-400 whitespace-nowrap"
+                  onChange={(e) => {
+                    setChecker((prev) => ({
+                      ...prev,
+                      create: e.target.checked,
+                    }));
+                  }}
+                  isChecked={checker.create}
+                >
+                  Нэмсэн зарууд
+                </Checkbox>
+                <Checkbox
+                  className="font-bold text-primary whitespace-nowrap"
+                  isChecked={checker.pending}
+                  onChange={(e) => {
+                    setChecker((prev) => ({
+                      ...prev,
+                      pending: e.target.checked,
+                    }));
+                  }}
+                >
+                  Хүлээгдэж байгаа
+                </Checkbox>
+                <Checkbox
+                  className="font-bold text-red-400 whitespace-nowrap"
+                  isChecked={checker.deleted}
+                  onChange={(e) => {
+                    setChecker((prev) => ({
+                      ...prev,
+                      deleted: e.target.checked,
+                    }));
+                  }}
+                >
+                  Устгасан зарууд
+                </Checkbox>
+              </div>
+            </div>
+            <div className="w-full overflow-scroll">
+              <table className="w-full p-2 text-sm text-left border border-collapse border-gray-400 table-fixed">
+                <thead>
+                  <tr>
+                    <th className="w-[30px]">Дугаар</th>
+                    <th>Гарчиг</th>
+                    <th>Дэлгэрэнгүй</th>
+                    <th>Зарын төрөл</th>
+                    <th>Зарын статус</th>
+                    <th>Зөвшөөрөх</th>
+                    <th>Устгах</th>
+                    <th>Засах</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {ads?.ads?.map((a, i) => {
+                    let adData = { ...a };
+                    return (
+                      <tr key={i}>
+                        <td className="w-[30px]">{a.num}</td>
+                        <td className="truncate ...">{a.title}</td>
+                        <td className="truncate ...">{a.description}</td>
+                        <td>{a.adType}</td>
+                        <td className="truncate ...">{a.adStatus}</td>
+                        <td>
+                          <button
+                            onClick={() => verify(a._id)}
+                            className="bg-teal-500 hover:bg-teal-600"
+                          >
+                            <SiVerizon />
+                          </button>
+                        </td>
+                        <td>
+                          <button
+                            onClick={() => deleteAd(a._id)}
+                            className="bg-red-500 hover:bg-red-800"
+                          >
+                            <MdDelete />
+                          </button>
+                        </td>
+                        <td>
+                          <EditAd
+                            setData={setAds}
+                            ads={ads}
+                            data={a}
+                            admin={true}
+                            onNext={async () => {
+                              await axios
+                                .put(`${urls['test']}/ad/${a._id}`, a, {
+                                  headers: {
+                                    Authorization: `Bearer ${token}`,
+                                    'Access-Control-Allow-Headers': '*',
+                                    'Content-Type': 'application/json',
+                                    charset: 'UTF-8',
+                                  },
+                                })
+                                .then((d) => console.log(d.data));
+                            }}
+                          />
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+              {data?.limit && (
+                <ul className="flex float-right list-style-none">
+                  <li className="mx-2 disabled">
+                    <button
+                      className={mergeNames(STYLES.notActive)}
+                      onClick={() => {
+                        if (num > 0) {
+                          let n = num - 1;
+                          setNum(n);
+                        }
+                      }}
+                    >
+                      Өмнөх
+                    </button>
+                  </li>
 
-                <li className="mx-2 disabled">
-                  <button
-                    className={mergeNames(STYLES.notActive)}
-                    onClick={() => {
-                      if (data.limit > 20) {
-                        let n = num + 1;
-                        setNum(n);
+                  {data?.limit &&
+                    [...Array(Math.ceil(data.limit / 20)).keys()].map(
+                      (l, i) => {
+                        // [...Array(Math.ceil(data.limit / n)).keys()].map((l) => {
+                        return (
+                          <li className={l == num ? 'active' : ''} key={i}>
+                            <button
+                              className={mergeNames(
+                                l == num ? STYLES.active : STYLES.notActive
+                              )}
+                              onClick={() => {
+                                setNum(l);
+                              }}
+                            >
+                              {l + 1}
+                            </button>
+                          </li>
+                        );
                       }
-                    }}
-                  >
-                    Дараах
-                  </button>
-                </li>
-              </ul>
-            )}
+                    )}
+
+                  <li className="mx-2 disabled">
+                    <button
+                      className={mergeNames(STYLES.notActive)}
+                      onClick={() => {
+                        if (data.limit > 20) {
+                          let n = num + 1;
+                          setNum(n);
+                        }
+                      }}
+                    >
+                      Дараах
+                    </button>
+                  </li>
+                </ul>
+              )}
+            </div>
           </div>
         </div>
-      </div>
+      </>
     );
   }
 };

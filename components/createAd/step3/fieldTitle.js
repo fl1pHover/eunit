@@ -1,3 +1,4 @@
+import mergeNames from '@/util/mergeNames';
 import { AtomLabel } from './atom';
 
 const FieldTitle = ({ setGeneralData = () => {}, generalData }) => {
@@ -15,7 +16,12 @@ const FieldTitle = ({ setGeneralData = () => {}, generalData }) => {
         }}
         maxLength="100"
         placeholder="Гарчиг"
-        className="w-full px-4 py-2 border-2 rounded-full border-blue-400/70 ring-blue-400 invalid:border-blue-400 outline-blue-400"
+        className={mergeNames(
+          generalData.title.length > 0
+            ? 'border-blue-400/70 ring-blue-400 invalid:border-blue-400 outline-blue-400 '
+            : 'border-red-400 ring-red-400 invalid:border-red-400 outline-red-400',
+          'w-full px-4 py-2 border-2 rounded-full '
+        )}
       />
     </div>
   );
