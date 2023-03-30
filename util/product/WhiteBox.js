@@ -3,7 +3,7 @@ import mergeNames from '../mergeNames';
 
 const WhiteBox = ({ children, heading, classnames = '' }) => {
   return (
-    <div className={mergeNames('p-6 bg-white rounded-md w-full ')}>
+    <div className={mergeNames('p-5  bg-white rounded-md w-full ')}>
       <div className="grid text-xl font-bold col-span-full">
         <div className="flex items-center justify-between ">
           <p>{heading}</p>

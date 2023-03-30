@@ -73,7 +73,7 @@ const Bottom = ({ sticky }) => {
               <HiOutlineSearch />
             </button>
 
-            <WhiteHeartIcon onClick={() => router.push('/account?Bookmark')} />
+            <WhiteHeartIcon onClick={() => router.push('/account?tab=Bookmark')} />
 
             {user == undefined || !token ? (
               <UserIcon text="Нэвтрэх" onClick={() => router.push('/login')} />

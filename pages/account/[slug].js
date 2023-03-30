@@ -28,7 +28,7 @@ const Accounts = ({ propUser }) => {
   }, [propUser]);
   return (
     <MainContainer py={5}>
-      <div className={mergeNames('flex flex-col gap-3 ')}>
+      <div className={mergeNames('flex flex-col gap-3 px-2')}>
         <div
           className={mergeNames(
             'w-full p-3 sm:p-6 md:p-10 bg-white shadow-xl rounded-xl',
@@ -38,7 +38,7 @@ const Accounts = ({ propUser }) => {
           <div
             className={mergeNames(
               STYLES.flexCenter,
-              'flex-col w-full gap-4 md:gap-16 sm:flex-row'
+              'flex-col w-full items-center gap-4 md:gap-16 sm:flex-row'
             )}
           >
             <Image
@@ -48,7 +48,7 @@ const Accounts = ({ propUser }) => {
               }
               alt="User"
               className={mergeNames(
-                'h-[150px] w-[150px] border border-gray-300',
+                'h-[75px] w-[75px] md:h-[150px] md:w-[150px] border border-gray-300',
                 'rounded-full aspect-square object-cover'
               )}
             />
@@ -58,11 +58,11 @@ const Accounts = ({ propUser }) => {
               <div
                 className={mergeNames(
                   STYLES.flexBetween,
-                  'xs:flex-row flex-col sm:justify-between justify-around items-center gap-2 text-center xs:text-left'
+                  'xs:flex-row flex-col sm:justify-between justify-around items-center gap-2 xs:text-left text-center'
                 )}
               >
                 <div>
-                  <h1 className="text-xl font-bold md:text-3xl">
+                  <h1 className="text-lg font-bold md:text-3xl">
                     {propUser.username}
                   </h1>
                   <h3 className="font-bold text-blue-600 capitalize text-md">
@@ -87,11 +87,13 @@ const Accounts = ({ propUser }) => {
                 </p>
               </div>
               {/* //TODO: Social Hayg */}
-              <a href="">adasd</a>
+
               {propUser?.socials && <Socials propUser={propUser} />}
             </div>
+            {/* {propUser?.socials && <Socials propUser={propUser} />} */}
           </div>
         </div>
+
         {ads && <AdContent data={ads} showLink="hidden" />}
       </div>
     </MainContainer>
@@ -129,7 +131,7 @@ const Socials = ({ propUser }) => {
   ]);
 
   return (
-    <div className="grid flex-row grid-cols-2 gap-2 md:gap-5 xs:flex">
+    <div className="flex flex-row justify-center gap-2 sm:justify-start md:gap-5 ">
       {socials?.map((s, i) => {
         return (
           <Link href={s.url} key={i}>
@@ -150,7 +152,9 @@ const Socials = ({ propUser }) => {
                 src={`/utils/socials/` + capitalizeFirst(s.name) + `.svg`}
                 alt="social icon"
               />
-              <p className="font-bold text-md">{capitalizeFirst(s.name)}</p>
+              <p className="hidden font-bold sm:block text-md">
+                {capitalizeFirst(s.name)}
+              </p>
             </a>
           </Link>
         );

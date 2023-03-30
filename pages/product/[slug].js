@@ -94,7 +94,7 @@ export const ProductInfo = ({
           className={mergeNames('p-2 rounded-md')}
           onClick={href ? () => {} : func}
         >
-          <div className="flex flex-col w-full pl-5 text-left ">
+          <div className="flex flex-col w-full pl-2 text-left sm:pl-5">
             <Text fontSize={{ base: '13px', xl: '15px' }}>{title}: </Text>
             {!localData && (
               <ProductInfoValue href={href} id={id} value={value} />
@@ -310,7 +310,9 @@ const Product = ({ propAds }) => {
             <div className="flex gap-7">
               <div className="flex flex-col w-full gap-5">
                 {/* <p className="text-darkBlue">/Үл хөдлөх/Орон сууц</p> */}
-                <h1 className="my-5 text-3xl font-semibold">{data.title} </h1>
+                <h1 className="my-5 text-lg font-semibold md:text-3xl">
+                  {data.title}{' '}
+                </h1>
                 <Engage
                   date={moment(data.createdAt).format('lll')}
                   num={data.num}
