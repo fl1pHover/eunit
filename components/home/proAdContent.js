@@ -29,7 +29,7 @@ const ProAdContent = ({
 
   return (
     <ContainerXP key={key} classname="pb-10">
-      <div className="flex flex-row items-end justify-between mt-4 mb-4 md:mt-6">
+      <div className="flex flex-row items-center justify-between mt-4 mb-4 md:mt-6">
         <div className="pl-4 text-left">
           <SectionTitle>{title}</SectionTitle>
         </div>
@@ -37,7 +37,7 @@ const ProAdContent = ({
           onClick={() => router.push(`category/${url}`)}
           className={mergeNames(showLink, 'flex items-center')}
         >
-          <p className="text-sm font-semibold">Цааш үзэх</p>
+          <p className="text-sm font-semibold">Бүгд</p>
           <AiOutlineArrowRight size={12} />
         </button>
       </div>
