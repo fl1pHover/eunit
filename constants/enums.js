@@ -348,7 +348,7 @@ export const proSwiperBreakpoints = {
   1: {
     slidesPerView: 1,
     grid: {
-      rows: 1,
+      rows: 2,
       fill: 'row',
     },
   },
@@ -356,7 +356,7 @@ export const proSwiperBreakpoints = {
   870: {
     slidesPerView: 2,
     grid: {
-      rows: 1,
+      rows: 2,
       fill: 'row',
     },
   },

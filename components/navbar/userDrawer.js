@@ -40,7 +40,7 @@ const drawerItem = [
   {
     icon: <IoWalletOutline />,
     text: 'Хэтэвч',
-    href: 'wallet',
+    href: 'WalletPage',
   },
 ];
 

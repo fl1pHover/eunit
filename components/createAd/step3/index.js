@@ -1,4 +1,5 @@
 import FormTitle from '@/components/createAd/title';
+import mergeNames from '@/util/mergeNames';
 import { NumberInput, NumberInputField } from '@chakra-ui/react';
 import FormLine from '../formLine';
 import { AtomLabel } from './atom';
@@ -42,7 +43,14 @@ const Step3 = ({
                 }
                 value={generalData.phone}
               >
-                <NumberInputField className="w-full px-4 py-2 border-2 rounded-full border-blue-400/70 ring-blue-400 " />
+                <NumberInputField
+                  className={mergeNames(
+                    generalData.phone.length < 8
+                      ? 'border-red-400 ring-red-400'
+                      : 'border-blue-400/70 ring-blue-400',
+                    'w-full px-4 py-2 border-2 rounded-full  '
+                  )}
+                />
               </NumberInput>
             </div>
             <div className="hidden md:block">
@@ -72,7 +80,12 @@ const Step3 = ({
                   setGeneralData((prev) => ({ ...prev, desc: e.target.value }))
                 // setGeneralData((prev) => ({ ...prev, desc: e.target.value }))
               }
-              className="w-full px-4 border-2 rounded-2xl border-blue-400/60 ring-blue-400"
+              className={mergeNames(
+                generalData?.desc.length > 0
+                  ? 'border-blue-400/60 ring-blue-400 '
+                  : 'border-red-400 ring-red-400',
+                'w-full px-4 border-2 rounded-2xl '
+              )}
             />
           </div>
           <div className="block md:hidden">

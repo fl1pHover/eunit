@@ -80,7 +80,7 @@ const WalletPage = ({ user }) => {
             <h1 className="text-xl">{user?.point ?? 0} ₮</h1>
           </div>
         </div>
-        <div className="mt-5">
+        <div className="grid flex-col grid-cols-2 gap-2 mx-auto mt-5">
           <input
             placeholder="Шилжүүлэх хүний и-мэйл"
             className={mergeNames(STYLES.input)}
@@ -88,7 +88,6 @@ const WalletPage = ({ user }) => {
               setPoint((prev) => ({ ...prev, email: e.target.value }));
             }}
           />
-          <Box h={4} />
           <input
             placeholder="Дүн"
             className={mergeNames(STYLES.input)}
@@ -96,9 +95,9 @@ const WalletPage = ({ user }) => {
               setPoint((prev) => ({ ...prev, point: e.target.value }));
             }}
           />
-          <Box h={4} />
+
           <button
-            className={mergeNames(STYLES.blueButton, 'p-2')}
+            className={mergeNames(STYLES.blueButton, 'col-span-full p-2')}
             onClick={() => sendPoint()}
           >
             Шилжүүлэх
@@ -121,14 +120,14 @@ const WalletPage = ({ user }) => {
         {user?.pointHistory?.map((ph, i) => {
           return (
             <div className="flex flex-col w-full gap-3 mt-4" key={i}>
-              <div className="flex justify-between w-full">
-                <button className="mx-5 font-semibold text-gray-500">
+              <div className="grid w-full grid-cols-3">
+                <button className="mx-5 font-semibold text-left text-gray-500">
                   {ph.sender?.username}
                 </button>
                 <button className="mx-5 font-semibold text-gray-500">
                   {ph.receiver?.username}
                 </button>
-                <p className="font-bold text-blue-700">
+                <p className="font-bold text-right text-blue-700">
                   {ph.type == 'sender' ? '-' : '+'}
                   {ph.point}
                 </p>

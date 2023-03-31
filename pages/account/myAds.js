@@ -174,7 +174,6 @@ const MyAds = ({ user }) => {
                 duration: 5000,
                 isClosable: true,
               });
-              
             }
           });
       }
@@ -236,8 +235,8 @@ const MyAds = ({ user }) => {
         </div>
         <div className="flex flex-col justify-end">
           <Checkbox
-            colorScheme="green"
-            className="font-bold text-green-400 whitespace-nowrap"
+            colorScheme="cyan"
+            className="font-bold text-teal-400 whitespace-nowrap"
             onChange={(e) => {
               setChecker((prev) => ({ ...prev, create: e.target.checked }));
             }}
@@ -246,7 +245,8 @@ const MyAds = ({ user }) => {
             Нэмсэн зарууд
           </Checkbox>
           <Checkbox
-            className="font-bold text-primary whitespace-nowrap"
+            colorScheme="yellow"
+            className="font-bold text-yellow-400 whitespace-nowrap"
             isChecked={checker.pending}
             onChange={(e) => {
               setChecker((prev) => ({ ...prev, pending: e.target.checked }));
@@ -255,6 +255,7 @@ const MyAds = ({ user }) => {
             Хүлээгдэж байгаа
           </Checkbox>
           <Checkbox
+            colorScheme="red"
             className="font-bold text-red-400 whitespace-nowrap"
             isChecked={checker.deleted}
             onChange={(e) => {
@@ -266,7 +267,7 @@ const MyAds = ({ user }) => {
         </div>
       </div>
       <Alerting />
-      <div className="grid grid-cols-2 gap-5 mt-5 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-4 sm:grid-cols-3">
+      <div className="grid grid-cols-1 gap-5 mt-5 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 lg:grid-cols-2 md:grid-cols-1 ">
         {products?.ads?.map((item, key) => {
           return (
             <AdCard

@@ -105,7 +105,7 @@ const AdCardButton = ({ id, adId }) => {
   };
 
   const cardIcon = {
-    div: 'flex items-center justify-center transition-all duration-300 ease-in-out rounded-full bg-slate-200/40 group-a hover:bg-slate-200  shadow ',
+    div: 'flex items-center justify-center transition-all duration-300 ease-in-out rounded-full bg-slate-200/40 group-a hover:bg-slate-200  shadow-md',
     icon: 'md:p-2 p-[5px] h-7 w-7 md:w-8 md:h-8',
   };
 

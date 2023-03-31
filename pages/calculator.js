@@ -165,8 +165,8 @@ function ECalculator({ data }) {
       <Divider />
       <div
         className={mergeNames(
-          'grid-cols-1 gap-3 lg:grid-cols-2 lg:gap-10 transition-all duration-500',
-          expand ? 'grid' : 'hidden'
+          'grid-cols-1 gap-3 lg:grid-cols-2 overflow-hidden lg:gap-10 transition-all duration-500 ease-in-out',
+          expand ? 'grid h-auto' : 'grid h-0 '
         )}
       >
         <div>

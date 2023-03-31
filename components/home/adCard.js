@@ -38,7 +38,13 @@ function Card({
   return (
     // <Skeleton>
     <Skeleton isLoaded>
-      <div className="relative overflow-hidden rounded-md md:min-h-[350px] min-h-[300px]  shadow-md bg-zinc-200 group ">
+      <div
+        className={mergeNames(
+          'relative overflow-hidden rounded-md md:min-h-[350px] min-h-[300px]  shadow-md bg-zinc-200 group',
+          item?.adStatus == 'pending' && 'border-yellow-400/60 border-4 ',
+          item?.adStatus == 'deleted' && 'border-red-400 border-4'
+        )}
+      >
         {/* zarin zurag absolute  */}
         <div
           className="absolute top-0 bottom-0 left-0 right-0 z-0 w-full h-full cursor-pointer"
@@ -215,7 +221,7 @@ function Card({
           {item?.adStatus == 'pending' && (
             <p
               className={mergeNames(
-                'text-teal-300 px-3 rounded-md font-bold mx-auto'
+                'text-yellow-400 px-3 rounded-md font-bold mx-auto'
               )}
             >
               {/* {item.adStatus} */}
@@ -225,7 +231,7 @@ function Card({
           {item?.adStatus == 'deleted' && (
             <p
               className={mergeNames(
-                'text-teal-300 px-3 rounded-md font-bold mx-auto'
+                'text-red-400 px-3 rounded-md font-bold mx-auto'
               )}
             >
               {/* {item.adStatus} */}
