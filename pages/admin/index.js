@@ -12,6 +12,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { MdDelete } from 'react-icons/md';
 import { SiVerizon } from 'react-icons/si';
+import * as XLSX from 'xlsx';
 const Tab = ({ num, children }) => {
   const [activeTab, setActiveTab] = useState('');
   const handleClick = (event) => {
@@ -142,6 +143,12 @@ const Admin = ({ propAds }) => {
       });
     });
   };
+  const exportExcel = (data) => {
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+    XLSX.writeFile(workbook, 'Data.xlsx');
+  };
   const [content, setContent] = useState('');
   const [collapsedId, setCollapsed] = useState(false);
   const adStatusChecker = async () => {
@@ -178,6 +185,9 @@ const Admin = ({ propAds }) => {
             <Button onClick={() => deleteAd(a._id)}>delete</Button> */}
           {/* {content && <> {content} </>} */}
           <div className={mergeNames('flex flex-col gap-4 mt-5', brk)}>
+            {ads?.ads && (
+              <button onClick={() => exportExcel(ads.ads)}>excel</button>
+            )}
             <div className="flex w-full gap-4">
               <FilterAd
                 plc="Бүх төрөл"
