@@ -1,16 +1,16 @@
+import AdContent from '@/components/home/adContent';
 import CategorySelect from '@/components/home/categorySelect';
+import ProAdContent from '@/components/home/proAdContent';
 import SwiperHeader from '@/components/home/swiperHeader';
 import urls from '@/constants/api';
-import { useAuth } from '@/context/auth';
 import { ContainerX } from '@/lib/Container';
 import { useEffect, useState } from 'react';
 // import required modules
-import AdContent from '@/components/home/adContent';
-import ProAdContent from '@/components/home/proAdContent';
 
-export default function Home({ propAds }) {
+export default function Home({ defaultAds, specialAds }) {
   const [isLoading, setIsLoading] = useState(false);
-  const { setAds, ads } = useAuth();
+  const [ads, setAds] = useState();
+  const [sAds, setSAds] = useState();
 
   const [limitAd, setLimitAd] = useState(0);
 
@@ -25,12 +25,15 @@ export default function Home({ propAds }) {
   };
   useEffect(() => {
     setIsLoading(true);
-    if (typeof propAds === 'object' && propAds?.ads) {
-      setAds(propAds);
+    if (typeof defaultAds === 'object' && defaultAds?.ads) {
+      setAds(defaultAds);
+    }
+    if (typeof specialAds === 'object' && specialAds?.ads) {
+      setSAds(specialAds);
     }
 
     setIsLoading(false);
-  }, [propAds?.ads]);
+  }, [defaultAds, specialAds]);
 
   return (
     <>
@@ -40,24 +43,24 @@ export default function Home({ propAds }) {
       <ContainerX classname="py-6">
         {/* <Heading className="">Шинэ зарууд</Heading> */}
 
-        {ads && (
+         {sAds && (
           <ProAdContent
             title="Онцгой зар"
             data={{
-              ads: ads.ads.filter((a) => a.adType == 'special'),
-              limit: ads.ads.filter((a) => a.adType == 'special').length,
+              ads: sAds.ads,
+              limit: sAds.limit,
             }}
             showLink=""
             pg={false}
             inCat={false}
           />
         )}
-
+*
         {ads && (
           <AdContent
             data={{
-              ads: ads.ads.filter((a) => a.adType == 'default'),
-              limit: ads.ads.filter((a) => a.adType == 'default').length,
+              ads: ads.ads,
+              limit: ads.limit,
             }}
             showLink=""
             pg={false}
@@ -74,7 +77,7 @@ export async function getServerSideProps({ params, query }) {
     const res = await fetch(`${urls['test']}/ad/${0}`);
     const ads = await res.json();
     return {
-      props: { propAds: ads },
+      props: { defaultAds: ads.defaultAds, specialAds: ads.specialAds },
     };
   } catch (error) {
     console.error(error);

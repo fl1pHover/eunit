@@ -16,6 +16,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 
+import ProAdContent from '@/components/home/proAdContent';
 import { ContainerX } from '@/lib/Container';
 import SkeletonContent from '@/util/SkeletonContent';
 import {
@@ -29,10 +30,13 @@ import { useRouter } from 'next/router';
 import { useEffect, useMemo, useState } from 'react';
 import { useAuth } from '../../context/auth';
 
-const Category = ({ propAds }) => {
+const Category = ({ defaultAds, specialAds }) => {
   const router = useRouter();
-  const { categories, ads, setAds } = useAuth();
+  const [ads, setAds] = useState();
+  const [sAds, setSAds] = useState();
+  const { categories } = useAuth();
   const [category, setCategory] = useState();
+  const [isLoading, setIsLoading] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toLowerCase = (text) => {
     if (text) {
@@ -40,10 +44,13 @@ const Category = ({ propAds }) => {
     }
   };
   useEffect(() => {
-    if (propAds) setAds(propAds);
-  }, [propAds]);
+    setIsLoading(true);
+    if (defaultAds) setAds(defaultAds);
+    if (specialAds) setSAds(specialAds);
+    console.log(defaultAds);
+    setIsLoading(false);
+  }, [defaultAds, specialAds]);
 
-  const [isLoading, setIsLoading] = useState(false);
   const libraries = useMemo(() => ['places'], []);
   // const { categories, setAds } = useAuth();
   const [markerActive, setMarkerActive] = useState(null);
@@ -95,7 +102,20 @@ const Category = ({ propAds }) => {
 
           <Box className="max-w-[100%] w-full rounded-[5px]">
             {/* //TODO Engiin zar */}
-            {ads?.limit > 0 ? (
+            {sAds && (
+              <ProAdContent
+                data={sAds}
+                tlc={toLowerCase}
+                title={category ?? ''}
+                showLink="hidden"
+                inCat
+                func={getData}
+              />
+            )}
+          </Box>
+          <Box>
+            {/* //TODO Engiin zar */}
+            {ads && (
               <AdContent
                 data={ads}
                 tlc={toLowerCase}
@@ -104,7 +124,8 @@ const Category = ({ propAds }) => {
                 inCat
                 func={getData}
               />
-            ) : (
+            )}
+            {ads?.limit <= 0 && sAds?.limit <= 0 && (
               <ContainerX>
                 <div className="grid h-[80vh] text-2xl place-items-center">
                   Зар байхгүй байна
@@ -205,8 +226,6 @@ export async function getServerSideProps(ctx) {
   const res = await fetch(`${urls['test']}/ad/category/${slug}/${0}`);
   const ads = await res.json();
   return {
-    props: {
-      propAds: ads,
-    },
+    props: { defaultAds: ads.defaultAds, specialAds: ads.specialAds },
   };
 }

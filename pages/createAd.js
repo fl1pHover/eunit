@@ -147,7 +147,7 @@ export default function CreateAd({ categories }) {
     subCategory.steps[1].values = selectedFilters;
     f.append('location', JSON.stringify(map));
     f.append('types', types.sellType);
-    f.append('adType', types.adType);
+    f.append('adTypes', types.adType);
     f.append('subCategory', subCategory._id);
     f.append('category', categories[types.categoryId]._id);
     f.append('filters', JSON.stringify(copiedFilters));
@@ -156,6 +156,7 @@ export default function CreateAd({ categories }) {
     images?.map((prev) => {
       fImages.append('images', prev);
     });
+
     let ad;
     try {
       await axios

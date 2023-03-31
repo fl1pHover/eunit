@@ -1,10 +1,8 @@
-import React from "react";
-import CheckItem from "./checkItem";
-import Line from "@/components/createAd/formLine";
-import FormLabel from "@/components/createAd/formLabel";
-import ButtonSelectItem from "@/components/createAd/formButtonSelectItem";
+import ButtonSelectItem from '@/components/createAd/formButtonSelectItem';
+import FormLabel from '@/components/createAd/formLabel';
+import CheckItem from './checkItem';
 
-import { AdTypes } from "@/constants/enums";
+import { AdTypes } from '@/constants/enums';
 
 const FieldAdType = ({ types = {}, setTypes = () => {} }) => {
   return (
@@ -18,12 +16,12 @@ const FieldAdType = ({ types = {}, setTypes = () => {} }) => {
               key={key}
               isSelected={isSelected}
               text={AdTypes[type].name}
-              onClick={() =>
+              onClick={() => {
                 setTypes((prev) => ({
                   ...prev,
                   adType: type,
-                }))
-              }
+                }));
+              }}
               LeftItem={() => <CheckItem {...{ isSelected }} />}
             />
           );
