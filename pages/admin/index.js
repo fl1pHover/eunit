@@ -2,6 +2,7 @@ import EditAd from '@/components/ad/edit';
 import FilterAd from '@/components/Profile/filterAd';
 import urls from '@/constants/api';
 import { useAuth } from '@/context/auth';
+import { getJson } from '@/context/functions';
 import { brk, STYLES } from '@/styles/index';
 import mergeNames from '@/util/mergeNames';
 import { Checkbox, useToast } from '@chakra-ui/react';
@@ -144,10 +145,14 @@ const Admin = ({ propAds }) => {
     });
   };
   const exportExcel = (data) => {
-    const worksheet = XLSX.utils.json_to_sheet(data);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
-    XLSX.writeFile(workbook, 'Data.xlsx');
+    let { apartmentJson, officeJson } = getJson(data);
+    console.log(officeJson);
+    const apartmentSheet = XLSX.utils.json_to_sheet(apartmentJson);
+    const officeSheet = XLSX.utils.json_to_sheet(officeJson);
+    const realStateBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(realStateBook, apartmentSheet, 'Орон сууц');
+    XLSX.utils.book_append_sheet(realStateBook, officeSheet, 'Оффис');
+    XLSX.writeFile(realStateBook, 'Datas.xlsx');
   };
   const [content, setContent] = useState('');
   const [collapsedId, setCollapsed] = useState(false);
