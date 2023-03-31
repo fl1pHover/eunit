@@ -261,13 +261,14 @@ const Product = ({ propAds }) => {
             break;
         }
 
-        if (data?.subCategory?._id) {
+        if (sd?.subCategory?._id) {
           await axios
             .get(
-              `${urls['test']}/ad/suggesstion/${data.subCategory._id}/${id}/${type}/0`
+              `${urls['test']}/ad/filter/${sd.subCategory._id}/${id}/${type}/0`
             )
             .then((d) => {
               setsData([]);
+
               let ads = d.data?.ads?.filter((da) => da._id != sd._id);
               setsData({ ads, limit: sd.limit - 1 });
             });
@@ -281,7 +282,8 @@ const Product = ({ propAds }) => {
   const getData = async () => {
     setData(propAds);
     dummyData = propAds;
-    await getSuggestion(suggestion, propAds);
+
+    await getSuggestion(propAds?.subCategory?.suggessionType[0], propAds);
   };
   useEffect(() => {
     if (propAds) {
