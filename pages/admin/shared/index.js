@@ -10,6 +10,8 @@ import { useRouter } from 'next/router';
 import { Fragment } from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import { MdDelete, MdOutlineArrowDropDownCircle } from 'react-icons/md';
+import { SiVerizon } from 'react-icons/si';
 
 const SharedAd = ({ propAds, propAllAds }) => {
   const [ads, setAds] = useState([]);
@@ -429,7 +431,7 @@ const SharedAd = ({ propAds, propAllAds }) => {
                               <MdDelete />
                             </div>
 
-                            <EditAd
+                            {/* <EditAd
                               setData={setAds}
                               ads={ads}
                               data={a}
@@ -448,7 +450,7 @@ const SharedAd = ({ propAds, propAllAds }) => {
                               }}
                             >
                               <BiEdit />
-                            </EditAd>
+                            </EditAd> */}
                           </div>
                         </div>
                       </td>
