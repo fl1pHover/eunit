@@ -20,6 +20,8 @@ import { BsGrid } from 'react-icons/bs';
 import { CgProfile } from 'react-icons/cg';
 import { FiHeart } from 'react-icons/fi';
 import { IoWalletOutline } from 'react-icons/io5';
+import CustomModal from '@/util/CustomModal';
+import Feedback from '@/util/Feedback';
 
 const drawerItem = [
   {
@@ -105,6 +107,7 @@ const BodyDrawer = () => {
         <div className="flex flex-col space-y-2 ">
           <button className="py-2 font-semibold border-2 border-gray-200 rounded-md">
             Санал хүсэлт
+            <Feedback />
           </button>
           <button
             onClick={logout}
