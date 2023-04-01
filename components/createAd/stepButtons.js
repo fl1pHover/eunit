@@ -85,7 +85,7 @@ const StepButtons = ({
             onclick={onNext}
             btnClose={<LoadingButton text="Илгээх" isLoading={loading} />}
             btnClose2="Буцах"
-            header="Баталгаажуулах хэсэг"
+            header="Нэгтгэсэн мэдээлэл"
           >
             <Box maxWidth={'100%'} flex="0 0 100%" borderRadius="5px">
               <div className="flex flex-col w-full p-3 shadow-md gap-7 bg-bgGrey md:p-10 rounded-xl">
@@ -113,6 +113,8 @@ const StepButtons = ({
                   {generalData?.images ? (
                     <ImageGallery
                       thumbnailPosition="left"
+                      showNav={false}
+                      showFullscreenButton={false}
                       items={generalData?.images.map((i) => ({
                         original: i,
                         thumbnail: i,

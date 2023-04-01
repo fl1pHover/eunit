@@ -368,12 +368,24 @@ const SharedAd = ({ propAds, propAllAds }) => {
                       <td className="w-[30px]">{a.num}</td>
                       <td className="truncate ...">
                         {/* {a.title} */}
-                        <button
+                        {/* <button
                           className={mergeNames(STYLES.blueButton)}
                           onClick={() => router.push(`/product/${a.num}`)}
                         >
                           Орох
-                        </button>
+                        </button> */}
+                        <Button
+                          as="a"
+                          className={mergeNames(
+                            STYLES.blueButton,
+                            'text-sm h-[30px]'
+                          )}
+                          target="_blank"
+                          href={`/product/${a.num}`}
+                          // onClick={() => router.push(`/product/${a.num}`)}
+                        >
+                          <a target="_blank">Орох</a>
+                        </Button>
                       </td>
                       <td className="truncate ...">{a.description}</td>
                       <td>{a.adType}</td>
