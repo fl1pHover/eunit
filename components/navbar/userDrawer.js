@@ -105,10 +105,7 @@ const BodyDrawer = () => {
         </div>
         <div className="w-full h-[1px] mt-[100px] mb-4 bg-gray-200 inline-block" />
         <div className="flex flex-col space-y-2 ">
-          <button className="py-2 font-semibold border-2 border-gray-200 rounded-md">
-            Санал хүсэлт
-            <Feedback />
-          </button>
+          <Feedback />
           <button
             onClick={logout}
             className="py-2 font-semibold text-white rounded-md bg-mainBlossom hover:bg-red-500 "

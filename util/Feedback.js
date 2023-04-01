@@ -18,20 +18,13 @@ const Feedback = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [count, setCount] = useState(0);
   return (
-    // <CustomModal
-    //   isOpen={isOpen}
-    //   onClose={onClose}
-    //   onOpen={onOpen}
-    //   btnOpen={<>Дараах</>}
-    //   btnClose={'asd'}
-    //   btnClose2="Буцах"
-    //   header="Баталгаажуулах хэсэг"
-    //   btnOpen="Санал хүсэлт"
-    // >
-    //   Feedback
-    // </CustomModal>
     <>
-      <button onClick={onOpen}>Open Modal</button>
+      <button
+        className="py-2 font-semibold border-2 border-gray-200 rounded-md"
+        onClick={onOpen}
+      >
+        Санал хүсэлт
+      </button>
 
       <Modal size={'lg'} onClose={onClose} isOpen={isOpen} isCentered>
         <ModalOverlay />
