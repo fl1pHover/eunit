@@ -1,6 +1,7 @@
 import AdCard from '@/components/home/adCard';
 import FilterAd from '@/components/Profile/filterAd';
 import urls from '@/constants/api';
+import { stopPropagation } from '@/context/functions';
 import { brk, STYLES } from '@/styles/index';
 import Alerting from '@/util/Alert';
 import mergeNames from '@/util/mergeNames';
@@ -275,12 +276,14 @@ const MyAds = ({ user }) => {
               data={products}
               admin={true}
               key={key}
-              changeAd={() => {
+              changeAd={(e) => {
+                stopPropagation(e);
                 changeAdType(item._id);
               }}
               item={item || {}}
               isDelete={true}
-              deleteFunc={() => {
+              deleteFunc={(e) => {
+                stopPropagation(e);
                 if (item.adStatus == 'deleted') {
                   restoreAd(item._id);
                 } else {

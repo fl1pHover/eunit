@@ -1,8 +1,8 @@
 import urls from '@/constants/api';
 import { getCookie } from 'cookies-next';
 
-const Admin = ({ propAds }) => {};
-export default Admin;
+const Request = ({ propAds }) => {};
+export default Request;
 
 export async function getServerSideProps({ req, res }) {
   const token = getCookie('token', { req, res });
@@ -16,7 +16,7 @@ export async function getServerSideProps({ req, res }) {
       });
       const user = await response.json();
       // const adRes = await
-      if (user?.userType == 'admin' || user?.userType == 'system') {
+      if (user?.userType == 'Request' || user?.userType == 'system') {
         return {
           redirect: {
             destination: '/admin/request/realState',

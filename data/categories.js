@@ -11,7 +11,7 @@ export const categories = [
     categoryName: 'Үл хөдлөх',
     icon: ({ size, className = '' }) => <BsBuilding {...{ size, className }} />,
     id: 'realState',
-    itemCount: '105',
+
     submenu: [
       {
         category: 'Орон сууц',
@@ -54,7 +54,7 @@ export const categories = [
     ),
     categoryName: 'Тээврийн хэрэгсэл',
     id: 'vehicle',
-    itemCount: '105',
+
     submenu: [
       {
         category: 'Автомашин',
@@ -75,7 +75,7 @@ export const categories = [
     icon: ({ size, className = '' }) => <MdComputer {...{ size, className }} />,
     categoryName: 'Компьютер',
     id: 'computer',
-    itemCount: '105',
+
     submenu: [
       {
         category: 'Суурин компьютер',
@@ -94,7 +94,7 @@ export const categories = [
     ),
     categoryName: 'Гар утас',
     id: 'phone',
-    itemCount: '105',
+
     submenu: [
       {
         category: 'Ухаалаг утас',
@@ -105,7 +105,7 @@ export const categories = [
         href: 'tab',
       },
       {
-        category: 'дагалдах хэрэгсэл',
+        category: 'Дагалдах хэрэгсэл',
         href: 'accessories',
       },
     ],
@@ -117,10 +117,10 @@ export const categories = [
     ),
     categoryName: 'Цахилгаан бараа',
     id: 'electronic',
-    itemCount: '105',
+
     submenu: [
       {
-        category: 'дагалдах хэрэгсэл',
+        category: 'Дагалдах хэрэгсэл',
         href: 'accessories',
       },
     ],
@@ -133,10 +133,10 @@ export const categories = [
 
     categoryName: 'Гэр ахуйн бараа',
     id: 'household-items',
-    itemCount: '105',
+
     submenu: [
       {
-        category: 'дагалдах хэрэгсэл',
+        category: 'Дагалдах хэрэгсэл',
         href: 'accessories',
       },
     ],

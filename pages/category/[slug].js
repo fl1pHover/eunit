@@ -97,7 +97,12 @@ const Category = ({ defaultAds, specialAds }) => {
         <div className="relative flex flex-col gap-3 p-2">
           {/* //TODO Filter Box */}
           {router.query?.slug && (
-            <FilterLayout data={router.query.slug} isOpenMap={onOpen} />
+            <FilterLayout
+              setDefaultAds={setAds}
+              setSpecialAds={setSAds}
+              data={router.query.slug}
+              isOpenMap={onOpen}
+            />
           )}
 
           <Box className="max-w-[100%] w-full rounded-[5px]">

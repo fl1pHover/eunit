@@ -5,6 +5,8 @@ import { FiUploadCloud } from 'react-icons/fi';
 import { AtomLabel } from './atom';
 
 const FieldPhotoUpload = ({
+  label,
+
   generalData = {},
   setImages = () => {},
   images = [],
@@ -62,11 +64,11 @@ const FieldPhotoUpload = ({
 
   return (
     <div className="">
-      <AtomLabel>Зураг оруулах</AtomLabel>
+      <AtomLabel>{label ? label : 'Зураг оруулах'}</AtomLabel>
       <>
         <input
           type="file"
-          accept="image/*"
+          accept={'image/*'}
           ref={hiddenFileInput}
           style={{ display: 'none' }}
           multiple

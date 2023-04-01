@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BiArea, BiDoorOpen } from 'react-icons/bi';
 
 import { IoBedOutline } from 'react-icons/io5';
@@ -20,6 +20,7 @@ import { AiFillEdit } from 'react-icons/ai';
 import { BsThreeDots } from 'react-icons/bs';
 import EditAd from '../ad/edit';
 import AdCardButton from './adCardButton';
+import { stopPropagation } from '@/context/functions';
 
 function Card({
   item,
@@ -35,32 +36,41 @@ function Card({
 
   const token = getCookie('token');
   const [drop, setDrop] = useState(false);
+  const [btn, setBtn] = useState('');
+
+  const pushRouter = async () => {
+    if (user) {
+      item?._id &&
+        (await axios
+          .get(`${urls['test']}/ad/view/${item.num}/${JSON.parse(user)._id}`)
+          .then((d) => router.push(`/product/${item.num}`)));
+    } else {
+      item?._id && router.push(`/product/${item.num}`);
+    }
+  };
+  useEffect(() => {
+    if (btn) router.push(btn);
+  }, [btn]);
   return (
     // <Skeleton>
     <Skeleton isLoaded>
       <div
         className={mergeNames(
           'relative overflow-hidden rounded-md md:min-h-[350px] min-h-[300px]  shadow-md bg-zinc-200 group',
-          item?.adStatus == 'pending' && 'border-yellow-400/60 border-4 ',
-          item?.adStatus == 'deleted' && 'border-red-400 border-4'
+          isDelete &&
+            item?.adStatus == 'pending' &&
+            ' border-yellow-400/60 border-4 ',
+          isDelete &&
+            item?.adStatus == 'created' &&
+            'border-teal-400/60 border-4 ',
+          isDelete && item?.adStatus == 'deleted' && 'border-red-400 border-4'
         )}
       >
         {/* zarin zurag absolute  */}
         <div
           className="absolute top-0 bottom-0 left-0 right-0 z-0 w-full h-full cursor-pointer"
-          onClick={async () => {
-            if (user) {
-              item?._id &&
-                (await axios
-                  .get(
-                    `${urls['test']}/ad/view/${item.num}/${
-                      JSON.parse(user)._id
-                    }`
-                  )
-                  .then((d) => router.push(`/product/${item.num}`)));
-            } else {
-              item?._id && router.push(`/product/${item.num}`);
-            }
+          onClick={() => {
+            pushRouter();
           }}
         >
           {item?.images && (
@@ -79,16 +89,26 @@ function Card({
           <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-slate-700/0 via-slate-700/30 to-slate-900/100"></div>
         </div>
         {/* Zariin body  */}
-        <div className="relative flex items-start justify-between flex-1 w-full h-full px-3 py-2">
+        <div
+          className="relative flex items-start justify-between flex-1 w-full h-full px-3 py-2 cursor-pointer"
+          onClick={() => {
+            pushRouter();
+          }}
+        >
           <Tip lbl="Зарын эзэн">
-            <button className="relative overflow-hidden rounded-full w-9 h-9 bg-mainBlossom">
+            <button
+              className="relative overflow-hidden rounded-full w-9 h-9 bg-mainBlossom"
+              onClick={(e) => {
+                stopPropagation(e);
+                router.push(`/account/${item.user._id}`);
+              }}
+            >
               <Image
                 src={item?.user?.profileImg ?? '/images/logo/bom-white.png'}
                 alt="BOM logo"
                 objectFit="cover"
                 layout="fill"
                 className={mergeNames(item?.user?.profileImg ? '' : ' p-2')}
-                onClick={() => router.push(`/account/${item.user}`)}
               />
             </button>
           </Tip>
@@ -116,7 +136,8 @@ function Card({
                   setData={setData}
                   admin={admin}
                   data={item}
-                  onNext={async () => {
+                  onNext={async (e) => {
+                    stopPropagation(e);
                     await axios
                       .put(`${urls['test']}/ad/${item._id}`, item, {
                         headers: {
@@ -170,7 +191,10 @@ function Card({
         </div>
 
         {/* Zariin info  */}
-        <div className="absolute bottom-0 left-0 flex flex-col justify-end w-full p-2 mb-2 space-y-2 ">
+        <div
+          className="absolute bottom-0 left-0 flex flex-col justify-end w-full p-2 mb-2 space-y-2 cursor-pointer"
+          onClick={() => pushRouter()}
+        >
           <div className="flex items-center justify-between gap-4 text-sm text-white font-md">
             <p className={mergeNames('font-bold text-xl')}>
               {currency(
@@ -190,7 +214,11 @@ function Card({
               title={item.title}
               description={item.positions?.location_id ?? ''}
             />
-            <AdCardButton id={item?.num} adId={item?._id} />
+            <AdCardButton
+              id={item?.num}
+              stopPropagation={stopPropagation}
+              adId={item?._id}
+            />
           </div>
           <div className="flex items-center justify-between gap-4 text-sm text-white font-md">
             <p className={mergeNames('font-semibold text-white mt-0')}>

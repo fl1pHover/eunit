@@ -289,8 +289,8 @@ const Product = ({ propAds }) => {
     if (propAds) {
       setGeneralData((prev) => ({
         ...prev,
-        imgSelected: propAds.image ? true : false,
-        images: [...propAds.images],
+        imgSelected: propAds?.images[0] ? true : false,
+        images: [...propAds?.images],
       }));
       setImages(propAds.images ?? []);
       getData();

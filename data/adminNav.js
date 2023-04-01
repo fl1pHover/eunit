@@ -8,31 +8,47 @@ import { RiHomeSmile2Line } from 'react-icons/ri';
 export const adminNav = [
   {
     tabName: 'Хүсэлт өгсөн зарууд',
-    id: 'reqAd',
+    id: 'request',
 
     submenu: [
       {
-        tab: 'Агент',
-        href: 'agent',
+        tab: 'Үл хөдлөх',
+        href: 'request/realState',
       },
       {
-        tab: 'Байгууллага',
-        href: 'organization',
+        tab: 'Тээврийн хэрэгсэл',
+        href: 'request/vehicle',
+      },
+      {
+        tab: 'Компьютер',
+        href: 'request/computer',
+      },
+      {
+        tab: 'Цахилгаан бараа',
+        href: 'request/electronic',
+      },
+      {
+        tab: 'Гэр ахуйн бараа',
+        href: 'request/household-items',
       },
     ],
   },
   {
     tabName: 'Агент байгууллагын хүсэлт',
-    id: 'req',
+    id: 'users',
 
     submenu: [
       {
         tab: 'Агент',
-        href: 'agent',
+        href: 'users/agent',
       },
       {
         tab: 'Байгууллага',
-        href: 'organization',
+        href: 'users/organization',
+      },
+      {
+        tab: 'Энгийн',
+        href: 'users/default',
       },
     ],
   },
@@ -43,7 +59,7 @@ export const adminNav = [
 
   {
     tabName: 'Хуваалцсан зар',
-    id: 'shareAd',
+    id: 'shared',
   },
   {
     tabName: 'Санал хүсэлт',

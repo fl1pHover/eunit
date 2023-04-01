@@ -1,8 +1,8 @@
 import urls from '@/constants/api';
 import { getCookie } from 'cookies-next';
 
-const Admin = ({ propAds }) => {};
-export default Admin;
+const Feedback = ({ propAds }) => {};
+export default Feedback;
 
 export async function getServerSideProps({ req, res }) {
   const token = getCookie('token', { req, res });
@@ -17,10 +17,15 @@ export async function getServerSideProps({ req, res }) {
       const user = await response.json();
       // const adRes = await
       if (user?.userType == 'admin' || user?.userType == 'system') {
+        const ads = await fetch(`${urls['test']}/user/feedback/`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const adsJson = await ads.json();
         return {
-          redirect: {
-            destination: '/admin/request/realState',
-            permanent: false,
+          props: {
+            propAds: adsJson,
           },
         };
       } else {

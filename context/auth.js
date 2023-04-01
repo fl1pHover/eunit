@@ -54,22 +54,40 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     const token = getCookie('token');
-
+    email = email.toLowerCase();
     if (!token) {
       setLoading(true);
       try {
         const { data: data } = await axios.post(`${urls['test']}/auth/login`, {
-          email,
+          email: email,
           password,
         });
 
-        if (!data) {
-          toast({
-            title: 'И-майл хаяг эсвэл нууц үг буруу байна',
-            status: 'warning',
-            duration: 3000,
-            isClosable: true,
-          });
+        if (!data?.status) {
+          if (data.message == 'banned') {
+            toast({
+              title: 'Бандуулсан байна',
+              status: 'warning',
+              duration: 3000,
+              isClosable: true,
+            });
+          }
+          if (data.message == 'password not match') {
+            toast({
+              title: 'Нууц үг буруу байна',
+              status: 'warning',
+              duration: 3000,
+              isClosable: true,
+            });
+          }
+          if (data.message == 'not found user') {
+            toast({
+              title: 'И-майл хаяг буруу байна',
+              status: 'warning',
+              duration: 3000,
+              isClosable: true,
+            });
+          }
         } else {
           if (data?.token && data.user.status == 'active') {
             setCookie('token', data.token);
@@ -104,7 +122,7 @@ export const AuthProvider = ({ children }) => {
   };
   const signup = async (email, password, username, phone) => {
     const token = getCookie('token');
-
+    email = email.toLowerCase();
     if (!token) {
       setLoading(true);
       try {

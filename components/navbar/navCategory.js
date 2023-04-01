@@ -18,7 +18,7 @@ const NavCategory = () => {
   return (
     <>
       {categories?.map(
-        ({ image, categoryName, id, itemCount, submenu }, key) => {
+        ({ image, categoryName, id, submenu }, key) => {
           return (
             <div
               key={key}

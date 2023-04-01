@@ -12,7 +12,6 @@ import {
   Input,
   Radio,
   RadioGroup,
-  Select,
   Text,
   useDisclosure,
   VStack,
@@ -21,7 +20,7 @@ import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import urls from '../../constants/api';
 import { useAuth } from '../../context/auth';
-// import Select from '@/lib/Select';
+import Select from '@/lib/Select';
 import { categories } from '@/data/categories';
 import { STYLES } from '@/styles/index';
 import mergeNames from '@/util/mergeNames';
@@ -29,7 +28,7 @@ import { useRouter } from 'next/router';
 import { MdFilterList } from 'react-icons/md';
 import FilterStack from '../../util/filterStack';
 
-const FilterLayout = ({ data, isOpenMap }) => {
+const FilterLayout = ({ data, isOpenMap, setDefaultAds, setSpecialAds }) => {
   const { setAds } = useAuth();
   const [subCategory, setSubCategory] = useState();
   const router = useRouter();
@@ -37,6 +36,7 @@ const FilterLayout = ({ data, isOpenMap }) => {
   const [adType, setAdType] = useState([0]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef();
+  const [selectedParent, setSelectedParent] = useState([]);
   const getItems = async (data) => {
     try {
       await axios
@@ -80,7 +80,8 @@ const FilterLayout = ({ data, isOpenMap }) => {
             subCategory: subCategory._id,
           })
           .then((d) => {
-            setAds(d.data);
+            setDefaultAds(d.data?.ads?.filter((f) => f.adType == 'default'));
+            setSpecialAds(d.data?.ads?.filter((f) => f.adType == 'special'));
             console.log(d.data);
           });
       } catch (error) {
@@ -209,24 +210,80 @@ const FilterLayout = ({ data, isOpenMap }) => {
                       <Input
                         type="number"
                         placeholder="Доод"
-                        className="border-b rounded-full lue-400 border-1"
+                        className="border-blue-400 rounded-full lue-400 border-1"
                         onChange={(e) => (f.input = e.target.value)}
                       />
                       <Text>-</Text>
                       <Input
                         type="number"
                         placeholder="Дээд"
-                        className="border-b rounded-full lue-400 border-1 focus:outline-none"
+                        className="border-blue-400 rounded-full lue-400 border-1 focus:outline-none"
                         onChange={(e) => (f.max = e.target.value)}
                       />
                     </Flex>
                   </VStack>
                 ) : (
                   <Select
+                    requirement={false}
+                    label={f.name}
+                    width="large"
+                    data={
+                      selectedParent.find((d) => d.parent == f.parentId) !=
+                      undefined
+                        ? f.value.filter((fv) => {
+                            let parent = selectedParent.find(
+                              (s) =>
+                                (s.id == fv.parentId &&
+                                  fv.parent == s.parent) ||
+                                fv.id == 'other'
+                            );
+                            if (parent != undefined) return fv;
+                          })
+                        : f.value
+                    }
                     key={i}
+                    Item={({ data, onClick, id, ...props }) => {
+                      return (
+                        <button
+                          {...props}
+                          onClick={() => {
+                            f.input = data;
+                            let isNull = selectedParent.findIndex(
+                              (s) => s.parent == f.type
+                            );
+
+                            if (isNull > -1) {
+                              let selectedArr = [...selectedParent];
+
+                              selectedArr[isNull] = {
+                                id,
+                                parent: f.type,
+                                name: f.name,
+                                input: data,
+                                index: i,
+                              };
+                              setSelectedParent(selectedArr);
+                            } else {
+                              setSelectedParent([
+                                ...selectedParent,
+                                {
+                                  id: id,
+                                  parent: f.type,
+                                  index: i,
+                                  input: data,
+                                  name: f.name,
+                                },
+                              ]);
+                            }
+                            onClick();
+                          }}
+                        >
+                          {data}
+                          {props.children}
+                        </button>
+                      );
+                    }}
                     placeholder={f.name}
-                    className="border-b rounded-full lue-400 border-1"
-                    onChange={(e) => (f.input = e.target.value)}
                   >
                     {f.value.map((item, i) => {
                       return (

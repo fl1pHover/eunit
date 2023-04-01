@@ -9,7 +9,7 @@ import axios from 'axios';
 import { getCookie, setCookie } from 'cookies-next';
 import { useRouter } from 'next/router';
 import { BiGitCompare } from 'react-icons/bi';
-const AdCardButton = ({ id, adId }) => {
+const AdCardButton = ({ id, adId, stopPropagation }) => {
   const { compareAds, setCompareAds } = useAuth();
   const toast = useToast();
   const [isLiked, setIsLiked] = React.useState(false);
@@ -114,7 +114,8 @@ const AdCardButton = ({ id, adId }) => {
       <Tooltip label="Хадгалах">
         <button
           className={mergeNames(cardIcon.div)}
-          onClick={() => {
+          onClick={(e) => {
+            stopPropagation(e);
             addToBookmark();
           }}
         >
@@ -136,7 +137,10 @@ const AdCardButton = ({ id, adId }) => {
       <Tooltip label="Харьцуулах">
         <button
           className={mergeNames(cardIcon.div)}
-          onClick={() => getCompareAd()}
+          onClick={(e) => {
+            stopPropagation(e);
+            getCompareAd();
+          }}
         >
           <BiGitCompare
             className={mergeNames('text-blue-700', cardIcon.icon)}

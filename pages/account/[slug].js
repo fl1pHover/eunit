@@ -126,14 +126,14 @@ const Socials = ({ propUser }) => {
     },
     {
       name: 'telegram',
-      url: propUser?.socials[2]?.url ?? 'https://www.telegram.org/',
+      url: propUser?.socials[2]?.url ?? '',
     },
   ]);
 
   return (
     <div className="flex flex-row justify-center gap-2 sm:justify-start md:gap-5 ">
       {socials?.map((s, i) => {
-        return (
+        return s.url != '' ? (
           <Link href={s.url} key={i}>
             <a
               target="_blank"
@@ -157,6 +157,8 @@ const Socials = ({ propUser }) => {
               </p>
             </a>
           </Link>
+        ) : (
+          <></>
         );
       })}
     </div>
