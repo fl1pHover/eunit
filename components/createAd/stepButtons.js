@@ -23,6 +23,7 @@ const StepButtons = ({
   onPrev = () => {},
   loading = false,
   onNext = () => {},
+  sharing = false,
   data,
   generalData,
   txt = 'Дараах',
@@ -72,7 +73,7 @@ const StepButtons = ({
           Буцах
         </button>
 
-        {step == 2 ? (
+        {(step == 2 )? (
           <CustomModal
             isOpen={isOpen}
             onClose={onClose}

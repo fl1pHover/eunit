@@ -1,5 +1,6 @@
 import urls from '@/constants/api';
 import { useAuth } from '@/context/auth';
+import { createAdNav } from '@/data/adminNav';
 import { NavContainer } from '@/lib/Container';
 import { STYLES } from '@/styles/index';
 import mergeNames from '@/util/mergeNames';
@@ -9,7 +10,7 @@ import { getCookie } from 'cookies-next';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import { HiOutlineSearch } from 'react-icons/hi';
 import { MdOutlineClear } from 'react-icons/md';
 import { UserIcon, WhiteHeartIcon } from './icons';
@@ -21,8 +22,15 @@ const Bottom = ({ sticky }) => {
   const router = useRouter();
   const token = getCookie('token');
   // Visible start
+  const [isHoveringId, setIsHoveringId] = useState(true);
   const [activeSearch, setActiveSearch] = useState(false);
+  const handleMouseOver = (id) => {
+    setIsHoveringId(id);
+  };
 
+  const handleMouseOut = () => {
+    setIsHoveringId(false);
+  };
   // Visible end
 
   // Search start
@@ -73,20 +81,68 @@ const Bottom = ({ sticky }) => {
               <HiOutlineSearch />
             </button>
 
-            <WhiteHeartIcon onClick={() => router.push('/account?tab=Bookmark')} />
+            <WhiteHeartIcon
+              onClick={() => router.push('/account?tab=Bookmark')}
+            />
 
             {user == undefined || !token ? (
               <UserIcon text="Нэвтрэх" onClick={() => router.push('/login')} />
             ) : (
               <UserDrawer />
             )}
-
-            <Link href={'/createAd'}>
+            {createAdNav?.map(({ tabName, id, submenu }, key) => {
+              return (
+                <div
+                  key={key}
+                  onMouseOver={() => handleMouseOver(id)}
+                  onMouseOut={handleMouseOut}
+                  className={mergeNames(
+                    'hover:bg-blue-900 transition-colors ease-in-out'
+                  )}
+                >
+                  <div className="h-full">
+                    <div className="flex flex-col justify-center h-full px-2 py-4 lg:py-3 lg:px-4">
+                      <Link href={`/${id}`}>
+                        <a className="text-[11px] font-medium text-center h-full text-white lg:text-[13px]">
+                          {tabName}
+                        </a>
+                      </Link>
+                    </div>
+                  </div>
+                  <div className="absolute  w-auto  flex flex-col overflow-hidden justify-center bg-blue-900/[96]">
+                    {submenu &&
+                      isHoveringId &&
+                      isHoveringId === id &&
+                      submenu.map(({ tab, href }, subkey) => {
+                        return (
+                          <Fragment key={subkey}>
+                            <Link href={`/${href}`}>
+                              <a
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                className={mergeNames(
+                                  'px-2 lg:px-4 py-3 text-[10px] lg:text-sm font-medium text-white transition-colors ease-in cursor-pointer bg-blue-900/[96] hover:bg-blue-700 first-letter:uppercase whitespace-nowrap z-30',
+                                  subkey === submenu.length - 1
+                                    ? ''
+                                    : 'border-r border-blue-900/[96]'
+                                )}
+                              >
+                                <p>{tab}</p>
+                              </a>
+                            </Link>
+                          </Fragment>
+                        );
+                      })}
+                  </div>
+                </div>
+              );
+            })}
+            {/* <Link href={'/createAd'}>
               <button className="px-4 py-1 ml-2 text-sm font-semibold transition-all bg-teal-700 rounded-lg hover:scale-105">
-                <p>Зар нэмэх</p>
-                {/* <BiPlusCircle className="hidden lg:block" /> */}
+                <p>Зар нэмх</p>
+
               </button>
-            </Link>
+            </Link> */}
           </div>
         </div>
 

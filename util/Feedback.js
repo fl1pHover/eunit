@@ -1,5 +1,4 @@
-import React from 'react';
-import CustomModal from './CustomModal';
+import urls from '@/constants/api';
 import {
   Modal,
   ModalBody,
@@ -9,14 +8,54 @@ import {
   ModalHeader,
   ModalOverlay,
   useDisclosure,
+  useToast,
 } from '@chakra-ui/react';
-import mergeNames from './mergeNames';
-import { STYLES } from '../styles';
+import axios from 'axios';
+import { getCookie } from 'cookies-next';
 import { useState } from 'react';
+import { STYLES } from '../styles';
+import mergeNames from './mergeNames';
 
 const Feedback = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [count, setCount] = useState(0);
+  const [feedback, setFeedback] = useState({
+    title: '',
+    message: '',
+  });
+  const token = getCookie('token');
+  const toast = useToast();
+  const sendFeedback = async () => {
+    if (token) {
+      try {
+        await axios
+          .post(
+            `${urls['test']}/user/feedback`,
+            {
+              message: feedback.message,
+              title: feedback.title,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                'Access-Control-Allow-Headers': '*',
+              },
+            }
+          )
+          .then((d) => {
+            toast({
+              title: 'Баярлалаа',
+              duration: 3000,
+              isClosable: true,
+              status: 'success',
+            });
+            onClose();
+          });
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
   return (
     <>
       <button
@@ -32,8 +71,18 @@ const Feedback = () => {
           <ModalHeader>Санал хүсэлт</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <div className="grid grid-cols-2 gap-2">
-              <div className="flex flex-col gap-1">
+            <div className="grid grid-cols-2 gap-2 ">
+              <div className="flex flex-col gap-1 col-span-full">
+                <h1>Гарчиг</h1>
+                <input
+                  type="text"
+                  className={mergeNames(STYLES.input, 'rounded-md')}
+                  onChange={(e) => {
+                    setFeedback((prev) => ({ ...prev, title: e.target.value }));
+                  }}
+                />
+              </div>
+              {/* <div className="flex flex-col gap-1">
                 <h1>Нэр</h1>
                 <input
                   type="text"
@@ -51,12 +100,18 @@ const Feedback = () => {
                 <p className="text-xs text-red-400">
                   {count != 0 && 'Утасны дугаар буруу байна'}
                 </p>
-              </div>
+              </div> */}
               <div className="flex flex-col gap-1 col-span-full">
                 <h1>Дэлгэрэнгүй</h1>
                 <textarea
                   type="text"
                   className={mergeNames(STYLES.input, 'rounded-md ')}
+                  onChange={(e) =>
+                    setFeedback((prev) => ({
+                      ...prev,
+                      message: e.target.value,
+                    }))
+                  }
                 />
               </div>
             </div>
@@ -72,6 +127,7 @@ const Feedback = () => {
             </button>
             <button
               className={mergeNames(STYLES.blueButton, 'p-2 px-3 rounded-md')}
+              onClick={() => sendFeedback()}
             >
               Илгээх
             </button>

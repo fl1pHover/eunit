@@ -1,30 +1,27 @@
 import urls from '@/constants/api';
-import { STYLES, brk } from '@/styles/index';
+import { STYLES } from '@/styles/index';
 import mergeNames from '@/util/mergeNames';
-import { useToast } from '@chakra-ui/react';
+import { Link, useToast } from '@chakra-ui/react';
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
-import { Button, Checkbox } from 'flowbite-react';
+import { Button } from 'flowbite-react';
+import NextLink from 'next/link';
 import { useRouter } from 'next/router';
-import { Fragment } from 'react';
-import { useEffect } from 'react';
-import { useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { BiEdit } from 'react-icons/bi';
 import { MdDelete, MdOutlineArrowDropDownCircle } from 'react-icons/md';
 import { SiVerizon } from 'react-icons/si';
 
-const UsersRequest = ({ users }) => {
+const UserRequest = ({ users }) => {
   const [user, setUser] = useState([]);
 
   const token = getCookie('token');
-  const [data, setData] = useState({});
-  const [checker, setChecker] = useState(false);
   const [num, setNum] = useState(0);
   const toast = useToast();
   const router = useRouter();
   let dummy = [];
   const getData = async () => {
-    fetch(`${urls['test']}/ad/admin/all/${num}`, {
+    fetch(`${urls['test']}/user`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -32,28 +29,35 @@ const UsersRequest = ({ users }) => {
   };
 
   useEffect(() => {
-    if (router.query.slug) {
-      setUser(users.filter((u) => u.userType == router.query.slug));
+    if (router?.query?.slug == 'organization') {
+      setUser(users.filter((u) => u.userType == 'organization'));
     }
-  }, [users, router]);
-  useEffect(() => {
-    adStatusChecker();
-  }, [checker]);
+    if (router?.query?.slug == 'agent') {
+      setUser(users.filter((u) => u.userType == 'agent'));
+    }
+    if (router?.query?.slug == 'default') {
+      setUser(users.filter((u) => u.userType == 'default'));
+    }
+  }, [users, router?.query?.slug]);
   useEffect(() => {
     getData();
   }, [num]);
-  const verify = async (id) => {
+  const verifyUser = async (id) => {
     try {
       await axios
-        .get(`${urls['test']}/ad/update/${id}/created`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Access-Control-Allow-Headers': '*',
-          },
-        })
+        .get(
+          `${urls['test']}/user/update/${id}/active/{message}?message=${''}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Access-Control-Allow-Headers': '*',
+              charset: 'UTF-8',
+            },
+          }
+        )
         .then((d) => {
           toast({
-            title: `${d?.data?.num ?? ''} Зарыг нэмлээ.`,
+            title: `Хэрэглэгчийг зөвшөөрлөө`,
             status: 'success',
             duration: 3000,
             isClosable: true,
@@ -63,67 +67,59 @@ const UsersRequest = ({ users }) => {
       console.error(error);
     }
   };
-  const deleteAd = async (id) => {
-    await fetch(`${urls['test']}/ad/update/${id}/deleted`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Access-Control-Allow-Headers': '*',
-      },
-    }).then((d) => {
-      toast({
-        title: `${d?.data?.num ?? ''} Зарыг устгалаа.`,
-        status: 'warning',
-        duration: 3000,
-        isClosable: true,
-      });
-    });
-  };
-
-  const [content, setContent] = useState('');
-  const [collapsedId, setCollapsed] = useState(false);
-  const adStatusChecker = async () => {
-    if (checker.pending) {
-      let ad = ads.ads.filter((p) => p.adStatus == 'pending');
-      setAds({
-        ads: ad,
-        limit: ads.limit,
-      });
-    } else {
-      if (checker.create && ads) {
-        let ad = ads.ads.filter((p) => p.adStatus == 'created');
-        setAds({
-          ads: ad,
-          limit: ads.limit,
-        });
-      } else {
-        if (checker.deleted && ads) {
-          let ad = ads.ads.filter((p) => p.adStatus == 'deleted');
-          setAds({
-            ads: ad,
-            limit: ads.limit,
-          });
-        } else {
-          if (checker.sharing && ads) {
-            let ad = ads.ads.filter((p) => p.adStatus == 'sharing');
-            setAds({
-              ads: ad,
-              limit: ads.limit,
-            });
-          } else {
-            if (checker.returned && ads) {
-              let ad = ads.ads.filter((p) => p.adStatus == 'returned');
-              setAds({
-                ads: ad,
-                limit: ads.limit,
-              });
-            } else {
-              await getData();
-            }
+  const returnRequest = async (id) => {
+    try {
+      await axios
+        .get(
+          `${
+            urls['test']
+          }/user/update/${id}/returned/{message}?message=${'буцаалаа'}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Access-Control-Allow-Headers': '*',
+              charset: 'UTF-8',
+            },
           }
-        }
-      }
+        )
+        .then((d) => {
+          toast({
+            title: `Хэрэглэгчийг буцаалаа`,
+            status: 'warning',
+            duration: 3000,
+            isClosable: true,
+          });
+        });
+    } catch (error) {
+      console.error(error);
     }
   };
+  const banUser = async (id) => {
+    try {
+      await axios
+        .get(
+          `${urls['test']}/user/update/${id}/banned/{message}?message=${''}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Access-Control-Allow-Headers': '*',
+              charset: 'UTF-8',
+            },
+          }
+        )
+        .then((d) => {
+          toast({
+            title: `Хэрэглэгчийг бандлаа`,
+            status: 'error',
+            duration: 3000,
+            isClosable: true,
+          });
+        });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const [expand, setExpand] = useState(0);
 
   return (
@@ -136,139 +132,186 @@ const UsersRequest = ({ users }) => {
           {/* {content && <> {content} </>} */}
 
           <div className="w-full overflow-scroll">
-            {users && (
+            {/* {users && (
               <button
                 className="p-2 mb-2 font-bold text-white bg-teal-500 rounded-md"
                 onClick={() => {}}
               >
                 Excel татах
               </button>
-            )}
+            )} */}
             <table className="w-full p-2 text-sm text-left border border-collapse border-gray-400 table-fixed">
               <thead>
                 <tr>
-                  <th width="10%">Дугаар</th>
+                  <th width="5%">Дугаар</th>
                   <th>Нэр</th>
                   {/* <th>Дэлгэрэнгүй</th> */}
+                  <th>Имайл</th>
                   <th>Утас</th>
+                  <th>Төрөл</th>
                   <th>Статус</th>
-                  <th>Зөвшөөрөх</th>
+                  <th>Файл</th>
+                  <th>Иргэний үнэмлэхний зураг</th>
                   <th>Үйлдэл</th>
                   {/* <th>Засах</th> */}
                 </tr>
               </thead>
               <tbody>
-                {user?.map((a, i) => {
-                  let adData = { ...a };
-                  return (
-                    <tr key={i}>
-                      <td width="10%">{i + 1}</td>
-                      <td className="truncate ...">
-                        {/* {a.title} */}
-                        <Button
-                          as="a"
-                          className={mergeNames(
-                            STYLES.blueButton,
-                            'text-sm h-[30px]'
-                          )}
-                          target="_blank"
-                          href={`/product/${a.num}`}
-                          // onClick={() => router.push(`/product/${a.num}`)}
-                        >
-                          <a target="_blank">Орох</a>
-                        </Button>
-                      </td>
-                      <td className="truncate ...">{a.description}</td>
-                      <td
-                        className={mergeNames(
-                          'truncate ... font-bold',
-                          a.userType == 'default' && 'text-purple-900',
-                          a.userType == 'agent' && 'text-primary',
-                          a.userType == 'organization' && 'text-green',
-                          a.userType == 'admin' && 'text-yellow'
-                        )}
-                      >
-                        {a.userType}
-                      </td>
-                      <td
-                        className={mergeNames(
-                          'truncate ... font-bold',
-                          // a.status == '' && 'text-yellow-400',
-                          a.status == 'active' && 'text-green-500',
-                          a.status == 'pending' && 'text-yellow-500',
-                          a.status == 'banned' && 'text-red-400'
-                          // a.status == 'default' && 'text-primary'
-                        )}
-                      >
-                        {a.status}
-                      </td>
-                      <td>
-                        <div
-                          className={mergeNames(
-                            'flex flex-row justify-between'
-                            // 'p-2 rounded-md bg-white',
-                          )}
-                        >
-                          <button
-                            onClick={() => {
-                              if (expand == 0) {
-                                setExpand(i + 1);
-                              } else {
-                                setExpand(0);
-                              }
-                            }}
-                            className="float-left mx-0 text-lg text-black -rotate-90"
+                {user
+                  .filter((u) => u.userType != 'system')
+                  ?.map((a, i) => {
+                    let adData = { ...a };
+                    return (
+                      <tr key={i}>
+                        <td width="5%">{i + 1}</td>
+                        <td className="truncate ...">
+                          {/* {a.title} */}
+                          <Button
+                            as="a"
+                            className={mergeNames(
+                              STYLES.blueButton,
+                              'text-sm h-[30px]'
+                            )}
+                            target="_blank"
+                            href={`/product/${a.num}`}
+                            // onClick={() => router.push(`/product/${a.num}`)}
                           >
-                            <MdOutlineArrowDropDownCircle
-                              className={mergeNames(
-                                expand == i + 1 ? 'text-blue-600 ' : ''
-                              )}
-                            />
-                          </button>
+                            <a target="_blank">
+                              {(a.agentAddition?.organizationName ||
+                                a.organizationAddition?.organizationName) ??
+                                a.username}
+                            </a>
+                          </Button>
+                        </td>
+                        <td className="truncate ...">{a.email}</td>
+                        <td className="truncate ...">{a.phone}</td>
+                        <td
+                          className={mergeNames(
+                            'truncate ... font-bold',
+                            a.userType == 'default' && 'text-purple-900',
+                            a.userType == 'agent' && 'text-primary',
+                            a.userType == 'organization' && 'text-green',
+                            a.userType == 'admin' && 'text-yellow'
+                          )}
+                        >
+                          {a.userType}
+                        </td>
+                        <td
+                          className={mergeNames(
+                            'truncate ... font-bold',
+                            // a.status == '' && 'text-yellow-400',
+                            a.status == 'active' && 'text-green-500',
+                            a.status == 'pending' && 'text-yellow-500',
+                            a.status == 'banned' && 'text-red-400'
+                            // a.status == 'default' && 'text-primary'
+                          )}
+                        >
+                          {a.status}
+                        </td>
+                        <td>
+                          {(a.agentAddition?.organizationContract ||
+                            a.organizationAddition
+                              ?.organizationCertificationCopy) && (
+                            <NextLink
+                              href={
+                                a.agentAddition?.organizationContract ||
+                                a.organizationAddition
+                                  ?.organizationCertificationCopy
+                              }
+                              passHref
+                            >
+                              <Link target="_blank">pdf</Link>
+                            </NextLink>
+                          )}
+                        </td>
+                        <td>
+                          {a.agentAddition?.identityCardFront &&
+                            a.agentAddition?.identityCardBack && (
+                              <Fragment>
+                                <NextLink
+                                  href={a.agentAddition?.identityCardFront}
+                                  passHref
+                                >
+                                  <Link target="_blank">Зураг 1</Link>
+                                </NextLink>
+                                <NextLink
+                                  href={a.agentAddition?.identityCardBack}
+                                  passHref
+                                >
+                                  <Link target="_blank">Зураг 2</Link>
+                                </NextLink>
+                              </Fragment>
+                            )}
+                        </td>
+                        <td>
                           <div
                             className={mergeNames(
-                              expand == i + 1 ? 'flex' : 'hidden',
-                              'justify-center  flex-end  gap-2'
+                              'flex flex-row justify-center'
+                              // 'p-2 rounded-md bg-white',
                             )}
-                            onClick={() => {
-                              setExpand(0);
-                            }}
                           >
-                            {a.adStatus != 'created' && (
+                            <button
+                              onClick={() => {
+                                if (expand == 0) {
+                                  setExpand(i + 1);
+                                } else {
+                                  setExpand(0);
+                                }
+                              }}
+                              className="float-left mx-0 text-lg text-black -rotate-90"
+                            >
+                              <MdOutlineArrowDropDownCircle
+                                className={mergeNames(
+                                  expand == i + 1 ? 'text-blue-600 ' : ''
+                                )}
+                              />
+                            </button>
+                            <div
+                              className={mergeNames(
+                                expand == i + 1 ? 'flex' : 'hidden',
+                                'justify-center  flex-end  gap-2'
+                              )}
+                              onClick={() => {
+                                setExpand(0);
+                              }}
+                            >
+                              {a.status != 'active' && (
+                                <button
+                                  onClick={() => verifyUser(a._id)}
+                                  className={mergeNames(
+                                    STYLES.button,
+                                    'bg-teal-500 justify-center w-7 h-7 '
+                                  )}
+                                >
+                                  <SiVerizon />
+                                </button>
+                              )}
+                              {a.status == 'pending' && (
+                                <button
+                                  onClick={() => returnRequest(a._id)}
+                                  className={mergeNames(
+                                    STYLES.button,
+                                    'bg-yellow-500 w-7 h-7 justify-center'
+                                  )}
+                                >
+                                  <BiEdit />
+                                </button>
+                              )}
                               <button
-                                onClick={() => verify(a._id)}
+                                onClick={() => banUser(a._id)}
                                 className={mergeNames(
                                   STYLES.button,
-                                  'bg-teal-500 justify-center w-7 h-7 '
+                                  'bg-red-500 w-7 h-7 justify-center'
                                 )}
                               >
-                                <SiVerizon />
+                                <MdDelete />
                               </button>
-                            )}
-                            <button
-                              onClick={() => deleteAd(a._id)}
-                              className={mergeNames(
-                                STYLES.button,
-                                'bg-red-500 w-7 h-7 justify-center'
-                              )}
-                            >
-                              <MdDelete />
-                            </button>
-                            <button
-                              onClick={() => deleteAd(a._id)}
-                              className={mergeNames(
-                                STYLES.button,
-                                'bg-red-500 w-7 h-7 justify-center'
-                              )}
-                            >
-                              <BiEdit />
-                            </button>
+                            </div>
                           </div>
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
+                        </td>
+                      </tr>
+                    );
+                  })}
               </tbody>
             </table>
             {users && (
@@ -326,7 +369,7 @@ const UsersRequest = ({ users }) => {
     </Fragment>
   );
 };
-export default UsersRequest;
+export default UserRequest;
 
 export async function getServerSideProps({ req, res }) {
   const token = getCookie('token', { req, res });

@@ -1,10 +1,3 @@
-import { AiOutlineCar } from 'react-icons/ai';
-import { BsBuilding } from 'react-icons/bs';
-import { CgSmartHomeWashMachine } from 'react-icons/cg';
-import { IoPhonePortraitOutline } from 'react-icons/io5';
-import { MdComputer } from 'react-icons/md';
-import { RiHomeSmile2Line } from 'react-icons/ri';
-
 export const adminNav = [
   {
     tabName: 'Хүсэлт өгсөн зарууд',
@@ -64,5 +57,22 @@ export const adminNav = [
   {
     tabName: 'Санал хүсэлт',
     id: 'feedback',
+  },
+];
+export const createAdNav = [
+  {
+    tabName: 'Зар нэмэх',
+    id: 'create',
+
+    submenu: [
+      {
+        tab: 'Зар нэмэх',
+        href: 'create/ad',
+      },
+      {
+        tab: 'Зар хуваалцах',
+        href: 'create/sharing',
+      },
+    ],
   },
 ];

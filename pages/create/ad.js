@@ -256,7 +256,11 @@ export default function CreateAd({ categories }) {
         {
           // STEP1 TYPES: CATEGORY, SUBCATEGORY, ADTYPE, SELLTYPE
           step === -1 && (
-            <Step1 {...{ types, setTypes }} categories={passcategory} />
+            <Step1
+              {...{ types, setTypes }}
+              setSelectedParent={setSelectedParent}
+              categories={passcategory}
+            />
           )
         }
 

@@ -18,6 +18,16 @@ export const SellTypes = {
     name: 'Зарах, түрээслэх',
   },
 };
+export const SharingSellTypes = {
+  sold: {
+    id: 'sold',
+    name: 'Зарсан',
+  },
+  rented: {
+    id: 'rented',
+    name: 'Түрээслэсэн',
+  },
+};
 export const Committee = [
   {
     id: '1khoroo',
@@ -140,6 +150,16 @@ export const Committee = [
     value: '30-р хороо',
   },
 ];
+export const SharingView = {
+  show: {
+    id: 'show',
+    name: 'Харуулах',
+  },
+  hide: {
+    id: 'hide',
+    name: 'Нуух',
+  },
+};
 export const AdTypes = {
   default: {
     id: 'default',

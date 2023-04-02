@@ -6,7 +6,7 @@ import FieldCategory from './fieldCategory';
 import FieldSellType from './fieldSellType';
 import FieldSubCategory from './fieldSubCategory';
 
-const Step1 = ({ types = {}, setTypes = () => {}, categories = [] }) => {
+const Step1 = ({ types = {}, setTypes = () => {}, setSelectedParent , categories = [] }) => {
   return (
     <>
       <Title>Төрөл</Title>
@@ -23,6 +23,7 @@ const Step1 = ({ types = {}, setTypes = () => {}, categories = [] }) => {
             <FormLabel title="Дэд төрөл" />
             <FieldSubCategory
               {...{ types, setTypes }}
+              setSelectedParent={setSelectedParent}
               localCategory={
                 categories.filter((c) => c.href == types.categoryName)[0]
                   .subCategory
