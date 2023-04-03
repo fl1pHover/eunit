@@ -97,7 +97,7 @@ const Bottom = ({ sticky }) => {
                   onMouseOver={() => handleMouseOver(id)}
                   onMouseOut={handleMouseOut}
                   className={mergeNames(
-                    'hover:bg-blue-900 transition-colors ease-in-out'
+                    'hover:bg-teal-700 transition-colors ease-in-out bg-teal-800'
                   )}
                 >
                   <div className="h-full">
@@ -109,7 +109,7 @@ const Bottom = ({ sticky }) => {
                       </Link>
                     </div>
                   </div>
-                  <div className="absolute  w-auto  flex flex-col overflow-hidden justify-center bg-blue-900/[96]">
+                  <div className="absolute  w-auto  flex flex-col overflow-hidden justify-center bg-teal-800/[96]">
                     {submenu &&
                       isHoveringId &&
                       isHoveringId === id &&
@@ -121,7 +121,7 @@ const Bottom = ({ sticky }) => {
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 className={mergeNames(
-                                  'px-2 lg:px-4 py-3 text-[10px] lg:text-sm font-medium text-white transition-colors ease-in cursor-pointer bg-blue-900/[96] hover:bg-blue-700 first-letter:uppercase whitespace-nowrap z-30',
+                                  'px-2 lg:px-4 py-3 text-[10px] lg:text-sm font-medium text-white transition-colors ease-in cursor-pointer bg-teal-700/[96] hover:bg-teal-600 first-letter:uppercase whitespace-nowrap z-30',
                                   subkey === submenu.length - 1
                                     ? ''
                                     : 'border-r border-blue-900/[96]'

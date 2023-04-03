@@ -118,7 +118,7 @@ const Users = ({ users }) => {
 
   return (
     <Fragment>
-      <div className="flex flex-row p-5 min-h-[60vh]">
+      <div className="flex flex-row justify-center p-5 min-h-[60vh]">
         <div className="p-5 ">
           {/* <Text>Zariin dugaar: {a.num}</Text>
               <Button onClick={() => verify(a._id)}>verify</Button>
@@ -134,10 +134,10 @@ const Users = ({ users }) => {
                 Excel татах
               </button>
             )} */}
-            <table className="w-full p-2 text-sm text-left border border-collapse border-gray-400 table-fixed">
+            <table className="w-full p-2 text-sm text-left border border-collapse border-gray-400 table-auto">
               <thead>
                 <tr>
-                  <th width="5%">Дугаар</th>
+                  <th className="50px">Дугаар</th>
                   <th>Нэр</th>
                   {/* <th>Дэлгэрэнгүй</th> */}
                   <th>Имайл</th>
@@ -157,7 +157,7 @@ const Users = ({ users }) => {
                     let adData = { ...a };
                     return (
                       <tr key={i}>
-                        <td width="5%">{i + 1}</td>
+                        <td className="50px">{i + 1}</td>
                         <td className="truncate ...">
                           {/* {a.title} */}
                           <Button
@@ -214,7 +214,7 @@ const Users = ({ users }) => {
                               }
                               passHref
                             >
-                              <Link target="_blank">pdf</Link>
+                              <Link target="_blank">PDF</Link>
                             </NextLink>
                           )}
                         </td>
@@ -309,7 +309,7 @@ const Users = ({ users }) => {
               </tbody>
             </table>
             {users && (
-              <ul className="flex float-right list-style-none">
+              <ul className="flex float-right mt-5 list-style-none">
                 <li className="mx-2 disabled">
                   <button
                     className={mergeNames(STYLES.notActive)}

@@ -268,7 +268,7 @@ export const SignUpComp = ({ credential, setCredential, fc }) => {
   );
 };
 
-export const InputComp = ({ lbl, type, value, setValue, v }) => {
+export const InputComp = ({ lbl, type, value, setValue, v, ...props }) => {
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
 
@@ -285,6 +285,7 @@ export const InputComp = ({ lbl, type, value, setValue, v }) => {
           type={type === 'password' ? (!show ? 'password' : 'text') : type}
           value={value}
           required
+          onKeyPress={props.onKeyPress}
           onChange={(e) => {
             switch (v) {
               case 'email':

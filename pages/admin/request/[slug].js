@@ -246,10 +246,10 @@ const RequestAds = ({ propAds, propAllAds }) => {
 
   return (
     <Fragment>
-      <div className="flex flex-row p-5 min-h-[60vh]">
+      <div className="flex flex-row justify-center p-5 min-h-[60vh]">
         <div className="p-5 ">
           {/* <Text>Zariin dugaar: {a.num}</Text>
-              <Button onClick={() => verify(a._id)}>verify</Button>
+            <Button onClick={() => verify(a._id)}>verify</Button>
               <Button onClick={() => deleteAd(a._id)}>delete</Button> */}
           {/* {content && <> {content} </>} */}
 
@@ -381,13 +381,13 @@ const RequestAds = ({ propAds, propAllAds }) => {
                 Excel татах
               </button>
             )}
-            <table className="w-full p-2 text-sm text-left border border-collapse border-gray-400 table-fixed">
+            <table className="w-full p-2 text-sm text-left border border-gray-400 table-auto">
               <thead>
                 <tr>
-                  <th width="10%">Дугаар</th>
+                  <th className="w-[10%]">Дугаар</th>
                   <th>Гарчиг</th>
                   {/* <th>Дэлгэрэнгүй</th> */}
-                  <th>Зарын төрөл</th>
+                  <th className="w-1/2">Зарын дэлгэрэнгүй</th>
                   <th>Зарын статус</th>
                   <th>Зөвшөөрөх</th>
                   <th>Үйлдэл</th>
@@ -415,7 +415,9 @@ const RequestAds = ({ propAds, propAllAds }) => {
                           <a target="_blank">Орох</a>
                         </Button>
                       </td>
-                      <td className="truncate ...">{a.description}</td>
+                      <td className="w-1/2 truncate ... ">
+                        {a.description.slice(0, 75)}
+                      </td>
                       <td
                         className={mergeNames(
                           'truncate ... font-bold',

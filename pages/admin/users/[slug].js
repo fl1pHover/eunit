@@ -140,10 +140,10 @@ const UserRequest = ({ users }) => {
                 Excel татах
               </button>
             )} */}
-            <table className="w-full p-2 text-sm text-left border border-collapse border-gray-400 table-fixed">
+            <table className="w-full p-2 text-sm text-left border border-collapse border-gray-400 table-auto">
               <thead>
                 <tr>
-                  <th width="5%">Дугаар</th>
+                  <th>Дугаар</th>
                   <th>Нэр</th>
                   {/* <th>Дэлгэрэнгүй</th> */}
                   <th>Имайл</th>
@@ -315,7 +315,7 @@ const UserRequest = ({ users }) => {
               </tbody>
             </table>
             {users && (
-              <ul className="flex float-right list-style-none">
+              <ul className="flex float-right mt-5 list-style-none">
                 <li className="mx-2 disabled">
                   <button
                     className={mergeNames(STYLES.notActive)}
