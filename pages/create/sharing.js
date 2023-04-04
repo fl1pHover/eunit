@@ -15,6 +15,7 @@ import Step3 from '@/components/createAd/step3';
 import urls from '@/constants/api';
 import { GoogleMap, MarkerF, useLoadScript } from '@react-google-maps/api';
 import { getCookie } from 'cookies-next';
+import SharingUpload from './SharingUpload';
 export default function SharingAd({ categories }) {
   const toast = useToast();
   const user = getCookie('user');
@@ -280,12 +281,25 @@ export default function SharingAd({ categories }) {
           )
         }
         {step === 2 && (
-          <Input
-            type="file"
-            onChange={(e) =>
-              setGeneralData((prev) => ({ ...prev, file: [e.target.files[0]] }))
-            }
-          />
+          <>
+            {/* <Input
+              type="file"
+              onChange={(e) =>
+                setGeneralData((prev) => ({
+                  ...prev,
+                  file: [e.target.files[0]],
+                }))
+              }
+            /> */}
+            <SharingUpload
+              onChange={(e) =>
+                setGeneralData((prev) => ({
+                  ...prev,
+                  file: [e.target.files[0]],
+                }))
+              }
+            />
+          </>
         )}
 
         {subCategory?.steps?.map((filter, index) => {
