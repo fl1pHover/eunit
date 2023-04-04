@@ -2,7 +2,6 @@ import EditAd from '@/components/ad/edit';
 import FilterAd from '@/components/Profile/filterAd';
 import urls from '@/constants/api';
 import { useAuth } from '@/context/auth';
-import { getJson } from '@/context/functions';
 import { brk, STYLES } from '@/styles/index';
 import mergeNames from '@/util/mergeNames';
 import { Button, Checkbox, useToast } from '@chakra-ui/react';
@@ -161,20 +160,13 @@ const RequestAds = ({ propAds, propAllAds }) => {
   };
   const exportExcel = (data) => {
     if (propAllAds) {
-      let {
-        apartmentJson,
-        officeJson,
-        factoryJson,
-        garageJson,
-        landJson,
-        serviceJson,
-      } = getJson(propAllAds);
-      const apartmentSheet = XLSX.utils.json_to_sheet(apartmentJson);
-      const officeSheet = XLSX.utils.json_to_sheet(officeJson);
-      const factorySheet = XLSX.utils.json_to_sheet(factoryJson);
-      const garageSheet = XLSX.utils.json_to_sheet(garageJson);
-      const landSheet = XLSX.utils.json_to_sheet(landJson);
-      const serviceSheet = XLSX.utils.json_to_sheet(serviceJson);
+      let { apartment, office, factory, garage, land, service } = propAllAds;
+      const apartmentSheet = XLSX.utils.json_to_sheet(apartment);
+      const officeSheet = XLSX.utils.json_to_sheet(office);
+      const factorySheet = XLSX.utils.json_to_sheet(factory);
+      const garageSheet = XLSX.utils.json_to_sheet(garage);
+      const landSheet = XLSX.utils.json_to_sheet(land);
+      const serviceSheet = XLSX.utils.json_to_sheet(service);
       const realStateBook = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(realStateBook, apartmentSheet, 'Орон сууц');
       XLSX.utils.book_append_sheet(realStateBook, officeSheet, 'Оффис');
