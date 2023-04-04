@@ -41,33 +41,33 @@ const StepProgress = ({
         {sharing && (
           <StepItem
             stepId={-2}
-            sharing
+            sharing={sharing}
             {...{ activeStep }}
             handleClick={handleClick}
           />
         )}
         <StepItem
           stepId={-1}
-          sharing
+          sharing={sharing}
           {...{ activeStep }}
           handleClick={handleClick}
         />
         <StepItem
           stepId={0}
-          sharing
+          sharing={sharing}
           {...{ activeStep }}
           handleClick={handleClick}
         />
         <StepItem
           stepId={1}
-          sharing
+          sharing={sharing}
           {...{ activeStep }}
           handleClick={handleClick}
         />
         {/* {hasFourStep && ( */}
         <StepItem
           stepId={2}
-          sharing
+          sharing={sharing}
           {...{ activeStep }}
           handleClick={handleClick}
         />

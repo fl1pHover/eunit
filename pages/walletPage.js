@@ -1,6 +1,6 @@
 import urls from '@/constants/api';
 import mergeNames from '@/util/mergeNames';
-import { Box, Heading, Image, useToast } from '@chakra-ui/react';
+import { Heading, Image, useToast } from '@chakra-ui/react';
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
 import { useRouter } from 'next/router';
@@ -11,6 +11,7 @@ const WalletPage = ({ user }) => {
   const [point, setPoint] = useState({
     email: '',
     point: '',
+    message: '',
   });
   const toast = useToast();
   const token = getCookie('token');
@@ -22,7 +23,7 @@ const WalletPage = ({ user }) => {
           .get(
             `${urls['test']}/user/point/${point.email}/${parseFloat(
               point.point
-            )}`,
+            )}/default/{message}?message=${point.message}`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,

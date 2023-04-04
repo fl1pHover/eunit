@@ -2,7 +2,8 @@ import urls from '@/constants/api';
 import { ContainerX } from '@/lib/Container';
 import { STYLES } from '@/styles/index';
 import mergeNames from '@/util/mergeNames';
-import { Heading, useToast } from '@chakra-ui/react';
+import { Heading, Select, useToast } from '@chakra-ui/react';
+import axios from 'axios';
 import { getCookie } from 'cookies-next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -12,6 +13,8 @@ const AdminWallet = ({ user }) => {
   const [point, setPoint] = useState({
     email: '',
     point: '',
+    message: '',
+    type: 'default',
   });
   const toast = useToast();
   const token = getCookie('token');
@@ -21,9 +24,11 @@ const AdminWallet = ({ user }) => {
       if (token && point.email && point.point) {
         await axios
           .get(
-            `${urls['test']}/user/point/${point.email}/${parseFloat(
+            `${
+              urls['test']
+            }/user/point/${point.email.toLowerCase()}/${parseFloat(
               point.point
-            )}`,
+            )}/${point.type}/{message}?message=${point.message}`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -59,7 +64,9 @@ const AdminWallet = ({ user }) => {
             router.reload();
           });
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -99,6 +106,21 @@ const AdminWallet = ({ user }) => {
               className={mergeNames(STYLES.input)}
               onChange={(e) => {
                 setPoint((prev) => ({ ...prev, point: e.target.value }));
+              }}
+            />
+            <Select
+              onChange={(e) => {
+                setPoint((prev) => ({ ...prev, type: e.target.value }));
+              }}
+            >
+              <option value="default">Энгийн</option>
+              <option value="bonus">Урамшуулал</option>
+            </Select>
+            <input
+              placeholder="Мэссэж"
+              className={mergeNames(STYLES.input)}
+              onChange={(e) => {
+                setPoint((prev) => ({ ...prev, message: e.target.value }));
               }}
             />
             <button

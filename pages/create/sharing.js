@@ -272,6 +272,7 @@ export default function SharingAd({ categories }) {
           // STEP1 TYPES: CATEGORY, SUBCATEGORY, ADTYPE, SELLTYPE
           step === -2 && (
             <Step1
+              sharing={true}
               {...{ types, setTypes }}
               setSelectedParent={setSelectedParent}
               categories={passcategory}

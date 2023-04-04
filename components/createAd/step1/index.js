@@ -6,7 +6,13 @@ import FieldCategory from './fieldCategory';
 import FieldSellType from './fieldSellType';
 import FieldSubCategory from './fieldSubCategory';
 
-const Step1 = ({ types = {}, setTypes = () => {}, setSelectedParent , categories = [] }) => {
+const Step1 = ({
+  types = {},
+  setTypes = () => {},
+  sharing = false,
+  setSelectedParent,
+  categories = [],
+}) => {
   return (
     <>
       <Title>Төрөл</Title>
@@ -37,8 +43,8 @@ const Step1 = ({ types = {}, setTypes = () => {}, setSelectedParent , categories
           // ZARAH TURUL: SELL OR RENT
           // ZARIIN TURUL: DEFAULT, SPECIAL, POSTER
           <>
-            <FieldSellType {...{ types, setTypes }} />
-            <FieldAdType {...{ types, setTypes }} />
+            <FieldSellType {...{ types, setTypes }} sharing={sharing} />
+            <FieldAdType {...{ types, setTypes }} sharing={sharing}/>
           </>
         )}
       </div>
