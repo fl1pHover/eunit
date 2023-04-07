@@ -15,6 +15,7 @@ const Step3 = ({
   generalData = {},
   setImages = () => {},
   setGeneralData = () => {},
+  sharing,
 }) => {
   return (
     <>
@@ -29,7 +30,13 @@ const Step3 = ({
         <FormLine />
 
         <div className="flex flex-col gap-8 mt-8 mb-10 md:flex-row md:px-0 md:mt-16">
-          <div className="flex-1 space-y-8 ">
+          <div
+            className={mergeNames(
+              sharing
+                ? 'grid grid-cols-2 w-full items-center gap-10'
+                : 'flex-1 space-y-8 '
+            )}
+          >
             <FieldTitle
               generalData={generalData}
               setGeneralData={setGeneralData}
@@ -62,32 +69,38 @@ const Step3 = ({
               />
             </div>
           </div>
-          <div className="flex-1 pb-2">
-            <div className="flex justify-between">
-              <AtomLabel>Зарын дэлгэрэнгүй</AtomLabel>
-              <p className="font-semibold">
-                {generalData?.desc.length ?? 0}/500
-              </p>
+
+          {sharing ?? (
+            <div className="flex-1 pb-2">
+              <div className="flex justify-between">
+                <AtomLabel>Зарын дэлгэрэнгүй</AtomLabel>
+                <p className="font-semibold">
+                  {generalData?.desc.length ?? 0}/500
+                </p>
+              </div>
+              <textarea
+                cols={30}
+                rows={13}
+                placeholder="Дэлгэрэнгүй"
+                maxLength="1000"
+                value={generalData?.desc || ''}
+                onChange={
+                  (e) =>
+                    setGeneralData((prev) => ({
+                      ...prev,
+                      desc: e.target.value,
+                    }))
+                  // setGeneralData((prev) => ({ ...prev, desc: e.target.value }))
+                }
+                className={mergeNames(
+                  generalData?.desc.length > 0
+                    ? 'border-blue-400/60 ring-blue-400 '
+                    : 'border-red-400 ring-red-400',
+                  'w-full px-4 border-2 rounded-2xl '
+                )}
+              />
             </div>
-            <textarea
-              cols={30}
-              rows={13}
-              placeholder="Дэлгэрэнгүй"
-              maxLength="1000"
-              value={generalData?.desc || ''}
-              onChange={
-                (e) =>
-                  setGeneralData((prev) => ({ ...prev, desc: e.target.value }))
-                // setGeneralData((prev) => ({ ...prev, desc: e.target.value }))
-              }
-              className={mergeNames(
-                generalData?.desc.length > 0
-                  ? 'border-blue-400/60 ring-blue-400 '
-                  : 'border-red-400 ring-red-400',
-                'w-full px-4 border-2 rounded-2xl '
-              )}
-            />
-          </div>
+          )}
           <div className="block md:hidden">
             <FieldPhotoUpload
               setImages={setImages}

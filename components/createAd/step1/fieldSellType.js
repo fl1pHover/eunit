@@ -9,11 +9,12 @@ const FieldSellType = ({
   types = {},
   setTypes = () => {},
   sharing = false,
+  title = 'Борлуулах төрөл',
 }) => {
   return (
     <>
-      <FormLabel num={2} title="Борлуулах төрөл" />
-      <div className="flex flex-row justify-center gap-4 mt-2">
+      <FormLabel num={2} title={title} />
+      <div className="flex flex-row flex-wrap justify-center gap-4 mt-2">
         {Object.keys(sharing ? SharingSellTypes : SellTypes).map(
           (type, key) => {
             const isSelected = sharing

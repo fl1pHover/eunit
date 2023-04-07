@@ -47,7 +47,7 @@ function ProCard({
     // <Skeleton>
     <Skeleton isLoaded>
       <div className="relative overflow-hidden rounded-2xl md:min-h-[350px] min-h-[300px]  shadow-md  group flex flex-col w-full h-full mb-2">
-        <div className="grid flex-1 w-full h-full grid-cols-2">
+        <div className="grid flex-1 w-full h-full grid-cols-1 md:grid-cols-2">
           <div className="absolute top-0 left-0 z-10 flex items-center justify-between flex-1 w-full px-3 py-2">
             {item?.images.length != 0 ? (
               <ImageCount onClick={() => console.log('Zurag')}>
@@ -88,7 +88,7 @@ function ProCard({
               <AdCardButton id={item?.num} adId={item?._id} />
             )}
           </div>
-          <div className="relative z-0 w-full h-full bg-gray-800 cursor-pointer ">
+          <div className="relative z-0 w-full h-full bg-gray-800 cursor-pointer h-[250px]">
             <div className="absolute z-20 p-2 text-center text-white -rotate-45 top-[30px] w-52 -left-[50px] bg-mainBlossom">
               {/* <Image src="/utils/vip.png" layout="fill" /> */}
               <p className="font-bold tracking-wide">VIP</p>
@@ -162,7 +162,7 @@ function ProCard({
           </div>
           <div className="relative flex flex-col justify-between w-full h-full p-4 space-y-2 bg-white bom-bg">
             {/* <Box className="absolute w-full h-full scale-y-150 scale-x-125 bg-[#0c0e23] rotate-6" /> */}
-            <div className="z-0 flex flex-col gap-2">
+            <div className="z-0 flex flex-col gap-0 md:gap-2">
               <div className="z-10 flex items-center justify-between gap-4 text-sm font-md">
                 <p className={mergeNames('font-bold text-xl')}>
                   {currency(

@@ -96,7 +96,14 @@ const WalletPage = ({ user }) => {
               setPoint((prev) => ({ ...prev, point: e.target.value }));
             }}
           />
-
+          <textarea
+            placeholder="Мэссэж"
+            maxLength={100}
+            className={mergeNames(STYLES.input, 'rounded-md col-span-full')}
+            onChange={(e) => {
+              setPoint((prev) => ({ ...prev, message: e.target.value }));
+            }}
+          />
           <button
             className={mergeNames(STYLES.blueButton, 'col-span-full p-2')}
             onClick={() => sendPoint()}

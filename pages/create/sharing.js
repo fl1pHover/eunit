@@ -273,6 +273,8 @@ export default function SharingAd({ categories }) {
           // STEP1 TYPES: CATEGORY, SUBCATEGORY, ADTYPE, SELLTYPE
           step === -2 && (
             <Step1
+              title="Таны зарсан хөрөнгийн төрөл"
+              selltypeTitle="Борлуулсан төрөл"
               sharing={true}
               {...{ types, setTypes }}
               setSelectedParent={setSelectedParent}
@@ -347,6 +349,7 @@ export default function SharingAd({ categories }) {
                   setImages={setImages}
                   generalData={generalData}
                   setGeneralData={setGeneralData}
+                  sharing
                 />
               );
 

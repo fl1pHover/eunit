@@ -116,9 +116,10 @@ const AdminWallet = ({ user }) => {
               <option value="default">Энгийн</option>
               <option value="bonus">Урамшуулал</option>
             </Select>
-            <input
+            <textarea
               placeholder="Мэссэж"
-              className={mergeNames(STYLES.input)}
+              maxLength={100}
+              className={mergeNames(STYLES.input, 'rounded-md col-span-full')}
               onChange={(e) => {
                 setPoint((prev) => ({ ...prev, message: e.target.value }));
               }}

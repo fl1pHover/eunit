@@ -12,6 +12,8 @@ const Step1 = ({
   sharing = false,
   setSelectedParent,
   categories = [],
+  title = 'Таны зарах хөрөнгийн төрөл?',
+  selltypeTitle,
 }) => {
   return (
     <>
@@ -19,7 +21,7 @@ const Step1 = ({
       <div className="bg-white min-h-[40vh] rounded-xl py-10 md:px-10 px-2">
         <>
           {/* CATEGORY */}
-          <FormLabel num="1" title="Таны зарах хөрөнгийн төрөл?" />
+          <FormLabel num="1" title={title} />
           <FieldCategory {...{ types, categories, setTypes }} />
         </>
 
@@ -43,8 +45,12 @@ const Step1 = ({
           // ZARAH TURUL: SELL OR RENT
           // ZARIIN TURUL: DEFAULT, SPECIAL, POSTER
           <>
-            <FieldSellType {...{ types, setTypes }} sharing={sharing} />
-            <FieldAdType {...{ types, setTypes }} sharing={sharing}/>
+            <FieldSellType
+              title={selltypeTitle}
+              {...{ types, setTypes }}
+              sharing={sharing}
+            />
+            <FieldAdType {...{ types, setTypes }} sharing={sharing} />
           </>
         )}
       </div>

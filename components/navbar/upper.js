@@ -75,7 +75,7 @@ const UpperNav = () => {
             </a>
           </Link>
           <div className="flex items-center">
-            <Link href={'/createAd'}>
+            <Link href={'/create/ad'}>
               <button className="px-4 py-1 ml-2 text-sm font-semibold text-white transition-all bg-teal-700 rounded-lg hover:scale-105">
                 <p>Зар нэмэх</p>
                 {/* <BiPlusCircle className="hidden lg:block" /> */}

@@ -17,11 +17,11 @@ const StepItem = ({
       className={mergeNames(
         'transition-all hover:bg-blue-500 hover:text-white',
         isActive ? 'text-white font-bold' : 'text-blue-500 font-semibold',
-        'rounded-full border-2  w-12 h-12 flex items-center justify-center ',
+        'rounded-full border-2 md:w-12 md:h-12 w-8 h-8 flex items-center justify-center ',
         isActive ? 'bg-blue-400 border-blue-400' : 'bg-gray-50 border-blue-400'
       )}
     >
-      <p className={mergeNames('text-2xl')}>
+      <p className={mergeNames('md:text-2xl text-base')}>
         {sharing ? stepId + 3 : stepId + 2}
       </p>
     </button>
