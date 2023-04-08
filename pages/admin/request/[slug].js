@@ -49,7 +49,9 @@ const RequestAds = ({ propAds, propAllAds }) => {
   const router = useRouter();
   let dummy = [];
   const getData = async () => {
-    if (num * 20 > ads?.ads?.length)
+    console.log(num);
+    console.log(num * 20 >= ads?.ads?.length);
+    if (num * 20 >= ads?.ads?.length) {
       fetch(`${urls['test']}/ad/admin/all/${num}`, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -90,6 +92,7 @@ const RequestAds = ({ propAds, propAllAds }) => {
           setCategories(c);
           setSubCategory(s);
         });
+    }
   };
 
   useEffect(() => {
@@ -126,12 +129,17 @@ const RequestAds = ({ propAds, propAllAds }) => {
   const verify = async (id) => {
     try {
       await axios
-        .get(`${urls['test']}/ad/update/${id}/created`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Access-Control-Allow-Headers': '*',
-          },
-        })
+        .get(
+          `${
+            urls['test']
+          }/ad/update/${id}/created/false/{message}?message=${' '}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Access-Control-Allow-Headers': '*',
+            },
+          }
+        )
         .then((d) => {
           toast({
             title: `${d?.data?.num ?? ''} Зарыг нэмлээ.`,
@@ -145,12 +153,15 @@ const RequestAds = ({ propAds, propAllAds }) => {
     }
   };
   const deleteAd = async (id) => {
-    await fetch(`${urls['test']}/ad/update/${id}/deleted`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Access-Control-Allow-Headers': '*',
-      },
-    }).then((d) => {
+    await fetch(
+      `${urls['test']}/ad/update/${id}/deleted/false/{message}?message=${' '}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Access-Control-Allow-Headers': '*',
+        },
+      }
+    ).then((d) => {
       toast({
         title: `${d?.data?.num ?? ''} Зарыг устгалаа.`,
         status: 'warning',
