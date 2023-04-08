@@ -49,46 +49,47 @@ const RequestAds = ({ propAds, propAllAds }) => {
   const router = useRouter();
   let dummy = [];
   const getData = async () => {
-    fetch(`${urls['test']}/ad/admin/all/${num}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((d) => d.json())
-      .then((d) => {
-        let copyAds = [...ads.ads];
-        let copyData = [...data.ads];
-        setAds((prev) => ({
-          ...prev,
-          ads: copyAds.concat(d.ads),
-          limit: ads.limit + d.limit,
-        }));
-        setData((prev) => ({
-          ...prev,
-          ads: copyData.concat(d.ads),
-          limit: ads.limit + d.limit,
-        }));
-        let c = [],
-          s = [];
-        d?.ads?.map((ad) => {
-          if (c.length > 0) {
-            if (c.find((a) => a == ad.category.name) === undefined) {
+    if (num * 20 > ads?.ads?.length)
+      fetch(`${urls['test']}/ad/admin/all/${num}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((d) => d.json())
+        .then((d) => {
+          let copyAds = [...ads.ads];
+          let copyData = [...data.ads];
+          setAds((prev) => ({
+            ...prev,
+            ads: copyAds.concat(d.ads),
+            limit: ads.limit + d.limit,
+          }));
+          setData((prev) => ({
+            ...prev,
+            ads: copyData.concat(d.ads),
+            limit: ads.limit + d.limit,
+          }));
+          let c = [],
+            s = [];
+          d?.ads?.map((ad) => {
+            if (c.length > 0) {
+              if (c.find((a) => a == ad.category.name) === undefined) {
+                c.push(ad.category.name);
+              }
+            } else {
               c.push(ad.category.name);
             }
-          } else {
-            c.push(ad.category.name);
-          }
-          if (s.length > 0) {
-            if (s.find((a) => a == ad.subCategory.name) === undefined) {
+            if (s.length > 0) {
+              if (s.find((a) => a == ad.subCategory.name) === undefined) {
+                s.push(ad.subCategory.name);
+              }
+            } else {
               s.push(ad.subCategory.name);
             }
-          } else {
-            s.push(ad.subCategory.name);
-          }
+          });
+          setCategories(c);
+          setSubCategory(s);
         });
-        setCategories(c);
-        setSubCategory(s);
-      });
   };
 
   useEffect(() => {
@@ -511,7 +512,7 @@ const RequestAds = ({ propAds, propAllAds }) => {
                 })}
               </tbody>
             </table>
-            {propAllAds?.length >= num * 20 && (
+            {propAllAds?.limit >= num * 20 && (
               <ul className="flex float-right list-style-none">
                 <li className="mx-2 disabled">
                   <button
@@ -589,172 +590,4 @@ export async function getServerSideProps({ req, res }) {
       },
     };
   }
-}
-// <div className="flex flex-row p-5" key={i}>
-//   {/* Dashboard */}
-//   <div className="flex flex-col  text-white bg-mainBlossom w-[20%] p-4 rounded-xl">
-//     <div className="flex flex-col">
-//       <Tab
-//         num={1}
-//         className={mergeNames(
-//           'flex justify-between py-2 font-bold cursor-pointer'
-//         )}
-//       >
-//         Verify
-//       </Tab>
-//     </div>
-//     {categories?.map(({ categoryName, submenu }, key) => {
-//       return (
-//         <div className="flex flex-col" key={key}>
-//           <Tab
-//             num={2}
-//             className={mergeNames(
-//               'flex justify-between py-2 font-bold cursor-pointer'
-//             )}
-//           >
-//             {categoryName}
-//             <button
-//               // onClick={handleExpand}
-//               onClick={() => {
-//                 setCollapsed((prev) => {
-//                   if (prev === categoryName.id) return false;
-//                   return categoryName.id;
-//                 });
-//               }}
-//             >
-//               <AiFillCaretDown />
-//             </button>
-//           </Tab>
-//           <ul
-//             className={mergeNames(
-//               'cursor-pointer ml-10',
-//               expand ? 'block' : 'hidden'
-//             )}
-//           >
-//             {collapsedId &&
-//               collapsedId === categoryName.id &&
-//               submenu?.map(({ category, href }, key) => {
-//                 return (
-//                   <li
-//                     key={key}
-
-//                     // className="px-4 py-3 text-sm font-medium text-white transition-colors ease-in hover:bg-blue-700 first-letter:uppercase whitespace-nowrap"
-//                   >
-//                     {category}
-//                   </li>
-//                 );
-//               })}
-
-//             {/* {submenu && (
-//               <li onClick={() => setContent(a + 1)}>{submenu}</li>
-//             )} */}
-//           </ul>
-//         </div>
-//       );
-//     })}
-//     {/* <div className="flex flex-col">
-//       <Tab
-//         num={2}
-//         className={mergeNames(
-//           'flex justify-between py-2 font-bold cursor-pointer'
-//         )}
-//       >
-//         Realstate
-//         <button onClick={handleExpand}>
-//           <AiFillCaretDown />
-//         </button>
-//       </Tab>
-//       <ul
-//         className={mergeNames(
-//           'cursor-pointer ml-10',
-//           expand ? 'block' : 'hidden'
-//         )}
-//       >
-//         {categories?.map(({ categoryName, submenu }, i) => {
-//           return (
-//             <>
-
-//               <li onClick={() => setContent(a + 1)}>{categoryName}</li>
-//             </>
-//           );
-//         })}
-//       </ul>
-//     </div> */}
-//   </div>
-//   <div>
-//     {content == 2 && <p>adasd</p>}
-//     {content == 3 && <p>adafgdfgsd</p>}
-//   </div>
-// </div>
-{
-  /* <div className="w-[20%] text-[#b8cde9] rounded-md bg-mainBlossom">
-          <div>
-            <button
-              className={mergeNames(
-                'p-5',
-                'border-b border-[#313255]',
-                'w-full flex flex-row items-center justify-between'
-              )}
-            >
-              Verify Ads
-            </button>
-          </div>
-          {/* {categories?.map((tab, key) => {
-            return (
-              <div className="" key={key}>
-                <button
-                  onClick={() => {
-                    setCollapsed((prev) => {
-                      if (prev === tab.id) return false;
-                      return tab.id;
-                    });
-                  }}
-                  className={mergeNames(
-                    'p-5',
-                    'border-b border-[#313255]',
-                    'w-full flex flex-row items-center justify-between'
-                  )}
-                >
-                  <div className="flex flex-row items-center gap-2">
-                    <p className="font-semibold ">{tab?.name}</p>
-                  </div>
-                  <CgChevronRight
-                    size={20}
-                    className={mergeNames(
-                      collapsedId === tab?.id && 'rotate-90',
-                      'transition-all ease-in-out'
-                    )}
-                  />
-                </button>
-                <div
-                //  className={mergeNames("sm:px-4 sm:py-4 px-3 py-3")}
-                // className="bg-gray-200"
-                >
-                  {collapsedId === tab.id &&
-                    tab?.subCategory?.map((sub, key) => {
-                      return (
-                        <button
-                          key={key}
-                          className="w-full py-2 pl-10 border-b border-[#313255] hover:bg-mainBlue"
-                          // onClick={() => {
-                          //   setContent(categories.submenu.categoryName);
-                          // }}
-                          onClick={() => {
-                            setContent(() => {
-                              tab.subCategory;
-                            });
-                            console.log(tab.subCategory);
-                          }}
-                        >
-                          <p className="text-xs font-medium text-left text-[#b8cde9]">
-                            {sub.name}
-                          </p>
-                        </button>
-                      );
-                    })}
-                </div>
-              </div>
-            );
-          })} 
-        </div> */
 }

@@ -1,4 +1,4 @@
-import { Heading, Input, useToast } from '@chakra-ui/react';
+import { Heading, useToast } from '@chakra-ui/react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { useMemo, useState } from 'react';
@@ -94,8 +94,7 @@ export default function SharingAd({ categories }) {
         generalData.price &&
           generalData.area &&
           generalData.unitPrice &&
-          generalData.title &&
-          generalData.desc
+          generalData.title
       );
     // if (step === 2) return <CustomModal />;
     // if (step === 1) return validateStep4();
@@ -211,7 +210,16 @@ export default function SharingAd({ categories }) {
     // filter hooson esehiig shalgah
     let emptyAd = subCategory.steps[2].values.find((f) => f.input == '');
     if (emptyAd === undefined) {
-      await sendAd();
+      if (user && JSON.parse(user)?.status == 'active') {
+        await sendAd();
+      } else {
+        toast({
+          title: 'Та одоогоор зар илгээх боломжгүй байна.',
+          status: 'warning',
+          duration: 2000,
+          isClosable: true,
+        });
+      }
     } else {
       toast({
         title: 'Та бүх талбарыг бөглөнө үү.',

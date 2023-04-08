@@ -22,7 +22,15 @@ const DashStatus = ({ agent, username, phone, ads, marks }) => {
         <div>
           <p className="font-bold">Хэрэглэгч</p>
           <Suspense fallback={<p>loading</p>}>
-            <p className="">
+            <p
+              className={`text-${
+                agent.status == 'pending'
+                  ? 'yellow'
+                  : agent.status == 'active'
+                  ? 'green'
+                  : 'red'
+              }-400`}
+            >
               {agent?.userType == 'default'
                 ? 'Энгийн'
                 : agent?.userType == 'agent'

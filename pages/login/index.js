@@ -147,7 +147,7 @@ export async function getServerSideProps({ req, res }) {
 
 export const LoginComp = ({ credential, setCredential, fc }) => {
   return (
-    <div>
+    <form>
       <Box h={3} />
 
       <InputComp
@@ -180,14 +180,13 @@ export const LoginComp = ({ credential, setCredential, fc }) => {
         toastH="Амжилттай нэвтэрлээ"
       /> */}
 
-      <button
+      <input
         type="submit"
         className={mergeNames('w-full h-auto py-3 ', STYLES.blueButton)}
         onClick={() => fc()}
-      >
-        Нэвтрэх
-      </button>
-    </div>
+        value={'Нэвтрэх'}
+      />
+    </form>
   );
 };
 
@@ -201,7 +200,7 @@ export const SignUpComp = ({ credential, setCredential, fc }) => {
   };
 
   return (
-    <div>
+    <form>
       <Box h={3} />
       <InputComp
         lbl={'Та И-Мэйл хаягаа оруулна уу'}
@@ -255,16 +254,16 @@ export const SignUpComp = ({ credential, setCredential, fc }) => {
         stats="success"
         toastH="Амжилттай бүртгэгдлээ"
       /> */}
-      <button
+      <input
         type="submit"
         className={mergeNames('w-full h-auto py-3', STYLES.blueButton)}
-        onClick={() => {
+        onClick={(e) => {
+          e.preventDefault();
           fc(), hm();
         }}
-      >
-        Бүртгүүлэх
-      </button>
-    </div>
+        value={'Бүртгүүлэх'}
+      />
+    </form>
   );
 };
 

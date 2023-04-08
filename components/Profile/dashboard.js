@@ -2,6 +2,7 @@ import { useAuth } from '@/context/auth';
 import { STYLES } from '@/styles/index';
 import mergeNames from '@/util/mergeNames';
 import { Center, Flex, Image } from '@chakra-ui/react';
+import { getCookie } from 'cookies-next';
 import { useState } from 'react';
 import { FiLogOut } from 'react-icons/fi';
 import DashStatus from './dashStatus';
@@ -11,10 +12,13 @@ import DashStatus from './dashStatus';
 
 const Dashboard = () => {
   const [isDisabled, setIsDisabled] = useState(false);
-  const { user, logout } = useAuth();
+  const { logout } = useAuth();
+  const user = getCookie('user');
+  const bookmark = getCookie('bookmarks');
   const handleClick = () => {
     setIsDisabled(!isDisabled);
   };
+  console.log(bookmark);
   return (
     <div
       className={mergeNames(
@@ -43,13 +47,15 @@ const Dashboard = () => {
         >
           <AiOutlineEdit />
         </button> */}
-        <DashStatus
-          agent={user}
-          phone={user?.phone}
-          username={user?.username}
-          ads={user?.ads?.length}
-          marks={user?.bookmarks?.length}
-        />
+        {user && (
+          <DashStatus
+            agent={JSON.parse(user)}
+            phone={JSON.parse(user)?.phone}
+            username={JSON.parse(user)?.username}
+            ads={JSON.parse(user)?.ads?.length}
+            marks={JSON.parse(bookmark)?.length}
+          />
+        )}
       </div>
 
       {/* Logout button */}

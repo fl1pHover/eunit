@@ -62,6 +62,7 @@ export const ProductInfo = ({
   editData,
   classnames,
   admin,
+  cateId,
   editFunc = () => {},
 }) => {
   const [selectedParent, setSelectedParent] = useState([]);
@@ -97,7 +98,12 @@ export const ProductInfo = ({
           <div className="flex flex-col w-full pl-2 text-left sm:pl-5">
             <Text fontSize={{ base: '13px', xl: '15px' }}>{title}: </Text>
             {!localData && (
-              <ProductInfoValue href={href} id={id} value={value} />
+              <ProductInfoValue
+                href={href}
+                id={id}
+                value={value}
+                cateId={cateId}
+              />
             )}
             {localData && (
               <FiltersContainer
@@ -366,6 +372,7 @@ const Product = ({ propAds }) => {
                               href={true}
                               value={p.input}
                               id={p.type}
+                              cateId={data.subCategory?._id}
                               Icon={(props) => (
                                 <BiDoorOpen
                                   {...props}
@@ -382,6 +389,7 @@ const Product = ({ propAds }) => {
                               name={p.name}
                               href={true}
                               value={p.input}
+                              cateId={data.subCategory?._id}
                               id={p.type}
                               Icon={(props) => (
                                 <IoBedOutline
@@ -399,6 +407,7 @@ const Product = ({ propAds }) => {
                               name={p.name}
                               href={true}
                               value={p.input}
+                              cateId={data.subCategory?._id}
                               id={p.type}
                               Icon={(props) => (
                                 <TbBath
@@ -412,6 +421,7 @@ const Product = ({ propAds }) => {
                           )}
                           {p.type === 'area' && (
                             <ItemContainer
+                              cateId={data.subCategory?._id}
                               lbl={p.name}
                               name={p.name}
                               href={true}
@@ -481,6 +491,7 @@ const Product = ({ propAds }) => {
                           key={i}
                           title={p.name}
                           id={p.type}
+                          cateId={data.subCategory?._id}
                           value={p.input}
                           onClick={() => getFilterByItem(p.type, p.input)}
                         />
@@ -512,6 +523,7 @@ const Product = ({ propAds }) => {
                           href={(p.isSearch || p.type == 'sellType') ?? false}
                           title={p.name}
                           id={p.type}
+                          cateId={data.subCategory?._id}
                           value={p.input}
                           onClick={() => getFilterByItem(p.type, p.input)}
                         />

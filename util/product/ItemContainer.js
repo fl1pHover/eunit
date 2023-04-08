@@ -9,6 +9,7 @@ const ItemContainer = ({
   href = false,
   value,
   id,
+  cateId
 }) => {
   return (
     <Tip lbl={lbl}>
@@ -20,7 +21,7 @@ const ItemContainer = ({
             <Link
               href={{
                 pathname: `/category/filter/${id}`,
-                query: { num: 0, value: value },
+                query: { num: 0, value: value, cateId: cateId },
               }}
             >
               <p className="text-xs cursor-pointer md:text-sm">{text}</p>

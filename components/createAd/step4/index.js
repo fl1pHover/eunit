@@ -492,9 +492,10 @@ const Step3 = ({ filter, selectedParent, setSelectedParent }) => {
                 <>
                   <Box h={4} />
                   <Input
-                    value={
+                    value={''}
+                    requirement={
                       selectedParent?.filter((s) => s.parent == f.type)[0]
-                        ?.input ?? ''
+                        ?.input == ''
                     }
                     onChange={(e) => {
                       f.input = e.target.value;

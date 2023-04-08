@@ -196,7 +196,16 @@ export default function CreateAd({ categories }) {
     // filter hooson esehiig shalgah
     let emptyAd = subCategory.steps[2].values.find((f) => f.input == '');
     if (emptyAd === undefined) {
-      await sendAd();
+      if (user && JSON.parse(user)?.status == 'active') {
+        await sendAd();
+      } else {
+        toast({
+          title: 'Та одоогоор зар илгээх боломжгүй байна.',
+          status: 'warning',
+          duration: 2000,
+          isClosable: true,
+        });
+      }
     } else {
       toast({
         title: 'Та бүх талбарыг бөглөнө үү.',

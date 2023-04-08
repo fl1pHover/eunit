@@ -33,7 +33,9 @@ const FieldPhotoUpload = ({
       return URL.createObjectURL(file);
     });
     setSelectedImages((previousImages) => [...previousImages, ...imagesArray]);
-    setImages((images) => [...images, fileUploaded[0]]);
+    Object.values(fileUploaded)?.map((f) => {
+      setImages((images) => [...images, f]);
+    });
 
     // FOR BUG IN CHROME
     event.target.value = '';

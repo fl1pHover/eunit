@@ -123,6 +123,7 @@ export const AuthProvider = ({ children }) => {
   const signup = async (email, password, username, phone) => {
     const token = getCookie('token');
     email = email.toLowerCase();
+
     if (!token) {
       setLoading(true);
       try {
@@ -133,7 +134,6 @@ export const AuthProvider = ({ children }) => {
             password,
             username,
             phone,
-            isAdmin: false,
           }
         );
 
@@ -142,7 +142,7 @@ export const AuthProvider = ({ children }) => {
         }
       } catch (err) {
         setLoading(false);
-        console.log(err);
+        console.error(err);
       }
     }
     setLoading(false);

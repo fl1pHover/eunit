@@ -23,36 +23,37 @@ const SharedAd = ({ propAds, propAllAds }) => {
   const router = useRouter();
   let dummy = [];
   const getData = async () => {
-    fetch(`${urls['test']}/ad/admin/sharing/${num}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((d) => d.json())
-      .then((d) => {
-        setAds(d);
-        setData(d);
-        let c = [],
-          s = [];
-        d?.ads?.map((ad) => {
-          if (c.length > 0) {
-            if (c.find((a) => a == ad.category.name) === undefined) {
+    if (num * 20 > ads?.ads?.length)
+      fetch(`${urls['test']}/ad/admin/sharing/${num}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((d) => d.json())
+        .then((d) => {
+          setAds(d);
+          setData(d);
+          let c = [],
+            s = [];
+          d?.ads?.map((ad) => {
+            if (c.length > 0) {
+              if (c.find((a) => a == ad.category.name) === undefined) {
+                c.push(ad.category.name);
+              }
+            } else {
               c.push(ad.category.name);
             }
-          } else {
-            c.push(ad.category.name);
-          }
-          if (s.length > 0) {
-            if (s.find((a) => a == ad.subCategory.name) === undefined) {
+            if (s.length > 0) {
+              if (s.find((a) => a == ad.subCategory.name) === undefined) {
+                s.push(ad.subCategory.name);
+              }
+            } else {
               s.push(ad.subCategory.name);
             }
-          } else {
-            s.push(ad.subCategory.name);
-          }
+          });
+          setCategories(c);
+          setSubCategory(s);
         });
-        setCategories(c);
-        setSubCategory(s);
-      });
   };
 
   useEffect(() => {

@@ -2,12 +2,12 @@ import { Text } from '@chakra-ui/react';
 import currency from 'currency.js';
 import Link from 'next/link';
 
-const ProductInfoValue = ({ href, value, id }) => {
+const ProductInfoValue = ({ href, value, id, cateId }) => {
   return href ? (
     <Link
       href={{
         pathname: `/category/filter/${id}`,
-        query: { num: 0, value: value },
+        query: { num: 0, value: value, cateId: cateId },
       }}
     >
       <Text

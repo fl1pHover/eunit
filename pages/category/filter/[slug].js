@@ -19,6 +19,7 @@ const CategoryFilter = ({ propAds }) => {
       return text.toLowerCase();
     }
   };
+
   useEffect(() => {
     setAds(propAds);
   }, [propAds]);
@@ -42,12 +43,8 @@ const CategoryFilter = ({ propAds }) => {
   );
   const mapCenter = useMemo(
     () => ({
-      lat: ads
-        ? parseFloat(ads.ads[0]?.location?.lat ?? 47.91887307876936)
-        : 47.91887307876936,
-      lng: ads
-        ? parseFloat(ads.ads[0]?.location?.lng ?? 106.91757202148438)
-        : 106.91757202148438,
+      lat: 47.91887307876936,
+      lng: 106.91757202148438,
     }),
     []
   );
@@ -93,9 +90,9 @@ export default CategoryFilter;
 export async function getServerSideProps(ctx) {
   const { params, query } = ctx;
   const { slug } = params;
-  const { num, value } = query;
+  const { num, value, cateId } = query;
   const res = await fetch(
-    `${urls['test']}/ad/filter/${slug}/${value}/${parseInt(num)}`
+    `${urls['test']}/ad/filter/${cateId}/${slug}/${value}/${parseInt(num)}`
   );
   const ads = await res.json();
   return {
