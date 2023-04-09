@@ -276,15 +276,17 @@ const UserRequest = ({ users }) => {
                               }}
                             >
                               {a.status != 'active' && (
-                                <button
-                                  onClick={() => verifyUser(a._id)}
+                                <CustomToast
+                                  // status="error"
                                   className={mergeNames(
                                     STYLES.button,
                                     'bg-teal-500 justify-center w-7 h-7 '
                                   )}
-                                >
-                                  <SiVerizon />
-                                </button>
+                                  toastH="Амжилттай нэмэгдлээ"
+                                  onclick={() => verifyUser(a._id)}
+                                  stats="error"
+                                  toastBtn={<SiVerizon />}
+                                />
                               )}
                               {a.status == 'pending' && (
                                 <button
@@ -297,15 +299,18 @@ const UserRequest = ({ users }) => {
                                   <BiEdit />
                                 </button>
                               )}
-                              <button
-                                onClick={() => banUser(a._id)}
+
+                              <CustomToast
+                                // status="error"
                                 className={mergeNames(
                                   STYLES.button,
                                   'bg-red-500 w-7 h-7 justify-center'
                                 )}
-                              >
-                                <MdDelete />
-                              </button>
+                                toastH="Амжилттай ban"
+                                onclick={() => banUser(a._id)}
+                                stats="error"
+                                toastBtn={<MdDelete />}
+                              />
                             </div>
                           </div>
                         </td>

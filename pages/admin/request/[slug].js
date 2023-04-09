@@ -2,7 +2,9 @@ import EditAd from '@/components/ad/edit';
 import FilterAd from '@/components/Profile/filterAd';
 import urls from '@/constants/api';
 import { useAuth } from '@/context/auth';
+import Tip from '@/lib/Tip';
 import { brk, STYLES } from '@/styles/index';
+import CustomToast from '@/util/customToast';
 import mergeNames from '@/util/mergeNames';
 import { Button, Checkbox, useToast } from '@chakra-ui/react';
 import axios from 'axios';
@@ -476,25 +478,31 @@ const RequestAds = ({ propAds, propAllAds }) => {
                             }}
                           >
                             {a.adStatus != 'created' && (
-                              <button
-                                onClick={() => verify(a._id)}
+                              <CustomToast
+                                // status="error"
                                 className={mergeNames(
                                   STYLES.button,
                                   'bg-teal-500 justify-center w-7 h-7 '
                                 )}
-                              >
-                                <SiVerizon />
-                              </button>
+                                toastH="Амжилттай нэмэгдлээ"
+                                onclick={() => verify(a._id)}
+                                stats="error"
+                                toastBtn={<SiVerizon />}
+                              />
                             )}
-                            <button
-                              onClick={() => deleteAd(a._id)}
+
+                            <CustomToast
+                              // status="error"
                               className={mergeNames(
                                 STYLES.button,
                                 'bg-red-500 w-7 h-7 justify-center'
                               )}
-                            >
-                              <MdDelete />
-                            </button>
+                              toastH="Амжилттай устгагдлаа"
+                              onclick={() => deleteAd(a._id)}
+                              stats="error"
+                              toastBtn={<MdDelete />}
+                            />
+
                             <EditAd
                               setData={setAds}
                               ads={ads}

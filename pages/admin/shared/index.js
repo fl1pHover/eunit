@@ -1,5 +1,6 @@
 import urls from '@/constants/api';
 import { STYLES } from '@/styles/index';
+import CustomToast from '@/util/customToast';
 import mergeNames from '@/util/mergeNames';
 import { useToast } from '@chakra-ui/react';
 import { getCookie } from 'cookies-next';
@@ -296,15 +297,17 @@ const SharedAd = ({ propAds, propAllAds }) => {
                             }}
                           >
                             {a.adStatus != 'created' && (
-                              <button
-                                onClick={() => verify(a._id)}
+                              <CustomToast
+                                // status="error"
                                 className={mergeNames(
                                   STYLES.button,
                                   'bg-teal-500 justify-center w-7 h-7 '
                                 )}
-                              >
-                                <SiVerizon />
-                              </button>
+                                toastH="Амжилттай нэмэгдлээ"
+                                onclick={() => verify(a._id)}
+                                stats="error"
+                                toastBtn={<SiVerizon />}
+                              />
                             )}
 
                             <button
@@ -316,15 +319,17 @@ const SharedAd = ({ propAds, propAllAds }) => {
                             >
                               <BiEdit />
                             </button>
-                            <button
-                              onClick={() => deleteAd(a._id)}
+                            <CustomToast
+                              // status="error"
                               className={mergeNames(
                                 STYLES.button,
                                 'bg-red-500 w-7 h-7 justify-center'
                               )}
-                            >
-                              <MdDelete />
-                            </button>
+                              toastH="Амжилттай устгагдлаа"
+                              onclick={() => deleteAd(a._id)}
+                              stats="error"
+                              toastBtn={<MdDelete />}
+                            />
                           </div>
                         </div>
                       </td>
