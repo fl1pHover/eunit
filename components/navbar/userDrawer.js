@@ -103,7 +103,7 @@ const BodyDrawer = () => {
             );
           })}
         </div>
-        <div className="w-full h-[1px] mt-[100px] mb-4 bg-gray-200 inline-block" />
+        <div className="w-full h-[1px] mt-[50px] mb-4 bg-gray-200 inline-block" />
         <div className="flex flex-col space-y-2 ">
           <Feedback />
           <button
