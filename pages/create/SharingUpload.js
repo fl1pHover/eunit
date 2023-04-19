@@ -1,8 +1,7 @@
-/* eslint-disable @next/next/no-img-element */
+import { AtomLabel } from '@/components/createAd/step3/atom';
 import React from 'react';
 import { BiX } from 'react-icons/bi';
 import { FiUploadCloud } from 'react-icons/fi';
-import { AtomLabel } from '@/components/createAd/step3/atom';
 
 const SharingUpload = ({
   label,

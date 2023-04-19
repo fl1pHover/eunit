@@ -1,4 +1,4 @@
-/* eslint-disable @next/next/no-img-element */
+
 import React from 'react';
 import { BiX } from 'react-icons/bi';
 import { FiUploadCloud } from 'react-icons/fi';
