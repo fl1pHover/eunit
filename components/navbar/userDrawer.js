@@ -1,76 +1,82 @@
-import { Image, Text, useDisclosure } from '@chakra-ui/react';
-import { useState } from 'react';
+import { Image, Text, useDisclosure } from "@chakra-ui/react";
+import { useState } from "react";
 //TODO Icons
-import { useRouter } from 'next/router';
-import mergeNames from '../../util/mergeNames';
-import { UserIcon } from './icons';
+import { useRouter } from "next/router";
+import mergeNames from "../../util/mergeNames";
+import { UserIcon } from "./icons";
 
-import { useAuth } from '@/context/auth';
-import { STYLES } from '@/styles/index';
+import { useAuth } from "@/context/auth";
+import { STYLES } from "@/styles/index";
 import {
   Drawer,
   DrawerBody,
   DrawerCloseButton,
   DrawerContent,
   DrawerOverlay,
-} from '@chakra-ui/react';
-import { getCookie } from 'cookies-next';
-import { useRef } from 'react';
-import { BsGrid } from 'react-icons/bs';
-import { CgProfile } from 'react-icons/cg';
-import { FiHeart } from 'react-icons/fi';
-import { IoWalletOutline } from 'react-icons/io5';
-import CustomModal from '@/util/CustomModal';
-import Feedback from '@/util/Feedback';
+} from "@chakra-ui/react";
+import { getCookie } from "cookies-next";
+import { useRef } from "react";
+import { BsGrid } from "react-icons/bs";
+import { CgProfile } from "react-icons/cg";
+import { FiHeart } from "react-icons/fi";
+import { IoWalletOutline } from "react-icons/io5";
+import CustomModal from "@/util/CustomModal";
+import Feedback from "@/util/Feedback";
+import { MdShare } from "react-icons/md";
 
 const drawerItem = [
   {
     icon: <CgProfile />,
-    text: 'Хувийн мэдээлэл',
-    href: 'Profile',
+    text: "Хувийн мэдээлэл",
+    href: "Profile",
   },
   {
     icon: <BsGrid />,
-    text: 'Миний зарууд',
-    href: 'MyAds',
+    text: "Миний зарууд",
+    href: "MyAds",
+  },
+  {
+    icon: <MdShare />,
+    text: "Хуваалцсан зарууд",
+    href: "Bookmark",
   },
   {
     icon: <FiHeart />,
-    text: 'Миний хүслүүд',
-    href: 'Bookmark',
+    text: "Миний хүслүүд",
+    href: "Bookmark",
   },
   {
     icon: <IoWalletOutline />,
-    text: 'Хэтэвч',
-    href: 'WalletPage',
+    text: "Хэтэвч",
+    href: "WalletPage",
   },
 ];
 
 const BodyDrawer = () => {
   const { logout } = useAuth();
   const router = useRouter();
-  const user = getCookie('user');
+  const user = getCookie("user");
 
   return (
     <DrawerBody className="flex flex-col justify-between p-0 bg-bgdark/95">
       <div
         className={mergeNames(
           STYLES.flexBetween,
-          'flex-col w-full items-center '
+          "flex-col w-full items-center "
         )}
       >
         {user && (
           <div
             className={mergeNames(
               STYLES.flexCenter,
-              'flex-col items-center text-white'
+              "flex-col items-center text-white"
             )}
           >
             <Image
               // src={user?.image}
               src={
                 JSON.parse(user)?.profileImg ??
-                'https://www.pikpng.com/pngl/m/80-805068_my-profile-icon-blank-profile-picture-circle-clipart.png'
+                "https://www.pikpng.com/pngl/m/80-805068_my-profile-icon-blank-profile-picture-circle-clipart.png"
               }
               alt="user image"
               className="w-[100px] aspect-square rounded-full bg-gray-400 object-cover mt-10"
@@ -93,7 +99,7 @@ const BodyDrawer = () => {
                 icon={d.icon}
                 onClick={() =>
                   router.push(
-                    { pathname: '/account', query: { tab: `${d.href}` } },
+                    { pathname: "/account", query: { tab: `${d.href}` } },
                     null,
                     { shallow: true }
                   )
@@ -123,9 +129,9 @@ const DownLink = ({ href, text, className, icon, onClick = () => {} }) => {
     <button
       onClick={onClick}
       className={mergeNames(
-        'px-5 py-4 transition-all ease-in-out border-2 rounded-lg h-[100px] group hover:bg-gray-100 text-mainBlossom text-bold',
+        "px-5 py-4 transition-all ease-in-out border-2 rounded-lg h-[100px] group hover:bg-gray-100 text-mainBlossom text-bold",
         STYLES.flexCenter,
-        'flex-col items-center'
+        "flex-col items-center"
       )}
     >
       {text && text?.length > 0 ? (
@@ -134,7 +140,7 @@ const DownLink = ({ href, text, className, icon, onClick = () => {} }) => {
           <Text className="font-semibold">{text}</Text>
         </>
       ) : (
-        ''
+        ""
       )}
     </button>
   );
