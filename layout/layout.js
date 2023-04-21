@@ -1,8 +1,8 @@
-import CompareSelect from '@/components/Profile/CompareSelect';
-import { useAuth } from '@/context/auth';
-import Head from 'next/head';
-import { useRouter } from 'next/router';
-import Footer from '../components/footer/index';
+import CompareSelect from "@/components/Profile/CompareSelect";
+import { useAuth } from "@/context/auth";
+import Head from "next/head";
+import { useRouter } from "next/router";
+import Footer from "../components/footer/index";
 
 const Layout = ({ children }) => {
   const { compareAds } = useAuth();
@@ -21,13 +21,13 @@ const Layout = ({ children }) => {
       >
         {children}
         {compareAds &&
-          (router?.pathname == '/' ||
-            router?.pathname == '/category' ||
-            router?.pathname == '/category/[slug]' ||
-            router?.pathname == '/account/[slug]' ||
-            (router?.pathname == '/account' &&
-              (router?.query?.tab == 'MyAds' ||
-                router?.query?.tab == 'Bookmark'))) && (
+          (router?.pathname == "/" ||
+            router?.pathname == "/category" ||
+            router?.pathname == "/category/[slug]" ||
+            router?.pathname == "/account/[slug]" ||
+            (router?.pathname == "/account" &&
+              (router?.query?.tab == "MyAds" ||
+                router?.query?.tab == "Bookmark"))) && (
             <CompareSelect btnView={false} />
           )}
       </div>

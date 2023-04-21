@@ -38,7 +38,7 @@ const drawerItem = [
   {
     icon: <MdShare />,
     text: "Хуваалцсан зарууд",
-    href: "Bookmark",
+    href: "SharedAds",
   },
   {
     icon: <FiHeart />,
