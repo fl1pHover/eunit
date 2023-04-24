@@ -1,26 +1,26 @@
-import urls from '@/constants/api';
-import { useAuth } from '@/context/auth';
-import { createAdNav } from '@/data/adminNav';
-import { NavContainer } from '@/lib/Container';
-import { STYLES } from '@/styles/index';
-import mergeNames from '@/util/mergeNames';
-import { Image } from '@chakra-ui/react';
-import axios from 'axios';
-import { getCookie } from 'cookies-next';
-import { motion } from 'framer-motion';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { Fragment, useState } from 'react';
-import { HiOutlineSearch } from 'react-icons/hi';
-import { MdOutlineClear } from 'react-icons/md';
-import { UserIcon, WhiteHeartIcon } from './icons';
-import NavCategory from './navCategory';
-import UserDrawer from './userDrawer';
+import urls from "@/constants/api";
+import { useAuth } from "@/context/auth";
+import { createAdNav } from "@/data/adminNav";
+import { NavContainer } from "@/lib/Container";
+import { STYLES } from "@/styles/index";
+import mergeNames from "@/util/mergeNames";
+import { Image } from "@chakra-ui/react";
+import axios from "axios";
+import { getCookie } from "cookies-next";
+import { motion } from "framer-motion";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { Fragment, useState } from "react";
+import { HiOutlineSearch } from "react-icons/hi";
+import { MdOutlineClear } from "react-icons/md";
+import { UserIcon, WhiteHeartIcon } from "./icons";
+import NavCategory from "./navCategory";
+import UserDrawer from "./userDrawer";
 
 const Bottom = ({ sticky }) => {
   const { user, logout, setAds } = useAuth();
   const router = useRouter();
-  const token = getCookie('token');
+  const token = getCookie("token");
   // Visible start
   const [isHoveringId, setIsHoveringId] = useState(true);
   const [activeSearch, setActiveSearch] = useState(false);
@@ -34,10 +34,10 @@ const Bottom = ({ sticky }) => {
   // Visible end
 
   // Search start
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
   const searchAds = async (value) => {
     try {
-      await fetch(`${urls['test']}/ad/search/{value}?value=${value}`)
+      await fetch(`${urls["test"]}/ad/search/{value}?value=${value}`)
         .then((d) => d.json())
         .then((d) => setAds(d));
     } catch (err) {
@@ -46,14 +46,14 @@ const Bottom = ({ sticky }) => {
   };
   const handleClear = (e) => {
     // 👇️ clear input value
-    setSearch('');
-    console.log('clear input');
+    setSearch("");
+    console.log("clear input");
   };
 
   // Search end
 
   return (
-    <div className={mergeNames('md:block hidden', 'bg-mainBlossom ')}>
+    <div className={mergeNames("md:block hidden", "bg-mainBlossom ")}>
       <NavContainer>
         <div className="flex flex-row items-center justify-center gap-10">
           <div className="flex flex-row items-center ">
@@ -82,11 +82,11 @@ const Bottom = ({ sticky }) => {
             </button>
 
             <WhiteHeartIcon
-              onClick={() => router.push('/account?tab=Bookmark')}
+              onClick={() => router.push("/account?tab=Bookmark")}
             />
 
             {user == undefined || !token ? (
-              <UserIcon text="Нэвтрэх" onClick={() => router.push('/login')} />
+              <UserIcon text="Нэвтрэх" onClick={() => router.push("/login")} />
             ) : (
               <UserDrawer />
             )}
@@ -97,7 +97,7 @@ const Bottom = ({ sticky }) => {
                   onMouseOver={() => handleMouseOver(id)}
                   onMouseOut={handleMouseOut}
                   className={mergeNames(
-                    'hover:bg-teal-700 transition-colors ease-in-out bg-teal-800'
+                    "hover:bg-teal-700 transition-colors ease-in-out bg-teal-800"
                   )}
                 >
                   <div className="h-full">
@@ -121,10 +121,10 @@ const Bottom = ({ sticky }) => {
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 className={mergeNames(
-                                  'px-2 lg:px-4 py-3 text-[10px] lg:text-sm font-medium text-white transition-colors ease-in cursor-pointer bg-teal-700/[96] hover:bg-teal-600 first-letter:uppercase whitespace-nowrap z-30',
+                                  "px-2 lg:px-4 py-3 text-[10px] lg:text-sm font-medium text-white transition-colors ease-in cursor-pointer bg-teal-700/[96] hover:bg-teal-600 first-letter:uppercase whitespace-nowrap z-30",
                                   subkey === submenu.length - 1
-                                    ? ''
-                                    : 'border-r border-blue-900/[96]'
+                                    ? ""
+                                    : "border-r border-blue-900/[96]"
                                 )}
                               >
                                 <p>{tab}</p>
@@ -156,52 +156,56 @@ const Bottom = ({ sticky }) => {
               y: 0,
               transition: {
                 stiffness: 0,
-                ease: 'easeInOut',
+                ease: "easeInOut",
                 duration: 0.3,
               },
             }}
             onMouseOver={() => setActiveSearch(true)}
             className={mergeNames(
-              'bg-blue-900/[0.96] w-full absolute left-0',
-              'py-2',
+              "bg-blue-900/[0.96] w-full absolute left-0",
+              "py-2",
               STYLES.flexCenter,
-              'items-center text-2xl text-blue-300'
+              "items-center text-2xl text-blue-300"
             )}
           >
             <div className="relative flex flex-row items-center w-2/5 h-10">
-              <HiOutlineSearch
-                onClick={async () => {
-                  try {
-                    await axios
-                      .get(`${urls['test']}/ad/search/{value}?value=${search}`)
-                      .then((d) => {
-                        setAds(d.data);
-                        router.push('/search');
-                      });
-                  } catch (error) {
-                    console.error(error);
-                  }
-                }}
-              />
+              <button className="disabled">
+                <HiOutlineSearch
+                  onClick={async () => {
+                    try {
+                      await axios
+                        .get(
+                          `${urls["test"]}/ad/search/{value}?value=${search}`
+                        )
+                        .then((d) => {
+                          setAds(d.data);
+                          router.push("/search");
+                        });
+                    } catch (error) {
+                      console.error(error);
+                    }
+                  }}
+                />
+              </button>
               <input
                 onChange={(e) => setSearch(e.target.value)}
                 type="text"
                 placeholder="Зараа хайна уу"
                 onKeyPress={(e) => {
-                  if (event.key === 'Enter') {
-                    () => func(search), console.log('Search enter press!!');
+                  if (event.key === "Enter") {
+                    () => func(search), console.log("Search enter press!!");
                   }
                 }}
                 value={search}
                 className={mergeNames(
-                  'h-full w-full ml-2 border-none rounded-md placeholder-blue-300/40 bg-mainBlossom bg-opacity-40  focus:ring-0 '
+                  "h-full w-full ml-2 border-none rounded-md placeholder-blue-300/40 bg-mainBlossom bg-opacity-40  focus:ring-0 "
                 )}
               />
               <button
                 onClick={handleClear}
                 className={mergeNames(
-                  'text-xs rounded-full p-[2px] bg-mainBlossom/80',
-                  'absolute right-2'
+                  "text-xs rounded-full p-[2px] bg-mainBlossom/80",
+                  "absolute right-2"
                 )}
               >
                 <MdOutlineClear />
