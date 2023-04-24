@@ -1,5 +1,6 @@
 import urls from '@/constants/api';
 import { STYLES } from '@/styles/index';
+import CustomToast from '@/util/customToast';
 import mergeNames from '@/util/mergeNames';
 import { Link, useToast } from '@chakra-ui/react';
 import axios from 'axios';

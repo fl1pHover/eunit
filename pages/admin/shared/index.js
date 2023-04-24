@@ -10,7 +10,6 @@ import { Fragment, useEffect, useState } from 'react';
 import { BiEdit } from 'react-icons/bi';
 import { MdDelete, MdOutlineArrowDropDownCircle } from 'react-icons/md';
 import { SiVerizon } from 'react-icons/si';
-import * as XLSX from 'xlsx';
 const SharedAd = ({ propAds, propAllAds }) => {
   const [ads, setAds] = useState([]);
 
@@ -18,48 +17,16 @@ const SharedAd = ({ propAds, propAllAds }) => {
   const [categories, setCategories] = useState([]);
   const [subCategory, setSubCategory] = useState([]);
   const [data, setData] = useState({});
-  const [checker, setChecker] = useState(false);
   const [num, setNum] = useState(0);
   const toast = useToast();
   const router = useRouter();
   let dummy = [];
-  const getData = async () => {
-    if (num * 20 > ads?.ads?.length)
-      fetch(`${urls['test']}/ad/admin/sharing/${num}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-        .then((d) => d.json())
-        .then((d) => {
-          setAds(d);
-          setData(d);
-          let c = [],
-            s = [];
-          d?.ads?.map((ad) => {
-            if (c.length > 0) {
-              if (c.find((a) => a == ad.category.name) === undefined) {
-                c.push(ad.category.name);
-              }
-            } else {
-              c.push(ad.category.name);
-            }
-            if (s.length > 0) {
-              if (s.find((a) => a == ad.subCategory.name) === undefined) {
-                s.push(ad.subCategory.name);
-              }
-            } else {
-              s.push(ad.subCategory.name);
-            }
-          });
-          setCategories(c);
-          setSubCategory(s);
-        });
-  };
 
   useEffect(() => {
-    setAds(propAds);
-    setData(propAds);
+    setAds({
+      ads: propAds.ads.slice(0, (num + 1) * 20),
+      limit: propAds.ads.slice(0, (num + 1) * 20).length,
+    });
 
     let c = [],
       s = [];
@@ -82,98 +49,30 @@ const SharedAd = ({ propAds, propAllAds }) => {
     setCategories(c);
     setSubCategory(s);
   }, [propAds]);
+
   useEffect(() => {
-    adStatusChecker();
-  }, [checker]);
-  useEffect(() => {
-    getData();
+    setAds({
+      ads: propAds.ads.slice(0, (num + 1) * 20),
+      limit: propAds.ads.slice(0, (num + 1) * 20).length,
+    });
   }, [num]);
-  const exportExcel = (data) => {
-    if (propAllAds) {
-      let { apartment, office, factory, garage, land, service } = propAllAds;
-      const apartmentSheet = XLSX.utils.json_to_sheet(apartment);
-      const officeSheet = XLSX.utils.json_to_sheet(office);
-      const factorySheet = XLSX.utils.json_to_sheet(factory);
-      const garageSheet = XLSX.utils.json_to_sheet(garage);
-      const landSheet = XLSX.utils.json_to_sheet(land);
-      const serviceSheet = XLSX.utils.json_to_sheet(service);
-      const realStateBook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(realStateBook, apartmentSheet, 'Орон сууц');
-      XLSX.utils.book_append_sheet(realStateBook, officeSheet, 'Оффис');
-      XLSX.utils.book_append_sheet(
-        realStateBook,
-        factorySheet,
-        'Үйлдвэр агуулах объект'
-      );
-      XLSX.utils.book_append_sheet(
-        realStateBook,
-        garageSheet,
-        'Гараж, контейнер, зөөврийн сууц'
-      );
-      XLSX.utils.book_append_sheet(realStateBook, landSheet, 'Газар');
-      XLSX.utils.book_append_sheet(
-        realStateBook,
-        serviceSheet,
-        'Худалдаа, үйлчилгээний талбай'
-      );
-      XLSX.writeFile(realStateBook, 'Shared.xlsx');
-    }
-  };
+  const exportExcel = (data) => {};
   const [content, setContent] = useState('');
   const [collapsedId, setCollapsed] = useState(false);
-  const adStatusChecker = async () => {
-    if (checker.pending) {
-      let ad = ads.ads.filter((p) => p.adStatus == 'pending');
-      setAds({
-        ads: ad,
-        limit: ads.limit,
-      });
-    } else {
-      if (checker.create && ads) {
-        let ad = ads.ads.filter((p) => p.adStatus == 'created');
-        setAds({
-          ads: ad,
-          limit: ads.limit,
-        });
-      } else {
-        if (checker.deleted && ads) {
-          let ad = ads.ads.filter((p) => p.adStatus == 'deleted');
-          setAds({
-            ads: ad,
-            limit: ads.limit,
-          });
-        } else {
-          if (checker.sharing && ads) {
-            let ad = ads.ads.filter((p) => p.adStatus == 'sharing');
-            setAds({
-              ads: ad,
-              limit: ads.limit,
-            });
-          } else {
-            if (checker.returned && ads) {
-              let ad = ads.ads.filter((p) => p.adStatus == 'returned');
-              setAds({
-                ads: ad,
-                limit: ads.limit,
-              });
-            } else {
-              await getData();
-            }
-          }
-        }
-      }
-    }
-  };
+
   const [expand, setExpand] = useState(0);
-  const verify = async (id) => {
+  const verify = async (id, view) => {
     try {
       await axios
-        .get(`${urls['test']}/ad/update/${id}/created`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Access-Control-Allow-Headers': '*',
-          },
-        })
+        .get(
+          `${urls['test']}/ad/update/${id}/created/${view}/{message}?message=%20`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Access-Control-Allow-Headers': '*',
+            },
+          }
+        )
         .then((d) => {
           toast({
             title: `${d?.data?.num ?? ''} Зарыг нэмлээ.`,
@@ -187,12 +86,15 @@ const SharedAd = ({ propAds, propAllAds }) => {
     }
   };
   const deleteAd = async (id) => {
-    await fetch(`${urls['test']}/ad/update/${id}/deleted`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Access-Control-Allow-Headers': '*',
-      },
-    }).then((d) => {
+    await fetch(
+      `${urls['test']}/ad/update/${id}/deleted/hide/{message}?message=%20`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Access-Control-Allow-Headers': '*',
+        },
+      }
+    ).then((d) => {
       toast({
         title: `${d?.data?.num ?? ''} Зарыг устгалаа.`,
         status: 'warning',
@@ -304,7 +206,7 @@ const SharedAd = ({ propAds, propAllAds }) => {
                                   'bg-teal-500 justify-center w-7 h-7 '
                                 )}
                                 toastH="Амжилттай нэмэгдлээ"
-                                onclick={() => verify(a._id)}
+                                onclick={() => verify(a._id, a.isView)}
                                 stats="error"
                                 toastBtn={<SiVerizon />}
                               />
@@ -338,51 +240,17 @@ const SharedAd = ({ propAds, propAllAds }) => {
                 })}
               </tbody>
             </table>
-            {propAllAds.length > 0 && (
+            {ads?.limit >= (1 + num) * 20 && (
               <ul className="flex float-right list-style-none">
                 <li className="mx-2 disabled">
                   <button
                     className={mergeNames(STYLES.notActive)}
                     onClick={() => {
-                      if (num > 0) {
-                        let n = num - 1;
-                        setNum(n);
-                      }
+                      let n = num + 1;
+                      setNum(n);
                     }}
                   >
-                    Өмнөх
-                  </button>
-                </li>
-                {[...Array(Math.ceil(propAllAds?.length / 20)).keys()].map(
-                  (l, i) => {
-                    // [...Array(Math.ceil(data.limit / n)).keys()].map((l) => {
-                    return (
-                      <li className={l == num ? 'active' : ''} key={i}>
-                        <button
-                          className={mergeNames(
-                            l == num ? STYLES.active : STYLES.notActive
-                          )}
-                          onClick={() => {
-                            setNum(l);
-                          }}
-                        >
-                          {l + 1}
-                        </button>
-                      </li>
-                    );
-                  }
-                )}
-                <li className="mx-2 disabled">
-                  <button
-                    className={mergeNames(STYLES.notActive)}
-                    onClick={() => {
-                      if (propAllAds?.length > 20) {
-                        let n = num + 1;
-                        setNum(n);
-                      }
-                    }}
-                  >
-                    Дараах
+                    more
                   </button>
                 </li>
               </ul>
@@ -413,17 +281,10 @@ export async function getServerSideProps({ req, res }) {
             Authorization: `Bearer ${token}`,
           },
         });
-        const allAds = await fetch(`${urls['test']}/ad/admin/sharing`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
         const adsJson = await ads.json();
-        const allAdsJson = await allAds.json();
         return {
           props: {
             propAds: adsJson,
-            propAllAds: allAdsJson,
           },
         };
       } else {

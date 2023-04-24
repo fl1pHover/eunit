@@ -21,7 +21,9 @@ const WalletPage = ({ user }) => {
       if (token && point.email && point.point) {
         await axios
           .get(
-            `${urls['test']}/user/point/${point.email}/${parseFloat(
+            `${
+              urls['test']
+            }/user/point/${point.email.toLowerCase()}/${parseFloat(
               point.point
             )}/default/{message}?message=${point.message}`,
             {

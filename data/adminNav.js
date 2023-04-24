@@ -8,6 +8,7 @@ export const adminNav = [
         tab: 'Үл хөдлөх',
         href: 'request/realState',
       },
+
       {
         tab: 'Тээврийн хэрэгсэл',
         href: 'request/vehicle',

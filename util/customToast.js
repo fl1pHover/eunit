@@ -1,11 +1,11 @@
-import { useToast } from "@chakra-ui/react";
-import mergeNames from "./mergeNames";
+import { useToast } from '@chakra-ui/react';
+import mergeNames from './mergeNames';
 
 const CustomToast = ({
   toastBtn,
   onclick,
   toastH,
-  toastP = "",
+  toastP = '',
   alert,
   className,
   stats,
@@ -14,7 +14,7 @@ const CustomToast = ({
 
   return (
     <button
-      className={mergeNames("flex items-center gap-1", className)}
+      className={mergeNames('flex items-center gap-1', className)}
       // onClick={() => {
       //   toast({
       //     position: 'bottom-center',
@@ -47,7 +47,7 @@ const CustomToast = ({
           duration: 2000,
           isClosable: true,
         }),
-          onclick;
+          onclick();
       }}
     >
       {toastBtn}

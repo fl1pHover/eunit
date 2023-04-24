@@ -1,21 +1,17 @@
-import EditAd from '@/components/ad/edit';
 import FilterAd from '@/components/Profile/filterAd';
 import urls from '@/constants/api';
-import { useAuth } from '@/context/auth';
-import Tip from '@/lib/Tip';
+
 import { brk, STYLES } from '@/styles/index';
 import CustomToast from '@/util/customToast';
 import mergeNames from '@/util/mergeNames';
-import { Button, Checkbox, useToast } from '@chakra-ui/react';
+import { Button, Radio, RadioGroup, useToast } from '@chakra-ui/react';
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 import { Fragment, useEffect, useState } from 'react';
-import { BiEdit } from 'react-icons/bi';
 import { MdDelete, MdOutlineArrowDropDownCircle } from 'react-icons/md';
 import { SiVerizon } from 'react-icons/si';
-import * as XLSX from 'xlsx';
 const Tab = ({ num, children }) => {
   const [activeTab, setActiveTab] = useState('');
   const handleClick = (event) => {
@@ -34,72 +30,23 @@ const Tab = ({ num, children }) => {
   );
 };
 
-const RequestAds = ({ propAds, propAllAds }) => {
+const RequestAds = ({ propAds }) => {
   const [ads, setAds] = useState({ ads: [], limit: 0 });
 
-  const { user } = useAuth();
   const token = Cookies.get('token');
   const [categories, setCategories] = useState([]);
   const [subCategory, setSubCategory] = useState([]);
-  const [data, setData] = useState({
-    ads: [],
-    limit: 0,
-  });
-  const [checker, setChecker] = useState(false);
+
   const [num, setNum] = useState(0);
   const toast = useToast();
   const router = useRouter();
   let dummy = [];
-  const getData = async () => {
-    console.log(num);
-    console.log(num * 20 >= ads?.ads?.length);
-    if (num * 20 >= ads?.ads?.length) {
-      fetch(`${urls['test']}/ad/admin/all/${num}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-        .then((d) => d.json())
-        .then((d) => {
-          let copyAds = [...ads.ads];
-          let copyData = [...data.ads];
-          setAds((prev) => ({
-            ...prev,
-            ads: copyAds.concat(d.ads),
-            limit: ads.limit + d.limit,
-          }));
-          setData((prev) => ({
-            ...prev,
-            ads: copyData.concat(d.ads),
-            limit: ads.limit + d.limit,
-          }));
-          let c = [],
-            s = [];
-          d?.ads?.map((ad) => {
-            if (c.length > 0) {
-              if (c.find((a) => a == ad.category.name) === undefined) {
-                c.push(ad.category.name);
-              }
-            } else {
-              c.push(ad.category.name);
-            }
-            if (s.length > 0) {
-              if (s.find((a) => a == ad.subCategory.name) === undefined) {
-                s.push(ad.subCategory.name);
-              }
-            } else {
-              s.push(ad.subCategory.name);
-            }
-          });
-          setCategories(c);
-          setSubCategory(s);
-        });
-    }
-  };
 
   useEffect(() => {
-    setAds(propAds);
-    setData(propAds);
+    setAds({
+      ads: propAds.ads.slice(0, (num + 1) * 20),
+      limit: propAds.ads.slice(0, (num + 1) * 20).length,
+    });
 
     let c = [],
       s = [];
@@ -122,11 +69,12 @@ const RequestAds = ({ propAds, propAllAds }) => {
     setCategories(c);
     setSubCategory(s);
   }, [propAds]);
+
   useEffect(() => {
-    adStatusChecker();
-  }, [checker]);
-  useEffect(() => {
-    getData();
+    setAds({
+      ads: propAds.ads.slice(0, (num + 1) * 20),
+      limit: propAds.ads.slice(0, (num + 1) * 20).length,
+    });
   }, [num]);
   const verify = async (id) => {
     try {
@@ -155,98 +103,32 @@ const RequestAds = ({ propAds, propAllAds }) => {
     }
   };
   const deleteAd = async (id) => {
-    await fetch(
-      `${urls['test']}/ad/update/${id}/deleted/false/{message}?message=${' '}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Access-Control-Allow-Headers': '*',
-        },
-      }
-    ).then((d) => {
-      toast({
-        title: `${d?.data?.num ?? ''} Зарыг устгалаа.`,
-        status: 'warning',
-        duration: 3000,
-        isClosable: true,
+
+    await axios
+      .get(
+        `${urls['test']}/ad/update/${id}/deleted/hide/{message}?message=%20`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Access-Control-Allow-Headers': '*',
+          },
+        }
+      )
+      .then((d) => {
+        toast({
+          title: `${d?.data?.num ?? ''} Зарыг устгалаа.`,
+          status: 'warning',
+          duration: 3000,
+          isClosable: true,
+        });
       });
-    });
   };
-  const exportExcel = (data) => {
-    if (propAllAds) {
-      let { apartment, office, factory, garage, land, service } = propAllAds;
-      const apartmentSheet = XLSX.utils.json_to_sheet(apartment);
-      const officeSheet = XLSX.utils.json_to_sheet(office);
-      const factorySheet = XLSX.utils.json_to_sheet(factory);
-      const garageSheet = XLSX.utils.json_to_sheet(garage);
-      const landSheet = XLSX.utils.json_to_sheet(land);
-      const serviceSheet = XLSX.utils.json_to_sheet(service);
-      const realStateBook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(realStateBook, apartmentSheet, 'Орон сууц');
-      XLSX.utils.book_append_sheet(realStateBook, officeSheet, 'Оффис');
-      XLSX.utils.book_append_sheet(
-        realStateBook,
-        factorySheet,
-        'Үйлдвэр агуулах объект'
-      );
-      XLSX.utils.book_append_sheet(
-        realStateBook,
-        garageSheet,
-        'Гараж, контейнер, зөөврийн сууц'
-      );
-      XLSX.utils.book_append_sheet(realStateBook, landSheet, 'Газар');
-      XLSX.utils.book_append_sheet(
-        realStateBook,
-        serviceSheet,
-        'Худалдаа, үйлчилгээний талбай'
-      );
-      XLSX.writeFile(realStateBook, 'Datas.xlsx');
-    }
-  };
+  const exportExcel = (data) => {};
   const [content, setContent] = useState('');
   const [collapsedId, setCollapsed] = useState(false);
-  const adStatusChecker = async () => {
-    if (checker.pending) {
-      let ad = ads.ads.filter((p) => p.adStatus == 'pending');
-      setAds({
-        ads: ad,
-        limit: ads.limit,
-      });
-    } else {
-      if (checker.create && ads) {
-        let ad = ads.ads.filter((p) => p.adStatus == 'created');
-        setAds({
-          ads: ad,
-          limit: ads.limit,
-        });
-      } else {
-        if (checker.deleted && ads) {
-          let ad = ads.ads.filter((p) => p.adStatus == 'deleted');
-          setAds({
-            ads: ad,
-            limit: ads.limit,
-          });
-        } else {
-          if (checker.sharing && ads) {
-            let ad = ads.ads.filter((p) => p.adStatus == 'sharing');
-            setAds({
-              ads: ad,
-              limit: ads.limit,
-            });
-          } else {
-            if (checker.returned && ads) {
-              let ad = ads.ads.filter((p) => p.adStatus == 'returned');
-              setAds({
-                ads: ad,
-                limit: ads.limit,
-              });
-            } else {
-              await getData();
-            }
-          }
-        }
-      }
-    }
+  const adStatusChecker = async (status) => {
+    let ad = propAds.ads.filter((p) => p.adStatus == status);
+    setAds({ ads: ad, limit: ad.length });
   };
   const [expand, setExpand] = useState(0);
 
@@ -310,73 +192,42 @@ const RequestAds = ({ propAds, propAllAds }) => {
                 })}
               </FilterAd>
             </div>
-            <div className="flex flex-col justify-end">
-              <Checkbox
+            <RadioGroup className="flex flex-col justify-end" defaultValue="1">
+              <Radio
                 colorScheme="green"
                 className="font-bold text-green-400 whitespace-nowrap"
                 onChange={(e) => {
-                  setChecker((prev) => ({
-                    ...prev,
-                    create: e.target.checked,
-                  }));
+                  if (e.target.checked) {
+                    adStatusChecker('created');
+                  }
                 }}
-                isChecked={checker.create}
+                value="1"
               >
                 Нэмсэн зарууд
-              </Checkbox>
-              <Checkbox
+              </Radio>
+              <Radio
                 colorScheme="yellow"
                 className="font-bold text-yellow-400 whitespace-nowrap"
-                isChecked={checker.pending}
                 onChange={(e) => {
-                  setChecker((prev) => ({
-                    ...prev,
-                    pending: e.target.checked,
-                  }));
+                  if (e.target.checked) {
+                    adStatusChecker('pending');
+                  }
                 }}
+                value="2"
               >
                 Хүлээгдэж байгаа
-              </Checkbox>
-              <Checkbox
-                colorScheme="red"
-                className="font-bold text-red-400 whitespace-nowrap"
-                isChecked={checker.deleted}
-                onChange={(e) => {
-                  setChecker((prev) => ({
-                    ...prev,
-                    deleted: e.target.checked,
-                  }));
-                }}
-              >
-                Устгасан зарууд
-              </Checkbox>
-              <Checkbox
-                colorScheme="cyan"
-                className="font-bold text-teal-400 whitespace-nowrap"
-                isChecked={checker.sharing}
-                onChange={(e) => {
-                  setChecker((prev) => ({
-                    ...prev,
-                    sharing: e.target.checked,
-                  }));
-                }}
-              >
-                Хуваалцсан зар
-              </Checkbox>
-              <Checkbox
+              </Radio>
+              <Radio
                 colorScheme="cyan"
                 className="font-bold text-primary whitespace-nowrap"
-                isChecked={checker.returned}
                 onChange={(e) => {
-                  setChecker((prev) => ({
-                    ...prev,
-                    returned: e.target.checked,
-                  }));
+                  if (e.target.checked) adStatusChecker('returned');
                 }}
+                value="3"
               >
                 Буцаагдсан зар
-              </Checkbox>
-            </div>
+              </Radio>
+            </RadioGroup>
           </div>
           <div className="w-full overflow-scroll">
             {ads?.ads && (
@@ -439,7 +290,6 @@ const RequestAds = ({ propAds, propAllAds }) => {
                           a.adStatus == 'special' && 'text-yellow-400',
                           a.adStatus == 'created' && 'text-green-500',
                           a.adStatus == 'pending' && 'text-yellow-500',
-                          a.adStatus == 'deleted' && 'text-red-400',
                           a.adStatus == 'default' && 'text-primary'
                         )}
                       >
@@ -503,7 +353,7 @@ const RequestAds = ({ propAds, propAllAds }) => {
                               toastBtn={<MdDelete />}
                             />
 
-                            <EditAd
+                            {/* <EditAd
                               setData={setAds}
                               ads={ads}
                               data={a}
@@ -522,7 +372,7 @@ const RequestAds = ({ propAds, propAllAds }) => {
                               }}
                             >
                               <BiEdit />
-                            </EditAd>
+                            </EditAd> */}
                           </div>
                         </div>
                       </td>
@@ -531,7 +381,8 @@ const RequestAds = ({ propAds, propAllAds }) => {
                 })}
               </tbody>
             </table>
-            {propAllAds?.limit >= num * 20 && (
+
+            {ads?.limit >= (1 + num) * 20 && (
               <ul className="flex float-right list-style-none">
                 <li className="mx-2 disabled">
                   <button
@@ -572,17 +423,12 @@ export async function getServerSideProps({ req, res }) {
             Authorization: `Bearer ${token}`,
           },
         });
-        const allAds = await fetch(`${urls['test']}/ad/admin/all`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+
         const adsJson = await ads.json();
-        const allAdsJson = await allAds.json();
+
         return {
           props: {
             propAds: adsJson,
-            propAllAds: allAdsJson,
           },
         };
       } else {
