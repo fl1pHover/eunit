@@ -1,5 +1,6 @@
 import { STYLES } from '@/styles/index';
 import mergeNames from '@/util/mergeNames';
+import { Suspense } from 'react';
 import { BiUser } from 'react-icons/bi';
 import { BsGrid1X2 } from 'react-icons/bs';
 import { FiHeart } from 'react-icons/fi';
@@ -20,7 +21,25 @@ const DashStatus = ({ agent, username, phone, ads, marks }) => {
       <div className={mergeNames(STYLES.flexBetween, 'w-full')}>
         <div>
           <p className="font-bold">Хэрэглэгч</p>
-          <p className="">{agent}</p>
+          <Suspense fallback={<p>loading</p>}>
+            <p
+              className={`text-${
+                agent.status == 'pending'
+                  ? 'yellow'
+                  : agent.status == 'active'
+                  ? 'green'
+                  : 'red'
+              }-400`}
+            >
+              {agent?.userType == 'default'
+                ? 'Энгийн'
+                : agent?.userType == 'agent'
+                ? 'Агент'
+                : agent?.userType == 'orgazation'
+                ? 'Байгууллага'
+                : agent?.userType}
+            </p>{' '}
+          </Suspense>
         </div>
         <div>
           <p className="font-bold">Утас</p>

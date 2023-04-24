@@ -1,48 +1,49 @@
-import { Center, ChakraProvider } from '@chakra-ui/react';
+import { ChakraProvider } from '@chakra-ui/react';
 import { AuthProvider, useAuth } from 'context/auth';
 import { AnimatePresence } from 'framer-motion';
-import Head from 'next/head';
 import { useState } from 'react';
-import PulseLoader from 'react-spinners/PulseLoader';
 
-import Navbar from '@/components/navbar/index';
+import Navbar from '@/components/navbar';
 import Layout from '@/layout/layout';
+import { MainLoader } from '@/lib/Loader';
 import ScrollTop from '@/lib/ScrollTop';
 import theme from '@/lib/theme';
 import '@/styles/globals.scss';
+import Router from 'next/router';
+import { useRouter } from 'next/router';
+import AdminBar from '@/components/admin/AdminBar';
 
 function MyApp({ Component, pageProps }) {
-  let { loading } = useAuth();
-  let [color, setColor] = useState('#1d1e44');
-  let [category, setCategory] = useState();
+  let [isLoading, setIsLoading] = useState(false);
+
+  const handleStart = (url) => setIsLoading(true);
+  const handleComplete = (url) => {
+    setIsLoading(false);
+  };
+  const router = useRouter();
+  Router.events.on('routeChangeStart', handleStart);
+  Router.events.on('routeChangeComplete', handleComplete);
+  Router.events.on('routeChangeError', handleComplete);
 
   return (
     <AuthProvider>
-      {!loading ? (
-        <ChakraProvider theme={theme}>
-          <AnimatePresence>
-            <Layout>
+      <ChakraProvider theme={theme}>
+        <AnimatePresence>
+          <Layout>
+            {isLoading && <MainLoader />}
+            {/* <p>{JSON.stringify(Router)}</p> */}
+            {router?.pathname.substring(0, 6) == '/admin' ? (
+              <AdminBar />
+            ) : (
               <Navbar />
-              <Component {...pageProps} />
-              <ScrollTop />
-            </Layout>
-          </AnimatePresence>
-        </ChakraProvider>
-      ) : (
-        <Center width={'100vw'} height="100vh" className="loader">
-          <Head>
-            <title>BOM</title>
-            <meta name="description" content="Bom, zariin site" />
-            {/* <link rel="icon" href="/favicon.ico" /> */}
-          </Head>
-          <PulseLoader color={color} loading={loading} size={30} />
-        </Center>
-      )}
-    </AuthProvider>
+            )}
 
-    //           </>
-    //      )}
-    // </>
+            <Component {...pageProps} />
+            <ScrollTop />
+          </Layout>
+        </AnimatePresence>
+      </ChakraProvider>
+    </AuthProvider>
   );
 }
 

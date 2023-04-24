@@ -5,12 +5,14 @@ import mergeNames from '@/util/mergeNames';
 import { useRouter } from 'next/router';
 
 import Footer from '@/components/footer/index';
-import { useAuth } from '@/context/auth';
+import { categories } from '@/data/categories';
 import { AiOutlineCar } from 'react-icons/ai';
 import { BsBuilding, BsPhone } from 'react-icons/bs';
 import { CgSmartHomeWashMachine } from 'react-icons/cg';
 import { MdComputer } from 'react-icons/md';
 import { RiHomeSmile2Line } from 'react-icons/ri';
+import { FiSmartphone } from 'react-icons/fi';
+import { IoPhonePortraitOutline } from 'react-icons/io5';
 
 const Icon = ({ id, ...props }) => {
   switch (id) {
@@ -21,7 +23,7 @@ const Icon = ({ id, ...props }) => {
     case 'computer':
       return <MdComputer {...props} />;
     case 'phone':
-      return <BsPhone {...props} />;
+      return <IoPhonePortraitOutline {...props} />;
     case 'electronic':
       return <CgSmartHomeWashMachine {...props} />;
     case 'household-items':
@@ -36,7 +38,7 @@ const SideMenu = ({
   closeNav = () => {},
   openNav = () => {},
 }) => {
-  const { categories } = useAuth();
+  // const { categories } = useAuth();
   const router = useRouter();
   const [collapsedId, setCollapsed] = React.useState(false);
   return (
@@ -56,23 +58,24 @@ const SideMenu = ({
           'absolute z-50',
           show ? 'translate-x-0' : 'translate-x-0',
           'transition-all ease-in-out duration-300',
-          'left right-0 top-0 bottom-0 h-screen'
+          'left right-0 top-0 bottom-0 h-screen '
         )}
       >
-        <div className="flex flex-col items-end h-screen overflow-y-scroll">
-          <div className="w-3/4 bg-slate-100 h-screen">
+        <div className="static z-50 flex flex-col items-end h-screen overflow-y-scroll">
+          <div className="w-3/4 h-screen bg-slate-100">
             <div
               className={mergeNames(
                 'flex justify-between items-center bg-mainBlossom/100 py-4 w-full px-6'
               )}
             >
-              <p className="text-slate-50 font-semibold text-base">Ангилал</p>
+              <p className="text-base font-semibold text-slate-50">Ангилал</p>
               <button onClick={closeNav}>
                 <CgClose size={30} className="text-slate-50" />
               </button>
             </div>
             <div>
-              {categories?.map((item, key) => {
+              {/* {categories?.map((item, key) => { */}
+              {categories.map((item, key) => {
                 return (
                   <div className="w-full" key={key}>
                     <button
@@ -89,13 +92,13 @@ const SideMenu = ({
                         'w-full flex flex-row items-center justify-between'
                       )}
                     >
-                      <div className="flex flex-row gap-2 items-center">
+                      <div className="flex flex-row items-center gap-2">
                         <Icon
                           size={16}
                           id={item?.id}
                           className="text-blue-900"
                         />
-                        <p className="font-semibold sm:text-base text-sm">
+                        <p className="text-sm font-semibold sm:text-base">
                           {item?.categoryName}
                         </p>
                       </div>
@@ -117,13 +120,13 @@ const SideMenu = ({
                           return (
                             <button
                               onClick={() => {
-                                router.push(`/category/${item.id}/${href}`);
+                                router.push(`/category/${href}`);
                                 closeNav();
                               }}
                               key={key}
                               className="w-full py-3 pl-3 pr-3 border-b border-gray-300 hover:bg-gray-300"
                             >
-                              <p className="text-xs sm:text-sm text-gray-900 font-medium text-left">
+                              <p className="text-xs font-medium text-left text-gray-900 sm:text-sm">
                                 {category}
                               </p>
                             </button>

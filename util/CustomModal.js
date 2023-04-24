@@ -6,8 +6,8 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  useDisclosure,
 } from '@chakra-ui/react';
+import { useState } from 'react';
 
 function CustomModal({
   children,
@@ -16,15 +16,18 @@ function CustomModal({
   btnClose2,
   btnOpen,
   alert,
+  isOpen,
+  onOpen,
+  onClose,
   func,
+  onclick,
 }) {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
+  const [scrollBehavior, setScrollBehavior] = useState('inside');
   return (
     <>
       <button
         onClick={onOpen}
-        className="flex items-center gap-1 px-4 py-2 text-white bg-blue-500 rounded-full"
+        className="flex items-center gap-1 px-2 py-2 text-white bg-blue-500 rounded-full"
       >
         {btnOpen}
       </button>
@@ -32,8 +35,9 @@ function CustomModal({
         onClose={onClose}
         isOpen={isOpen}
         isCentered
-        size={{ base: 'sm', sm: 'xl', md: '2xl', lg: '4xl' }}
+        size={{ base: 'sm', sm: 'xl', md: '2xl', lg: '6xl', xl: '6xl' }}
         className="overflow-hidden "
+        scrollBehavior={scrollBehavior}
       >
         <ModalOverlay />
         <ModalContent>
@@ -49,7 +53,8 @@ function CustomModal({
             <div onClick={(onClose, alert)}>
               <button
                 className="px-4 py-2 text-white bg-green-400 rounded-full"
-                onClick={async () => await func()}
+                // onClick={async () => await func()}
+                onClick={onclick}
               >
                 {btnClose}
               </button>

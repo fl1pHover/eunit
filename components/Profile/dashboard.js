@@ -2,8 +2,8 @@ import { useAuth } from '@/context/auth';
 import { STYLES } from '@/styles/index';
 import mergeNames from '@/util/mergeNames';
 import { Center, Flex, Image } from '@chakra-ui/react';
+import { getCookie } from 'cookies-next';
 import { useState } from 'react';
-import { AiOutlineEdit } from 'react-icons/ai';
 import { FiLogOut } from 'react-icons/fi';
 import DashStatus from './dashStatus';
 
@@ -12,10 +12,13 @@ import DashStatus from './dashStatus';
 
 const Dashboard = () => {
   const [isDisabled, setIsDisabled] = useState(false);
-  const { user, logout } = useAuth();
+  const { logout } = useAuth();
+  const user = getCookie('user');
+  const bookmark = getCookie('bookmarks');
   const handleClick = () => {
     setIsDisabled(!isDisabled);
   };
+  console.log(bookmark);
   return (
     <div
       className={mergeNames(
@@ -28,32 +31,31 @@ const Dashboard = () => {
       <div className={mergeNames(STYLES.flexBetween, 'flex-col w-full')}>
         <Center flexDirection={'column'}>
           <Image
-            src="https://www.w3schools.com/howto/img_avatar2.png"
+            src={
+              user?.profileImg ??
+              'https://www.pikpng.com/pngl/m/80-805068_my-profile-icon-blank-profile-picture-circle-clipart.png'
+            }
             className="w-[100px] aspect-square rounded-full object-cover"
             alt="profile "
           />
         </Center>
 
-        <button
+        {/* <button
           onClick={handleClick}
           disabled
           className="absolute cursor-pointer top-2 right-2 p-2 text-[20px] text-white bg-teal-600 rounded-[10px]"
         >
           <AiOutlineEdit />
-        </button>
-        <DashStatus
-          agent={
-            user?.userType == 'default'
-              ? 'Энгийн'
-              : user?.userType == 'agent'
-              ? 'Агент'
-              : 'Байгууллага'
-          }
-          phone={user?.phone}
-          username={user?.username}
-          ads={user?.ads?.length}
-          marks={user?.bookmarks?.length}
-        />
+        </button> */}
+        {user && (
+          <DashStatus
+            agent={JSON.parse(user)}
+            phone={JSON.parse(user)?.phone}
+            username={JSON.parse(user)?.username}
+            ads={JSON.parse(user)?.ads?.length}
+            marks={JSON.parse(bookmark)?.length}
+          />
+        )}
       </div>
 
       {/* Logout button */}

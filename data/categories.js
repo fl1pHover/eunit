@@ -1,6 +1,7 @@
 import { AiOutlineCar } from 'react-icons/ai';
-import { BsBuilding, BsPhone } from 'react-icons/bs';
+import { BsBuilding } from 'react-icons/bs';
 import { CgSmartHomeWashMachine } from 'react-icons/cg';
+import { IoPhonePortraitOutline } from 'react-icons/io5';
 import { MdComputer } from 'react-icons/md';
 import { RiHomeSmile2Line } from 'react-icons/ri';
 
@@ -10,7 +11,7 @@ export const categories = [
     categoryName: 'Үл хөдлөх',
     icon: ({ size, className = '' }) => <BsBuilding {...{ size, className }} />,
     id: 'realState',
-    itemCount: '105',
+
     submenu: [
       {
         category: 'Орон сууц',
@@ -47,13 +48,13 @@ export const categories = [
     ],
   },
   {
-    image: '/images/category/vehicle.jpg',
+    image: '/images/Category/vehicle.jpg',
     icon: ({ size, className = '' }) => (
       <AiOutlineCar {...{ size, className }} />
     ),
     categoryName: 'Тээврийн хэрэгсэл',
     id: 'vehicle',
-    itemCount: '105',
+
     submenu: [
       {
         category: 'Автомашин',
@@ -70,11 +71,11 @@ export const categories = [
     ],
   },
   {
-    image: '/images/category/computer.jpg',
+    image: '/images/Category/computer.jpg',
     icon: ({ size, className = '' }) => <MdComputer {...{ size, className }} />,
     categoryName: 'Компьютер',
     id: 'computer',
-    itemCount: '105',
+
     submenu: [
       {
         category: 'Суурин компьютер',
@@ -87,11 +88,13 @@ export const categories = [
     ],
   },
   {
-    image: '/images/category/phone.jpg',
-    icon: () => <BsPhone />,
+    image: '/images/Category/phone.jpg',
+    icon: ({ size, className = '' }) => (
+      <IoPhonePortraitOutline {...{ size, className }} />
+    ),
     categoryName: 'Гар утас',
     id: 'phone',
-    itemCount: '105',
+
     submenu: [
       {
         category: 'Ухаалаг утас',
@@ -102,38 +105,38 @@ export const categories = [
         href: 'tab',
       },
       {
-        category: 'дагалдах хэрэгсэл',
+        category: 'Дагалдах хэрэгсэл',
         href: 'accessories',
       },
     ],
   },
   {
-    image: '/images/category/electronics.jpg',
+    image: '/images/Category/electronics.jpg',
     icon: ({ size, className = '' }) => (
       <CgSmartHomeWashMachine {...{ size, className }} />
     ),
     categoryName: 'Цахилгаан бараа',
     id: 'electronic',
-    itemCount: '105',
+
     submenu: [
       {
-        category: 'дагалдах хэрэгсэл',
+        category: 'Дагалдах хэрэгсэл',
         href: 'accessories',
       },
     ],
   },
   {
-    image: '/images/category/householditems.jpg',
+    image: '/images/Category/householdItems.jpg',
     icon: ({ size, className = '' }) => (
       <RiHomeSmile2Line {...{ size, className }} />
     ),
 
     categoryName: 'Гэр ахуйн бараа',
     id: 'household-items',
-    itemCount: '105',
+
     submenu: [
       {
-        category: 'дагалдах хэрэгсэл',
+        category: 'Дагалдах хэрэгсэл',
         href: 'accessories',
       },
     ],

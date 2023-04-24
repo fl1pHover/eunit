@@ -4,11 +4,12 @@ import Line from '@/components/createAd/formLine';
 const FieldSubCategory = ({
   types = {},
   localCategory,
+  setSelectedParent,
   setTypes = () => {},
 }) => {
   return (
     <>
-      <div className="flex flex-wrap md:gap-4 gap-1 md:px-10 justify-center mb-6">
+      <div className="flex flex-wrap justify-center gap-1 mb-6 md:gap-4 md:px-10">
         {localCategory?.map((item, key) => {
           const isSelected = types.subCategoryId === item.href;
           return (
@@ -16,12 +17,13 @@ const FieldSubCategory = ({
               key={key}
               isSelected={isSelected}
               text={item?.name ?? item?.category}
-              onClick={() =>
+              onClick={() => {
+                setSelectedParent([]);
                 setTypes((prev) => ({
                   ...prev,
                   subCategoryId: item.href,
-                }))
-              }
+                }));
+              }}
             />
           );
         })}

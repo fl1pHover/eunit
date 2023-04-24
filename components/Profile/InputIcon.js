@@ -1,6 +1,6 @@
+import { BiExpandAlt } from 'react-icons/bi';
 import { FaRegUser } from 'react-icons/fa';
 import { FiPhone } from 'react-icons/fi';
-import { IoExpand } from 'react-icons/io';
 import { MdDateRange, MdEmail } from 'react-icons/md';
 import { RiVipCrown2Line } from 'react-icons/ri';
 import { RxLayers } from 'react-icons/rx';
@@ -24,7 +24,8 @@ const InputIcon = ({ href, ...props }) => {
     case 'floor':
       return <RxLayers {...props} />;
     case 'square':
-      return <IoExpand {...props} />;
+      return <BiExpandAlt {...props} />;
+    // return <IoExpand {...props} />;
     default:
       return <></>;
   }

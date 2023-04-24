@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 const Text = (props) => (
   <p className="text-lg font-semibold text-gray-700 md:text-2xl">
@@ -6,7 +6,7 @@ const Text = (props) => (
   </p>
 );
 
-const FormLabel = ({ num = "", title = "", req = true }) => {
+const FormLabel = ({ num = '', title = '', req = false }) => {
   return (
     <div className="text-center flex flex-row items-center justify-center space-x-1 pb-[16px] md:pb-[20px]">
       {num && (
@@ -22,7 +22,7 @@ const FormLabel = ({ num = "", title = "", req = true }) => {
 
 export default FormLabel;
 
-export const LilFormLabel = ({ num = "", title = "", req = true }) => {
+export const LilFormLabel = ({ num = '', title = '', req = true }) => {
   return (
     <div className="text-center flex flex-row items-center justify-center space-x-1 pb-[16px] md:pb-[10px]">
       {num && (

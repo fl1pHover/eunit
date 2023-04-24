@@ -10,8 +10,8 @@ import {
   Flex,
   Heading,
   Input,
-  Link,
-  Select,
+  Radio,
+  RadioGroup,
   Text,
   useDisclosure,
   VStack,
@@ -20,88 +20,83 @@ import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import urls from '../../constants/api';
 import { useAuth } from '../../context/auth';
-// import Select from '@/lib/Select';
+import Select from '@/lib/Select';
+import { categories } from '@/data/categories';
 import { STYLES } from '@/styles/index';
 import mergeNames from '@/util/mergeNames';
+import { useRouter } from 'next/router';
 import { MdFilterList } from 'react-icons/md';
 import FilterStack from '../../util/filterStack';
 
-const FilterLayout = ({ data, isOpenMap }) => {
-  const [filter, setFilter] = useState();
-  const { districts, locations, categories, setAds } = useAuth();
+const FilterLayout = ({ data, isOpenMap, setDefaultAds, setSpecialAds }) => {
+  const { setAds } = useAuth();
   const [subCategory, setSubCategory] = useState();
-
-  const [positions, setPositions] = useState({
-    district_id: '',
-    location_id: '',
-  });
-  const [adType, setAdType] = useState({
-    rent: false,
-    sell: true,
-  });
+  const router = useRouter();
+  const [value, setValue] = useState('');
+  const [adType, setAdType] = useState([0]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef();
-  useEffect(() => {
-    if (data) {
-      try {
-        axios
-          .get(`${urls['test']}/category/filters/${data}/true`, {})
-          .then((d) => {
-            setSubCategory(d.data?.subCategory);
-            setFilter(d.data?.filters);
-          });
-      } catch (e) {
-        console.log(e);
-      }
-    }
-  }, [data]);
-  const filterAd = async () => {
+  const [selectedParent, setSelectedParent] = useState([]);
+  const getItems = async (data) => {
     try {
-      let types = [];
-      if (adType.rent) {
-        types.push('rent');
-      }
-      if (adType.sell) types.push('sell');
-
-      axios
-        .post(`${urls['test']}/ad/filter`, {
-          filters: filter,
-          adTypes: types,
-          positions: positions,
-          subCategory: subCategory._id,
-        })
+      await axios
+        .get(`${urls['test']}/category/filters/${data}/true`, {})
         .then((d) => {
-          setAds(d.data);
-          console.log(d.data);
+          setSubCategory(d.data);
         });
     } catch (e) {
       console.log(e);
     }
   };
-  const setFilters = (id, e, isMaxValue) => {
-    e.preventDefault();
-
-    filter.map((f, i) => {
-      if (f.id == id) {
-        if (f.values.length == 0) {
-          if (isMaxValue) {
-            f.maxValue = e.target.value;
-          } else {
-            f.value = e.target.value;
-          }
-        } else {
-          f.value = e.target.value;
+  useEffect(() => {
+    if (data) {
+      getItems(data);
+      setValue(data);
+    }
+  }, [data]);
+  const filterAd = async () => {
+    try {
+      let types = [];
+      adType.map((a) => {
+        switch (a) {
+          case 0:
+            types.push('Зарах');
+            break;
+          case 1:
+            types.push('Түрээслэх');
+            break;
+          case 2:
+            types.push('Зарах, түрээслэх');
+            break;
         }
+      });
+
+      let filter = subCategory.filters.filter((f, i) => f.input != '');
+      try {
+        axios
+          .post(`${urls['test']}/ad/filter`, {
+            filters: filter,
+            adTypes: types,
+            subCategory: subCategory._id,
+          })
+          .then((d) => {
+            setDefaultAds(d.data?.ads?.filter((f) => f.adType == 'default'));
+            setSpecialAds(d.data?.ads?.filter((f) => f.adType == 'special'));
+            console.log(d.data);
+          });
+      } catch (error) {
+        console.error(error);
       }
-    });
-    console.log(filter);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
     <>
       <button
         ref={btnRef}
-        colorscheme="teal"
+        color="teal"
         onClick={onOpen}
         className={mergeNames(
           ' bg-blue-600 rounded-md text-white font-bold h-[50px]',
@@ -136,52 +131,64 @@ const FilterLayout = ({ data, isOpenMap }) => {
               </Heading>
               {categories?.map((c, i) => {
                 return (
-                  <div key={i}>
-                    {c.subCategory.map(({ href, name }, id) => {
-                      return (
-                        <Link
-                          key={id}
-                          href={`/category/${href}`}
-                          p="2px"
-                          mt={0}
-                          fontWeight={data == href ? 'bold' : 'medium'}
-                        >
-                          <Text>{name}</Text>
-                        </Link>
-                      );
-                    })}
-                  </div>
+                  <RadioGroup
+                    onChange={setValue}
+                    value={value}
+                    key={i}
+                    className="flex flex-col gap-2"
+                  >
+                    {(router?.query?.slug == c.id ||
+                      c.submenu.findIndex(
+                        (s) => s.href == router?.query?.slug
+                      ) > -1) &&
+                      c.submenu.map(({ href, category }, id) => {
+                        return (
+                          <Radio
+                            value={href}
+                            key={id}
+                            onChange={(e) => {
+                              getItems(e.target.value);
+                            }}
+                            _selected={{ font: 'bold' }}
+                          >
+                            <Text>{category}</Text>
+                          </Radio>
+                        );
+                      })}
+                  </RadioGroup>
                 );
               })}
             </FilterStack>
 
             <FilterStack>
               <Heading variant={'smallHeading'} mb={2}>
-                Зарах & Түрээслүүлэх
+                Борлуулах төрөл
               </Heading>
-              <Checkbox
-                borderColor={'mainBlue'}
-                defaultChecked
-                onChange={(e) =>
-                  setAdType((adType) => ({ ...adType, sell: e.target.checked }))
-                }
-              >
-                Зарна.
-              </Checkbox>
-              <Checkbox
-                onChange={(e) =>
-                  setAdType((adType) => ({ ...adType, rent: e.target.checked }))
-                }
-              >
-                Түрээслүүлнэ
-              </Checkbox>
+              {['Зарна', 'Түрээслэнэ', 'Зарах & түрээслэнэ'].map((s, i) => {
+                return (
+                  <Checkbox
+                    key={i}
+                    borderColor={'mainBlue'}
+                    defaultChecked={adType.find((a) => a == i) != undefined}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setAdType((prev) => [...prev, i]);
+                      } else {
+                        setAdType(adType.filter((a) => a != i));
+                      }
+                    }}
+                  >
+                    {s}.
+                  </Checkbox>
+                );
+              })}
             </FilterStack>
             <FilterStack>
               <Heading variant={'smallHeading'} mb={2}>
                 Байршлаар
               </Heading>
 
-              <button className="relative z-10 w-full h-32 overflow-hidden border-2 border-gray-200 rounded-2xl">
+              <button className="relative z-10 w-full h-32 overflow-hidden border-g ray-200 border-1 rounded-2xl">
                 {/* end map gargana */}
                 <div onClick={isOpenMap} className="relative z-0 h-full" />
                 <iframe
@@ -194,77 +201,94 @@ const FilterLayout = ({ data, isOpenMap }) => {
 
             <FilterStack borderBottom={'2px solid '} borderColor="bgGrey">
               <Heading variant={'smallHeading'}>Нэмэлт хайлт</Heading>
-              {/* <Select></Select> */}
-              <Select
-                placeholder={'Дүүрэг'}
-                className="border-2 border-blue-400 rounded-2xl text-[14px]"
-                onChange={(e) =>
-                  setPositions((positions) => ({
-                    ...positions,
-                    district_id: e.target.value,
-                  }))
-                }
-              >
-                {districts?.map((item, i) => {
-                  return (
-                    <option key={i} value={item._id}>
-                      {item.name}
-                    </option>
-                  );
-                })}
-              </Select>
-              {positions.district_id && (
-                <Select
-                  placeholder={'Байршил'}
-                  className="border-2 border-blue-400 rounded-2xl"
-                  onChange={(e) =>
-                    setPositions((positions) => ({
-                      ...positions,
-                      location_id: e.target.value,
-                    }))
-                  }
-                >
-                  {locations?.map((item, i) => {
-                    if (positions.district_id == item.district_id)
-                      return (
-                        <option key={i} value={item._id}>
-                          {item.name}
-                        </option>
-                      );
-                  })}
-                </Select>
-              )}
-              {filter?.map((f, i) => {
-                return f.values.length == 0 ? (
+
+              {subCategory?.filters?.map((f, i) => {
+                return f.value.length == 0 ? (
                   <VStack flex key={i}>
                     <Heading variant={'smallHeading'}>{f.name}</Heading>
                     <Flex alignItems={'center'} gap={2}>
                       <Input
                         type="number"
                         placeholder="Доод"
-                        className="border-2 border-blue-400 rounded-2xl"
-                        onChange={(e) => setFilters(f.id, e, false)}
+                        className="border-blue-400 rounded-full lue-400 border-1"
+                        onChange={(e) => (f.input = e.target.value)}
                       />
                       <Text>-</Text>
                       <Input
                         type="number"
                         placeholder="Дээд"
-                        className="border-2 border-blue-400 rounded-2xl focus:outline-none"
-                        onChange={(e) => setFilters(f.id, e, true)}
+                        className="border-blue-400 rounded-full lue-400 border-1 focus:outline-none"
+                        onChange={(e) => (f.max = e.target.value)}
                       />
                     </Flex>
                   </VStack>
                 ) : (
                   <Select
+                    requirement={false}
+                    label={f.name}
+                    width="large"
+                    data={
+                      selectedParent.find((d) => d.parent == f.parentId) !=
+                      undefined
+                        ? f.value.filter((fv) => {
+                            let parent = selectedParent.find(
+                              (s) =>
+                                (s.id == fv.parentId &&
+                                  fv.parent == s.parent) ||
+                                fv.id == 'other'
+                            );
+                            if (parent != undefined) return fv;
+                          })
+                        : f.value
+                    }
                     key={i}
-                    placeholder={f.name}
-                    className="border-2 border-blue-400 rounded-2xl"
-                    onChange={(e) => setFilters(f.id, e, true)}
-                  >
-                    {f.values.map((item, i) => {
+                    Item={({ data, onClick, id, ...props }) => {
                       return (
-                        <option key={i} value={item}>
-                          {item}
+                        <button
+                          {...props}
+                          onClick={() => {
+                            f.input = data;
+                            let isNull = selectedParent.findIndex(
+                              (s) => s.parent == f.type
+                            );
+
+                            if (isNull > -1) {
+                              let selectedArr = [...selectedParent];
+
+                              selectedArr[isNull] = {
+                                id,
+                                parent: f.type,
+                                name: f.name,
+                                input: data,
+                                index: i,
+                              };
+                              setSelectedParent(selectedArr);
+                            } else {
+                              setSelectedParent([
+                                ...selectedParent,
+                                {
+                                  id: id,
+                                  parent: f.type,
+                                  index: i,
+                                  input: data,
+                                  name: f.name,
+                                },
+                              ]);
+                            }
+                            onClick();
+                          }}
+                        >
+                          {data}
+                          {props.children}
+                        </button>
+                      );
+                    }}
+                    placeholder={f.name}
+                  >
+                    {f.value.map((item, i) => {
+                      return (
+                        <option key={i} value={item.value}>
+                          {item.value}
                         </option>
                       );
                     })}

@@ -61,7 +61,7 @@ const CalcInput = ({
 };
 
 function ECalculator({ data }) {
-  const [price, setPrice] = useState(parseInt(data[0]?.value ?? 0));
+  const [price, setPrice] = useState(parseInt(data));
 
   // Zeeliin hemjee
   const [principal, setPrincipal] = useState(0);
@@ -91,6 +91,11 @@ function ECalculator({ data }) {
 
   const handlePayChange = (event) => {
     setPay(event);
+    if (price) {
+      if (price - event > 0) {
+        setPrincipal(price - event);
+      }
+    }
   };
 
   const handleInterestchange = (event) => {
@@ -148,20 +153,20 @@ function ECalculator({ data }) {
             )}
           />
         </button>
-        <Flex gap={4}>
+        {/* <Flex gap={4}>
           <Heading
             variant={'smallHeading'}
             className="text-blue-700 underline cursor-pointer"
           >
             Задаргаа
           </Heading>
-        </Flex>
+        </Flex> */}
       </div>
       <Divider />
       <div
         className={mergeNames(
-          'grid-cols-1 gap-3 lg:grid-cols-2 lg:gap-10 transition-all duration-500',
-          expand ? 'grid' : 'hidden'
+          'grid-cols-1 gap-3 lg:grid-cols-2 overflow-hidden lg:gap-10 transition-all duration-500 ease-in-out',
+          expand ? 'grid h-auto' : 'grid h-0 '
         )}
       >
         <div>

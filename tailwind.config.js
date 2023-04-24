@@ -14,6 +14,9 @@ module.exports = {
       transitionProperty: {
         width: 'width',
       },
+      aspectRatio: {
+        '4/3': '4 / 3',
+      },
       screens: {
         xs: '475px',
         '3xl': '1800px',
@@ -39,5 +42,5 @@ module.exports = {
       },
     },
   },
-  plugins: [require('flowbite/plugin')],
+  plugins: [require('flowbite/plugin'), require('@tailwindcss/line-clamp')],
 };

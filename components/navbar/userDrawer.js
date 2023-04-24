@@ -1,72 +1,94 @@
-import { Image, Text, useDisclosure } from '@chakra-ui/react';
-import { useState } from 'react';
-
+import { Image, Text, useDisclosure } from "@chakra-ui/react";
+import { useState } from "react";
 //TODO Icons
-import { useRouter } from 'next/router';
-import mergeNames from '../../util/mergeNames';
-import { UserIcon } from './icons';
+import { useRouter } from "next/router";
+import mergeNames from "../../util/mergeNames";
+import { UserIcon } from "./icons";
 
-import { useAuth } from '@/context/auth';
-import { STYLES } from '@/styles/index';
+import { useAuth } from "@/context/auth";
+import { STYLES } from "@/styles/index";
 import {
   Drawer,
   DrawerBody,
   DrawerCloseButton,
   DrawerContent,
   DrawerOverlay,
-} from '@chakra-ui/react';
-import { useRef } from 'react';
-import { BsGrid } from 'react-icons/bs';
-import { CgProfile } from 'react-icons/cg';
-import { FiHeart } from 'react-icons/fi';
-import { IoWalletOutline } from 'react-icons/io5';
+} from "@chakra-ui/react";
+import { getCookie } from "cookies-next";
+import { useRef } from "react";
+import { BsGrid } from "react-icons/bs";
+import { CgProfile } from "react-icons/cg";
+import { FiHeart } from "react-icons/fi";
+import { IoWalletOutline } from "react-icons/io5";
+import CustomModal from "@/util/CustomModal";
+import Feedback from "@/util/Feedback";
+import { MdShare } from "react-icons/md";
 
 const drawerItem = [
   {
     icon: <CgProfile />,
-    text: 'Хувийн мэдээлэл',
+    text: "Хувийн мэдээлэл",
+    href: "Profile",
   },
   {
     icon: <BsGrid />,
-    text: 'Миний зарууд',
+    text: "Миний зарууд",
+    href: "MyAds",
+  },
+  {
+    icon: <MdShare />,
+    text: "Хуваалцсан зарууд",
+    href: "SharedAds",
   },
   {
     icon: <FiHeart />,
-    text: 'Миний хүслүүд',
+    text: "Миний хүслүүд",
+    href: "Bookmark",
   },
   {
     icon: <IoWalletOutline />,
-    text: 'Хэтэвч',
+    text: "Хэтэвч",
+    href: "WalletPage",
   },
 ];
 
-const BodyDrawer = (onClose, ...props) => {
-  const { user, logout } = useAuth();
+const BodyDrawer = () => {
+  const { logout } = useAuth();
   const router = useRouter();
+  const user = getCookie("user");
 
   return (
     <DrawerBody className="flex flex-col justify-between p-0 bg-bgdark/95">
       <div
         className={mergeNames(
           STYLES.flexBetween,
-          'flex-col w-full items-center '
+          "flex-col w-full items-center "
         )}
       >
-        <div
-          className={mergeNames(
-            STYLES.flexCenter,
-            'flex-col items-center text-white'
-          )}
-        >
-          <Image
-            // src={user?.image}
-            src="https://newprofilepic2.photo-cdn.net//assets/images/article/profile.jpg"
-            alt="user image"
-            className="w-[100px] aspect-square rounded-full bg-gray-400 object-contain mt-10"
-          />
-          <h2 className="text-[22px] mt-2 font-bold">{user?.username}</h2>
-          <h2 className="text-[14px] font-semibold">{user?.email}</h2>
-        </div>
+        {user && (
+          <div
+            className={mergeNames(
+              STYLES.flexCenter,
+              "flex-col items-center text-white"
+            )}
+          >
+            <Image
+              // src={user?.image}
+              src={
+                JSON.parse(user)?.profileImg ??
+                "https://www.pikpng.com/pngl/m/80-805068_my-profile-icon-blank-profile-picture-circle-clipart.png"
+              }
+              alt="user image"
+              className="w-[100px] aspect-square rounded-full bg-gray-400 object-cover mt-10"
+            />
+            <h2 className="text-[22px] mt-2 font-bold">
+              {JSON.parse(user)?.username}
+            </h2>
+            <h2 className="text-[14px] font-semibold">
+              {JSON.parse(user)?.email}
+            </h2>
+          </div>
+        )}
       </div>
       <div className="flex flex-col p-4 text-center bg-white rounded-t-2xl">
         <div className="grid grid-cols-2 gap-4 py-3">
@@ -75,17 +97,21 @@ const BodyDrawer = (onClose, ...props) => {
               <DownLink
                 key={i}
                 icon={d.icon}
-                onClick={() => router.push('/account')}
+                onClick={() =>
+                  router.push(
+                    { pathname: "/account", query: { tab: `${d.href}` } },
+                    null,
+                    { shallow: true }
+                  )
+                }
                 text={d.text}
               />
             );
           })}
         </div>
-        <div className="w-full h-[1px] mt-[100px] mb-4 bg-gray-200 inline-block" />
+        <div className="w-full h-[1px] mt-[50px] mb-4 bg-gray-200 inline-block" />
         <div className="flex flex-col space-y-2 ">
-          <button className="py-2 font-semibold border-2 border-gray-200 rounded-md">
-            Санал хүсэлт
-          </button>
+          <Feedback />
           <button
             onClick={logout}
             className="py-2 font-semibold text-white rounded-md bg-mainBlossom hover:bg-red-500 "
@@ -103,10 +129,9 @@ const DownLink = ({ href, text, className, icon, onClick = () => {} }) => {
     <button
       onClick={onClick}
       className={mergeNames(
-        'px-5 py-4 transition-all ease-in-out border-2 rounded-lg h-[100px] group hover:bg-gray-100 text-mainBlossom text-bold',
+        "px-5 py-4 transition-all ease-in-out border-2 rounded-lg h-[100px] group hover:bg-gray-100 text-mainBlossom text-bold",
         STYLES.flexCenter,
-        'flex-col items-center',
-        className
+        "flex-col items-center"
       )}
     >
       {text && text?.length > 0 ? (
@@ -115,13 +140,13 @@ const DownLink = ({ href, text, className, icon, onClick = () => {} }) => {
           <Text className="font-semibold">{text}</Text>
         </>
       ) : (
-        ''
+        ""
       )}
     </button>
   );
 };
 
-const UserDrawer = ({ user, logout }) => {
+const UserDrawer = () => {
   const router = useRouter();
   const [active, setActive] = useState(false);
 
@@ -129,25 +154,19 @@ const UserDrawer = ({ user, logout }) => {
   const btnRef = useRef();
 
   const handleClick = () => {
-    setActive((current) => !current);
+    setActive(!current);
   };
   return (
     <div className="relative">
       <UserIcon
         text="Профайл"
         // onClick={handleClick}
-        ref={btnRef}
+
         onClick={onOpen}
         active={active}
       />
 
-      <Drawer
-        isOpen={isOpen}
-        placement="right"
-        onClose={onClose}
-        finalFocusRef={btnRef}
-        size="sm"
-      >
+      <Drawer isOpen={isOpen} placement="right" onClose={onClose} size="sm">
         <DrawerOverlay />
         <DrawerContent className="bg-transparent">
           <DrawerCloseButton className="text-white" />

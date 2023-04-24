@@ -1,12 +1,15 @@
-/* eslint-disable @next/next/no-img-element */
-import React from "react";
-import { AtomLabel } from "./atom";
-import { FiUploadCloud } from "react-icons/fi";
-import { BiX } from "react-icons/bi";
+
+import React from 'react';
+import { BiX } from 'react-icons/bi';
+import { FiUploadCloud } from 'react-icons/fi';
+import { AtomLabel } from './atom';
 
 const FieldPhotoUpload = ({
+  label,
+
   generalData = {},
   setImages = () => {},
+  images = [],
   setGeneralData = () => {},
 }) => {
   const hiddenFileInput = React.useRef(null);
@@ -30,10 +33,12 @@ const FieldPhotoUpload = ({
       return URL.createObjectURL(file);
     });
     setSelectedImages((previousImages) => [...previousImages, ...imagesArray]);
-    setImages((images) => [...images, fileUploaded[0]]);
+    Object.values(fileUploaded)?.map((f) => {
+      setImages((images) => [...images, f]);
+    });
 
     // FOR BUG IN CHROME
-    event.target.value = "";
+    event.target.value = '';
     setIsImageSelected(true);
     setGeneralData((prev) => ({
       ...prev,
@@ -49,28 +54,30 @@ const FieldPhotoUpload = ({
       setIsImageSelected(false);
     }
     setSelectedImages(selectedImages.filter((e) => e !== image));
+    if (images) setImages(images.filter((e) => e !== image));
     setGeneralData((prev) => ({
       ...prev,
       imgSelected: true,
       images: selectedImages.filter((e) => e !== image),
     }));
+
     URL.revokeObjectURL(image);
   }
 
   return (
     <div className="">
-      <AtomLabel>Зураг оруулах</AtomLabel>
+      <AtomLabel>{label ? label : 'Зураг оруулах'}</AtomLabel>
       <>
         <input
           type="file"
-          accept="image/*"
+          accept={'image/*'}
           ref={hiddenFileInput}
-          style={{ display: "none" }}
+          style={{ display: 'none' }}
           multiple
           onChange={handleChange}
         />
         {isImageSelected ? (
-          <div className="grid md:grid-cols-3 grid-cols-2 gap-4 w-full h-full overflow-hidden border-2 border-dotted border-blue-400 bg-blue-100/50 rounded-xl outline-none p-4">
+          <div className="grid w-full h-full grid-cols-2 gap-4 p-4 overflow-hidden border-2 border-blue-400 border-dotted outline-none md:grid-cols-3 bg-blue-100/50 rounded-xl">
             {selectedImages.map((image, key) => {
               return (
                 <div
@@ -80,11 +87,11 @@ const FieldPhotoUpload = ({
                   <img
                     src={image}
                     alt="image"
-                    className="h-full w-full object-center object-cover bg-gray-300 rounded-md overflow-hidden"
+                    className="object-cover object-center w-full h-full overflow-hidden bg-gray-300 rounded-md"
                   />
                   <button
                     onClick={() => deleteHandler(image)}
-                    className="absolute -bottom-2 -right-2 text-white bg-gray-500 rounded-full hover:bg-red-500 transition-all"
+                    className="absolute text-white transition-all bg-gray-500 rounded-full -bottom-2 -right-2 hover:bg-red-500"
                   >
                     <BiX size={30} />
                   </button>
@@ -103,7 +110,7 @@ const FieldPhotoUpload = ({
         )}
         {isImageSelected && (
           <button
-            className="bg-blue-500 text-white px-4 py-1 rounded-md mt-4"
+            className="px-4 py-1 mt-4 text-white bg-blue-500 rounded-md"
             onClick={handleClick}
           >
             Зураг нэмэх

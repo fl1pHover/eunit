@@ -1,4 +1,3 @@
-import { Link } from '@chakra-ui/react';
 import Image from 'next/image';
 import React from 'react';
 
@@ -6,6 +5,7 @@ import { categories } from '@/data/categories';
 import useBreakpoints from '@/hooks/useBreakpoints';
 import { ContainerX } from '@/lib/Container';
 import mergeNames from '@/util/mergeNames';
+import Link from 'next/link';
 
 const calcSize = (pt) => {
   switch (pt) {
@@ -35,7 +35,7 @@ const CategorySelect = () => {
   return (
     <div className="sm:py-[50px] py-[20px]">
       <ContainerX>
-        <div className="grid md:grid-cols-6 grid-cols-3 xl:gap-10 sm:gap-5 gap-3">
+        <div className="grid grid-cols-3 gap-3 md:grid-cols-6 xl:gap-10 sm:gap-5">
           {categories.map(({ ...props }, index) => {
             return (
               <div key={index}>
@@ -67,7 +67,7 @@ const CategorySelect = () => {
                                 'group-hover:from-gray-900/30 group-hover:to-mainBlossom/50'
                               )}
                             >
-                              <div className="flex flex-col justify-center items-center h-full w-full gap-2">
+                              <div className="flex flex-col items-center justify-center w-full h-full gap-2">
                                 <props.icon
                                   size={iconSz}
                                   className={mergeNames(
