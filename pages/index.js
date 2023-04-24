@@ -1,10 +1,10 @@
-import AdContent from '@/components/home/adContent';
-import CategorySelect from '@/components/home/categorySelect';
-import ProAdContent from '@/components/home/proAdContent';
-import SwiperHeader from '@/components/home/swiperHeader';
-import urls from '@/constants/api';
-import { ContainerX } from '@/lib/Container';
-import { useEffect, useState } from 'react';
+import AdContent from "@/components/home/adContent";
+import CategorySelect from "@/components/home/categorySelect";
+import ProAdContent from "@/components/home/proAdContent";
+import SwiperHeader from "@/components/home/swiperHeader";
+import urls from "@/constants/api";
+import { ContainerX } from "@/lib/Container";
+import { useEffect, useState } from "react";
 // import required modules
 
 export default function Home({ defaultAds, specialAds }) {
@@ -16,34 +16,32 @@ export default function Home({ defaultAds, specialAds }) {
 
   const getAds = async (num) => {
     try {
-      await axios
-        .get(`${urls['test']}/ad/${num}`)
-        .then((d) => setAds(d.data.ads));
+      await axios.get(`${urls["test"]}/ad/${num}`).then((d) => {
+        console.log(d);
+      });
     } catch (error) {
       console.log(error);
     }
   };
   useEffect(() => {
     setIsLoading(true);
-    if (typeof defaultAds === 'object' && defaultAds?.ads) {
+    if (typeof defaultAds === "object" && defaultAds?.ads) {
       setAds(defaultAds);
     }
-    if (typeof specialAds === 'object' && specialAds?.ads) {
+    if (typeof specialAds === "object" && specialAds?.ads) {
       setSAds(specialAds);
     }
 
     setIsLoading(false);
   }, [defaultAds, specialAds]);
-
   return (
     <>
       <SwiperHeader />
       <CategorySelect />
 
-      <ContainerX classname="py-6">
+      <ContainerX className="py-6">
         {/* <Heading className="">Шинэ зарууд</Heading> */}
-
-         {sAds && (
+        {sAds?.ads.length > 0 && (
           <ProAdContent
             title="Онцгой зар"
             data={{
@@ -55,8 +53,8 @@ export default function Home({ defaultAds, specialAds }) {
             inCat={false}
           />
         )}
-*
-        {ads && (
+
+        {ads?.ads.length > 0 && (
           <AdContent
             data={{
               ads: ads.ads,
@@ -74,7 +72,7 @@ export default function Home({ defaultAds, specialAds }) {
 
 export async function getServerSideProps({ params, query }) {
   try {
-    const res = await fetch(`${urls['test']}/ad/${0}`);
+    const res = await fetch(`${urls["test"]}/ad/${0}`);
     const ads = await res.json();
     return {
       props: { defaultAds: ads.defaultAds, specialAds: ads.specialAds },

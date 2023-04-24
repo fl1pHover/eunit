@@ -1,5 +1,5 @@
-import { FormattedNumberInput } from '@/lib/Input';
-import mergeNames from '@/util/mergeNames';
+import { FormattedNumberInput } from "@/lib/Input";
+import mergeNames from "@/util/mergeNames";
 import {
   Button,
   Divider,
@@ -7,15 +7,15 @@ import {
   Heading,
   NumberInput,
   Textarea,
-} from '@chakra-ui/react';
-import { useState } from 'react';
-import { MdExpandMore } from 'react-icons/md';
-import { STYLES } from '../styles';
+} from "@chakra-ui/react";
+import { useState } from "react";
+import { MdExpandMore } from "react-icons/md";
+import { STYLES } from "../styles";
 const EstInput = (onChange, value) => {
   return (
     <Textarea
       width="150px"
-      boxShadow={'inner'}
+      boxShadow={"inner"}
       onChange={onChange}
       defaultValue={value}
     />
@@ -36,7 +36,7 @@ const CalcInput = ({
       <div
         className={`${STYLES.flexBetween} flex-col items-baseline xs:items-center xs:flex-row gap-2 ${className}`}
       >
-        <Heading variant={'smallHeading'}>{heading}</Heading>
+        <Heading variant={"smallHeading"}>{heading}</Heading>
         <Flex className="items-center gap-3">
           <NumberInput
             precision={2}
@@ -45,14 +45,14 @@ const CalcInput = ({
           >
             <FormattedNumberInput // placeholder={placeholder}
               onChange={onChange}
-              value={value == 0 ? '' : value}
+              value={value == 0 ? "" : value}
               placeholder={placeholder}
               className="border-2 border-blue-400 rounded-full w-full sm:w-[300px] text-mainBlossom font-semibold"
               required
             />
           </NumberInput>
           <div className="w-8 text-right">
-            <Heading variant={'smallHeading'}>{unit}</Heading>
+            <Heading variant={"smallHeading"}>{unit}</Heading>
           </div>
         </Flex>
       </div>
@@ -61,7 +61,8 @@ const CalcInput = ({
 };
 
 function ECalculator({ data }) {
-  const [price, setPrice] = useState(parseInt(data));
+
+  const [price, setPrice] = useState(data);
 
   // Zeeliin hemjee
   const [principal, setPrincipal] = useState(0);
@@ -119,12 +120,12 @@ function ECalculator({ data }) {
 
       // setPrincipal(price - pay);
       setEmi(
-        Math.round(calcemi).toLocaleString('en-US', {
+        Math.round(calcemi).toLocaleString("en-US", {
           maximumFractionDigits: 2,
         })
       );
       setAmount(
-        (calcemi * n).toLocaleString('en-US', {
+        (calcemi * n).toLocaleString("en-US", {
           maximumFractionDigits: 2,
         })
       );
@@ -148,8 +149,8 @@ function ECalculator({ data }) {
         >
           <MdExpandMore
             className={mergeNames(
-              expand ? 'rotate-180' : 'rotate-0',
-              'text-[40px] text-mainBlossom transition-all ease-in-out mx-auto'
+              expand ? "rotate-180" : "rotate-0",
+              "text-[40px] text-mainBlossom transition-all ease-in-out mx-auto"
             )}
           />
         </button>
@@ -165,14 +166,14 @@ function ECalculator({ data }) {
       <Divider />
       <div
         className={mergeNames(
-          'grid-cols-1 gap-3 lg:grid-cols-2 overflow-hidden lg:gap-10 transition-all duration-500 ease-in-out',
-          expand ? 'grid h-auto' : 'grid h-0 '
+          "grid-cols-1 gap-3 lg:grid-cols-2 overflow-hidden lg:gap-10 transition-all duration-500 ease-in-out",
+          expand ? "grid h-auto" : "grid h-0 "
         )}
       >
         <div>
           <CalcInput
             heading="Орон сууцны үнэ"
-            placeholder={price ?? '0.00₮'}
+            placeholder={price ?? "0.00₮"}
             onChange={handlePriceChange}
             value={price}
             className=""
@@ -216,8 +217,8 @@ function ECalculator({ data }) {
           <div
             className={`${STYLES.flexBetween} flex-col items-baseline xs:items-center xs:flex-row my-5`}
           >
-            <Heading variant={'smallHeading'}>Зээлийн сарын төлбөр</Heading>
-            <Heading variant={'mediumHeading'} color="mainBlossom">
+            <Heading variant={"smallHeading"}>Зээлийн сарын төлбөр</Heading>
+            <Heading variant={"mediumHeading"} color="mainBlossom">
               {emi}₮{/* {totalinterest}₮ */}
             </Heading>
           </div>
@@ -230,8 +231,8 @@ function ECalculator({ data }) {
             >
               Тооцоолох
             </Button>
-            <Heading variant={'smallHeading'}>Нийт төлөгдөх хэмжээ</Heading>
-            <Heading variant={'mediumHeading'} color="mainBlossom">
+            <Heading variant={"smallHeading"}>Нийт төлөгдөх хэмжээ</Heading>
+            <Heading variant={"mediumHeading"} color="mainBlossom">
               {amount}₮
             </Heading>
           </div>

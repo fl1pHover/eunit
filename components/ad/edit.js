@@ -1,13 +1,13 @@
-import { LoadingButton } from '@/lib/Button';
-import CustomModal from '@/util/CustomModal';
-import mergeNames from '@/util/mergeNames';
-import WhiteBox from '@/util/product/WhiteBox';
-import { Box, Input, useDisclosure } from '@chakra-ui/react';
-import { GoogleMap, MarkerF, useLoadScript } from '@react-google-maps/api';
-import { Textarea } from 'flowbite-react';
-import { ProductInfo } from 'pages/product/[slug]';
-import { useMemo, useState } from 'react';
-import FieldPhotoUpload from '../createAd/step3/fieldPhotoUpload';
+import { LoadingButton } from "@/lib/Button";
+import CustomModal from "@/util/CustomModal";
+import mergeNames from "@/util/mergeNames";
+import WhiteBox from "@/util/product/WhiteBox";
+import { Box, Input, useDisclosure } from "@chakra-ui/react";
+import { GoogleMap, MarkerF, useLoadScript } from "@react-google-maps/api";
+import { Textarea } from "flowbite-react";
+import { ProductInfo } from "pages/ad/[slug]";
+import { useMemo, useState } from "react";
+import FieldPhotoUpload from "../createAd/step3/fieldPhotoUpload";
 
 const EditAd = ({
   onNext = () => {},
@@ -21,13 +21,13 @@ const EditAd = ({
   children,
   images,
 }) => {
-  const libraries = useMemo(() => ['places'], []);
+  const libraries = useMemo(() => ["places"], []);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [markerActive, setMarkerActive] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: 'AIzaSyC2u2OzBNo53GxJJdN3Oc_W6Yc42OmdZcE',
+    googleMapsApiKey: "AIzaSyC2u2OzBNo53GxJJdN3Oc_W6Yc42OmdZcE",
     libraries: libraries,
   });
   const mapOptions = useMemo(
@@ -56,20 +56,19 @@ const EditAd = ({
       onClose={onClose}
       onOpen={onOpen}
       btnOpen={
-        <p className="w-full text-center">{children ?? 'Зараа засах'}</p>
+        <p className="w-full text-center">{children ?? "Зараа засах"}</p>
       }
-      
       onclick={onNext}
       btnClose={<LoadingButton text="Засах" isLoading={loading} />}
       btnClose2="Буцах"
       header="Баталгаажуулах хэсэг"
     >
-      <Box maxWidth={'100%'} flex="0 0 100%" borderRadius="5px">
+      <Box maxWidth={"100%"} flex="0 0 100%" borderRadius="5px">
         <Box className="p-3 bg-white shadow-md md:p-10 rounded-xl">
           {/*Product */}
           {
             <Input
-              variant={'mediumHeading'}
+              variant={"mediumHeading"}
               onChange={(e) => {
                 if (!admin) {
                   dummyData.title = e.target.value;
@@ -129,7 +128,7 @@ const EditAd = ({
                   zoom={14}
                   center={mapCenter}
                   mapTypeId={google.maps.MapTypeId.ROADMAP}
-                  mapContainerStyle={{ width: '100%', height: '40vh' }}
+                  mapContainerStyle={{ width: "100%", height: "40vh" }}
                 >
                   {isLoaded && (
                     <div>
@@ -139,7 +138,7 @@ const EditAd = ({
                           lng: parseFloat(data?.location?.lng ?? 107.341515),
                         }}
                         animation={google.maps.Animation.DROP}
-                        className={mergeNames('group')}
+                        className={mergeNames("group")}
                       />
                     </div>
                   )}

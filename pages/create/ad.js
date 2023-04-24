@@ -1,26 +1,26 @@
-import { Heading, useToast } from '@chakra-ui/react';
-import axios from 'axios';
-import { useRouter } from 'next/router';
-import React, { useMemo, useState } from 'react';
+import { Heading, useToast } from "@chakra-ui/react";
+import axios from "axios";
+import { useRouter } from "next/router";
+import React, { useMemo, useState } from "react";
 
-import Step1 from '@/components/createAd/step1';
-import Step4 from '@/components/createAd/step4';
+import Step1 from "@/components/createAd/step1";
+import Step4 from "@/components/createAd/step4";
 
-import StepButtons from '@/components/createAd/stepButtons';
-import StepProgress from '@/components/createAd/stepProgress';
-import FormTitle from '@/components/createAd/title';
-import { ContainerX } from '@/lib/Container';
+import StepButtons from "@/components/createAd/stepButtons";
+import StepProgress from "@/components/createAd/stepProgress";
+import FormTitle from "@/components/createAd/title";
+import { ContainerX } from "@/lib/Container";
 
-import Step3 from '@/components/createAd/step3';
-import urls from '@/constants/api';
-import { GoogleMap, MarkerF, useLoadScript } from '@react-google-maps/api';
-import { getCookie } from 'cookies-next';
-export default function CreateAd({ categories }) {
+import Step3 from "@/components/createAd/step3";
+import urls from "@/constants/api";
+import { GoogleMap, MarkerF, useLoadScript } from "@react-google-maps/api";
+import { getCookie } from "cookies-next";
+import useAd from "@/util/useAd";
+import { getSellType } from "@/context/functions";
+export default function CreateAd({ categories, user }) {
   const toast = useToast();
-  const user = getCookie('user');
 
   const router = useRouter();
-  // // if (!user) router.push("/login");
 
   const [step, setStep] = useState(-1);
   const passcategory = useMemo(() => categories, [categories]);
@@ -35,9 +35,8 @@ export default function CreateAd({ categories }) {
   });
 
   const [map, setMap] = useState();
-  const [selectedParent, setSelectedParent] = useState([]);
+  const [values, change, typeId] = useAd();
   // FILTER INFORMATION - FOR WHICH DATA TO DISPLAY
-  const [filters, setFilters] = useState([]);
   const [subCategory, setSubCategory] = useState([]);
   // STEP3 IIN DATA - PRICE, AREA, UNITPRICE, TITLE, DESC, IMAGE
   const [generalData, setGeneralData] = useState({
@@ -48,11 +47,10 @@ export default function CreateAd({ categories }) {
     desc: false,
     imgSelected: false,
     images: [],
-    phone: parseInt(user ? JSON.parse(user).phone : 0),
+    phone: parseInt(user ? user.phone : 0),
   });
   // STEP 3IIN RAW IMAGE FILES
   const [images, setImages] = useState([]);
-  const [imageUrl, setImageUrl] = useState([]);
 
   // THIS EFFECT IS FOR FETCHING FILTER DATA FOR STEP2,STEP3,STEP4
   React.useEffect(() => {
@@ -61,7 +59,7 @@ export default function CreateAd({ categories }) {
         passcategory[types.categoryId].subCategory.filter((item) => {
           if (item.href == types.subCategoryId) {
             axios
-              .get(`${urls['test']}/category/filters/${item._id}/false`)
+              .get(`${urls["test"]}/category/filters/${item._id}`)
               .then((res) => {
                 setSubCategory(res.data);
               });
@@ -78,14 +76,14 @@ export default function CreateAd({ categories }) {
   const handleNextStep = () => {
     if (step === -1)
       return checkConditionOnNextStep(
-        types.adType != '' &&
-          types.categoryName != '' &&
-          types.sellType != '' &&
-          types.subCategoryId != ''
+        types.adType != "" &&
+          types.categoryName != "" &&
+          types.sellType != "" &&
+          types.subCategoryId != ""
       );
     if (step == 0)
       return checkConditionOnNextStep(
-        subCategory.steps[0].values.find((s) => s.input == '')
+        subCategory.steps[0].values.find((s) => values[s.type] == "")
       );
     if (step === 1)
       return checkConditionOnNextStep(
@@ -100,87 +98,91 @@ export default function CreateAd({ categories }) {
   };
 
   const checkConditionOnNextStep = (booleanValue) => {
-    return booleanValue === undefined || booleanValue === '' || booleanValue
+    return booleanValue === undefined || booleanValue === "" || booleanValue
       ? setStep((prev) => prev + 1)
       : toast({
-          title: 'Та бүх талбарыг бөглөнө үү.',
-          status: 'error',
+          title: "Та бүх талбарыг бөглөнө үү.",
+          status: "error",
           duration: 1000,
           isClosable: true,
         });
   };
 
   const sendAd = async () => {
-    const token = getCookie('token');
-    const f = new FormData();
-    const selectedFilters = subCategory.steps[0].values;
-    selectedFilters.splice(0, 0, {
-      type: 'phone',
-      input: generalData.phone,
-      name: 'Утасны дугаар',
+    const token = getCookie("token");
+
+    const filters = [];
+    const pushedImages = [];
+    subCategory.steps.map((s) => {
+      s.values.map((v) => {
+        if (s.step != "general") {
+          filters.push({
+            name: v.name,
+            id: v.type,
+            value: values[v.type],
+            position: v.position,
+            type: v.types,
+            index: v.index,
+            isSearch: v.isSearch ?? false,
+            isUse: v.isUse ?? false,
+          });
+        } else {
+          filters.push({
+            name: v.name,
+            id: v.type,
+            value: generalData[v.type],
+            position: v.position,
+            type: v.types,
+            index: v.index,
+            isSearch: v.isSearch ?? false,
+            isUse: v.isUse ?? false,
+          });
+        }
+      });
     });
-    selectedFilters.splice(1, 0, {
-      type: 'sellType',
-      input: types.sellType,
-      name: 'Борлуулах төрөл',
-    });
-    selectedFilters.splice(2, 0, {
-      type: 'price',
-      input: generalData.price,
-      name: 'Үнэ',
-    });
-    selectedFilters.splice(3, 0, {
-      type: 'area',
-      input: generalData.area,
-      name: 'Талбай',
-    });
-    selectedFilters.splice(4, 0, {
-      type: 'unitPrice',
-      input: generalData.unitPrice,
-      name: 'Нэгж талбайн үнэ',
-    });
-    let finalFilters = selectedFilters.concat(subCategory.steps[2].values);
-    let copiedFilters = JSON.parse(JSON.stringify(finalFilters));
-    copiedFilters.map((f) => (f.value = []));
-    f.append('title', generalData.title);
-    f.append('description', generalData.desc);
-    subCategory.steps[1].values = selectedFilters;
-    f.append('location', JSON.stringify(map));
-    f.append('types', types.sellType);
-    f.append('adTypes', types.adType);
-    f.append('subCategory', subCategory._id);
-    f.append('category', categories[types.categoryId]._id);
-    f.append('filters', JSON.stringify(copiedFilters));
+
     let fImages = new FormData();
 
     images?.map((prev) => {
-      fImages.append('images', prev);
+      fImages.append("images", prev);
     });
-
-    let ad;
     try {
       await axios
-        .post(`${urls['test']}/ad/uploadFields`, fImages, {
+        .post(`${urls["test"]}/ad/uploadFields`, fImages, {
           headers: {
             Authorization: `Bearer ${token}`,
-            'Access-Control-Allow-Headers': '*',
+            "Access-Control-Allow-Headers": "*",
           },
         })
-        .then((d) => f.append('images', d.data));
+        .then((d) => (pushedImages = d.data));
 
-      ad = await axios
-        .post(`${urls['test']}/ad`, f, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Access-Control-Allow-Headers': '*',
-            'Content-Type': 'application/json',
-            charset: 'UTF-8',
+      await axios
+        .post(
+          `${urls["test"]}/ad`,
+          {
+            images: pushedImages,
+            title: generalData.title,
+            description: generalData.desc,
+            location: map,
+            subCategory: subCategory._id,
+            category: categories[types.categoryId]._id,
+            sellType: getSellType(types.sellType),
+            items: filters,
+            adType: types.adType,
+            view: "hide",
           },
-        })
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Access-Control-Allow-Headers": "*",
+              charset: "UTF-8",
+            },
+          }
+        )
         .then((d) => {
           toast({
-            title: 'Амжилттай нэмэгдлээ.',
-            status: 'success',
+            title: "Амжилттай нэмэгдлээ.",
+            status: "success",
             duration: 1000,
             isClosable: true,
           });
@@ -194,22 +196,22 @@ export default function CreateAd({ categories }) {
   const validateStep4 = async () => {
     setIsLoading(true);
     // filter hooson esehiig shalgah
-    let emptyAd = subCategory.steps[2].values.find((f) => f.input == '');
+    let emptyAd = subCategory.steps[2].values.find((f) => values[f.type] == "");
     if (emptyAd === undefined) {
-      if (user && JSON.parse(user)?.status == 'active') {
+      if (user?.status == "active") {
         await sendAd();
       } else {
         toast({
-          title: 'Та одоогоор зар илгээх боломжгүй байна.',
-          status: 'warning',
+          title: "Та одоогоор зар илгээх боломжгүй байна.",
+          status: "warning",
           duration: 2000,
           isClosable: true,
         });
       }
     } else {
       toast({
-        title: 'Та бүх талбарыг бөглөнө үү.',
-        status: 'warning',
+        title: "Та бүх талбарыг бөглөнө үү.",
+        status: "warning",
         duration: 2000,
         isClosable: true,
       });
@@ -228,12 +230,10 @@ export default function CreateAd({ categories }) {
   const top = () => {
     window.scrollTo(0, 0);
   };
-  const libraries = useMemo(() => ['places'], []);
-
-  const [markerActive, setMarkerActive] = useState(null);
+  const libraries = useMemo(() => ["places"], []);
 
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: 'AIzaSyC2u2OzBNo53GxJJdN3Oc_W6Yc42OmdZcE',
+    googleMapsApiKey: "AIzaSyC2u2OzBNo53GxJJdN3Oc_W6Yc42OmdZcE",
     libraries: libraries,
   });
   const mapOptions = useMemo(
@@ -260,16 +260,12 @@ export default function CreateAd({ categories }) {
         <StepProgress
           activeStep={step}
           handleClick={(stepId) => setStep(stepId)}
-          hasFourStep={types?.categoryName === 'realState'}
+          hasFourStep={types?.categoryName === "realState"}
         />
         {
           // STEP1 TYPES: CATEGORY, SUBCATEGORY, ADTYPE, SELLTYPE
           step === -1 && (
-            <Step1
-              {...{ types, setTypes }}
-              setSelectedParent={setSelectedParent}
-              categories={passcategory}
-            />
+            <Step1 {...{ types, setTypes }} categories={passcategory} />
           )
         }
 
@@ -282,8 +278,9 @@ export default function CreateAd({ categories }) {
                 <div key={index}>
                   <Step4
                     filter={filter}
-                    selectedParent={selectedParent}
-                    setSelectedParent={setSelectedParent}
+                    state={values}
+                    handle={change}
+                    typeId={typeId}
                   />
                   <Heading variant="mediumHeading" className="mb-5 text-center">
                     Газрын зураг дээр байршлаа сонгоно уу
@@ -298,7 +295,7 @@ export default function CreateAd({ categories }) {
                       zoom={14}
                       center={mapCenter}
                       mapTypeId={google.maps.MapTypeId.ROADMAP}
-                      mapContainerStyle={{ width: '100%', height: '40vh' }}
+                      mapContainerStyle={{ width: "100%", height: "40vh" }}
                     >
                       <MarkerF
                         position={map}
@@ -328,8 +325,9 @@ export default function CreateAd({ categories }) {
                   <div className="bg-white min-h-[40vh] rounded-xl py-10 md:px-10 px-2">
                     <Step4
                       filter={filter}
-                      selectedParent={selectedParent}
-                      setSelectedParent={setSelectedParent}
+                      state={values}
+                      handle={change}
+                      typeId={typeId}
                     />
                   </div>
                 </div>
@@ -345,10 +343,11 @@ export default function CreateAd({ categories }) {
           onPrev={() => {
             handlePrevStep(), top();
           }}
-          data={selectedParent}
+          data={values}
+          filter={subCategory?.steps}
           generalData={generalData}
           loading={isLoading}
-          txt={step == 2 ? 'Илгээх' : 'Дараах'}
+          txt={step == 2 ? "Илгээх" : "Дараах"}
           step={step}
           map={map}
           // onClick={() => step == 2 && <CustomModal />}
@@ -358,19 +357,26 @@ export default function CreateAd({ categories }) {
   );
   // router.push("/login");
 }
+//360
 export async function getServerSideProps({ req, res }) {
-  const response = await fetch(`${urls['test']}/category`);
+  const response = await fetch(`${urls["test"]}/category`);
   const categories = await response.json();
-  const token = getCookie('token', { req, res });
-
+  const token = getCookie("token", { req, res });
+  const userRes = await fetch(`${urls["test"]}/user/me`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Access-Control-Allow-Headers": "*",
+    },
+  });
+  const user = await userRes.json();
   if (!token)
     return {
       redirect: {
-        destination: '/login',
+        destination: "/login",
         permanent: false,
       },
     };
   return {
-    props: { categories },
+    props: { categories, user },
   };
 }

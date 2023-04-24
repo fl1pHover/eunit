@@ -1,200 +1,89 @@
-import { Committee } from '@/constants/enums';
-import Input from '@/lib/Input';
-import Select from '@/lib/Select';
-import mergeNames from '@/util/mergeNames';
-import { Box } from '@chakra-ui/react';
-import { useState } from 'react';
+import { Committee } from "@/constants/enums";
+import Input from "@/lib/Input";
+import Select from "@/lib/Select";
+import mergeNames from "@/util/mergeNames";
+import { Box, Text } from "@chakra-ui/react";
+import { useState } from "react";
 import FilterDate, {
   FilterButtonSelector,
   FilterCounter,
   FilterSelect,
   FilterText,
   FilterYear,
-} from '../filters';
-import ButtonSelectItem from '../formButtonSelectItem';
-import FormLabel from '../formLabel';
+} from "../filters";
+import ButtonSelectItem from "../formButtonSelectItem";
+import FormLabel from "../formLabel";
+import { Fragment } from "react";
 
-const Step3 = ({ filter, selectedParent, setSelectedParent }) => {
-  const [usedYear, setUsedYear] = useState(false);
-  const [selected, setSelected] = useState({
-    bathroom: '',
-    masterRoom: '',
-  });
-
-  // const [filters, setFilters] = useState(filter)
-
+const Step3 = ({ filter, handle, state, typeId }) => {
   return (
     <div className="grid w-full md:grid-cols-2 ">
       {filter?.values?.map((f, i) => {
         if (
           f.other == true &&
-          f.value.find((v) => v.id == 'other') == undefined
+          f.value.find((v) => v.id == "other") == undefined
         )
-          f.value.push({ id: 'other', value: 'Бусад' });
-        if (f.types == 'date')
+          f.value.push({ id: "other", value: "Бусад" });
+        if (f.types == "date")
           return (
             <FilterDate
               key={i}
               title={f.name}
-              defValue={usedYear}
               name={f.name}
               onSelect={(num) => {
-                f.input = `${num}`;
-                let isNull = selectedParent.findIndex(
-                  (s) => s.parent == f.type
-                );
-
-                if (isNull > -1) {
-                  let selectedArr = [...selectedParent];
-
-                  selectedArr[isNull] = {
-                    id: i,
-                    parent: f.type,
-                    index: i,
-                    input: num,
-                    name: f.name,
-                  };
-                  setSelectedParent(selectedArr);
-                } else {
-                  setSelectedParent([
-                    ...selectedParent,
-                    {
-                      id: i,
-                      parent: f.type,
-                      index: i,
-                      input: num,
-                      name: f.name,
-                    },
-                  ]);
-                }
+                handle(f.type, num, "", f.index, f.position, f.isSearch);
               }}
             />
           );
-        if (f.types == 'year')
+        if (f.types == "year")
           return (
             <FilterYear
               key={i}
               title={f.name}
               onChange={(e) => {
-                f.input = `${e}`;
-                let isNull = selectedParent.findIndex(
-                  (s) => s.parent == f.type
-                );
-
-                if (isNull > -1) {
-                  let selectedArr = [...selectedParent];
-
-                  selectedArr[isNull] = {
-                    id: e,
-                    parent: f.type,
-                    index: i,
-                    input: e,
-                    name: f.name,
-                  };
-                  setSelectedParent(selectedArr);
-                } else {
-                  setSelectedParent([
-                    ...selectedParent,
-                    {
-                      id: e,
-                      parent: f.type,
-                      index: i,
-                      input: e,
-                      name: f.name,
-                    },
-                  ]);
-                }
+                handle(f.type, e, "", f.index, f.position, f.isSearch);
               }}
             />
           );
-        if (f.type === 'room')
+        if (f.types === "number")
           return (
             <FilterCounter
               key={i}
-              title={'Өрөөний тоо'}
+              title={f.name}
               limit={f.value[f.value.length - 2].value}
               maxValue={f.value[f.value.length - 1].value}
               setValue={(val) => {
-                f.input = val;
-                let isNull = selectedParent.findIndex(
-                  (s) => s.parent == f.type
-                );
-
-                if (isNull > -1) {
-                  let selectedArr = [...selectedParent];
-
-                  selectedArr[isNull] = {
-                    id: val,
-                    parent: f.type,
-                    index: i,
-                    input: val,
-                    name: f.name,
-                  };
-                  setSelectedParent(selectedArr);
-                } else {
-                  setSelectedParent([
-                    ...selectedParent,
-                    {
-                      id: val,
-                      parent: f.type,
-                      index: i,
-                      input: val,
-                      name: f.name,
-                    },
-                  ]);
-                }
+                handle(f.type, val, "", f.index, f.position, f.isSearch);
               }}
             />
           );
-        if (f.types == 'text')
+        if (f.types == "text")
           return (
             <FilterText
               key={i}
               title={f.name}
               ph={f.name}
-              value={
-                selectedParent?.filter((s) => s.parent == f.type)[0]?.input ??
-                ''
-              }
+              value={state[f.type]}
               onChange={(e) => {
-                f.input = e.target.value;
-                let isNull = selectedParent.findIndex(
-                  (s) => s.parent == f.type
+                e.persist();
+                handle(
+                  f.type,
+                  e.target.value,
+                  "",
+                  f.index,
+                  f.position,
+                  f.isSearch
                 );
-
-                if (isNull > -1) {
-                  let selectedArr = [...selectedParent];
-
-                  selectedArr[isNull] = {
-                    id: e.target.value,
-                    parent: f.type,
-                    index: i,
-                    input: e.target.value,
-                    name: f.name,
-                  };
-                  setSelectedParent(selectedArr);
-                } else {
-                  setSelectedParent([
-                    ...selectedParent,
-                    {
-                      id: e.target.value,
-                      parent: f.type,
-                      index: i,
-                      input: e.target.value,
-                      name: f.name,
-                    },
-                  ]);
-                }
               }}
             />
           );
-        if (f.type === 'bathroom')
+        if (f.types === "radio")
           return (
             <FilterButtonSelector
               key={i}
-              title={'Угаалгын өрөөний тоо'}
-              data={f?.value}
-              selected={selected.bathroom}
+              title={f.name}
+              data={f.value}
+              selected={state[f.type]}
               Item={({ text, onClick, id, isSelected, ...props }) => {
                 return (
                   <ButtonSelectItem
@@ -203,38 +92,7 @@ const Step3 = ({ filter, selectedParent, setSelectedParent }) => {
                     isSelected={isSelected}
                     {...props}
                     onClick={() => {
-                      f.input = text;
-                      let isNull = selectedParent.findIndex(
-                        (s) => s.parent == f.type
-                      );
-
-                      if (isNull > -1) {
-                        let selectedArr = [...selectedParent];
-
-                        selectedArr[isNull] = {
-                          id,
-                          parent: f.type,
-                          index: i,
-                          input: text,
-                          name: f.name,
-                        };
-                        setSelectedParent(selectedArr);
-                      } else {
-                        setSelectedParent([
-                          ...selectedParent,
-                          {
-                            id: id,
-                            parent: f.type,
-                            index: i,
-                            input: text,
-                            name: f.name,
-                          },
-                        ]);
-                      }
-                      setSelected((prev) => ({
-                        ...prev,
-                        bathroom: text,
-                      }));
+                      handle(f.type, text, "", f.index, f.position, f.isSearch);
                       onClick();
                     }}
                   >
@@ -245,124 +103,25 @@ const Step3 = ({ filter, selectedParent, setSelectedParent }) => {
               }}
             />
           );
-        if (f.type === 'masterBedroom')
-          return (
-            <FilterButtonSelector
-              key={i}
-              title={'Мастер унтлагын өрөөний тоо'}
-              data={f?.value}
-              selected={selected.masterRoom}
-              Item={({ text, onClick, id, isSelected, ...props }) => {
-                return (
-                  <ButtonSelectItem
-                    text={text}
-                    key={id}
-                    isSelected={isSelected}
-                    {...props}
-                    onClick={() => {
-                      f.input = text;
-                      let isNull = selectedParent.findIndex(
-                        (s) => s.parent == f.type
-                      );
 
-                      if (isNull > -1) {
-                        let selectedArr = [...selectedParent];
-
-                        selectedArr[isNull] = {
-                          id,
-                          parent: f.type,
-                          index: i,
-                          input: text,
-                          name: f.name,
-                        };
-                        setSelectedParent(selectedArr);
-                      } else {
-                        setSelectedParent([
-                          ...selectedParent,
-                          {
-                            id: id,
-                            parent: f.type,
-                            index: i,
-                            input: text,
-                            name: f.name,
-                          },
-                        ]);
-                      }
-                      setSelected((prev) => ({
-                        ...prev,
-                        masterRoom: text,
-                      }));
-                      onClick();
-                    }}
-                  >
-                    {text}
-                    {props.children}
-                  </ButtonSelectItem>
-                );
-              }}
-            />
-          );
-        if (f.type == 'committee') {
+        if (f.type == "committee") {
           return (
             <FilterSelect
               key={i}
-              label={f.input != '' ? f.input : f.name}
+              label={state[f.name] ?? f.name}
               title={f.name}
               data={
-                selectedParent.find(
-                  (s) => s.parent == f.parentId && s.id == 'country'
-                ) == undefined
+                typeId[f.parentId] != "country"
                   ? Committee
-                  : f.value.find((s) =>
-                      selectedParent.findIndex(
-                        (se) => se.parent == s.parent && s.parentId == se.id
-                      ) > -1
-                        ? 0
-                        : undefined
-                    ) !== undefined
-                  ? Committee
-                  : f.value.filter((v) => {
-                      let index = selectedParent.findIndex(
-                        (s) => s.id == v.parentId
-                      );
-
-                      if (index > -1)
-                        return v.parentId == selectedParent[index]?.id;
-                    })
+                  : f.value.filter((v) => v.parentId == typeId[v.parent])
               }
               Item={({ data, onClick, id, ...props }) => {
                 return (
                   <button
                     {...props}
-                    onClick={() => {
-                      f.input = data;
-                      let isNull = selectedParent.findIndex(
-                        (s) => s.parent == f.type
-                      );
-
-                      if (isNull > -1) {
-                        let selectedArr = [...selectedParent];
-
-                        selectedArr[isNull] = {
-                          id,
-                          parent: f.type,
-                          name: f.name,
-                          input: data,
-                          index: i,
-                        };
-                        setSelectedParent(selectedArr);
-                      } else {
-                        setSelectedParent([
-                          ...selectedParent,
-                          {
-                            id: id,
-                            parent: f.type,
-                            index: i,
-                            input: data,
-                            name: f.name,
-                          },
-                        ]);
-                      }
+                    onClick={(e) => {
+                      e.persist();
+                      handle(f.type, data, "", f.index, f.position, f.isSearch);
                       onClick();
                     }}
                   >
@@ -374,110 +133,30 @@ const Step3 = ({ filter, selectedParent, setSelectedParent }) => {
             />
           );
         }
-        if (f.types == 'dropdown')
-          return f.parentId == null ? (
-            <FilterSelect
-              key={i}
-              title={f.name}
-              data={f.value}
-              label={f.input != '' ? f.input : f.name}
-              Item={({ data, onClick, id, ...props }) => {
-                return (
-                  <button
-                    {...props}
-                    onClick={() => {
-                      f.input = data;
-                      let isNull = selectedParent.findIndex(
-                        (s) => s.parent == f.type
-                      );
-
-                      if (isNull > -1) {
-                        let selectedArr = [...selectedParent];
-
-                        selectedArr[isNull] = {
+        if (f.types == "dropdown")
+          if (f.parentId == null) {
+            return (
+              <FilterSelect
+                key={i}
+                title={f.name}
+                data={f.value}
+                label={state[f.type] ?? f.name}
+                Item={({ data, onClick, id, ...props }) => {
+                  return (
+                    <button
+                      {...props}
+                      onClick={(e) => {
+                        e.persist();
+                        handle(
+                          f.type,
+                          data,
                           id,
-                          parent: f.type,
-                          index: i,
-                          input: data,
-                          name: f.name,
-                        };
-                        setSelectedParent(selectedArr);
-                      } else {
-                        setSelectedParent([
-                          ...selectedParent,
-                          {
-                            id: id,
-                            parent: f.type,
-                            index: i,
-                            input: data,
-                            name: f.name,
-                          },
-                        ]);
-                      }
-
-                      onClick();
-                    }}
-                  >
-                    {data}
-                    {props.children}
-                  </button>
-                );
-              }}
-            />
-          ) : selectedParent.find((d) => d.parent == f.parentId) != undefined &&
-            f.value.length > 0 ? (
-            <ItemContainer
-              key={i}
-              className={'flex flex-col items-center justify-center'}
-            >
-              <FormLabel title={f.name} />
-
-              <Select
-                width="long"
-                data={f.value.filter((fv) => {
-                  let parent = selectedParent.find(
-                    (s) =>
-                      (s.id == fv.parentId && fv.parent == s.parent) ||
-                      fv.id == 'other'
-                  );
-                  if (parent != undefined) return fv;
-                })}
-                label={f.input != '' ? f.input : f.name}
-                Item={({ data, onClick, id, ...props }) => {
-                  return (
-                    <button
-                      {...props}
-                      onClick={() => {
-                        if (data != 'Бусад') f.input = data;
-                        let isNull = selectedParent.findIndex(
-                          (s) => s.parent == f.type
+                          f.index,
+                          f.position,
+                          f.isSearch
                         );
-
-                        if (isNull > -1) {
-                          let selectedArr = [...selectedParent];
-
-                          selectedArr[isNull] = {
-                            id,
-                            parent: f.type,
-                            index: i,
-                            input: data,
-                            name: f.name,
-                          };
-                          setSelectedParent(selectedArr);
-                        } else {
-                          setSelectedParent([
-                            ...selectedParent,
-                            {
-                              id: id,
-                              parent: f.type,
-                              index: i,
-                              input: data,
-                              name: f.name,
-                            },
-                          ]);
-                        }
-
                         onClick();
+                        console.log(typeId);
                       }}
                     >
                       {data}
@@ -486,144 +165,91 @@ const Step3 = ({ filter, selectedParent, setSelectedParent }) => {
                   );
                 }}
               />
-              {selectedParent.find(
-                (d) => d.id == 'other' && d.parent == f.type
-              ) != undefined && (
-                <>
-                  <Box h={4} />
-                  <Input
-                    value={''}
-                    requirement={
-                      selectedParent?.filter((s) => s.parent == f.type)[0]
-                        ?.input == ''
-                    }
-                    onChange={(e) => {
-                      f.input = e.target.value;
-                      let isNull = selectedParent.findIndex(
-                        (s) => s.parent == f.type
-                      );
-
-                      if (isNull > -1) {
-                        let selectedArr = [...selectedParent];
-
-                        selectedArr[isNull] = {
-                          id: 'other',
-                          parent: f.type,
-                          index: 0,
-                          input: e.target.value,
-                          name: f.name,
-                        };
-                        setSelectedParent(selectedArr);
-                      } else {
-                        setSelectedParent([
-                          ...selectedParent,
-                          {
-                            id: 'other',
-                            parent: f.type,
-                            index: 0,
-                            input: e.target.value,
-                            name: f.name,
-                          },
-                        ]);
-                      }
-                    }}
-                  />
-                </>
-              )}
-            </ItemContainer>
-          ) : (
-            <ItemContainer key={i}>
-              <FormLabel title={f.name} />
-              <Select
-                width="long"
-                data={
-                  f.other == true
-                    ? filter?.values
-                        ?.filter((fv, ind) => {
-                          let index = selectedParent.find(
-                            (sf) => sf.parent == f.parentId
-                          );
-                          if (index != undefined) {
-                            if (ind == index.index) {
-                              let value = fv.input;
-                              return fv;
-                            }
-                          }
-                        })[0]
-                        ?.value.push({ id: 'other', value: 'Бусад' })
-                    : filter?.values
-                        ?.map((fv, ind) => {
-                          let index = selectedParent.find(
-                            (sf) => sf.parent == f.parentId
-                          );
-                          if (index != undefined) {
-                            if (ind == index.index) {
-                              let valueC = { ...fv };
-                              let indexIndex = valueC.value.findIndex(
-                                (fvf) => fvf.value == index.input
-                              );
-                              valueC.value = valueC.value.slice(
-                                0,
-                                indexIndex + 1
-                              );
-
-                              return valueC;
-                            }
-                          }
-                        })
-                        .filter((a) => a != undefined)[0]?.value
-                }
-                label={f.input != '' ? f.input : f.name}
-                Item={({ data, onClick, id, ...props }) => {
-                  return (
-                    <button
-                      {...props}
-                      onClick={() => {
-                        f.input = data;
-                        let isNull = selectedParent.findIndex(
-                          (s) => s.parent == f.type
-                        );
-
-                        if (isNull > -1) {
-                          let selectedArr = [...selectedParent];
-
-                          selectedArr[isNull] = {
+            );
+          } else {
+            return (
+              <ItemContainer
+                key={i}
+                className={"flex flex-col items-center justify-center"}
+              >
+                <FormLabel title={f.name} />
+                <Select
+                  width="long"
+                  data={
+                    f.value.filter(
+                      (v) =>
+                        (f.parentId == v.parent &&
+                          typeId[f.parentId] == v.parentId) ||
+                        v.id == "other"
+                    ).length > 0
+                      ? f.value.filter(
+                          (v) =>
+                            (f.parentId == v.parent &&
+                              typeId[f.parentId] == v.parentId) ||
+                            v.id == "other"
+                        )
+                      : filter.values
+                          .filter((fil) => fil.type == f.parentId)[0]
+                          .value.filter(
+                            (v) =>
+                              v.id == "B2" ||
+                              v.id == "B1" ||
+                              parseInt(typeId[f.parentId]) >= parseInt(v.id)
+                          )
+                  }
+                  label={state[f.type] ?? f.name}
+                  Item={({ data, onClick, id, ...props }) => {
+                    return (
+                      <button
+                        {...props}
+                        onClick={(e) => {
+                          e.persist();
+                          handle(
+                            f.type,
+                            data,
                             id,
-                            parent: f.type,
-                            index: i,
-                            input: data,
-                            name: f.name,
-                          };
-                          setSelectedParent(selectedArr);
-                        } else {
-                          setSelectedParent([
-                            ...selectedParent,
-                            {
-                              id: id,
-                              parent: f.type,
-                              index: i,
-                              input: data,
-                              name: f.name,
-                            },
-                          ]);
-                        }
-
-                        onClick();
+                            f.index,
+                            f.position,
+                            f.isSearch
+                          );
+                          onClick();
+                        }}
+                      >
+                        {data}
+                        {props.children}
+                      </button>
+                    );
+                  }}
+                />
+                {typeId[f.type] == "other" ? (
+                  <Fragment>
+                    <Box h={4} />
+                    <Input
+                      ph={state[f.type]}
+                      onChange={(e) => {
+                        handle(
+                          f.type,
+                          e.target.value,
+                          "",
+                          f.index,
+                          f.position,
+                          f.isSearch
+                        );
                       }}
-                    >
-                      {data}
-                      {props.children}
-                    </button>
-                  );
-                }}
-              />
-            </ItemContainer>
-          );
+                      value={state[f.type] != "Бусад" ? state[f.type] : ""}
+                    />
+                  </Fragment>
+                ) : (
+                  <Box />
+                )}
+              </ItemContainer>
+            );
+          }
       })}
     </div>
   );
 };
-
+// 620
 const Row = (props) => {
   return (
     <div className="grid w-full grid-cols-1 gap-4 my-8 md:grid-cols-2">
@@ -637,7 +263,7 @@ const Col = (props) => (
 );
 
 export const ItemContainer = ({ children, className }) => (
-  <div className={mergeNames('mb-10', className)}>{children}</div>
+  <div className={mergeNames("mb-10", className)}>{children}</div>
 );
 
 export default Step3;

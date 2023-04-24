@@ -1,16 +1,16 @@
-import AdCard from '@/components/home/adCard';
-import { ContainerXP } from '@/lib/Container';
-import { SectionTitle } from '@/lib/Title';
+import AdCard from "@/components/home/adCard";
+import { ContainerXP } from "@/lib/Container";
+import { SectionTitle } from "@/lib/Title";
 // import { BiArrowFromRight } from "react-icons/bi";
-import mergeNames from '@/util/mergeNames';
-import { useRouter } from 'next/router';
-import { AiOutlineArrowRight } from 'react-icons/ai';
+import mergeNames from "@/util/mergeNames";
+import { useRouter } from "next/router";
+import { AiOutlineArrowRight } from "react-icons/ai";
 
-import { STYLES } from '@/styles/index';
-import SwiperNav from '@/util/SwiperNav';
-import { Skeleton } from '@chakra-ui/react';
-import { useState } from 'react';
-import { SwiperSlide } from 'swiper/react';
+import { STYLES } from "@/styles/index";
+import SwiperNav from "@/util/SwiperNav";
+import { Skeleton } from "@chakra-ui/react";
+import { useState } from "react";
+import { SwiperSlide } from "swiper/react";
 
 const AdContent = ({
   inCat = true,
@@ -18,24 +18,23 @@ const AdContent = ({
   showLink,
   data = [],
   key = Math.random(),
-  title = 'Үл хөдлөх хөрөнгө',
-  url = 'realState',
+  title = "Үл хөдлөх хөрөнгө",
+  url = "realState",
   n = 20,
   nm = 0,
   func,
 }) => {
   const [num, setNum] = useState(nm);
   const router = useRouter();
-
   return (
-    <ContainerXP key={key} classname="pb-10">
+    <ContainerXP key={key} className="pb-10">
       <div className="flex flex-row items-center justify-between mt-4 mb-4 md:mt-6">
         <div className="pl-4 text-left">
           <SectionTitle>{title}</SectionTitle>
         </div>
         <button
           onClick={() => router.push(`category/${url}`)}
-          className={mergeNames(showLink, 'flex items-center')}
+          className={mergeNames(showLink, "flex items-center")}
         >
           <p className="text-sm font-semibold">Бүгд</p>
           <AiOutlineArrowRight size={12} />
@@ -76,7 +75,7 @@ const AdContent = ({
             })}
         </SwiperNav>
       )}
-      {!data && <Skeleton height={'300px'} />}
+      {!data && <Skeleton height={"300px"} />}
 
       {pg && data?.limit > n && (
         <ul className="flex float-right list-style-none">
@@ -98,7 +97,7 @@ const AdContent = ({
             [...Array(Math.ceil(data.limit / n)).keys()].map((l, i) => {
               // [...Array(Math.ceil(data.limit / n)).keys()].map((l) => {
               return (
-                <li className={l == num ? 'active' : ''} key={i}>
+                <li className={l == num ? "active" : ""} key={i}>
                   <button
                     className={mergeNames(
                       l == num ? STYLES.active : STYLES.notActive

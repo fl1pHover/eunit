@@ -1,13 +1,13 @@
-import { LoadingButton } from '@/lib/Button';
-import CustomModal from '@/util/CustomModal';
-import mergeNames from '@/util/mergeNames';
-import WhiteBox from '@/util/product/WhiteBox';
-import { Box, Heading, Text, useDisclosure } from '@chakra-ui/react';
-import { GoogleMap, MarkerF, useLoadScript } from '@react-google-maps/api';
-import { ProductInfo } from 'pages/product/[slug]';
-import { useMemo } from 'react';
-import { FiArrowLeft, FiArrowRight } from 'react-icons/fi';
-import ImageGallery from 'react-image-gallery';
+import { LoadingButton } from "@/lib/Button";
+import CustomModal from "@/util/CustomModal";
+import mergeNames from "@/util/mergeNames";
+import WhiteBox from "@/util/product/WhiteBox";
+import { Box, Heading, Text, useDisclosure } from "@chakra-ui/react";
+import { GoogleMap, MarkerF, useLoadScript } from "@react-google-maps/api";
+import { ProductInfo } from "pages/ad/[slug]";
+import { useMemo } from "react";
+import { FiArrowLeft, FiArrowRight } from "react-icons/fi";
+import ImageGallery from "react-image-gallery";
 const ButtonProcess = () => {
   return (
     <div className="relative w-full h-5 overflow-hidden bg-emerald-700/30 rounded-xl">
@@ -26,19 +26,19 @@ const StepButtons = ({
   sharing = false,
   data,
   generalData,
-  txt = 'Дараах',
-  // onClick = () => {},
+  txt = "Дараах",
+  filter,
   step,
   setStep,
   map,
   selectedParent,
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const libraries = useMemo(() => ['places'], []);
+  const libraries = useMemo(() => ["places"], []);
   // const { categories, setAds } = useAuth();
 
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: 'AIzaSyC2u2OzBNo53GxJJdN3Oc_W6Yc42OmdZcE',
+    googleMapsApiKey: "AIzaSyC2u2OzBNo53GxJJdN3Oc_W6Yc42OmdZcE",
     libraries: libraries,
   });
   const mapOptions = useMemo(
@@ -73,7 +73,7 @@ const StepButtons = ({
           Буцах
         </button>
 
-        {(step == 2 )? (
+        {step == 2 ? (
           <CustomModal
             isOpen={isOpen}
             onClose={onClose}
@@ -88,12 +88,12 @@ const StepButtons = ({
             btnClose2="Буцах"
             header="Нэгтгэсэн мэдээлэл"
           >
-            <Box maxWidth={'100%'} flex="0 0 100%" borderRadius="5px">
+            <Box maxWidth={"100%"} flex="0 0 100%" borderRadius="5px">
               <div className="flex flex-col w-full p-3 shadow-md gap-7 bg-bgGrey md:p-10 rounded-xl">
                 {/*Product */}
                 {generalData.title && (
                   <Heading
-                    variant={'mediumHeading'}
+                    variant={"mediumHeading"}
                     mb={5}
                     onClick={() => {
                       onClose(), setStep(1);
@@ -104,8 +104,8 @@ const StepButtons = ({
                 )}
                 <Box
                   className={mergeNames(
-                    'product__image',
-                    'border-2 border-blue-900/20 shadow-md gallery'
+                    "product__image",
+                    "border-2 border-blue-900/20 shadow-md gallery"
                   )}
                   onClick={() => {
                     onClose(), setStep(1);
@@ -133,27 +133,22 @@ const StepButtons = ({
                   heading="Хаяг"
                   classnames="grid xs:grid-cols-2 xl:grid-cols-4 gap-5"
                 >
-                  {data?.map((p, i) => {
-                    if (
-                      p.parent == 'committee' ||
-                      p.parent == 'district' ||
-                      p.parent == 'location' ||
-                      p.parent == 'town' ||
-                      p.parent == 'officeName' ||
-                      p.parent == 'buildingName'
-                    ) {
-                      return (
-                        <ProductInfo
-                          key={i}
-                          title={p.name ?? ''}
-                          id={p.parent ?? ''}
-                          value={p.input ?? ''}
-                          func={() => {
-                            onClose(), setStep(0);
-                          }}
-                          href={false}
-                        />
-                      );
+                  {filter?.map((p) => {
+                    if (p.step == "location") {
+                      return p.values.map((v, i) => {
+                        return (
+                          <ProductInfo
+                            key={i}
+                            title={v.name}
+                            id={p.parent ?? ""}
+                            value={data[v.type]}
+                            func={() => {
+                              onClose(), setStep(0);
+                            }}
+                            href={false}
+                          />
+                        );
+                      });
                     }
                   })}
                 </WhiteBox>
@@ -181,7 +176,7 @@ const StepButtons = ({
                       zoom={14}
                       center={mapCenter}
                       mapTypeId={google.maps.MapTypeId.ROADMAP}
-                      mapContainerStyle={{ width: '100%', height: '30vh' }}
+                      mapContainerStyle={{ width: "100%", height: "30vh" }}
                     >
                       {isLoaded && (
                         <div>
@@ -191,7 +186,7 @@ const StepButtons = ({
                               lng: parseFloat(map?.lng ?? 107.341515),
                             }}
                             animation={google.maps.Animation.DROP}
-                            className={mergeNames('group')}
+                            className={mergeNames("group")}
                           />
                         </div>
                       )}
@@ -204,55 +199,58 @@ const StepButtons = ({
                     classnames="grid grid-cols-2 gap-3 md:grid-cols-3 2xl:grid-cols-4"
                   >
                     <ProductInfo
-                      title={'Үнэ'}
-                      id={'price'}
-                      value={generalData.price ?? ''}
+                      title={"Үнэ"}
+                      id={"price"}
+                      value={generalData.price ?? ""}
                       func={() => {
                         onClose(), setStep(1);
                       }}
                       href={false}
                     />
                     <ProductInfo
-                      title={'Нэгж талбайн үнэ'}
-                      id={'unitPrice'}
-                      value={generalData.unitPrice ?? ''}
+                      title={"Нэгж талбайн үнэ"}
+                      id={"unitPrice"}
+                      value={generalData.unitPrice ?? ""}
                       func={() => {
                         onClose(), setStep(1);
                       }}
                       href={false}
                     />
                     <ProductInfo
-                      title={'Талбай'}
-                      id={generalData.area ?? ''}
-                      value={generalData.area ?? ''}
+                      title={"Талбай"}
+                      id={generalData.area ?? ""}
+                      value={generalData.area ?? ""}
                       func={() => {
                         onClose(), setStep(1);
                       }}
                       href={false}
                     />
                     <ProductInfo
-                      title={'Утас'}
-                      id={generalData.phone ?? ''}
-                      value={generalData.phone ?? ''}
+                      title={"Утас"}
+                      id={generalData.phone ?? ""}
+                      value={generalData.phone ?? ""}
                       func={() => {
                         onClose(), setStep(1);
                       }}
                       href={false}
                     />
-
-                    {data?.map((p, i) => {
-                      return (
-                        <ProductInfo
-                          key={i}
-                          title={p.name ?? ''}
-                          id={p.parent ?? ''}
-                          value={p.input ?? ''}
-                          func={() => {
-                            onClose(), setStep(2);
-                          }}
-                          href={false}
-                        />
-                      );
+                    {filter?.map((p) => {
+                      if (p.step == "detail") {
+                        return p.values.map((v, i) => {
+                          return (
+                            <ProductInfo
+                              key={i}
+                              title={v.name}
+                              id={p.parent ?? ""}
+                              value={data[v.type]}
+                              func={() => {
+                                onClose(), setStep(2);
+                              }}
+                              href={false}
+                            />
+                          );
+                        });
+                      }
                     })}
                   </WhiteBox>
                 )}

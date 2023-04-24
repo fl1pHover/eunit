@@ -1,34 +1,35 @@
-import React, { useState } from 'react';
-import { BiArea, BiDoorOpen } from 'react-icons/bi';
+import React, { useState } from "react";
+import { BiArea, BiDoorOpen } from "react-icons/bi";
 
-import { IoBedOutline } from 'react-icons/io5';
-import { TbBath } from 'react-icons/tb';
+import { IoBedOutline } from "react-icons/io5";
+import { TbBath } from "react-icons/tb";
 
-import urls from '@/constants/api';
-import { DButton, ImageCount } from '@/lib/Button';
-import Tip from '@/lib/Tip';
-import Alerting from '@/util/Alert';
-import mergeNames from '@/util/mergeNames';
-import { Skeleton } from '@chakra-ui/react';
-import axios from 'axios';
-import { getCookie } from 'cookies-next';
-import currency from 'currency.js';
-import Image from 'next/image';
-import { useRouter } from 'next/router';
-import { Fragment } from 'react';
-import { AiFillEdit, AiOutlineEye } from 'react-icons/ai';
-import { SwiperSlide } from 'swiper/react';
-import EditAd from '../ad/edit';
-import AdCardButton from './adCardButton';
+import urls from "@/constants/api";
+import { DButton, ImageCount } from "@/lib/Button";
+import Tip from "@/lib/Tip";
+import Alerting from "@/util/Alert";
+import mergeNames from "@/util/mergeNames";
+import { Skeleton } from "@chakra-ui/react";
+import axios from "axios";
+import { getCookie } from "cookies-next";
+import currency from "currency.js";
+import Image from "next/image";
+import { useRouter } from "next/router";
+import { Fragment } from "react";
+import { AiFillEdit, AiOutlineEye } from "react-icons/ai";
+import { SwiperSlide } from "swiper/react";
+import EditAd from "../ad/edit";
+import AdCardButton from "./adCardButton";
 
-import { Swiper } from 'swiper/react';
+import { Swiper } from "swiper/react";
 
-import 'swiper/css';
-import 'swiper/css/navigation';
+import "swiper/css";
+import "swiper/css/navigation";
 
-import { STYLES } from '@/styles/index';
-import { Navigation } from 'swiper';
-import moment from 'moment';
+import { STYLES } from "@/styles/index";
+import { Navigation } from "swiper";
+import moment from "moment";
+import { getSellType } from "@/context/functions";
 
 function ProCard({
   item,
@@ -39,8 +40,8 @@ function ProCard({
   admin = false,
 }) {
   const router = useRouter();
-  const user = getCookie('user');
-  const token = getCookie('token');
+  const user = getCookie("user");
+  const token = getCookie("token");
   const [image, setImage] = useState(1);
 
   return (
@@ -50,11 +51,11 @@ function ProCard({
         <div className="grid flex-1 w-full h-full grid-cols-1 md:grid-cols-2">
           <div className="absolute top-0 left-0 z-10 flex items-center justify-between flex-1 w-full px-3 py-2">
             {item?.images.length != 0 ? (
-              <ImageCount onClick={() => console.log('Zurag')}>
+              <ImageCount onClick={() => console.log("Zurag")}>
                 {image}/{item?.images?.length}
               </ImageCount>
             ) : (
-              <ImageCount onClick={() => console.log('Zurag')}>0</ImageCount>
+              <ImageCount onClick={() => console.log("Zurag")}>0</ImageCount>
             )}
             {isDelete ? (
               // <DButton onClick={deleteFunc} />
@@ -66,12 +67,12 @@ function ProCard({
                   data={item}
                   onNext={async () => {
                     await axios
-                      .put(`${urls['test']}/ad/${item._id}`, item, {
+                      .put(`${urls["test"]}/ad/${item._id}`, item, {
                         headers: {
                           Authorization: `Bearer ${token}`,
-                          'Access-Control-Allow-Headers': '*',
-                          'Content-Type': 'application/json',
-                          charset: 'UTF-8',
+                          "Access-Control-Allow-Headers": "*",
+                          "Content-Type": "application/json",
+                          charset: "UTF-8",
                         },
                       })
                       .then((d) => console.log(d.data));
@@ -96,19 +97,19 @@ function ProCard({
             {/* {item?.images && ( */}
             {item?.images.length == 0 && (
               <Image
-                src={'/images/noImage.png'}
+                src={"/images/noImage.png"}
                 alt=" зар"
                 layout="fill"
                 objectFit="cover"
                 className={mergeNames(
-                  'transition-all w-full object-cover h-full ease-in-out duration-400 relative'
+                  "transition-all w-full object-cover h-full ease-in-out duration-400 relative"
                 )}
                 onClick={async () => {
                   if (user) {
                     item?._id &&
                       (await axios
                         .get(
-                          `${urls['test']}/ad/view/${item.num}/${
+                          `${urls["test"]}/ad/view/${item.num}/${
                             JSON.parse(user)._id
                           }`
                         )
@@ -130,7 +131,7 @@ function ProCard({
                   item?._id &&
                     (await axios
                       .get(
-                        `${urls['test']}/ad/view/${item.num}/${
+                        `${urls["test"]}/ad/view/${item.num}/${
                           JSON.parse(user)._id
                         }`
                       )
@@ -141,7 +142,7 @@ function ProCard({
               }}
             >
               {item?.images.map((c, i) => {
-                const a = '/images/noImage.png';
+                const a = "/images/noImage.png";
                 return (
                   <SwiperSlide key={i} onClick={() => setImage(i + 1)}>
                     <Image
@@ -150,7 +151,7 @@ function ProCard({
                       layout="fill"
                       objectFit="cover"
                       className={mergeNames(
-                        'transition-all w-full object-cover h-full ease-in-out duration-400 relative'
+                        "transition-all w-full object-cover h-full ease-in-out duration-400 relative"
                       )}
                     />
                   </SwiperSlide>
@@ -164,12 +165,12 @@ function ProCard({
             {/* <Box className="absolute w-full h-full scale-y-150 scale-x-125 bg-[#0c0e23] rotate-6" /> */}
             <div className="z-0 flex flex-col gap-0 md:gap-2">
               <div className="z-10 flex items-center justify-between gap-4 text-sm font-md">
-                <p className={mergeNames('font-bold text-xl')}>
+                <p className={mergeNames("font-bold text-xl")}>
                   {currency(
-                    `${item?.filters?.find((f) => f.type == 'price')?.input}`,
+                    `${item?.filters?.find((f) => f.type == "price")?.input}`,
                     {
-                      separator: ',',
-                      symbol: '₮ ',
+                      separator: ",",
+                      symbol: "₮ ",
                       pattern: `# !`,
                     }
                   )
@@ -182,11 +183,11 @@ function ProCard({
                   return (
                     <React.Fragment key={i}>
                       <ApartmentIconInfo p={p} />
-                      {p.type === 'area' && (
+                      {p.type === "area" && (
                         <ItemContainer
                           lbl={p.name}
                           Icon={(props) => <BiArea {...props} text="" />}
-                          text={calcValue(p.input, 'байхгүй', 'м.кв')}
+                          text={calcValue(p.input, "байхгүй", "м.кв")}
                         />
                       )}
                     </React.Fragment>
@@ -197,27 +198,27 @@ function ProCard({
                 <TextContainer
                   dark={true}
                   title={item.title}
-                  description={item.positions?.location_id ?? ''}
+                  description={item.positions?.location_id ?? ""}
                 />
               </div>
 
               <div className="flex items-center gap-2 my-1 text-sm text-mainBLossom font-md">
                 <p
                   className={mergeNames(
-                    'font-semibold flex gap-1 items-center mt-0 rounded-sm bg-red-400 text-white px-2'
+                    "font-semibold flex gap-1 items-center mt-0 rounded-sm bg-red-400 text-white px-2"
                   )}
                 >
                   {/* <AiOutlineCheckCircle className="text-blue-600" /> */}
-                  {item?.types[0] ?? ''}
+                  {getSellType(item?.sellType ?? "")}
                 </p>
                 <p
                   className={mergeNames(
-                    'font-semibold flex gap-1 items-center mt-0 bg-gray-200 px-1 rounded-sm truncate'
+                    "font-semibold flex gap-1 items-center mt-0 bg-gray-200 px-1 rounded-sm truncate"
                   )}
                 >
                   {/* <RxDotFilled />  */}
                   {/* <AiOutlineCheckCircle className="text-blue-600 " /> */}
-                  {item?.subCategory?.name ?? ''}
+                  {item?.subCategory?.name ?? ""}
                 </p>
               </div>
               <p className="h-full text-gray-500 line-clamp-3 ">
@@ -227,7 +228,7 @@ function ProCard({
             <div className="flex items-end justify-between h-full text-sm">
               <Tip lbl="Зарын огноо">
                 <p>
-                  {moment(item?.createdAt, 'YYYY-MM-DD').format('YYYY-MM-DD')}
+                  {moment(item?.createdAt, "YYYY-MM-DD").format("YYYY-MM-DD")}
                 </p>
               </Tip>
               <Tip lbl="Зарын үзэлтийн тоо">
@@ -237,20 +238,20 @@ function ProCard({
                 </div>
               </Tip>
             </div>
-            {item?.adStatus == 'pending' && (
+            {item?.adStatus == "pending" && (
               <p
                 className={mergeNames(
-                  'text-teal-300 px-3 rounded-md font-bold mx-auto'
+                  "text-teal-300 px-3 rounded-md font-bold mx-auto"
                 )}
               >
                 {/* {item.adStatus} */}
                 Хүлээгдэж байна...
               </p>
             )}
-            {item?.adStatus == 'deleted' && (
+            {item?.adStatus == "deleted" && (
               <p
                 className={mergeNames(
-                  'text-teal-300 px-3 rounded-md font-bold mx-auto'
+                  "text-teal-300 px-3 rounded-md font-bold mx-auto"
                 )}
               >
                 {/* {item.adStatus} */}
@@ -268,35 +269,35 @@ function ProCard({
               <div className="relative overflow-hidden border-2 rounded-full w-9 h-9 border-mainBlossom">
                 <Image
                   // Eniig user bolgood darahaar ordgoor
-                  src={item?.user?.profileImg ?? '/images/logo/bom-white.png'}
+                  src={item?.user?.profileImg ?? "/images/logo/bom-white.png"}
                   alt="BOM logo"
                   objectFit="cover"
                   layout="fill"
                   className={mergeNames(
-                    item?.user?.profileImg ? '' : 'p-2 bg-mainBlossom '
+                    item?.user?.profileImg ? "" : "p-2 bg-mainBlossom "
                   )}
                 />
               </div>
-              <p className="font-semibold">{item?.user?.username ?? ''}</p>
+              <p className="font-semibold">{item?.user?.username ?? ""}</p>
             </button>
           </Tip>
 
           <div className="flex gap-2">
             <button
               className={mergeNames(
-                ' bg-white text-blue-600 border rounded-full border-blue-600',
-                'px-3 hover:bg-blue-600 hover:text-white transition-all ease-in-out'
+                " bg-white text-blue-600 border rounded-full border-blue-600",
+                "px-3 hover:bg-blue-600 hover:text-white transition-all ease-in-out"
               )}
-              onClick={() => router.push(`tel: ${item?.user?.phone ?? ''}`)}
+              onClick={() => router.push(`tel: ${item?.user?.phone ?? ""}`)}
             >
-              {item?.user?.phone ?? ''}
+              {item?.user?.phone ?? ""}
             </button>
             <button
               className={mergeNames(
                 STYLES.blueButton,
-                'px-3 whitespace-nowrap'
+                "px-3 whitespace-nowrap"
               )}
-              onClick={() => router.push(`mailto: ${item?.user?.email ?? ''}`)}
+              onClick={() => router.push(`mailto: ${item?.user?.email ?? ""}`)}
             >
               Имэйл
             </button>
@@ -314,32 +315,32 @@ const ApartmentIconInfo = ({ p }) => {
   // END YG ROOM MASTERBEDROOM AND BATHROOM IIN MEDEELEL BAIAGA
   return (
     <React.Fragment>
-      {p && p.type === 'room' && (
+      {p && p.type === "room" && (
         <ItemContainer
           lbl={p.name}
-          text={calcValue(p.input, 'байхгүй')}
+          text={calcValue(p.input, "байхгүй")}
           Icon={(props) => <BiDoorOpen {...props} text="" />}
         />
       )}
-      {p && p.type === 'masterBedroom' && (
+      {p && p.type === "masterBedroom" && (
         <ItemContainer
           lbl={p.name}
           Icon={(props) => <IoBedOutline {...props} text="" />}
-          text={calcValue(p.input, 'байхгүй')}
+          text={calcValue(p.input, "байхгүй")}
         />
       )}
-      {p && p.type === 'bathroom' && (
+      {p && p.type === "bathroom" && (
         <ItemContainer
           lbl={p.name}
           Icon={(props) => <TbBath {...props} text="" />}
-          text={calcValue(p.input, 'байхгүй')}
+          text={calcValue(p.input, "байхгүй")}
         />
       )}
     </React.Fragment>
   );
 };
 
-const ItemContainer = ({ Icon = () => <></>, text = '', lbl }) => {
+const ItemContainer = ({ Icon = () => <></>, text = "", lbl }) => {
   return (
     <Tip lbl={lbl}>
       <div className="flex flex-row items-center gap-1">
@@ -350,13 +351,13 @@ const ItemContainer = ({ Icon = () => <></>, text = '', lbl }) => {
   );
 };
 
-const TextContainer = ({ title = '', description = '', dark }) => {
+const TextContainer = ({ title = "", description = "", dark }) => {
   return (
     <div className="w-2/3">
       <p
         className={mergeNames(
-          'text-sm font-semibold  uppercase truncate md:text-[16px]',
-          dark ? 'text-mainBlossom' : 'text-white'
+          "text-sm font-semibold  uppercase truncate md:text-[16px]",
+          dark ? "text-mainBlossom" : "text-white"
         )}
       >
         {title}
@@ -373,7 +374,7 @@ const typeCheck = (id, propmt) => {
   // return id && id.name && id.name.toLowerCase() === propmt;
 };
 
-const calcValue = (props, checker = 'Байхгүй', suffix) => {
+const calcValue = (props, checker = "Байхгүй", suffix) => {
   // p?.value?.toLowerCase() === "байхгүй"
 
   if (props.toString().toLowerCase() === checker) return 0;
@@ -381,6 +382,6 @@ const calcValue = (props, checker = 'Байхгүй', suffix) => {
     if (suffix) return `${props} ${suffix}`;
     return props;
   }
-  return '-';
+  return "-";
 };
 export default ProCard;

@@ -20,7 +20,7 @@ import { AiFillEdit } from "react-icons/ai";
 import { BsThreeDots } from "react-icons/bs";
 import EditAd from "../ad/edit";
 import AdCardButton from "./adCardButton";
-import { stopPropagation } from "@/context/functions";
+import { getSellType, stopPropagation } from "@/context/functions";
 
 function Card({
   item,
@@ -226,7 +226,7 @@ function Card({
               {item?.subCategory?.name ?? ""}
             </p>
             <p className={mergeNames("font-semibold text-white mt-0")}>
-              {item?.types[0] ?? ""}
+              {getSellType(item?.sellType ?? "")}
             </p>
           </div>
 

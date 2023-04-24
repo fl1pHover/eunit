@@ -1,10 +1,9 @@
-import ButtonSelectItem from '@/components/createAd/formButtonSelectItem';
-import Line from '@/components/createAd/formLine';
+import ButtonSelectItem from "@/components/createAd/formButtonSelectItem";
+import Line from "@/components/createAd/formLine";
 
 const FieldSubCategory = ({
   types = {},
   localCategory,
-  setSelectedParent,
   setTypes = () => {},
 }) => {
   return (
@@ -18,7 +17,6 @@ const FieldSubCategory = ({
               isSelected={isSelected}
               text={item?.name ?? item?.category}
               onClick={() => {
-                setSelectedParent([]);
                 setTypes((prev) => ({
                   ...prev,
                   subCategoryId: item.href,
