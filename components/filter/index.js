@@ -1,4 +1,9 @@
 // import Input from '@/lib/Input';
+import { categories } from '@/data/categories';
+import Select from '@/lib/Select';
+import { STYLES } from '@/styles/index';
+import mergeNames from '@/util/mergeNames';
+import useFilter from '@/util/useFilter';
 import {
   Button,
   Checkbox,
@@ -15,33 +20,26 @@ import {
   Text,
   useDisclosure,
   VStack,
-} from "@chakra-ui/react";
-import axios from "axios";
-import { useEffect, useRef, useState } from "react";
-import urls from "../../constants/api";
-import { useAuth } from "../../context/auth";
-import Select from "@/lib/Select";
-import { categories } from "@/data/categories";
-import { STYLES } from "@/styles/index";
-import mergeNames from "@/util/mergeNames";
-import { useRouter } from "next/router";
-import { MdFilterList } from "react-icons/md";
-import FilterStack from "../../util/filterStack";
-import useFilter from "@/util/useFilter";
+} from '@chakra-ui/react';
+import axios from 'axios';
+import { useRouter } from 'next/router';
+import { useEffect, useRef, useState } from 'react';
+import { MdFilterList } from 'react-icons/md';
+import urls from '../../constants/api';
+import FilterStack from '../../util/filterStack';
 
 const FilterLayout = ({ data, isOpenMap, setDefaultAds, setSpecialAds }) => {
-  const { setAds } = useAuth();
   const [subCategory, setSubCategory] = useState();
   const router = useRouter();
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState('');
   const [adType, setAdType] = useState([0]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef();
-  const [values, handle, typeId, min, max] = useFilter();
+  const [values, handle, typeId, min, max, clear] = useFilter();
   const getItems = async (data) => {
     try {
       await axios
-        .get(`${urls["test"]}/category/filters/${data}`, {})
+        .get(`${urls['test']}/category/filters/${data}`, {})
         .then((d) => {
           setSubCategory(d.data);
         });
@@ -57,49 +55,46 @@ const FilterLayout = ({ data, isOpenMap, setDefaultAds, setSpecialAds }) => {
   }, [data]);
   const filterAd = async () => {
     try {
-      let types = [];
-      adType.map((a) => {
-        switch (a) {
-          case 0:
-            types.push("Зарах");
-            break;
-          case 1:
-            types.push("Түрээслэх");
-            break;
-          case 2:
-            types.push("Зарах, түрээслэх");
-            break;
-        }
-      });
+      // let types = [];
+      // adType.map((a) => {
+      //   switch (a) {
+      //     case 0:
+      //       types.push("sell");
+      //       break;
+      //     case 1:
+      //       types.push("rent");
+      //       break;
+      //     case 2:
+      //       types.push("sellRent");
+      //       break;
+      //   }
+      // });
       const filters = [];
       subCategory.steps.map((s) => {
         s.values.map((v) => {
           if (values[v.type] != undefined)
             filters.push({
+              id: v.type,
               value: values[v.type],
             });
           if (min[v.type] != undefined && max[v.type] != undefined)
             filters.push({
+              id: v.type,
               min: min[v.type],
               max: max[v.type],
             });
         });
       });
-      console.log(filters);
-
-      // let filter = subCategory.filters.filter((f, i) => f.input != "");
-
-      //   axios
-      //     .post(`${urls["test"]}/ad/filter`, {
-      //       filters: filter,
-      //       adTypes: types,
-      //       subCategory: subCategory._id,
-      //     })
-      //     .then((d) => {
-      //       setDefaultAds(d.data?.ads?.filter((f) => f.adType == "default"));
-      //       setSpecialAds(d.data?.ads?.filter((f) => f.adType == "special"));
-      //       console.log(d.data);
-      //     });
+      await axios
+        .post(`${urls['test']}/ad/filter/1`, {
+          items: filters,
+        })
+        .then((d) => {
+          setDefaultAds(d.data?.defaultAds);
+          setSpecialAds(d.data?.specialAds);
+          clear();
+          onClose();
+        });
     } catch (e) {
       console.log(e);
     }
@@ -112,12 +107,12 @@ const FilterLayout = ({ data, isOpenMap, setDefaultAds, setSpecialAds }) => {
         color="teal"
         onClick={onOpen}
         className={mergeNames(
-          " bg-blue-600 rounded-md text-white font-bold h-[50px]",
+          ' bg-blue-600 rounded-md text-white font-bold h-[50px]',
           STYLES.flexCenter,
-          "relative ",
+          'relative ',
           // 'sticky top-[100px] left-[0] z-30',
-          "px-5 ",
-          "flex gap-2 items-center"
+          'px-5 ',
+          'flex gap-2 items-center'
         )}
       >
         Шүүлтүүр
@@ -139,7 +134,7 @@ const FilterLayout = ({ data, isOpenMap, setDefaultAds, setSpecialAds }) => {
           // className="text-white bg-mainBlossom"
           >
             <FilterStack>
-              <Heading variant={"smallHeading"} mb={2}>
+              <Heading variant={'smallHeading'} mb={2}>
                 Үл хөдлөх хөрөнгө
               </Heading>
               {categories?.map((c, i) => {
@@ -162,7 +157,7 @@ const FilterLayout = ({ data, isOpenMap, setDefaultAds, setSpecialAds }) => {
                             onChange={(e) => {
                               getItems(e.target.value);
                             }}
-                            _selected={{ font: "bold" }}
+                            _selected={{ font: 'bold' }}
                           >
                             <Text>{category}</Text>
                           </Radio>
@@ -174,14 +169,14 @@ const FilterLayout = ({ data, isOpenMap, setDefaultAds, setSpecialAds }) => {
             </FilterStack>
 
             <FilterStack>
-              <Heading variant={"smallHeading"} mb={2}>
+              <Heading variant={'smallHeading'} mb={2}>
                 Борлуулах төрөл
               </Heading>
-              {["Зарна", "Түрээслэнэ", "Зарах & түрээслэнэ"].map((s, i) => {
+              {['Зарна', 'Түрээслэнэ', 'Зарах & түрээслэнэ'].map((s, i) => {
                 return (
                   <Checkbox
                     key={i}
-                    borderColor={"mainBlue"}
+                    borderColor={'mainBlue'}
                     defaultChecked={adType.find((a) => a == i) != undefined}
                     onChange={(e) => {
                       if (e.target.checked) {
@@ -197,7 +192,7 @@ const FilterLayout = ({ data, isOpenMap, setDefaultAds, setSpecialAds }) => {
               })}
             </FilterStack>
             <FilterStack>
-              <Heading variant={"smallHeading"} mb={2}>
+              <Heading variant={'smallHeading'} mb={2}>
                 Байршлаар
               </Heading>
 
@@ -212,8 +207,8 @@ const FilterLayout = ({ data, isOpenMap, setDefaultAds, setSpecialAds }) => {
               </button>
             </FilterStack>
 
-            <FilterStack borderBottom={"2px solid "} borderColor="bgGrey">
-              <Heading variant={"smallHeading"}>Нэмэлт хайлт</Heading>
+            <FilterStack borderBottom={'2px solid '} borderColor="bgGrey">
+              <Heading variant={'smallHeading'}>Нэмэлт хайлт</Heading>
 
               {subCategory?.steps?.map((f) => {
                 return f.values?.map((v, i) => {
@@ -257,14 +252,14 @@ const FilterLayout = ({ data, isOpenMap, setDefaultAds, setSpecialAds }) => {
                   ) : (
                     v.isSearch && (
                       <VStack flex key={i}>
-                        <Heading variant={"smallHeading"}>{v.name}</Heading>
-                        <Flex alignItems={"center"} gap={2}>
+                        <Heading variant={'smallHeading'}>{v.name}</Heading>
+                        <Flex alignItems={'center'} gap={2}>
                           <Input
                             type="number"
                             placeholder="Доод"
                             className="border-blue-400 rounded-full lue-400 border-1"
                             onChange={(e) =>
-                              handle(v.type, e.target.value, "", "true")
+                              handle(v.type, e.target.value, '', 'true')
                             }
                           />
                           <Text>-</Text>
@@ -273,7 +268,7 @@ const FilterLayout = ({ data, isOpenMap, setDefaultAds, setSpecialAds }) => {
                             placeholder="Дээд"
                             className="border-blue-400 rounded-full lue-400 border-1 focus:outline-none"
                             onChange={(e) =>
-                              handle(v.type, e.target.value, "", "false")
+                              handle(v.type, e.target.value, '', 'false')
                             }
                           />
                         </Flex>
@@ -283,7 +278,7 @@ const FilterLayout = ({ data, isOpenMap, setDefaultAds, setSpecialAds }) => {
                 });
               })}
 
-              <Button variant={"blueButton"} mx={4} onClick={() => filterAd()}>
+              <Button variant={'blueButton'} mx={4} onClick={() => filterAd()}>
                 Хайх
               </Button>
             </FilterStack>

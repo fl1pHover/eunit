@@ -19,7 +19,13 @@ export const useFilter = () => {
       }
     }
   };
-  return [state, handleChange, id, min, max];
+  const clear = () => {
+    setState({})
+    setId({})
+    setMin({})
+    setMax({})
+  }
+  return [state, handleChange, id, min, max, clear];
 };
 
 export default useFilter;

@@ -8,6 +8,7 @@ import { useLoadScript } from '@react-google-maps/api';
 import { useRouter } from 'next/router';
 import { useEffect, useMemo, useState } from 'react';
 import { useAuth } from '../../../context/auth';
+import axios from 'axios';
 
 const CategoryFilter = ({ propAds }) => {
   const router = useRouter();
@@ -22,6 +23,7 @@ const CategoryFilter = ({ propAds }) => {
 
   useEffect(() => {
     setAds(propAds);
+    console.log(propAds);
   }, [propAds]);
 
   const [isLoading, setIsLoading] = useState(false);
@@ -62,9 +64,9 @@ const CategoryFilter = ({ propAds }) => {
           {/* //TODO Filter Box */}
           <Box className="max-w-[100%] w-full rounded-[5px]">
             {/* //TODO Engiin zar */}
-            {ads?.ads?.length > 0 ? (
+            {ads?.defaultAds?.ads?.length > 0 ? (
               <AdContent
-                data={ads}
+                data={ads?.defaultAds}
                 tlc={toLowerCase}
                 title={category ?? ''}
                 showLink="hidden"
@@ -91,13 +93,18 @@ export async function getServerSideProps(ctx) {
   const { params, query } = ctx;
   const { slug } = params;
   const { num, value, cateId } = query;
-  const res = await fetch(
-    `${urls['test']}/ad/filter/${cateId}/${slug}/${value}/${parseInt(num)}`
+  const res = await axios.post(
+    `${urls['test']}/ad/category/filter/${cateId}/${parseInt(num)}`,
+    {
+      
+        'items': [{ id: slug, value: value }],
+      
+    }
   );
-  const ads = await res.json();
+  
   return {
     props: {
-      propAds: ads,
+      propAds: res.data,
     },
   };
 }
