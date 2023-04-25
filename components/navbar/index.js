@@ -4,7 +4,7 @@ import { categories } from '@/data/categories';
 import CategoryBottom from './bottom';
 import UpperNav from './upper';
 
-const Navbar = () => {
+const Navbar = ({user}) => {
   const [sticky, setSticky] = useState(false);
   // const { categories } = useAuth();
   // useEffect(() => {
@@ -24,7 +24,7 @@ const Navbar = () => {
         as={'section'}
         // pos={sticky ? 'sticky' : 'relative'}
       >
-        <CategoryBottom {...{ sticky }} data={categories} />
+        <CategoryBottom {...{ sticky }} data={categories} user={user} />
         <UpperNav />
       </div>
     </>

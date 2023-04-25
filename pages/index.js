@@ -1,10 +1,10 @@
-import AdContent from "@/components/home/adContent";
-import CategorySelect from "@/components/home/categorySelect";
-import ProAdContent from "@/components/home/proAdContent";
-import SwiperHeader from "@/components/home/swiperHeader";
-import urls from "@/constants/api";
-import { ContainerX } from "@/lib/Container";
-import { useEffect, useState } from "react";
+import AdContent from '@/components/home/adContent';
+import CategorySelect from '@/components/home/categorySelect';
+import ProAdContent from '@/components/home/proAdContent';
+import SwiperHeader from '@/components/home/swiperHeader';
+import urls from '@/constants/api';
+import { ContainerX } from '@/lib/Container';
+import { useEffect, useState } from 'react';
 // import required modules
 
 export default function Home({ defaultAds, specialAds }) {
@@ -16,7 +16,7 @@ export default function Home({ defaultAds, specialAds }) {
 
   const getAds = async (num) => {
     try {
-      await axios.get(`${urls["test"]}/ad/${num}`).then((d) => {
+      await axios.get(`${urls['test']}/ad/${num}`).then((d) => {
         console.log(d);
       });
     } catch (error) {
@@ -25,10 +25,10 @@ export default function Home({ defaultAds, specialAds }) {
   };
   useEffect(() => {
     setIsLoading(true);
-    if (typeof defaultAds === "object" && defaultAds?.ads) {
+    if (typeof defaultAds === 'object' && defaultAds?.ads) {
       setAds(defaultAds);
     }
-    if (typeof specialAds === "object" && specialAds?.ads) {
+    if (typeof specialAds === 'object' && specialAds?.ads) {
       setSAds(specialAds);
     }
 
@@ -72,7 +72,7 @@ export default function Home({ defaultAds, specialAds }) {
 
 export async function getServerSideProps({ params, query }) {
   try {
-    const res = await fetch(`${urls["test"]}/ad/${0}`);
+    const res = await fetch(`${urls['test']}/ad/${0}`);
     const ads = await res.json();
     return {
       props: { defaultAds: ads.defaultAds, specialAds: ads.specialAds },

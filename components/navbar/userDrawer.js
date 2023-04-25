@@ -53,7 +53,6 @@ const drawerItem = [
 const BodyDrawer = ({ user }) => {
   const { logout } = useAuth();
   const router = useRouter();
-
   return (
     <DrawerBody className="flex flex-col justify-between p-0 bg-bgdark/95">
       <div
@@ -62,26 +61,24 @@ const BodyDrawer = ({ user }) => {
           'flex-col w-full items-center '
         )}
       >
-        {user && (
-          <div
-            className={mergeNames(
-              STYLES.flexCenter,
-              'flex-col items-center text-white'
-            )}
-          >
-            <Image
-              // src={user?.image}
-              src={
-                user?.profileImg ??
-                'https://www.pikpng.com/pngl/m/80-805068_my-profile-icon-blank-profile-picture-circle-clipart.png'
-              }
-              alt="user image"
-              className="w-[100px] aspect-square rounded-full bg-gray-400 object-cover mt-10"
-            />
-            <h2 className="text-[22px] mt-2 font-bold">{user?.username}</h2>
-            <h2 className="text-[14px] font-semibold">{user?.email}</h2>
-          </div>
-        )}
+        <div
+          className={mergeNames(
+            STYLES.flexCenter,
+            'flex-col items-center text-white'
+          )}
+        >
+          <Image
+            // src={user?.image}
+            src={
+              user?.profileImg ??
+              'https://www.pikpng.com/pngl/m/80-805068_my-profile-icon-blank-profile-picture-circle-clipart.png'
+            }
+            alt="user image"
+            className="w-[100px] aspect-square rounded-full bg-gray-400 object-cover mt-10"
+          />
+          <h2 className="text-[22px] mt-2 font-bold">{user?.username}</h2>
+          <h2 className="text-[14px] font-semibold">{user?.email}</h2>
+        </div>
       </div>
       <div className="flex flex-col p-4 text-center bg-white rounded-t-2xl">
         <div className="grid grid-cols-2 gap-4 py-3">

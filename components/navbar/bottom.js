@@ -10,18 +10,18 @@ import { getCookie } from 'cookies-next';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useState } from 'react';
 import { HiOutlineSearch } from 'react-icons/hi';
 import { MdOutlineClear } from 'react-icons/md';
 import { UserIcon, WhiteHeartIcon } from './icons';
 import NavCategory from './navCategory';
 import UserDrawer from './userDrawer';
 
-const Bottom = () => {
+const Bottom = ({ sticky, user }) => {
   const { logout } = useAuth();
   const router = useRouter();
   const token = getCookie('token');
-  const [user, setUser] = useState({});
+
   // Visible start
 
   const [isHoveringId, setIsHoveringId] = useState(true);
@@ -46,19 +46,7 @@ const Bottom = () => {
       console.error(err);
     }
   };
-  const getUser = async () => {
-    await axios
-      .get(`${urls['test']}/user/me`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Access-Control-Allow-Headers': '*',
-        },
-      })
-      .then((d) => setUser(d.data));
-  };
-  useEffect(() => {
-    if (token) getUser();
-  }, [token]);
+
   const handleClear = (e) => {
     // 👇️ clear input value
     setSearch('');
@@ -103,7 +91,7 @@ const Bottom = () => {
             {!token || user == undefined ? (
               <UserIcon text="Нэвтрэх" onClick={() => router.push('/login')} />
             ) : (
-              <UserDrawer />
+              <UserDrawer user={user} />
             )}
             {createAdNav?.map(({ tabName, id, submenu }, key) => {
               return (
