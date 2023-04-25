@@ -30,10 +30,9 @@ function Card({
   setData,
   admin = false,
   changeAd = {},
+  user,
 }) {
   const router = useRouter();
-  const user = getCookie("user");
-
   const token = getCookie("token");
   const [drop, setDrop] = useState(false);
   const [btn, setBtn] = useState("");
@@ -42,7 +41,7 @@ function Card({
     if (user) {
       item?._id &&
         (await axios
-          .get(`${urls["test"]}/ad/view/${item.num}/${JSON.parse(user)._id}`)
+          .get(`${urls["test"]}/ad/view/${item.num}/${user._id}`)
           .then((d) => router.push(`/ad/${item.num}`)));
     } else {
       item?._id && router.push(`/ad/${item.num}`);
@@ -220,6 +219,7 @@ function Card({
               id={item?.num}
               stopPropagation={stopPropagation}
               adId={item?._id}
+              user={user}
             />
           </div>
           <div className="flex items-center justify-between gap-4 text-sm text-white font-md">

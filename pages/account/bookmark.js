@@ -4,12 +4,11 @@ import urls from '@/constants/api';
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
 import Cookies from 'js-cookie';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
-const Bookmark = () => {
+const Bookmark = ({ user }) => {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const user = getCookie('user');
   const bookmarks = getCookie('bookmarks');
   const [category, setCategory] = useState([]);
   const [subCategory, setSubCategory] = useState([]);
@@ -57,9 +56,9 @@ const Bookmark = () => {
       return text.toLowerCase();
     }
   };
-  useEffect(() => {
-    getData();
-  }, [user]);
+  // useEffect(() => {
+  //   getData();
+  // }, [user]);
 
   return (
     <>
@@ -86,16 +85,28 @@ const Bookmark = () => {
 
 export default Bookmark;
 
-export async function getServerSideProps() {
-  // const res = await fetch(`${urls['test']}/category`);
-  // const resjson = await res.json();
-  const token = Cookies.get('token');
-  // const categories = resjson?.categories;
-  if (!token)
+export async function getServerSideProps(req, res) {
+  const token = getCookie('token', req, res);
+
+  if (!token) {
     return {
       redirect: {
         destination: '/login',
         permanent: false,
       },
     };
+  } else {
+    let userRes = await fetch(`${urls['test']}/user/me`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Access-Control-Allow-Headers': '*',
+      },
+    });
+    user = await userRes.json();
+    return {
+      props: {
+        user,
+      },
+    };
+  }
 }

@@ -5,10 +5,10 @@ import { Box, useDisclosure } from '@chakra-ui/react';
 
 import { ContainerX } from '@/lib/Container';
 import { useLoadScript } from '@react-google-maps/api';
+import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect, useMemo, useState } from 'react';
 import { useAuth } from '../../../context/auth';
-import axios from 'axios';
 
 const CategoryFilter = ({ propAds }) => {
   const router = useRouter();
@@ -96,12 +96,10 @@ export async function getServerSideProps(ctx) {
   const res = await axios.post(
     `${urls['test']}/ad/category/filter/${cateId}/${parseInt(num)}`,
     {
-      
-        'items': [{ id: slug, value: value }],
-      
+      items: [{ id: slug, value: value }],
     }
   );
-  
+
   return {
     props: {
       propAds: res.data,

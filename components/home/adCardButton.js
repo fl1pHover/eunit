@@ -9,14 +9,13 @@ import axios from 'axios';
 import { getCookie, setCookie } from 'cookies-next';
 import { useRouter } from 'next/router';
 import { BiGitCompare } from 'react-icons/bi';
-const AdCardButton = ({ id, adId, stopPropagation }) => {
+const AdCardButton = ({ id, adId, stopPropagation, user }) => {
   const { compareAds, setCompareAds } = useAuth();
   const toast = useToast();
   const [isLiked, setIsLiked] = React.useState(false);
   const token = getCookie('token');
   let bookmarks = getCookie('bookmarks');
   const router = useRouter();
-  const user = getCookie('user');
   const addToBookmark = async () => {
     bookmarks = getCookie('bookmarks');
     if (bookmarks && user && token) {

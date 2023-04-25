@@ -1,17 +1,16 @@
-import AdCard from "@/components/home/adCard";
-import FilterAd from "@/components/Profile/filterAd";
-import urls from "@/constants/api";
-import { stopPropagation } from "@/context/functions";
-import { brk, STYLES } from "@/styles/index";
-import Alerting from "@/util/Alert";
-import mergeNames from "@/util/mergeNames";
-import { Checkbox, useToast } from "@chakra-ui/react";
-import axios from "axios";
-import { getCookie } from "cookies-next";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import AdCard from '@/components/home/adCard';
+import urls from '@/constants/api';
+import { stopPropagation } from '@/context/functions';
+import { brk, STYLES } from '@/styles/index';
+import Alerting from '@/util/Alert';
+import mergeNames from '@/util/mergeNames';
+import { useToast } from '@chakra-ui/react';
+import axios from 'axios';
+import { getCookie } from 'cookies-next';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
-const SharedAds = ({ user }) => {
+const SharedAds = () => {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [category, setCategory] = useState([]);
@@ -21,12 +20,12 @@ const SharedAds = ({ user }) => {
   const [data, setData] = useState([]);
   const router = useRouter();
   const toast = useToast();
-  const token = getCookie("token");
+  const token = getCookie('token');
   const getData = async () => {
     setIsLoading(true);
     try {
       await axios
-        .post(`${urls["test"]}/ad/many/${num}/true`, user.ads)
+        .post(`${urls['test']}/ad/many/${num}/true`, user.ads)
         .then((d) => {
           setProducts(d.data);
           setData(d.data);
@@ -73,21 +72,21 @@ const SharedAds = ({ user }) => {
 
   const adStatusChecker = async () => {
     if (checker.pending) {
-      let ads = products.ads.filter((p) => p.adStatus == "pending");
+      let ads = products.ads.filter((p) => p.adStatus == 'pending');
       setProducts({
         ads,
         limit: products.limit,
       });
     } else {
       if (checker.create && products) {
-        let ads = products.ads.filter((p) => p.adStatus == "created");
+        let ads = products.ads.filter((p) => p.adStatus == 'created');
         setProducts({
           ads,
           limit: products.limit,
         });
       } else {
         if (checker.deleted && products) {
-          let ads = products.ads.filter((p) => p.adStatus == "deleted");
+          let ads = products.ads.filter((p) => p.adStatus == 'deleted');
           setProducts({
             ads,
             limit: products.limit,
@@ -98,7 +97,7 @@ const SharedAds = ({ user }) => {
   };
   const filterCategory = async (cate, value) => {
     await getData();
-    if (cate == "category") {
+    if (cate == 'category') {
       let ads = products.ads.filter((ad) => ad.category.name == value);
       setProducts();
     }
@@ -107,16 +106,16 @@ const SharedAds = ({ user }) => {
     try {
       if (token) {
         let ad = await axios
-          .get(`${urls["test"]}/ad/update/${id}/pending`, {
+          .get(`${urls['test']}/ad/update/${id}/pending`, {
             headers: {
               Authorization: `Bearer ${token}`,
-              "Access-Control-Allow-Headers": "*",
+              'Access-Control-Allow-Headers': '*',
             },
           })
           .then((d) => {
             toast({
-              title: "Зар сэргээгдлээ.",
-              status: "success",
+              title: 'Зар сэргээгдлээ.',
+              status: 'success',
               duration: 5000,
               isClosable: true,
             });
@@ -129,16 +128,16 @@ const SharedAds = ({ user }) => {
     try {
       if (token) {
         let ad = await axios
-          .delete(`${urls["test"]}/ad/${id}`, {
+          .delete(`${urls['test']}/ad/${id}`, {
             headers: {
               Authorization: `Bearer ${token}`,
-              "Access-Control-Allow-Headers": "*",
+              'Access-Control-Allow-Headers': '*',
             },
           })
           .then((d) => {
             toast({
-              title: "Зар устгагдлаа.",
-              status: "warning",
+              title: 'Зар устгагдлаа.',
+              status: 'warning',
               duration: 5000,
               isClosable: true,
             });
@@ -154,24 +153,24 @@ const SharedAds = ({ user }) => {
     try {
       if (token) {
         let ad = await axios
-          .get(`${urls["test"]}/ad/adType/${id}`, {
+          .get(`${urls['test']}/ad/adType/${id}`, {
             headers: {
               Authorization: `Bearer ${token}`,
-              "Access-Control-Allow-Headers": "*",
+              'Access-Control-Allow-Headers': '*',
             },
           })
           .then((d) => {
-            if (d.data == "true" || d.data) {
+            if (d.data == 'true' || d.data) {
               toast({
-                title: "Амжилттай.",
-                status: "success",
+                title: 'Амжилттай.',
+                status: 'success',
                 duration: 5000,
                 isClosable: true,
               });
             } else {
               toast({
-                title: "Таны eunit хүрсэнгүй.",
-                status: "warning",
+                title: 'Таны eunit хүрсэнгүй.',
+                status: 'warning',
                 duration: 5000,
                 isClosable: true,
               });
@@ -180,8 +179,8 @@ const SharedAds = ({ user }) => {
       }
     } catch (error) {
       toast({
-        title: "Алдаа гарлаа.",
-        status: "error",
+        title: 'Алдаа гарлаа.',
+        status: 'error',
         duration: 5000,
         isClosable: true,
       });
@@ -189,7 +188,7 @@ const SharedAds = ({ user }) => {
   };
   return (
     <>
-      <div className={mergeNames("flex flex-col gap-4 mt-5", brk)}>
+      <div className={mergeNames('flex flex-col gap-4 mt-5', brk)}>
         {/* <div className="flex w-full gap-4">
           <FilterAd
             plc="Бүх төрөл"
@@ -284,7 +283,7 @@ const SharedAds = ({ user }) => {
               isDelete={true}
               deleteFunc={(e) => {
                 stopPropagation(e);
-                if (item.adStatus == "deleted") {
+                if (item.adStatus == 'deleted') {
                   restoreAd(item._id);
                 } else {
                   deleteAd(item._id);
@@ -312,7 +311,7 @@ const SharedAds = ({ user }) => {
           [...Array(Math.ceil(products.limit / 10)).keys()].map((l, i) => {
             // [...Array(Math.ceil(products.limit / 10)).keys()].map((l) => {
             return (
-              <li className={l == num ? "active mx-1" : "mx-1"} key={i}>
+              <li className={l == num ? 'active mx-1' : 'mx-1'} key={i}>
                 <button
                   className={mergeNames(
                     l == num ? STYLES.active : STYLES.notActive

@@ -1,22 +1,15 @@
-import ButtonSelectItem from '@/components/createAd/formButtonSelectItem';
 import ChangeAgent from '@/components/Profile/ChangeAgent';
 import ProfileImage from '@/components/Profile/profileImage';
 import ProfileInput from '@/components/Profile/profileInput';
 import Socials from '@/components/Profile/socials';
 import urls from '@/constants/api';
-import { LoadingButton } from '@/lib/Button';
-import { STYLES } from '@/styles/index';
-import CustomModal from '@/util/CustomModal';
 import mergeNames from '@/util/mergeNames';
-import WhiteBox from '@/util/product/WhiteBox';
-import { Image, useDisclosure } from '@chakra-ui/react';
+import { Image } from '@chakra-ui/react';
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
 import moment from 'moment';
 import { useRouter } from 'next/router';
-import { Input } from 'postcss';
 import { Fragment, useState } from 'react';
-import { BiEdit } from 'react-icons/bi';
 
 const GroupLayout = ({ title, children, className = '' }) => (
   <div className={mergeNames('flex flex-col justify-start gap-3', className)}>

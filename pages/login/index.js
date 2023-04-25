@@ -19,6 +19,7 @@ import { useState } from 'react';
 import { BiHide, BiShow } from 'react-icons/bi';
 export default function Login() {
   const { logout, login, signup } = useAuth();
+
   const [signupCredential, setSignupcredential] = useState({
     email: '',
     phone: '',

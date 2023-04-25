@@ -38,9 +38,9 @@ function ProCard({
   data,
   setData,
   admin = false,
+  user,
 }) {
   const router = useRouter();
-  const user = getCookie('user');
   const token = getCookie('token');
   const [image, setImage] = useState(1);
 
@@ -86,7 +86,7 @@ function ProCard({
                 />
               </Fragment>
             ) : (
-              <AdCardButton id={item?.num} adId={item?._id} />
+              <AdCardButton id={item?.num} adId={item?._id} user={user} />
             )}
           </div>
           <div className="relative z-0 w-full h-full bg-gray-800 cursor-pointer h-[250px]">
@@ -108,11 +108,7 @@ function ProCard({
                   if (user) {
                     item?._id &&
                       (await axios
-                        .get(
-                          `${urls['test']}/ad/view/${item.num}/${
-                            JSON.parse(user)._id
-                          }`
-                        )
+                        .get(`${urls['test']}/ad/view/${item.num}/${user._id}`)
                         .then((d) => router.push(`/ad/${item.num}`)));
                   } else {
                     item?._id && router.push(`/ad/${item.num}`);
@@ -130,11 +126,7 @@ function ProCard({
                 if (user) {
                   item?._id &&
                     (await axios
-                      .get(
-                        `${urls['test']}/ad/view/${item.num}/${
-                          JSON.parse(user)._id
-                        }`
-                      )
+                      .get(`${urls['test']}/ad/view/${item.num}/${user._id}`)
                       .then((d) => router.push(`/product/${item.num}`)));
                 } else {
                   item?._id && router.push(`/product/${item.num}`);
