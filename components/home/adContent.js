@@ -27,7 +27,7 @@ const AdContent = ({
   const [num, setNum] = useState(nm);
   const router = useRouter();
   return (
-    <ContainerXP key={key} className="pb-10">
+    <ContainerXP key={key} classname="pb-10">
       <div className="flex flex-row items-center justify-between mt-4 mb-4 md:mt-6">
         <div className="pl-4 text-left">
           <SectionTitle>{title}</SectionTitle>

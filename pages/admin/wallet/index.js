@@ -1,23 +1,23 @@
-import urls from '@/constants/api';
-import { ContainerX } from '@/lib/Container';
-import { STYLES } from '@/styles/index';
-import mergeNames from '@/util/mergeNames';
-import { Heading, Select, useToast } from '@chakra-ui/react';
-import axios from 'axios';
-import { getCookie } from 'cookies-next';
-import Image from 'next/image';
-import { useRouter } from 'next/router';
-import { useState } from 'react';
+import urls from "@/constants/api";
+import { ContainerX } from "@/lib/Container";
+import { STYLES } from "@/styles/index";
+import mergeNames from "@/util/mergeNames";
+import { Heading, Select, useToast } from "@chakra-ui/react";
+import axios from "axios";
+import { getCookie } from "cookies-next";
+import Image from "next/image";
+import { useRouter } from "next/router";
+import { useState } from "react";
 
 const AdminWallet = ({ user }) => {
   const [point, setPoint] = useState({
-    email: '',
-    point: '',
-    message: '',
-    type: 'default',
+    email: "",
+    point: "",
+    message: "",
+    type: "default",
   });
   const toast = useToast();
-  const token = getCookie('token');
+  const token = getCookie("token");
   const router = useRouter();
   const sendPoint = async () => {
     try {
@@ -25,38 +25,38 @@ const AdminWallet = ({ user }) => {
         await axios
           .get(
             `${
-              urls['test']
+              urls["test"]
             }/user/point/${point.email.toLowerCase()}/${parseFloat(
               point.point
             )}/${point.type}/{message}?message=${point.message}`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
-                'Access-Control-Allow-Headers': '*',
+                "Access-Control-Allow-Headers": "*",
               },
             }
           )
           .then((d) => {
-            if (d.data.message == 'success') {
+            if (d.data.message == "success") {
               toast({
-                title: 'Амжилттай илгээлээ.',
-                status: 'success',
+                title: "Амжилттай илгээлээ.",
+                status: "success",
                 duration: 1000,
                 isClosable: true,
               });
             }
-            if (d.data.message == 'not found receiver') {
+            if (d.data.message == "not found receiver") {
               toast({
-                title: 'Хүлээн авагч олдсонгүй',
-                status: 'warning',
+                title: "Хүлээн авагч олдсонгүй",
+                status: "warning",
                 duration: 1000,
                 isClosable: true,
               });
             }
-            if (d.data.message == 'not enough points') {
+            if (d.data.message == "not enough points") {
               toast({
-                title: 'Үлдэгдэл хүрэлцэхгүй байна',
-                status: 'warning',
+                title: "Үлдэгдэл хүрэлцэхгүй байна",
+                status: "warning",
                 duration: 1000,
                 isClosable: true,
               });
@@ -72,7 +72,7 @@ const AdminWallet = ({ user }) => {
   return (
     <ContainerX classname="min-h-[80vh]">
       <div
-        className={mergeNames('grid xl:grid-cols-2 grid-cols-1 gap-10 mt-5')}
+        className={mergeNames("grid xl:grid-cols-2 grid-cols-1 gap-10 mt-5")}
       >
         {/* Card */}
         <div className="flex flex-col">
@@ -83,8 +83,8 @@ const AdminWallet = ({ user }) => {
                 alt="bom logo"
                 src="/images/logo/bom-white.png"
                 className="w-[30px]"
-                width={'30px'}
-                height={'30px'}
+                width={"30px"}
+                height={"30px"}
               />
             </div>
             <h1 className="">Нэр</h1>
@@ -119,13 +119,13 @@ const AdminWallet = ({ user }) => {
             <textarea
               placeholder="Мэссэж"
               maxLength={100}
-              className={mergeNames(STYLES.input, 'rounded-md col-span-full')}
+              className={mergeNames(STYLES.input, "rounded-md col-span-full")}
               onChange={(e) => {
                 setPoint((prev) => ({ ...prev, message: e.target.value }));
               }}
             />
             <button
-              className={mergeNames(STYLES.blueButton, 'col-span-full p-2')}
+              className={mergeNames(STYLES.blueButton, "col-span-full p-2")}
               onClick={() => sendPoint()}
             >
               Шилжүүлэх
@@ -156,7 +156,7 @@ const AdminWallet = ({ user }) => {
                     {ph.receiver?.username}
                   </button>
                   <p className="font-bold text-right text-blue-700">
-                    {ph.type == 'sender' ? '-' : '+'}
+                    {ph.type == "sender" ? "-" : "+"}
                     {ph.point}
                   </p>
                 </div>
@@ -171,18 +171,18 @@ const AdminWallet = ({ user }) => {
 export default AdminWallet;
 
 export async function getServerSideProps({ req, res }) {
-  const token = getCookie('token', { req, res });
+  const token = getCookie("token", { req, res });
 
   if (token) {
     try {
-      const response = await fetch(`${urls['test']}/user/me`, {
+      const response = await fetch(`${urls["test"]}/user/me`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
       const user = await response.json();
       // const adRes = await
-      if (user?.userType == 'admin' || user?.userType == 'system') {
+      if (user?.userType == "admin" || user?.userType == "system") {
         return {
           props: {
             user,
@@ -191,7 +191,7 @@ export async function getServerSideProps({ req, res }) {
       } else {
         return {
           redirect: {
-            destination: '/',
+            destination: "/",
             permanent: false,
           },
         };
@@ -199,7 +199,7 @@ export async function getServerSideProps({ req, res }) {
     } catch (err) {
       return {
         redirect: {
-          destination: '/login',
+          destination: "/login",
           permanent: false,
         },
       };
@@ -207,7 +207,7 @@ export async function getServerSideProps({ req, res }) {
   } else {
     return {
       redirect: {
-        destination: '/login',
+        destination: "/login",
         permanent: false,
       },
     };
