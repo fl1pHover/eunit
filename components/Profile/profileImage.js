@@ -1,10 +1,7 @@
-import { useAuth } from '@/context/auth';
 import { Image } from '@chakra-ui/react';
 import { useRef } from 'react';
 
-const ProfileImage = ({ selectedImage, setSelectedImage }) => {
-  const user = useAuth();
-
+const ProfileImage = ({ selectedImage, setSelectedImage, user }) => {
   const imageChange = (e) => {
     if (e.target.files && e.target.files.length > 0) {
       setSelectedImage(e.target.files[0]);

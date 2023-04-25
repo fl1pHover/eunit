@@ -208,7 +208,7 @@ export const ProductInfo = ({
   );
 };
 
-const Product = ({ propAds }) => {
+const Product = ({ propAds, user }) => {
   const toast = useToast();
   const router = useRouter();
   const [data, setData] = useState('');
@@ -216,8 +216,6 @@ const Product = ({ propAds }) => {
     propAds?.subCategory?.suggessionType[0] ?? 'location'
   );
   const dummyData = [];
-
-  const user = getCookie('user');
   const [sData, setsData] = useState([]);
   const libraries = useMemo(() => ['places'], []);
   const [markerActive, setMarkerActive] = useState(null);
@@ -234,10 +232,13 @@ const Product = ({ propAds }) => {
     }),
     []
   );
-  const mapCenter = useMemo(() => ({
-    lat: parseFloat(data?.location?.lat ?? 47.91887307876936),
-    lng: parseFloat(data?.location?.lng ?? 106.91757202148438),
-  }), [data]);
+  const mapCenter = useMemo(
+    () => ({
+      lat: parseFloat(data?.location?.lat ?? 47.91887307876936),
+      lng: parseFloat(data?.location?.lng ?? 106.91757202148438),
+    }),
+    [data]
+  );
   const getSuggestion = async (suggest, sd) => {
     if (suggest != 'map') {
       try {
@@ -634,11 +635,19 @@ const Product = ({ propAds }) => {
 
 export default Product;
 
-export async function getServerSideProps(ctx) {
+export async function getServerSideProps(ctx, req, res) {
+  const token = getCookie('token', { req, res });
   const { params } = ctx;
   const { slug } = params;
-  const res = await fetch(`${urls['test']}/ad/id/${slug}`);
-  const ads = await res.json();
+  const resAds = await fetch(`${urls['test']}/ad/id/${slug}`);
+  const ads = await resAds.json();
+  let userRes = await fetch(`${urls['test']}/user/me`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Access-Control-Allow-Headers': '*',
+    },
+  });
+  let user = await userRes.json();
   return {
     props: {
       propAds: ads,

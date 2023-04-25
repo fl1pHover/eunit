@@ -17,11 +17,13 @@ import { UserIcon, WhiteHeartIcon } from './icons';
 import NavCategory from './navCategory';
 import UserDrawer from './userDrawer';
 
-const Bottom = ({ sticky }) => {
-  const { logout, setAds } = useAuth();
+const Bottom = ({ user }) => {
+  const { logout } = useAuth();
   const router = useRouter();
   const token = getCookie('token');
+
   // Visible start
+
   const [isHoveringId, setIsHoveringId] = useState(true);
   const [activeSearch, setActiveSearch] = useState(false);
   const handleMouseOver = (id) => {
@@ -37,9 +39,9 @@ const Bottom = ({ sticky }) => {
   const [search, setSearch] = useState('');
   const searchAds = async (value) => {
     try {
-      await fetch(`${urls['test']}/ad/search/{value}?value=${value}`)
-        .then((d) => d.json())
-        .then((d) => setAds(d));
+      await fetch(`${urls['test']}/ad/search/{value}?value=${value}`).then(
+        (d) => d.json()
+      );
     } catch (err) {
       console.error(err);
     }
@@ -85,7 +87,7 @@ const Bottom = ({ sticky }) => {
               onClick={() => router.push('/account?tab=Bookmark')}
             />
 
-            {!token ? (
+            {!token || user == undefined ? (
               <UserIcon text="Нэвтрэх" onClick={() => router.push('/login')} />
             ) : (
               <UserDrawer />
@@ -219,3 +221,29 @@ const Bottom = ({ sticky }) => {
 };
 
 export default Bottom;
+
+export async function getServerSideProps(req, res) {
+  const token = getCookie('token', req, res);
+
+  if (!token) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  } else {
+    let userRes = await fetch(`${urls['test']}/user/me`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Access-Control-Allow-Headers': '*',
+      },
+    });
+    user = await userRes.json();
+    return {
+      props: {
+        user,
+      },
+    };
+  }
+}

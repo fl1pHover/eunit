@@ -16,9 +16,9 @@ import urls from '@/constants/api';
 import { GoogleMap, MarkerF, useLoadScript } from '@react-google-maps/api';
 import { getCookie } from 'cookies-next';
 import SharingUpload from './SharingUpload';
-export default function SharingAd({ categories }) {
+export default function SharingAd({ categories, user }) {
   const toast = useToast();
-  const user = getCookie('user');
+
 
   const router = useRouter();
   // // if (!user) router.push("/login");
@@ -50,7 +50,7 @@ export default function SharingAd({ categories }) {
     imgSelected: false,
     file: [],
     images: [],
-    phone: parseInt(user ? JSON.parse(user).phone : 0),
+    phone: parseInt(user?.phone : 0),
   });
   // STEP 3IIN RAW IMAGE FILES
   const [images, setImages] = useState([]);
@@ -210,7 +210,7 @@ export default function SharingAd({ categories }) {
     // filter hooson esehiig shalgah
     let emptyAd = subCategory.steps[2].values.find((f) => f.input == '');
     if (emptyAd === undefined) {
-      if (user && JSON.parse(user)?.status == 'active') {
+      if (user?.status == 'active') {
         await sendAd();
       } else {
         toast({
@@ -410,7 +410,14 @@ export async function getServerSideProps({ req, res }) {
         permanent: false,
       },
     };
+    let userRes = await fetch(`${urls['test']}/user/me`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Access-Control-Allow-Headers': '*',
+      },
+    });
+   let user = await userRes.json();
   return {
-    props: { categories },
+    props: { categories, user },
   };
 }

@@ -13,7 +13,6 @@ import { useRef } from 'react';
 import BottomMenu from './bottomMenu';
 import { WhiteHeartIcon } from './icons';
 import SideMenu from './sideMenu';
-import { BiPlusCircle } from 'react-icons/bi';
 
 const calcSize = (pt) => {
   switch (pt) {
@@ -41,7 +40,7 @@ const UpperNav = () => {
   const [size, setSize] = useState(() => calcSize(pt));
   const [showSideMenu, setShowSideMenu] = useState(false);
   const [showBottomMenu, setShowBottomMenu] = useState(false);
-  const { user, logout, setAds } = useAuth();
+  const { logout } = useAuth();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef();
@@ -52,9 +51,9 @@ const UpperNav = () => {
 
   const searchAds = async (value) => {
     try {
-      await fetch(`${urls['test']}/ad/search/{value}?value=${value}`)
-        .then((d) => d.json())
-        .then((d) => setAds(d));
+      await fetch(`${urls['test']}/ad/search/{value}?value=${value}`).then(
+        (d) => d.json()
+      );
     } catch (err) {
       console.log(err.response.data.message);
     }

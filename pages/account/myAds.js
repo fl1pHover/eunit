@@ -11,7 +11,7 @@ import { getCookie } from 'cookies-next';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-const MyAds = ({ user }) => {
+const MyAds = ({}) => {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [category, setCategory] = useState([]);

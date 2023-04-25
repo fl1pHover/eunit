@@ -10,15 +10,15 @@ import DashStatus from './dashStatus';
 // user image
 // main dashboard layout
 
-const Dashboard = () => {
+const Dashboard = ({ user }) => {
   const [isDisabled, setIsDisabled] = useState(false);
   const { logout } = useAuth();
-  const user = getCookie('user');
+
   const bookmark = getCookie('bookmarks');
   const handleClick = () => {
     setIsDisabled(!isDisabled);
   };
-  console.log(bookmark);
+
   return (
     <div
       className={mergeNames(
@@ -49,11 +49,11 @@ const Dashboard = () => {
         </button> */}
         {user && (
           <DashStatus
-            agent={JSON.parse(user)}
-            phone={JSON.parse(user)?.phone}
-            username={JSON.parse(user)?.username}
-            ads={JSON.parse(user)?.ads?.length}
-            marks={JSON.parse(bookmark)?.length}
+            agent={user}
+            phone={user?.phone}
+            username={user?.username}
+            ads={user?.ads?.length}
+            marks={0}
           />
         )}
       </div>
@@ -73,3 +73,29 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
+export async function getServerSideProps(req, res) {
+  const token = getCookie('token', { req, res });
+
+  if (token) {
+    let userRes = await fetch(`${urls['test']}/user/me`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Access-Control-Allow-Headers': '*',
+      },
+    });
+    let user = await userRes.json();
+    return {
+      props: {
+        propAds: ads,
+        user: user,
+      },
+    };
+  } else {
+    return {
+      props: {
+        propAds: ads,
+      },
+    };
+  }
+}

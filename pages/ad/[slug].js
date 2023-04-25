@@ -209,7 +209,7 @@ export const ProductInfo = ({
   );
 };
 
-const Product = ({ propAds }) => {
+const Product = ({ propAds, user }) => {
   const { asPath, pathname } = useRouter();
   const toast = useToast();
   const router = useRouter();
@@ -220,7 +220,6 @@ const Product = ({ propAds }) => {
   // propAds?.subCategory?.suggestionItem[0] ?? "location"
   const dummyData = [];
 
-  const user = getCookie('user');
   const [sData, setsData] = useState([]);
   const libraries = useMemo(() => ['places'], []);
   const [markerActive, setMarkerActive] = useState(null);
@@ -806,7 +805,8 @@ export async function getServerSideProps(ctx, req, res) {
   const { slug } = params;
   const token = getCookie('token', { req, res });
   const adRes = await fetch(`${urls['test']}/ad/id/${slug}`);
-  let user = {};
+
+  const ads = await adRes.json();
   if (token) {
     let userRes = await fetch(`${urls['test']}/user/me`, {
       headers: {
@@ -814,21 +814,17 @@ export async function getServerSideProps(ctx, req, res) {
         'Access-Control-Allow-Headers': '*',
       },
     });
-    user = await userRes.json();
-  }
-
-  const ads = await adRes.json();
-  if (token) {
+    let user = await userRes.json();
     return {
       props: {
         propAds: ads,
+        user: user,
       },
     };
   } else {
     return {
       props: {
         propAds: ads,
-        user: user,
       },
     };
   }
