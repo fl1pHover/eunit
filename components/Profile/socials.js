@@ -19,10 +19,11 @@ const Socials = ({ edit, socials, setSocials }) => {
         >
           {socials?.map((s, i) => {
             return (
-              <div key={i}>
+              <div key={i} className={mergeNames(socials[i].url ?? "hidden")}>
+                {console.log(socials[i].url)}
                 <Link href={s.url} passHref>
                   <a
-                    className={mergeNames(edit && "pointer-events-none hidden")}
+                    className={mergeNames("pointer-events-none")}
                     target="_blank"
                   >
                     <Flex alignItems="center" gap={2}>

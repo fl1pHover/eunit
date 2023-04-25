@@ -67,11 +67,13 @@ const WalletPage = ({ user }) => {
   return (
     <div className="flex flex-col gap-10">
       <div
-        className={mergeNames("grid xl:grid-cols-2 grid-cols-1 gap-10 mt-5")}
+        className={mergeNames(
+          "grid xl:grid-cols-2 max-w-[800px] w-full grid-cols-1 mx-auto gap-10 mt-5"
+        )}
       >
         {/* Card */}
         <div className="flex flex-col">
-          <div className="font-bold w-full max-w-[450px] h-[250px] bg-gradient-to-r from-cyan-600 to-blue-700 rounded-lg p-5 flex flex-col justify-between mx-auto text-white">
+          <div className="font-bold w-full  h-[250px] bg-gradient-to-r from-cyan-600 to-blue-700 rounded-lg p-5 flex flex-col justify-between mx-auto text-white">
             <div className="flex justify-between">
               <h1 className="">BOM хэтэвч</h1>
               <Image
@@ -87,10 +89,10 @@ const WalletPage = ({ user }) => {
             </div>
           </div>
         </div>
-        <div className="flex flex-col w-full max-w-[450px] gap-2 mx-auto">
+        <div className="flex flex-col justify-center w-full gap-2 mx-auto">
           <input
             placeholder="Шилжүүлэх хүний и-мэйл"
-            className={mergeNames(STYLES.input, "w-full")}
+            className={mergeNames(STYLES.input, "w-full rounded-md")}
             onChange={(e) => {
               setPoint((prev) => ({ ...prev, email: e.target.value }));
             }}
@@ -99,7 +101,7 @@ const WalletPage = ({ user }) => {
 
           <input
             placeholder="Дүн"
-            className={mergeNames(STYLES.input, "w-full")}
+            className={mergeNames(STYLES.input, "w-full rounded-md")}
             onChange={(e) => {
               setPoint((prev) => ({ ...prev, point: e.target.value }));
             }}
@@ -128,37 +130,50 @@ const WalletPage = ({ user }) => {
           </div>
         </div>
       </div>
-      <div className="w-full max-w-[800px]  mx-auto">
+      <div className="w-full max-w-[800px] px-6 py-4 shadow-md border-2 border-slate-200/30 rounded-xl mx-auto">
         <Heading variant="mediumHeading">Гүйлгээний түүх</Heading>
         <div className="flex flex-col w-full gap-3 mt-4">
-          <div className="flex justify-between w-full">
-            <button className="mx-5 font-semibold text-gray-500">
-              Илгээгч
-            </button>
-            <button className="mx-5 font-semibold text-gray-500">
-              Хүлээн авагч
-            </button>
-            <p className="font-bold text-blue-700">Eunit</p>
+          <div className="flex items-center gap-4">
+            <p className="font-semibold">№</p>
+            <div className="flex justify-between w-full text-lg font-bold">
+              <button className="text-gray-500 ">Илгээгч</button>
+              <button className="text-gray-500 ">Хүлээн авагч</button>
+              <p className="text-blue-700 ">Eunit</p>
+            </div>
           </div>
         </div>
-        {user?.pointHistory?.map((ph, i) => {
-          return (
-            <div className="flex flex-col w-full gap-3 mt-4" key={i}>
-              <div className="grid w-full grid-cols-3">
-                <button className="mx-5 font-semibold text-left text-gray-500">
-                  {ph.sender?.username}
-                </button>
-                <button className="mx-5 font-semibold text-gray-500">
-                  {ph.receiver?.username}
-                </button>
-                <p className="font-bold text-right text-blue-700">
-                  {ph.type == "sender" ? "-" : "+"}
-                  {ph.point}
-                </p>
+        <div className="flex flex-col w-full mt-4">
+          {user?.pointHistory?.map((ph, i) => {
+            return (
+              <div
+                className="flex items-center gap-4 border-t-2 border-gray-200"
+                key={i}
+              >
+                <p className="font-semibold">{i + 1}</p>
+                <div className="grid w-full grid-cols-3 py-2">
+                  <a
+                    href={"/account/" + ph.sender?.id}
+                    target="_blank"
+                    className="font-semibold text-gray-500 "
+                  >
+                    {ph.sender?.username}
+                  </a>
+                  <a
+                    href={"/account/" + ph.receiver?.id}
+                    target="_blank"
+                    className="font-semibold text-center text-gray-500"
+                  >
+                    {ph.receiver?.username}
+                  </a>
+                  <p className="font-bold text-right text-blue-700 ">
+                    {ph.type == "sender" ? "-" : "+"}
+                    {ph.point}
+                  </p>
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
     </div>
   );
