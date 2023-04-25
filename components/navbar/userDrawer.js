@@ -72,18 +72,14 @@ const BodyDrawer = ({ user }) => {
             <Image
               // src={user?.image}
               src={
-                JSON.parse(user)?.profileImg ??
+                user?.profileImg ??
                 'https://www.pikpng.com/pngl/m/80-805068_my-profile-icon-blank-profile-picture-circle-clipart.png'
               }
               alt="user image"
               className="w-[100px] aspect-square rounded-full bg-gray-400 object-cover mt-10"
             />
-            <h2 className="text-[22px] mt-2 font-bold">
-              {JSON.parse(user)?.username}
-            </h2>
-            <h2 className="text-[14px] font-semibold">
-              {JSON.parse(user)?.email}
-            </h2>
+            <h2 className="text-[22px] mt-2 font-bold">{user?.username}</h2>
+            <h2 className="text-[14px] font-semibold">{user?.email}</h2>
           </div>
         )}
       </div>

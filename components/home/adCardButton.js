@@ -1,24 +1,28 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaHeart } from 'react-icons/fa';
 
 import urls from '@/constants/api';
 import { useAuth } from '@/context/auth';
+import { stopPropagation } from '@/context/functions';
 import mergeNames from '@/util/mergeNames';
 import { Tooltip, useToast } from '@chakra-ui/react';
 import axios from 'axios';
 import { getCookie, setCookie } from 'cookies-next';
 import { useRouter } from 'next/router';
 import { BiGitCompare } from 'react-icons/bi';
-const AdCardButton = ({ id, adId, stopPropagation, user }) => {
-  const { compareAds, setCompareAds } = useAuth();
+const AdCardButton = ({ id, adId, cateId }) => {
   const toast = useToast();
   const [isLiked, setIsLiked] = React.useState(false);
+  const [isCompare, setIsCompare] = React.useState(false);
   const token = getCookie('token');
   let bookmarks = getCookie('bookmarks');
+  let { comparison, setComparison } = useAuth();
+  let comparisonCategory = getCookie('comparisonCategory');
+  const [user, setUser] = useState({});
+
   const router = useRouter();
   const addToBookmark = async () => {
-    bookmarks = getCookie('bookmarks');
-    if (bookmarks && user && token) {
+    if (bookmarks) {
       if (JSON.parse(bookmarks).find((b) => b == adId) != undefined) {
         setIsLiked(false);
         let arr = [...JSON.parse(bookmarks)];
@@ -31,17 +35,6 @@ const AdCardButton = ({ id, adId, stopPropagation, user }) => {
           duration: 5000,
           isClosable: true,
         });
-        await axios.post(
-          `${urls['test']}/bookmark/ad`,
-          {
-            adId: adId,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
       } else {
         setIsLiked(true);
         let arr = [...JSON.parse(bookmarks)];
@@ -53,56 +46,57 @@ const AdCardButton = ({ id, adId, stopPropagation, user }) => {
           duration: 5000,
           isClosable: true,
         });
-        await axios.post(
-          `${urls['test']}/bookmark/ad`,
-          {
-            adId: adId,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
       }
     }
-
-    //   try {
-    // } catch (err) {
-    //   console.log(err.response.data.message);
-    //   }
   };
   const getCompareAd = async () => {
-    try {
-      if (compareAds.length <= 4) {
-        await axios.get(`${urls['test']}/ad/id/${id}`).then((d) => {
-          console.log(compareAds);
-          if (compareAds.length > 0) {
-            compareAds[0].subCategory._id == d.data.subCategory._id
-              ? compareAds.find((c) => c._id == d.data._id) == undefined
-                ? setCompareAds((prev) => [...prev, d.data])
-                : toast({
-                    status: `warning`,
-                    title: `Сонгогдсон зар байна`,
-                    duration: 1000,
-                  })
-              : toast({
-                  status: `warning`,
-                  title: `Ижил төрлийн зар сонгоно уу`,
-                  duration: 1000,
-                });
+    if (comparison && comparisonCategory != undefined) {
+      if (
+        comparison.length <= 5 &&
+        comparison.find((b) => b == adId) == undefined
+      ) {
+        if (comparisonCategory == cateId) {
+          setIsCompare(true);
+          setCookie('comparisonCategory', cateId);
+          setComparison((prev) => [...prev, adId]);
+        } else {
+          if (comparisonCategory == '') {
+            setCookie('comparisonCategory', cateId);
+            setIsCompare(true);
+            setComparison((prev) => [...prev, adId]);
           } else {
-            if (compareAds.find((c) => c._id == d.data._id) == undefined) {
-              setCompareAds((prev) => [...prev, d.data]);
-            }
+            toast({
+              status: `warning`,
+              title: `Ижил төрлийн зар сонгоно уу`,
+              duration: 1000,
+            });
           }
+        }
+      } else {
+        toast({
+          status: `warning`,
+          title: `Сонгогдсон зар байна`,
+          duration: 1000,
         });
       }
-    } catch (error) {
-      console.error(error);
     }
   };
-
+  const getUser = async () => {
+    await axios
+      .get(`${urls['test']}/user/me`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Access-Control-Allow-Headers': '*',
+        },
+      })
+      .then((d) => {
+        setUser(d.data);
+        setCookie('bookmarks', d.data.bookmarks);
+      });
+  };
+  useEffect(() => {
+    if (token) getUser();
+  }, [token]);
   const cardIcon = {
     div: 'flex items-center justify-center transition-all duration-300 ease-in-out rounded-full bg-slate-200/40 group-a hover:bg-slate-200  shadow-md',
     icon: 'md:p-2 p-[5px] h-7 w-7 md:w-8 md:h-8',

@@ -38,7 +38,6 @@ function ProCard({
   data,
   setData,
   admin = false,
-  user,
 }) {
   const router = useRouter();
   const token = getCookie('token');
@@ -86,7 +85,7 @@ function ProCard({
                 />
               </Fragment>
             ) : (
-              <AdCardButton id={item?.num} adId={item?._id} user={user} />
+              <AdCardButton id={item?.num} adId={item?._id} cateId={item?.subCategory?._id}/>
             )}
           </div>
           <div className="relative z-0 w-full h-full bg-gray-800 cursor-pointer h-[250px]">
@@ -104,15 +103,8 @@ function ProCard({
                 className={mergeNames(
                   'transition-all w-full object-cover h-full ease-in-out duration-400 relative'
                 )}
-                onClick={async () => {
-                  if (user) {
-                    item?._id &&
-                      (await axios
-                        .get(`${urls['test']}/ad/view/${item.num}/${user._id}`)
-                        .then((d) => router.push(`/ad/${item.num}`)));
-                  } else {
-                    item?._id && router.push(`/ad/${item.num}`);
-                  }
+                onClick={() => {
+                  item?._id && router.push(`/ad/${item.num}`);
                 }}
               />
             )}
@@ -122,15 +114,8 @@ function ProCard({
               onSlideChange={(swiper) => setImage(swiper.realIndex + 1)}
               // loop={true}
               className="mySwiper cardSwiper"
-              onClick={async () => {
-                if (user) {
-                  item?._id &&
-                    (await axios
-                      .get(`${urls['test']}/ad/view/${item.num}/${user._id}`)
-                      .then((d) => router.push(`/product/${item.num}`)));
-                } else {
-                  item?._id && router.push(`/product/${item.num}`);
-                }
+              onClick={() => {
+                item?._id && router.push(`/ad/${item.num}`);
               }}
             >
               {item?.images.map((c, i) => {

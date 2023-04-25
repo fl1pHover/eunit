@@ -14,10 +14,12 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState();
 
-  const [compareAds, setCompareAds] = useState([]);
+  const [comparison, setComparison] = useState([]);
   async function loadUserFromCookies() {
     const token = getCookie('token');
     const bookmarks = getCookie('bookmarks');
+    const comparisonCategory = getCookie('comparisonCategory');
+
     setLoading(true);
     try {
       const { data: category } = await axios.get(`${urls['test']}/category`);
@@ -128,7 +130,9 @@ export const AuthProvider = ({ children }) => {
     deleteCookie('token');
     deleteCookie('user');
     deleteCookie('bookmarks');
-    handle({});
+    setComparison([]);
+    deleteCookie('comparisonCategory');
+
     setLoading(false);
     window.location.pathname = '/login';
   };
@@ -142,8 +146,8 @@ export const AuthProvider = ({ children }) => {
         setLoading,
         categories,
         signup,
-        setCompareAds,
-        compareAds,
+        comparison,
+        setComparison,
       }}
     >
       {children}

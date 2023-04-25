@@ -1,15 +1,29 @@
+import urls from '@/constants/api';
 import { useAuth } from '@/context/auth';
 import { Image } from '@chakra-ui/react';
+import axios from 'axios';
 import currency from 'currency.js';
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 import { BiRightArrowAlt } from 'react-icons/bi';
 import MainContainer from '../layout/mainContainer';
 import { STYLES } from '../styles';
 
 const Comparing = () => {
-  const { compareAds, setCompareAds } = useAuth();
+  const [ads, setAds] = useState({});
+  const { comparison } = useAuth();
   const router = useRouter();
-
+  const getAds = async () => {
+    await axios
+      .post(`${urls['test']}/ad/many/0/false`, comparison)
+      .then((d) => {
+        setAds(d.data?.ads);
+        console.log(d.data);
+      });
+  };
+  useEffect(() => {
+    if (comparison) getAds();
+  }, [comparison]);
   return (
     <div className="">
       <MainContainer>
@@ -32,8 +46,8 @@ const Comparing = () => {
             </h2>
             {/* Fixed information */}
             <div className="border-r border-r-blue">
-              {compareAds.length > 0 &&
-                compareAds[0]?.filters?.map((f, index) => (
+              {ads.length > 0 &&
+                ads[0]?.items?.map((f, index) => (
                   <p
                     key={index}
                     className={`${
@@ -47,8 +61,8 @@ const Comparing = () => {
           </div>
           <div className="flex w-full overflow-x-scroll ">
             {/* Product 1 */}
-            {compareAds.length > 0 &&
-              compareAds.map((c, i) => {
+            {ads.length > 0 &&
+              ads?.map((c, i) => {
                 return (
                   <div href="/" target="_blank" key={i}>
                     <div className="min-w-[150px] max-w-[350px] flex-1 border-r border-r-blue">
@@ -64,9 +78,7 @@ const Comparing = () => {
                         <button
                           className="flex flex-row items-center gap-6 px-4 py-1 font-bold text-white bg-blue-500 rounded-2xl"
                           onClick={() => {
-                            router
-                              .push(`/product/${c.num}`)
-                              .then(() => setCompareAds([]));
+                            router.push(`/ad/${c.num}`);
                           }}
                         >
                           Орох
@@ -74,14 +86,14 @@ const Comparing = () => {
                         </button>
                       </div>
                       <div className="text-center">
-                        {c.filters?.map((f, index) => {
-                          if (f.type == 'price') {
+                        {c.items?.map((f, index) => {
+                          if (f.id == 'price') {
                             return (
                               <h2
                                 key={index}
                                 className="relative p-2 font-bold text-green-700"
                               >
-                                {currency(f.input, {
+                                {currency(f.value, {
                                   separator: ',',
                                   symbol: '₮ ',
                                 })
@@ -92,7 +104,7 @@ const Comparing = () => {
                           }
                         })}
 
-                        {c.filters?.map((f, index) => {
+                        {c.items?.map((f, index) => {
                           return (
                             <p
                               key={index}
@@ -100,17 +112,17 @@ const Comparing = () => {
                                 index % 2 == 0 ? '' : 'bg-gray-100  line-camp-1'
                               } whitespace-nowrap py-2 px-5`}
                             >
-                              {f.input.length == 0 ? (
+                              {f.value.length == 0 ? (
                                 <span>-</span>
-                              ) : f.type == 'price' || f.type == 'unitPrice' ? (
-                                currency(f.input, {
+                              ) : f.id == 'price' || f.id == 'unitPrice' ? (
+                                currency(f.value, {
                                   separator: ',',
                                   symbol: '₮ ',
                                 })
                                   .format()
                                   .toString()
                               ) : (
-                                f.input
+                                f.value
                               )}
                             </p>
                           );

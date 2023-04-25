@@ -30,22 +30,14 @@ function Card({
   setData,
   admin = false,
   changeAd = {},
-  user,
 }) {
   const router = useRouter();
   const token = getCookie('token');
   const [drop, setDrop] = useState(false);
   const [btn, setBtn] = useState('');
 
-  const pushRouter = async () => {
-    if (user) {
-      item?._id &&
-        (await axios
-          .get(`${urls['test']}/ad/view/${item.num}/${user._id}`)
-          .then((d) => router.push(`/ad/${item.num}`)));
-    } else {
-      item?._id && router.push(`/ad/${item.num}`);
-    }
+  const pushRouter = () => {
+    item?._id && router.push(`/ad/${item.num}`);
   };
   useEffect(() => {
     if (btn) router.push(btn);
@@ -216,9 +208,8 @@ function Card({
             />
             <AdCardButton
               id={item?.num}
-              stopPropagation={stopPropagation}
               adId={item?._id}
-              user={user}
+              cateId={item?.subCategory?._id}
             />
           </div>
           <div className="flex items-center justify-between gap-4 text-sm text-white font-md">
