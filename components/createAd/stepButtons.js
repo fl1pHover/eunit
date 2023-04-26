@@ -165,7 +165,7 @@ const StepButtons = ({
                       }}
                     >
                       {sharing ? generalData.file[0]?.name : generalData.desc}
-                      {console.log(generalData.file[0].name)}
+                      {console.log(generalData.file[0]?.name)}
                     </Text>
                   </WhiteBox>
                   <WhiteBox heading="Газрын зураг">
