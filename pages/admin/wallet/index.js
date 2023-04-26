@@ -1,4 +1,3 @@
-import { capitalizeFirst } from "@/components/Profile/socials";
 import WHistory from "@/components/wallet/History";
 import WalletCard from "@/components/wallet/WalletCard";
 import urls from "@/constants/api";

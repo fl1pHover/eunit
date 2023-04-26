@@ -16,7 +16,7 @@ const WalletCard = ({ user }) => {
           </div>
           <div className="flex flex-col">
             <h1 className="text-white/80">Нэр</h1>
-            <h1 className="">{capitalizeFirst(user?.username)}</h1>
+            <h1 className="">{user?.username}</h1>
           </div>
           <div>
             <h1 className="text-white/80">Үлдэгдэл</h1>
