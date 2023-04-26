@@ -12,7 +12,6 @@ import { useEffect, useState } from 'react';
 import Bookmark from './bookmark';
 import MyAds from './myAds';
 import Profile from './profile';
-import SharedAds from './shareAds';
 
 const Account = ({ user }) => {
   const router = useRouter();
@@ -31,12 +30,12 @@ const Account = ({ user }) => {
 
       comp: <MyAds user={user} />,
     },
-    {
-      tabHeader: 'Хуваалцсан зарууд',
-      title: 'SharedAds',
+    // {
+    //   tabHeader: 'Хуваалцсан зарууд',
+    //   title: 'SharedAds',
 
-      comp: <SharedAds user={user} />,
-    },
+    //   comp: <SharedAds user={user} />,
+    // },
     {
       tabHeader: 'Миний хүслүүд',
       title: 'Bookmark',
@@ -64,7 +63,7 @@ const Account = ({ user }) => {
         className={mergeNames(STYLES.flexCenter, 'flex-col gap-3 md:flex-row ')}
       >
         <div className="mx-auto md:mx-0">
-          <Dashboard />
+          <Dashboard user={user} />
         </div>
 
         <div

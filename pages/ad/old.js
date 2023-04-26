@@ -590,7 +590,7 @@ const Product = ({ propAds, user }) => {
                             }}
                           >
                             <div
-                              onClick={() => router.push(`/product/${m.num}`)}
+                              onClick={() => router.push(`/ad/${m.num}`)}
                               className={mergeNames(
                                 'h-[125px] aspect-4/3 flex flex-col cursor-pointer justify-end relative',
                                 'group-hover:block '

@@ -168,6 +168,7 @@ export default function CreateAd({ categories, user }) {
             sellType: getSellType(types.sellType),
             items: filters,
             adType: types.adType,
+            adStatus: 'pending',
             view: 'hide',
           },
           {

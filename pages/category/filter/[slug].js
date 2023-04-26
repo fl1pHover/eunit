@@ -12,7 +12,8 @@ import { useAuth } from '../../../context/auth';
 
 const CategoryFilter = ({ propAds }) => {
   const router = useRouter();
-  const { categories, ads, setAds } = useAuth();
+  const { categories } = useAuth();
+  const [ads, setAds] = useState();
   const [category, setCategory] = useState();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toLowerCase = (text) => {

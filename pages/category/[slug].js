@@ -177,7 +177,7 @@ const Category = ({ defaultAds, specialAds }) => {
                               }}
                             >
                               <div
-                                onClick={() => router.push(`/product/${m.num}`)}
+                                onClick={() => router.push(`/ad/${m.num}`)}
                                 className={mergeNames(
                                   'h-[125px] aspect-4/3 flex flex-col cursor-pointer justify-end relative',
                                   'group-hover:block '
@@ -229,7 +229,7 @@ export async function getServerSideProps(ctx) {
   const { params } = ctx;
   const { slug } = params;
   const res = await fetch(`${urls['test']}/ad/category/${slug}/${0}`);
-  const ads = await res.json();
+const ads = await res.json();
   return {
     props: { defaultAds: ads.defaultAds, specialAds: ads.specialAds },
   };

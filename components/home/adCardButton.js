@@ -22,12 +22,11 @@ const AdCardButton = ({ id, adId, cateId }) => {
 
   const router = useRouter();
   const addToBookmark = async () => {
-    if (bookmarks) {
+    if (bookmarks != undefined) {
       if (JSON.parse(bookmarks).find((b) => b == adId) != undefined) {
         setIsLiked(false);
         let arr = [...JSON.parse(bookmarks)];
         arr = arr.filter((a) => a !== adId);
-
         setCookie('bookmarks', arr);
         toast({
           title: 'Зар хүслээс хасагдлаа.',
@@ -37,6 +36,7 @@ const AdCardButton = ({ id, adId, cateId }) => {
         });
       } else {
         setIsLiked(true);
+
         let arr = [...JSON.parse(bookmarks)];
         arr.push(adId);
         setCookie('bookmarks', arr);
@@ -47,6 +47,13 @@ const AdCardButton = ({ id, adId, cateId }) => {
           isClosable: true,
         });
       }
+    } else {
+      toast({
+        title: 'Та нэврэнэ үү',
+        status: 'warning',
+        duration: 5000,
+        isClosable: true,
+      });
     }
   };
   const getCompareAd = async () => {
@@ -91,7 +98,6 @@ const AdCardButton = ({ id, adId, cateId }) => {
       })
       .then((d) => {
         setUser(d.data);
-        setCookie('bookmarks', d.data.bookmarks);
       });
   };
   useEffect(() => {

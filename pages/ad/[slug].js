@@ -264,8 +264,9 @@ const Product = ({ propAds, user }) => {
             })
             .then((d) => {
               setsData([]);
+
               let ads = d.data?.ads?.filter((da) => da._id != sd._id);
-              setsData({ ads, limit: ads.length });
+              setsData({ limit: ads.length, ads: ads });
             });
         }
       } catch (error) {
@@ -703,7 +704,7 @@ const Product = ({ propAds, user }) => {
                 <Select
                   className="h-[30px] text-sm border-2 pr-3 border-blue-700 rounded-full"
                   onChange={async (e) => {
-                    setSuggestion(e.target.value, data);
+                    getSuggestion(e.target.value, data);
                   }}
                 >
                   <Fragment>
@@ -755,7 +756,7 @@ const Product = ({ propAds, user }) => {
                             }}
                           >
                             <div
-                              onClick={() => router.push(`/product/${m.num}`)}
+                              onClick={() => router.push(`/ad/${m.num}`)}
                               className={mergeNames(
                                 'h-[125px] aspect-4/3 flex flex-col cursor-pointer justify-end relative',
                                 'group-hover:block '
@@ -777,8 +778,8 @@ const Product = ({ propAds, user }) => {
                               </p>
                               <p className="z-10 text-base font-bold text-white">
                                 {
-                                  m.filters.filter((f) => f.type == 'price')[0]
-                                    ?.input
+                                  m.items.filter((f) => f.id == 'price')[0]
+                                    ?.value
                                 }
                               </p>
                             </div>
@@ -790,7 +791,7 @@ const Product = ({ propAds, user }) => {
                 })}
             </GoogleMap>
           ) : (
-            <AdContent data={sData} n={10} />
+            sData?.ads?.length > 0 && <AdContent data={sData} n={10} />
           )}
         </MainContainer>
       }

@@ -1,13 +1,11 @@
-import { AtomLabel } from "@/components/createAd/step3/atom";
-import React from "react";
-import { BiX } from "react-icons/bi";
-import { FiUploadCloud } from "react-icons/fi";
-import { GrDocumentPdf } from "react-icons/gr";
-import { MdPictureAsPdf } from "react-icons/md";
+import { AtomLabel } from '@/components/createAd/step3/atom';
+import React from 'react';
+import { BiX } from 'react-icons/bi';
+import { MdPictureAsPdf } from 'react-icons/md';
 
 const SharingUpload = ({
   label,
-
+  onChange,
   generalData = {},
   setImages = () => {},
   images = [],
@@ -37,7 +35,7 @@ const SharingUpload = ({
     setImages((images) => [...images, fileUploaded[0]]);
 
     // FOR BUG IN CHROME
-    event.target.value = "";
+    event.target.value = '';
     setIsImageSelected(true);
     setGeneralData((prev) => ({
       ...prev,
@@ -65,20 +63,21 @@ const SharingUpload = ({
 
   return (
     <div className="">
-      <AtomLabel>{label ? label : "PDF зураг оруулах"}</AtomLabel>
+      <AtomLabel>{label ? label : 'PDF зураг оруулах'}</AtomLabel>
       <>
         <input
           type="file"
           name="upload"
           accept="application/pdf"
           ref={hiddenFileInput}
-          style={{ display: "none" }}
+          style={{ display: 'none' }}
           multiple
-          onChange={handleChange}
+          onChange={onChange}
         />
         {isImageSelected ? (
           <div className="grid w-full h-full grid-cols-2 gap-4 p-4 overflow-hidden border-2 border-blue-400 border-dotted outline-none md:grid-cols-3 bg-blue-100/50 rounded-xl">
             {selectedImages.map((image, key) => {
+              console.log(image);
               return (
                 <div
                   key={key}
@@ -106,14 +105,6 @@ const SharingUpload = ({
           >
             <MdPictureAsPdf size={90} className="text-blue-400" />
             <p>Зураг оруулах</p>
-          </button>
-        )}
-        {isImageSelected && (
-          <button
-            className="px-4 py-1 mt-4 text-white bg-blue-500 rounded-md"
-            onClick={handleClick}
-          >
-            Зураг нэмэх
           </button>
         )}
       </>

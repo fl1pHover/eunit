@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from 'react';
 
 export const useAd = () => {
   const [state, setState] = useState({});
@@ -12,7 +12,8 @@ export const useAd = () => {
     setIndex((prev) => ({ ...prev, [name]: i }));
     setPosition((prev) => ({ ...prev, [name]: pos }));
     setSearch((prev) => ({ ...prev, [name]: search }));
-    if (type != "" && type != null) {
+    console.log(value, i);
+    if (type != '' && type != null) {
       setId((prev) => ({ ...prev, [name]: type }));
     }
   };

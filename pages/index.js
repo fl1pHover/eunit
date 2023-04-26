@@ -14,15 +14,6 @@ export default function Home({ defaultAds, specialAds }) {
 
   const [limitAd, setLimitAd] = useState(0);
 
-  const getAds = async (num) => {
-    try {
-      await axios.get(`${urls['test']}/ad/${num}`).then((d) => {
-        console.log(d);
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
   useEffect(() => {
     setIsLoading(true);
     if (typeof defaultAds === 'object' && defaultAds?.ads) {
@@ -70,10 +61,11 @@ export default function Home({ defaultAds, specialAds }) {
   );
 }
 
-export async function getServerSideProps({ params, query }) {
+export async function getServerSideProps({ params, query, req, res }) {
   try {
-    const res = await fetch(`${urls['test']}/ad/${0}`);
-    const ads = await res.json();
+    const resAds = await fetch(`${urls['test']}/ad/${0}`);
+    const ads = await resAds.json();
+
     return {
       props: { defaultAds: ads.defaultAds, specialAds: ads.specialAds },
     };

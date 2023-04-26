@@ -19,7 +19,16 @@ export const AuthProvider = ({ children }) => {
     const token = getCookie('token');
     const bookmarks = getCookie('bookmarks');
     const comparisonCategory = getCookie('comparisonCategory');
-
+    await axios
+      .get(`${urls['test']}/user/me`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Access-Control-Allow-Headers': '*',
+        },
+      })
+      .then((d) => {
+        setCookie('bookmars', d.data.bookmarks);
+      });
     setLoading(true);
     try {
       const { data: category } = await axios.get(`${urls['test']}/category`);

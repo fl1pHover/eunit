@@ -10,7 +10,7 @@ import { getCookie } from 'cookies-next';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-const SharedAds = () => {
+const SharedAds = ({user}) => {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [category, setCategory] = useState([]);
@@ -21,18 +21,19 @@ const SharedAds = () => {
   const router = useRouter();
   const toast = useToast();
   const token = getCookie('token');
-  const getData = async () => {
-    setIsLoading(true);
+  const getAds = async () => {
     try {
       await axios
-        .post(`${urls['test']}/ad/many/${num}/true`, user.ads)
+        .post(`${urls['test']}/ad/many/${num}/true`, user.ads, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
         .then((d) => {
-          setProducts(d.data);
-          setData(d.data);
-          // setCategory(d.data.ads.fi)
+          setAds(d.data);
           let c = [],
             s = [];
-          d.data.ads.map((ad) => {
+          d.data?.ads?.map((ad) => {
             if (c.length > 0) {
               if (c.find((a) => a == ad.category.name) === undefined) {
                 c.push(ad.category.name);
@@ -50,13 +51,21 @@ const SharedAds = () => {
           });
           setCategory(c);
           setSubCategory(s);
-        })
-        .then((a) => setIsLoading(false));
+        });
     } catch (error) {
-      console.log(error);
-      setIsLoading(false);
+      console.error(error);
     }
   };
+  useEffect(() => {
+    if (user) {
+      getAds();
+    }
+  }, [user]);
+  useEffect(() => {
+    if (user) {
+      getAds();
+    }
+  }, [num]);
 
   const toLowerCase = (text) => {
     if (text) {
@@ -345,3 +354,38 @@ const SharedAds = () => {
 };
 
 export default SharedAds;
+export async function getServerSideProps({ req, res }) {
+  const token = getCookie('token', { req, res });
+
+  if (token) {
+    try {
+      const response = await fetch(`${urls['test']}/user/me`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const user = await response.json();
+      // const adRes = await
+
+      return {
+        props: {
+          user: user,
+        },
+      };
+    } catch (err) {
+      return {
+        redirect: {
+          destination: '/login',
+          permanent: false,
+        },
+      };
+    }
+  } else {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+}

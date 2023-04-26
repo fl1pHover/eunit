@@ -144,7 +144,7 @@ function ProCard({
               <div className="z-10 flex items-center justify-between gap-4 text-sm font-md">
                 <p className={mergeNames('font-bold text-xl')}>
                   {currency(
-                    `${item?.filters?.find((f) => f.type == 'price')?.input}`,
+                    `${item?.items?.find((f) => f.id == 'price')?.value}`,
                     {
                       separator: ',',
                       symbol: '₮ ',
@@ -156,15 +156,15 @@ function ProCard({
                 </p>
               </div>
               <div className="flex flex-wrap items-end gap-5 my-3">
-                {item?.filters?.map((p, i) => {
+                {item?.items?.map((p, i) => {
                   return (
                     <React.Fragment key={i}>
                       <ApartmentIconInfo p={p} />
-                      {p.type === 'area' && (
+                      {p.id === 'area' && (
                         <ItemContainer
                           lbl={p.name}
                           Icon={(props) => <BiArea {...props} text="" />}
-                          text={calcValue(p.input, 'байхгүй', 'м.кв')}
+                          text={calcValue(p.value, 'байхгүй', 'м.кв')}
                         />
                       )}
                     </React.Fragment>
@@ -175,7 +175,10 @@ function ProCard({
                 <TextContainer
                   dark={true}
                   title={item.title}
-                  description={item.positions?.location_id ?? ''}
+                  description={
+                    item.items.filter((it) => it.id == 'location')?.[0].value ??
+                    ''
+                  }
                 />
               </div>
 
@@ -292,25 +295,20 @@ const ApartmentIconInfo = ({ p }) => {
   // END YG ROOM MASTERBEDROOM AND BATHROOM IIN MEDEELEL BAIAGA
   return (
     <React.Fragment>
-      {p && p.type === 'room' && (
+      {p && p.position === 'top' && (
         <ItemContainer
           lbl={p.name}
-          text={calcValue(p.input, 'байхгүй')}
-          Icon={(props) => <BiDoorOpen {...props} text="" />}
-        />
-      )}
-      {p && p.type === 'masterBedroom' && (
-        <ItemContainer
-          lbl={p.name}
-          Icon={(props) => <IoBedOutline {...props} text="" />}
-          text={calcValue(p.input, 'байхгүй')}
-        />
-      )}
-      {p && p.type === 'bathroom' && (
-        <ItemContainer
-          lbl={p.name}
-          Icon={(props) => <TbBath {...props} text="" />}
-          text={calcValue(p.input, 'байхгүй')}
+          text={calcValue(p.value, 'байхгүй')}
+          Icon={(props) => {
+            switch (p.id) {
+              case 'room':
+                return <BiDoorOpen {...props} text="" />;
+              case 'masterBedroom':
+                return <IoBedOutline {...props} text="" />;
+              case 'bathroom':
+                return <TbBath {...props} text="" />;
+            }
+          }}
         />
       )}
     </React.Fragment>
