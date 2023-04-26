@@ -387,7 +387,8 @@ export default function SharingAd({ categories, user }) {
           }
         })}
 
-        <SharingStepButtons
+        <StepButtons
+          sharing
           setStep={setStep}
           onNext={() => {
             handleNextStep(), top();

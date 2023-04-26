@@ -19,7 +19,7 @@ const ButtonProcess = () => {
   );
 };
 
-const SharingStepButtons = ({
+const StepButtons = ({
   onPrev = () => {},
   loading = false,
   onNext = () => {},
@@ -152,8 +152,9 @@ const SharingStepButtons = ({
                     }
                   })}
                 </WhiteBox>
-                <div className="grid grid-cols-1 gap-7 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
-                  <WhiteBox heading="Газрын зураг" classnames="col-span-full">
+
+                <div className="grid grid-cols-1 gap-7 ">
+                  <WhiteBox heading="Газрын зураг">
                     <GoogleMap
                       onClick={() => {
                         onClose(), setStep(0);
@@ -240,10 +241,11 @@ const SharingStepButtons = ({
                     })}
                   </WhiteBox>
                 )}
-                <WhiteBox heading="Хавсаргасан PDF">
-                  {console.log(generalData.file[0].name)}
-                  <p>{generalData.file[0].name}</p>
-                </WhiteBox>
+                {data && (
+                  <WhiteBox heading={"file"}>
+                    <p>{generalData[0].file.name}</p>
+                  </WhiteBox>
+                )}
               </div>
             </Box>
           </CustomModal>
@@ -262,4 +264,4 @@ const SharingStepButtons = ({
   );
 };
 
-export default SharingStepButtons;
+export default StepButtons;

@@ -155,7 +155,7 @@ const StepButtons = ({
 
                 <div className="grid grid-cols-1 gap-7 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
                   <WhiteBox
-                    heading="Зарын дэлгэрэнгүй"
+                    heading={sharing ? "Pdf file нэр" : "Зарын дэлгэрэнгүй"}
                     classnames="flex flex-col gap-3 "
                   >
                     <Text
@@ -164,7 +164,8 @@ const StepButtons = ({
                         onClose(), setStep(1);
                       }}
                     >
-                      {generalData.desc}
+                      {sharing ? generalData.file[0]?.name : generalData.desc}
+                      {console.log(generalData.file[0].name)}
                     </Text>
                   </WhiteBox>
                   <WhiteBox heading="Газрын зураг">
