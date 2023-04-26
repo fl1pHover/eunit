@@ -223,16 +223,16 @@ function Card({
           </div>
 
           <div className="flex flex-wrap items-end justify-between gap-x-1">
-            {item?.filters?.map((p, i) => {
+            {item?.items?.map((p, i) => {
               return (
                 <React.Fragment key={i}>
                   <ApartmentIconInfo p={p} />
 
-                  {p.type === "area" && (
+                  {p.id === "area" && (
                     <ItemContainer
                       lbl={p.name}
                       Icon={(props) => <BiArea {...props} text="" />}
-                      text={calcValue(p.input, "байхгүй", "м.кв")}
+                      text={calcValue(p.value, "байхгүй", "м.кв")}
                     />
                   )}
                 </React.Fragment>
@@ -268,25 +268,25 @@ const ApartmentIconInfo = ({ p }) => {
   // END YG ROOM MASTERBEDROOM AND BATHROOM IIN MEDEELEL BAIAGA
   return (
     <React.Fragment>
-      {p && p.type === "room" && (
+      {p && p.id === "room" && (
         <ItemContainer
           lbl={p.name}
-          text={calcValue(p.input, "байхгүй")}
+          text={calcValue(p.value, "байхгүй")}
           Icon={(props) => <BiDoorOpen {...props} text="" />}
         />
       )}
-      {p && p.type === "masterBedroom" && (
+      {p && p.id === "masterBedroom" && (
         <ItemContainer
           lbl={p.name}
           Icon={(props) => <IoBedOutline {...props} text="" />}
-          text={calcValue(p.input, "байхгүй")}
+          text={calcValue(p.value, "байхгүй")}
         />
       )}
-      {p && p.type === "bathroom" && (
+      {p && p.id === "bathroom" && (
         <ItemContainer
           lbl={p.name}
           Icon={(props) => <TbBath {...props} text="" />}
-          text={calcValue(p.input, "байхгүй")}
+          text={calcValue(p.value, "байхгүй")}
         />
       )}
     </React.Fragment>
