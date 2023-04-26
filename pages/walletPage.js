@@ -6,7 +6,6 @@ import { getCookie } from "cookies-next";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { STYLES } from "../styles";
-import { capitalizeFirst } from "@/components/Profile/socials";
 import DialogBox from "@/util/Dialog";
 import WalletCard from "@/components/wallet/WalletCard";
 import WHistory from "@/components/wallet/History";

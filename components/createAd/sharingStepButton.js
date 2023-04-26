@@ -19,7 +19,7 @@ const ButtonProcess = () => {
   );
 };
 
-const StepButtons = ({
+const SharingStepButtons = ({
   onPrev = () => {},
   loading = false,
   onNext = () => {},
@@ -154,20 +154,7 @@ const StepButtons = ({
                 </WhiteBox>
 
                 <div className="grid grid-cols-1 gap-7 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
-                  <WhiteBox
-                    heading="Зарын дэлгэрэнгүй"
-                    classnames="flex flex-col gap-3 "
-                  >
-                    <Text
-                      className="text-[#5c727d] whitespace-pre-line"
-                      onClick={() => {
-                        onClose(), setStep(1);
-                      }}
-                    >
-                      {generalData.desc}
-                    </Text>
-                  </WhiteBox>
-                  <WhiteBox heading="Газрын зураг">
+                  <WhiteBox heading="Газрын зураг" classnames="col-span-full">
                     <GoogleMap
                       onClick={() => {
                         onClose(), setStep(0);
@@ -272,4 +259,4 @@ const StepButtons = ({
   );
 };
 
-export default StepButtons;
+export default SharingStepButtons;

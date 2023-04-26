@@ -1,10 +1,10 @@
-import AdContent from '@/components/home/adContent';
-import CategorySelect from '@/components/home/categorySelect';
-import ProAdContent from '@/components/home/proAdContent';
-import SwiperHeader from '@/components/home/swiperHeader';
-import urls from '@/constants/api';
-import { ContainerX } from '@/lib/Container';
-import { useEffect, useState } from 'react';
+import AdContent from "@/components/home/adContent";
+import CategorySelect from "@/components/home/categorySelect";
+import ProAdContent from "@/components/home/proAdContent";
+import SwiperHeader from "@/components/home/swiperHeader";
+import urls from "@/constants/api";
+import { ContainerX } from "@/lib/Container";
+import { useEffect, useState } from "react";
 // import required modules
 
 export default function Home({ defaultAds, specialAds }) {
@@ -16,10 +16,10 @@ export default function Home({ defaultAds, specialAds }) {
 
   useEffect(() => {
     setIsLoading(true);
-    if (typeof defaultAds === 'object' && defaultAds?.ads) {
+    if (typeof defaultAds === "object" && defaultAds?.ads) {
       setAds(defaultAds);
     }
-    if (typeof specialAds === 'object' && specialAds?.ads) {
+    if (typeof specialAds === "object" && specialAds?.ads) {
       setSAds(specialAds);
     }
 
@@ -63,7 +63,7 @@ export default function Home({ defaultAds, specialAds }) {
 
 export async function getServerSideProps({ params, query, req, res }) {
   try {
-    const resAds = await fetch(`${urls['test']}/ad/${0}`);
+    const resAds = await fetch(`${urls["test"]}/ad/${0}`);
     const ads = await resAds.json();
 
     return {
@@ -71,6 +71,8 @@ export async function getServerSideProps({ params, query, req, res }) {
     };
   } catch (error) {
     console.error(error);
-    return;
+    return {
+      props: {},
+    };
   }
 }

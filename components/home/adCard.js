@@ -264,7 +264,7 @@ function Card({
     </Skeleton>
   );
 }
-const ApartmentIconInfo = ({ p }) => {
+export const ApartmentIconInfo = ({ p }) => {
   // END YG ROOM MASTERBEDROOM AND BATHROOM IIN MEDEELEL BAIAGA
   return (
     <React.Fragment>

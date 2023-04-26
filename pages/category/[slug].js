@@ -1,8 +1,8 @@
-import FilterLayout from '@/components/filter';
-import AdContent from '@/components/home/adContent';
-import urls from '@/constants/api';
-import MainContainer from '@/layout/mainContainer';
-import mergeNames from '@/util/mergeNames';
+import FilterLayout from "@/components/filter";
+import AdContent from "@/components/home/adContent";
+import urls from "@/constants/api";
+import MainContainer from "@/layout/mainContainer";
+import mergeNames from "@/util/mergeNames";
 import {
   Box,
   Button,
@@ -14,21 +14,21 @@ import {
   ModalFooter,
   ModalHeader,
   useDisclosure,
-} from '@chakra-ui/react';
+} from "@chakra-ui/react";
 
-import ProAdContent from '@/components/home/proAdContent';
-import { ContainerX } from '@/lib/Container';
-import SkeletonContent from '@/util/SkeletonContent';
+import ProAdContent from "@/components/home/proAdContent";
+import { ContainerX } from "@/lib/Container";
+import SkeletonContent from "@/util/SkeletonContent";
 import {
   GoogleMap,
   InfoWindow,
   MarkerF,
   useLoadScript,
-} from '@react-google-maps/api';
-import axios from 'axios';
-import { useRouter } from 'next/router';
-import { useEffect, useMemo, useState } from 'react';
-import { useAuth } from '../../context/auth';
+} from "@react-google-maps/api";
+import axios from "axios";
+import { useRouter } from "next/router";
+import { useEffect, useMemo, useState } from "react";
+import { useAuth } from "../../context/auth";
 
 const Category = ({ defaultAds, specialAds }) => {
   const router = useRouter();
@@ -47,16 +47,16 @@ const Category = ({ defaultAds, specialAds }) => {
     setIsLoading(true);
     if (defaultAds) setAds(defaultAds);
     if (specialAds) setSAds(specialAds);
-    console.log(defaultAds);
+    // console.log(defaultAds);
     setIsLoading(false);
   }, [defaultAds, specialAds]);
 
-  const libraries = useMemo(() => ['places'], []);
+  const libraries = useMemo(() => ["places"], []);
   // const { categories, setAds } = useAuth();
   const [markerActive, setMarkerActive] = useState(null);
 
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: 'AIzaSyC2u2OzBNo53GxJJdN3Oc_W6Yc42OmdZcE',
+    googleMapsApiKey: "AIzaSyC2u2OzBNo53GxJJdN3Oc_W6Yc42OmdZcE",
     libraries: libraries,
   });
   const mapOptions = useMemo(
@@ -78,7 +78,7 @@ const Category = ({ defaultAds, specialAds }) => {
     try {
       if (router.query.slug)
         await axios
-          .get(`${urls['test']}/ad/category/${router.query.slug}/${id}`)
+          .get(`${urls["test"]}/ad/category/${router.query.slug}/${id}`)
           .then((d) => {
             setAds(d.data);
           });
@@ -111,7 +111,7 @@ const Category = ({ defaultAds, specialAds }) => {
               <ProAdContent
                 data={sAds}
                 tlc={toLowerCase}
-                title={category ?? ''}
+                title={category ?? ""}
                 showLink="hidden"
                 inCat
                 func={getData}
@@ -124,7 +124,7 @@ const Category = ({ defaultAds, specialAds }) => {
               <AdContent
                 data={ads}
                 tlc={toLowerCase}
-                title={category ?? ''}
+                title={category ?? ""}
                 showLink="hidden"
                 inCat
                 func={getData}
@@ -140,7 +140,7 @@ const Category = ({ defaultAds, specialAds }) => {
           </Box>
         </div>
         {/* <CustomModal></CustomModal> */}
-        <Modal onClose={onClose} isOpen={isOpen} isCentered size={'4xl'}>
+        <Modal onClose={onClose} isOpen={isOpen} isCentered size={"4xl"}>
           <ModalContent>
             <ModalHeader>Maps</ModalHeader>
             <ModalCloseButton />
@@ -154,7 +154,7 @@ const Category = ({ defaultAds, specialAds }) => {
                 zoom={14}
                 center={mapCenter}
                 mapTypeId={google.maps.MapTypeId.ROADMAP}
-                mapContainerStyle={{ width: '100%', height: '50vh' }}
+                mapContainerStyle={{ width: "100%", height: "50vh" }}
               >
                 {isLoaded &&
                   ads?.ads?.map((m, i) => {
@@ -167,7 +167,7 @@ const Category = ({ defaultAds, specialAds }) => {
                           }}
                           onMouseOver={() => setMarkerActive(i)}
                           animation={google.maps.Animation.DROP}
-                          className={mergeNames('group')}
+                          className={mergeNames("group")}
                         >
                           {markerActive == i && (
                             <InfoWindow
@@ -179,18 +179,18 @@ const Category = ({ defaultAds, specialAds }) => {
                               <div
                                 onClick={() => router.push(`/ad/${m.num}`)}
                                 className={mergeNames(
-                                  'h-[125px] aspect-4/3 flex flex-col cursor-pointer justify-end relative',
-                                  'group-hover:block '
+                                  "h-[125px] aspect-4/3 flex flex-col cursor-pointer justify-end relative",
+                                  "group-hover:block "
                                 )}
                               >
                                 <Image
                                   src={
-                                    m.images[0] ?? '/images/HeaderSlider/1.jpg'
+                                    m.images[0] ?? "/images/HeaderSlider/1.jpg"
                                   }
                                   alt="map image"
                                   className={mergeNames(
-                                    'absolute top-0 left-0 object-cover w-full h-full ',
-                                    ''
+                                    "absolute top-0 left-0 object-cover w-full h-full ",
+                                    ""
                                   )}
                                 />
                                 <div className="absolute top-0 left-0 object-cover w-full h-full bg-gradient-to-b from-slate-700/0 via-slate-700/50 to-slate-900/100 "></div>
@@ -200,7 +200,7 @@ const Category = ({ defaultAds, specialAds }) => {
                                 <p className="z-10 text-base font-bold text-white">
                                   {
                                     m.filters.filter(
-                                      (f) => f.type == 'price'
+                                      (f) => f.type == "price"
                                     )[0]?.input
                                   }
                                 </p>
@@ -228,8 +228,8 @@ export default Category;
 export async function getServerSideProps(ctx) {
   const { params } = ctx;
   const { slug } = params;
-  const res = await fetch(`${urls['test']}/ad/category/${slug}/${0}`);
-const ads = await res.json();
+  const res = await fetch(`${urls["test"]}/ad/category/${slug}/${0}`);
+  const ads = await res.json();
   return {
     props: { defaultAds: ads.defaultAds, specialAds: ads.specialAds },
   };
