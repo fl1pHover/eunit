@@ -24,10 +24,11 @@ const CompareItem = ({ item, onClick }) => {
   );
 };
 
-const CompareSelect = ({ btnView = true }) => {
+const CompareSelect = ({ btnView = true, compareAds }) => {
   const router = useRouter();
   const [expand, setExpand] = useState(false);
   const { comparison, setComparison } = useAuth();
+
   return (
     <div>
       {/* <div className="grid grid-cols-1 gap-4 mt-5 sm:grid-cols-2">
@@ -87,14 +88,14 @@ const CompareSelect = ({ btnView = true }) => {
         </div>
         <div className="grid h-[80%] grid-cols-4 md:gap-6 gap-1 py-5">
           {/* Compare item */}
-          {comparison.length > 0 &&
-            comparison.map((cAds, i) => {
+          {compareAds?.length > 0 &&
+            compareAds?.map((cAds, i) => {
               return (
                 <CompareItem
                   item={cAds}
                   key={i}
                   onClick={() =>
-                    setComparison(comparison.filter((c) => c.num != cAds.num))
+                    setComparison(compareAds?.filter((c) => c.num != cAds.num))
                   }
                 />
               );

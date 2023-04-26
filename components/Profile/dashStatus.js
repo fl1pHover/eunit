@@ -1,9 +1,7 @@
 import { STYLES } from '@/styles/index';
 import mergeNames from '@/util/mergeNames';
 import { getCookie } from 'cookies-next';
-import { useEffect } from 'react';
-import { useState } from 'react';
-import { Suspense } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { BiUser } from 'react-icons/bi';
 import { BsGrid1X2 } from 'react-icons/bs';
 import { FiHeart } from 'react-icons/fi';
@@ -14,11 +12,10 @@ import { FiHeart } from 'react-icons/fi';
 
 const DashStatus = ({ agent, username, phone, ads }) => {
   const bookmark = getCookie('bookmarks');
-  const [mark, setMark] = useState(0)
+  const [mark, setMark] = useState(0);
   useEffect(() => {
-    if(bookmark)
-    setMark(JSON.parse(bookmark).length)
-  }, [bookmark])
+    if (bookmark) setMark(JSON.parse(bookmark).length);
+  }, [bookmark]);
   return (
     <div
       className={mergeNames(
@@ -64,7 +61,7 @@ const DashStatus = ({ agent, username, phone, ads }) => {
           <BsGrid1X2 className="text-[18px]" />
           <p>{ads} - Нийт зар</p>
         </div>
-        {mark && (
+        {mark != 0 && (
           <div className="flex items-center gap-4">
             <FiHeart className="text-[18px]" />
             <p className="">{mark} - Нийт хүсэл</p>

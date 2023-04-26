@@ -1,13 +1,12 @@
-import { LoadingButton } from "@/lib/Button";
-import { STYLES } from "@/styles/index";
-import CustomModal from "@/util/CustomModal";
-import mergeNames from "@/util/mergeNames";
-import WhiteBox from "@/util/product/WhiteBox";
-import { useDisclosure } from "@chakra-ui/react";
-import React from "react";
-import { BiEdit } from "react-icons/bi";
-import FieldPhotoUpload from "../createAd/step3/fieldPhotoUpload";
-import { AtomLabel } from "../createAd/step3/atom";
+import { LoadingButton } from '@/lib/Button';
+import { STYLES } from '@/styles/index';
+import CustomModal from '@/util/CustomModal';
+import mergeNames from '@/util/mergeNames';
+import WhiteBox from '@/util/product/WhiteBox';
+import { useDisclosure } from '@chakra-ui/react';
+import { BiEdit } from 'react-icons/bi';
+import { AtomLabel } from '../createAd/step3/atom';
+import FieldPhotoUpload from '../createAd/step3/fieldPhotoUpload';
 
 const FlexDiv = ({ title, children }) => {
   return (
@@ -21,7 +20,7 @@ const FlexDiv = ({ title, children }) => {
 const ChangeAgent = ({ agent, org, setOrg, setAgent, setImage }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  return (
+  return agent || org ? (
     <CustomModal
       onClose={onClose}
       onOpen={onOpen}
@@ -162,7 +161,7 @@ const ChangeAgent = ({ agent, org, setOrg, setAgent, setImage }) => {
           </WhiteBox>
           <WhiteBox heading="Компаны хаяг">
             <input
-              className={mergeNames(STYLES.input, "min-w-[500px]")}
+              className={mergeNames(STYLES.input, 'min-w-[500px]')}
               type="text"
               placeholder="Нэр"
               onChange={(e) =>
@@ -173,6 +172,8 @@ const ChangeAgent = ({ agent, org, setOrg, setAgent, setImage }) => {
         </>
       )}
     </CustomModal>
+  ) : (
+    <></>
   );
 };
 
