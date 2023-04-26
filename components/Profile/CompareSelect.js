@@ -1,20 +1,17 @@
-import { useAuth } from '@/context/auth';
-import { STYLES } from '@/styles/index';
-import mergeNames from '@/util/mergeNames';
-import { Image } from '@chakra-ui/react';
-import { setCookie } from 'cookies-next';
-import { useRouter } from 'next/router';
-import { useState } from 'react';
-import { MdCompareArrows } from 'react-icons/md';
+import { useAuth } from "@/context/auth";
+import { STYLES } from "@/styles/index";
+import mergeNames from "@/util/mergeNames";
+import { Image } from "@chakra-ui/react";
+import { setCookie } from "cookies-next";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import { MdCompareArrows } from "react-icons/md";
 
 const CompareItem = ({ item, onClick }) => {
   return (
-    <div className="w-full h-full bg-white max-w-[250px] relative ">
-      <Image
-        src={item?.images[0] ?? '/images/noImage.png'}
-        alt="compare ads image"
-      />
-
+    <div className="w-full h-full bg-white max-w-[250px]  relative ">
+      <Image src={"/images/noImage.png"} alt="compare ads image" />
+      {console.log(item)}
       {/* Delete button*/}
       <div
         className="absolute delete -top-[10px] -right-[10px] rounded-full cursor-pointer"
@@ -41,12 +38,12 @@ const CompareSelect = ({ btnView = true, compareAds }) => {
       </div> */}
       <div
         className={mergeNames(
-          'fixed px-[10%] bottom-0 left-0',
-          'bg-secondary/90 w-screen transition-all ease-in-out pb-[68px] md:pb-0',
-          ' text-[12px] sm:text-base  z-10',
-          comparison.length > 0 && router?.pathname != '/compare'
-            ? 'h-[250px]'
-            : 'h-0'
+          "fixed px-[10%] bottom-0 left-0",
+          "bg-secondary/90 w-screen transition-all ease-in-out pb-[68px] md:pb-0",
+          " text-[12px] sm:text-base  z-10",
+          comparison.length > 0 && router?.pathname != "/compare"
+            ? "h-[250px]"
+            : "h-0"
         )}
       >
         {btnView && (
@@ -56,15 +53,15 @@ const CompareSelect = ({ btnView = true, compareAds }) => {
           >
             <MdCompareArrows
               className={mergeNames(
-                'text-xl ',
-                expand ? 'rotate-0' : 'rotate-180'
+                "text-xl ",
+                expand ? "rotate-0" : "rotate-180"
               )}
             />
             <p className="text-[12px]">Харьцуулах</p>
           </button>
         )}
         <div
-          className={mergeNames(STYLES.flexBetween, 'pt-5 text-white w-full')}
+          className={mergeNames(STYLES.flexBetween, "pt-5 text-white w-full")}
         >
           <p>
             Харьцуулах ( <span> {comparison.length}</span>/4 )
@@ -73,20 +70,20 @@ const CompareSelect = ({ btnView = true, compareAds }) => {
             <button
               onClick={() => {
                 setComparison([]);
-                setCookie('comparisonCategory', '');
+                setCookie("comparisonCategory", "");
               }}
             >
               Цэвэрлэх
             </button>
             <button
-              onClick={() => router.push('/compare')}
+              onClick={() => router.push("/compare")}
               className="px-4 py-2 bg-blue-500 hover:bg-blue-700 rounded-2xl"
             >
               Харьцуулах
             </button>
           </div>
         </div>
-        <div className="grid h-[80%] grid-cols-4 md:gap-6 gap-1 py-5">
+        <div className="grid h-full grid-cols-4 gap-1 my-5 md:gap-6">
           {/* Compare item */}
           {compareAds?.length > 0 &&
             compareAds?.map((cAds, i) => {

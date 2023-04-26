@@ -33,11 +33,11 @@ const drawerItem = [
     text: "Миний зарууд",
     href: "MyAds",
   },
-  {
-    icon: <MdShare />,
-    text: "Хуваалцсан зарууд",
-    href: "SharedAds",
-  },
+  // {
+  //   icon: <MdShare />,
+  //   text: "Хуваалцсан зарууд",
+  //   href: "SharedAds",
+  // },
   {
     icon: <FiHeart />,
     text: "Миний хүслүүд",
