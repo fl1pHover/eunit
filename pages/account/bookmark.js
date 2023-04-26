@@ -18,7 +18,7 @@ const Bookmark = ({ user }) => {
     if (bookmarks)
       try {
         await axios
-          .post(`${urls['test']}/ad/many/0/false`, JSON.parse(bookmarks))
+          .post(`${urls['test']}/ad/many/0/false/10/created`, JSON.parse(bookmarks))
           .then((d) => {
             setAds(d.data);
             setIsLoading(false);

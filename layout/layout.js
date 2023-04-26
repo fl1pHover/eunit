@@ -14,7 +14,7 @@ const Layout = ({ children }) => {
   const [ads, setAds] = useState([]);
   const getAds = async () => {
     await axios
-      .post(`${urls["test"]}/ad/many/0/false`, comparison)
+      .post(`${urls["test"]}/ad/many/0/false/5/created`, comparison)
       .then((d) => setAds(d.data.ads));
   };
   useEffect(() => {

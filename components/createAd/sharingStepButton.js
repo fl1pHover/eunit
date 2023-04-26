@@ -152,7 +152,6 @@ const SharingStepButtons = ({
                     }
                   })}
                 </WhiteBox>
-
                 <div className="grid grid-cols-1 gap-7 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
                   <WhiteBox heading="Газрын зураг" classnames="col-span-full">
                     <GoogleMap
@@ -241,6 +240,10 @@ const SharingStepButtons = ({
                     })}
                   </WhiteBox>
                 )}
+                <WhiteBox heading="Хавсаргасан PDF">
+                  {console.log(generalData.file[0].name)}
+                  <p>{generalData.file[0].name}</p>
+                </WhiteBox>
               </div>
             </Box>
           </CustomModal>

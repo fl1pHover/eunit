@@ -53,7 +53,6 @@ const Dashboard = ({ user }) => {
             phone={user?.phone}
             username={user?.username}
             ads={user?.ads?.length}
-            marks={bookmark != undefined ? JSON.parse(bookmark).length : 0}
           />
         )}
       </div>

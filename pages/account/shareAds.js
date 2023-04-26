@@ -24,7 +24,7 @@ const SharedAds = ({user}) => {
   const getAds = async () => {
     try {
       await axios
-        .post(`${urls['test']}/ad/many/${num}/true`, user.ads, {
+        .post(`${urls['test']}/ad/many/${num}/true/10/created`, user.ads, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

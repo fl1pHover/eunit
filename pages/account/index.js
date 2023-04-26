@@ -28,7 +28,7 @@ const Account = ({ user }) => {
       tabHeader: 'Миний зарууд',
       title: 'MyAds',
 
-      comp: <MyAds user={user} />,
+      comp: <MyAds user={user?.ads} />,
     },
     // {
     //   tabHeader: 'Хуваалцсан зарууд',
