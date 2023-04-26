@@ -6,6 +6,10 @@ import { getCookie } from "cookies-next";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { STYLES } from "../styles";
+import { capitalizeFirst } from "@/components/Profile/socials";
+import DialogBox from "@/util/Dialog";
+import WalletCard from "@/components/wallet/WalletCard";
+import WHistory from "@/components/wallet/History";
 
 const WalletPage = ({ user }) => {
   const [point, setPoint] = useState({
@@ -72,25 +76,11 @@ const WalletPage = ({ user }) => {
         )}
       >
         {/* Card */}
-        <div className="flex flex-col">
-          <div className="font-bold w-full  h-[250px] bg-gradient-to-r from-cyan-600 to-blue-700 rounded-lg p-5 flex flex-col justify-between mx-auto text-white">
-            <div className="flex justify-between">
-              <h1 className="">BOM хэтэвч</h1>
-              <Image
-                alt="bom logo"
-                src="/images/logo/bom-white.png"
-                className="w-[30px]"
-              />
-            </div>
-            <h1 className="">Нэр</h1>
-            <div>
-              <h1 className="text-white/80">Үлдэгдэл</h1>
-              <h1 className="text-xl">{user?.point ?? 0} ₮</h1>
-            </div>
-          </div>
-        </div>
-        <div className="flex flex-col justify-center w-full gap-2 mx-auto">
+        <WalletCard user={user} />
+
+        <form className="flex flex-col justify-center w-full gap-2 mx-auto">
           <input
+            type="email"
             placeholder="Шилжүүлэх хүний и-мэйл"
             className={mergeNames(STYLES.input, "w-full rounded-md")}
             onChange={(e) => {
@@ -100,6 +90,7 @@ const WalletPage = ({ user }) => {
           />
 
           <input
+            type="number"
             placeholder="Дүн"
             className={mergeNames(STYLES.input, "w-full rounded-md")}
             onChange={(e) => {
@@ -109,72 +100,68 @@ const WalletPage = ({ user }) => {
           />
 
           <textarea
+            type="text"
             placeholder="Мэссэж"
-            maxLength={200}
-            className={mergeNames(STYLES.input, "rounded-md col-span-full")}
+            maxLength={30}
+            className={mergeNames(
+              STYLES.input,
+              "rounded-md col-span-full resize-none"
+            )}
             onChange={(e) => {
               setPoint((prev) => ({ ...prev, message: e.target.value }));
             }}
             required
           />
-          <div>
-            <button
-              className={mergeNames(
-                STYLES.blueButton,
-                "col-span-full w-full p-2"
-              )}
-              onClick={() => sendPoint()}
-            >
-              Шилжүүлэх
-            </button>
-          </div>
-        </div>
-      </div>
-      <div className="w-full max-w-[800px] px-6 py-4 shadow-md border-2 border-slate-200/30 rounded-xl mx-auto">
-        <Heading variant="mediumHeading">Гүйлгээний түүх</Heading>
-        <div className="flex flex-col w-full gap-3 mt-4">
-          <div className="flex items-center gap-4">
-            <p className="font-semibold">№</p>
-            <div className="flex justify-between w-full text-lg font-bold">
-              <button className="text-gray-500 ">Илгээгч</button>
-              <button className="text-gray-500 ">Хүлээн авагч</button>
-              <p className="text-blue-700 ">Eunit</p>
-            </div>
-          </div>
-        </div>
-        <div className="flex flex-col w-full mt-4">
-          {user?.pointHistory?.map((ph, i) => {
-            return (
+
+          <DialogBox
+            btnDialog={
               <div
-                className="flex items-center gap-4 border-t-2 border-gray-200"
-                key={i}
+                className={mergeNames(
+                  STYLES.blueButton,
+                  "text-center w-full p-2"
+                )}
               >
-                <p className="font-semibold">{i + 1}</p>
-                <div className="grid w-full grid-cols-3 py-2">
-                  <a
-                    href={"/account/" + ph.sender?.id}
-                    target="_blank"
-                    className="font-semibold text-gray-500 "
-                  >
-                    {ph.sender?.username}
-                  </a>
-                  <a
-                    href={"/account/" + ph.receiver?.id}
-                    target="_blank"
-                    className="font-semibold text-center text-gray-500"
-                  >
-                    {ph.receiver?.username}
-                  </a>
-                  <p className="font-bold text-right text-blue-700 ">
-                    {ph.type == "sender" ? "-" : "+"}
-                    {ph.point}
-                  </p>
-                </div>
+                Шилжүүлэх
               </div>
-            );
-          })}
-        </div>
+            }
+            dlHeader="Та шилжүүлэхдээ итгэлтэй байна уу?"
+            dlBody={
+              <>
+                <p className={mergeNames(STYLES.flexBetween, "w-full")}>
+                  Шилжүүлэх хүний и-мэйл:
+                  <span className="font-bold">
+                    {point.email}
+                    {point.email.length == 0 && "И-мэйлээ оруулна уу"}
+                  </span>
+                </p>
+                <p className={mergeNames(STYLES.flexBetween, "w-full")}>
+                  Дүн:
+                  <span className="font-bold">
+                    {point.point}{" "}
+                    {point.point.length == 0 && "Дүнгээ оруулна уу"}
+                  </span>
+                </p>
+                <p className={mergeNames(STYLES.flexBetween, "w-full")}>
+                  Мэссэж: <span className="font-bold">{point.message}</span>
+                </p>
+              </>
+            }
+            dlFooter={
+              <>
+                <button
+                  className={mergeNames(STYLES.blueButton, "px-4 py-1 ml-3")}
+                  ml={3}
+                  onClick={() => sendPoint()}
+                >
+                  Тийм
+                </button>
+              </>
+            }
+          />
+        </form>
+        {/* <WalletForm onClick={() => sendPoint()} /> */}
       </div>
+      <WHistory user={user} />
     </div>
   );
 };
