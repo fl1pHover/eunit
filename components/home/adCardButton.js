@@ -48,6 +48,7 @@ const AdCardButton = ({ id, adId, cateId }) => {
         });
       }
     } else {
+      console.log(bookmarks)
       toast({
         title: "Та нэвтэрнэ үү",
         status: "warning",

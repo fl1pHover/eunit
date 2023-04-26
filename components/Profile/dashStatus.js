@@ -1,5 +1,8 @@
 import { STYLES } from '@/styles/index';
 import mergeNames from '@/util/mergeNames';
+import { getCookie } from 'cookies-next';
+import { useEffect } from 'react';
+import { useState } from 'react';
 import { Suspense } from 'react';
 import { BiUser } from 'react-icons/bi';
 import { BsGrid1X2 } from 'react-icons/bs';
@@ -9,7 +12,13 @@ import { FiHeart } from 'react-icons/fi';
 // Niit zar
 // niit bookmark
 
-const DashStatus = ({ agent, username, phone, ads, marks }) => {
+const DashStatus = ({ agent, username, phone, ads }) => {
+  const bookmark = getCookie('bookmarks');
+  const [mark, setMark] = useState(0)
+  useEffect(() => {
+    if(bookmark)
+    setMark(JSON.parse(bookmark).length)
+  }, [bookmark])
   return (
     <div
       className={mergeNames(
@@ -35,7 +44,7 @@ const DashStatus = ({ agent, username, phone, ads, marks }) => {
                 ? 'Энгийн'
                 : agent?.userType == 'agent'
                 ? 'Агент'
-                : agent?.userType == 'orgazation'
+                : agent?.userType == 'organization'
                 ? 'Байгууллага'
                 : agent?.userType}
             </p>{' '}
@@ -53,18 +62,14 @@ const DashStatus = ({ agent, username, phone, ads, marks }) => {
         </div>
         <div className="flex items-center gap-4">
           <BsGrid1X2 className="text-[18px]" />
-          <p>
-            {/* <span className="font-bold text-teal-500">35</span> */}
-            {ads} - Нийт зар
-          </p>
+          <p>{ads} - Нийт зар</p>
         </div>
-        <div className="flex items-center gap-4">
-          <FiHeart className="text-[18px]" />
-          <p className="">
-            {/* <span className="font-bold text-teal-500">35</span>  */}
-            {marks} - Нийт хүсэл
-          </p>
-        </div>
+        {mark && (
+          <div className="flex items-center gap-4">
+            <FiHeart className="text-[18px]" />
+            <p className="">{mark} - Нийт хүсэл</p>
+          </div>
+        )}
       </div>
     </div>
   );

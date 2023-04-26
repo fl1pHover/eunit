@@ -21,7 +21,7 @@ const Accounts = ({ propUser }) => {
   const [ads, setAds] = useState([]);
   const getAds = async () => {
     await axios
-      .post(`${urls["test"]}/ad/many/0/false`, propUser.ads)
+      .post(`${urls["test"]}/ad/many/0/false/10/created`, propUser.ads)
       .then((d) => {
         setAds(d.data);
       });
