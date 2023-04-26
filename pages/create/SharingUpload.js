@@ -2,10 +2,6 @@ import { AtomLabel } from "@/components/createAd/step3/atom";
 import React, { useState } from "react";
 import { BiX } from "react-icons/bi";
 import { MdPictureAsPdf } from "react-icons/md";
-import { Viewer, Worker } from "@react-pdf-viewer/core";
-import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
-import "@react-pdf-viewer/core/lib/styles/index.css";
-import "@react-pdf-viewer/default-layout/lib/styles/index.css";
 
 // Import the styles
 
