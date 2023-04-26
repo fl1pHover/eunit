@@ -17,6 +17,7 @@ import useAd from '@/util/useAd';
 import { GoogleMap, MarkerF, useLoadScript } from '@react-google-maps/api';
 import { getCookie } from 'cookies-next';
 import SharingUpload from './SharingUpload';
+import { getSellType } from '@/context/functions';
 export default function SharingAd({ categories, user }) {
   const toast = useToast();
 
@@ -307,12 +308,13 @@ export default function SharingAd({ categories, user }) {
               }
             /> */}
             <SharingUpload
+              generalData={generalData.file}
               onChange={(e) => {
                 setGeneralData((prev) => ({
                   ...prev,
                   file: [e.target.files[0]],
                 }));
-                console.log(e.target);
+              
               }}
             />
           </>
