@@ -3,8 +3,6 @@ import React, { useState } from "react";
 import { BiX } from "react-icons/bi";
 import { MdPictureAsPdf } from "react-icons/md";
 
-// Import the styles
-
 const SharingUpload = ({
   label,
   onChange,

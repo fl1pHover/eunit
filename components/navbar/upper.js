@@ -1,32 +1,32 @@
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
-import { HiMenuAlt3 } from 'react-icons/hi';
-import useBreakpoints from '../../hooks/useBreakpoints';
-import { NavContainer } from '../../lib/Container';
+import { HiMenuAlt3 } from "react-icons/hi";
+import useBreakpoints from "../../hooks/useBreakpoints";
+import { NavContainer } from "../../lib/Container";
 
-import urls from '@/constants/api';
-import { Image, useDisclosure } from '@chakra-ui/react';
-import { useAuth } from 'context/auth';
-import Link from 'next/link';
-import { useRef } from 'react';
-import BottomMenu from './bottomMenu';
-import { WhiteHeartIcon } from './icons';
-import SideMenu from './sideMenu';
+import urls from "@/constants/api";
+import { Image, useDisclosure } from "@chakra-ui/react";
+import { useAuth } from "@/context/auth";
+import Link from "next/link";
+import { useRef } from "react";
+import BottomMenu from "./bottomMenu";
+import { WhiteHeartIcon } from "./icons";
+import SideMenu from "./sideMenu";
 
 const calcSize = (pt) => {
   switch (pt) {
-    case '3xl':
-    case '2xl':
-    case 'xl':
-    case 'lg':
+    case "3xl":
+    case "2xl":
+    case "xl":
+    case "lg":
       return { width: 130, height: 63 };
-    case 'md':
-    case 'sm':
-    case 'xs': {
+    case "md":
+    case "sm":
+    case "xs": {
       return { width: 110, height: 43 };
     }
-    case 'default':
+    case "default":
       return { width: 105, height: 38 };
     default: {
       return { width: 140, height: 73 };
@@ -51,7 +51,7 @@ const UpperNav = () => {
 
   const searchAds = async (value) => {
     try {
-      await fetch(`${urls['test']}/ad/search/{value}?value=${value}`).then(
+      await fetch(`${urls["test"]}/ad/search/{value}?value=${value}`).then(
         (d) => d.json()
       );
     } catch (err) {
@@ -62,7 +62,7 @@ const UpperNav = () => {
     <div className="sticky z-30 shadow-lg md:bg-white bg-mainBlossom md:hidden">
       <NavContainer>
         <div className="flex items-center justify-between gap-2 py-2 ">
-          <Link href={'/'}>
+          <Link href={"/"}>
             <a>
               <Image
                 src="/images/logo/bom-white-text.png"
@@ -74,7 +74,7 @@ const UpperNav = () => {
             </a>
           </Link>
           <div className="flex items-center">
-            <Link href={'/create/ad'}>
+            <Link href={"/create/ad"}>
               <button className="px-4 py-1 ml-2 text-sm font-semibold text-white transition-all bg-teal-700 rounded-lg hover:scale-105">
                 <p>Зар нэмэх</p>
                 {/* <BiPlusCircle className="hidden lg:block" /> */}
@@ -82,7 +82,7 @@ const UpperNav = () => {
             </Link>
             <WhiteHeartIcon
               word={false}
-              onClick={() => router.push('/account?tab=Bookmark')}
+              onClick={() => router.push("/account?tab=Bookmark")}
             />
             <button
               onClick={() => {

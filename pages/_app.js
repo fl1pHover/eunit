@@ -1,5 +1,5 @@
 import { ChakraProvider } from "@chakra-ui/react";
-import { AuthProvider } from "context/auth";
+import { AuthProvider } from "@/context/auth";
 import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
 
