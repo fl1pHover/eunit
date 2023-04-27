@@ -1,9 +1,9 @@
-import { adminNav } from '@/data/adminNav';
-import { NavContainer } from '@/lib/Container';
-import mergeNames from '@/util/mergeNames';
 import { Image } from '@chakra-ui/react';
 import Link from 'next/link';
 import React, { Fragment, useState } from 'react';
+import { adminNav } from '../../data/adminNav';
+import { NavContainer } from '../../lib/Container';
+import mergeNames from '../../util/mergeNames';
 
 const AdminBar = () => {
   const [isHoveringId, setIsHoveringId] = useState(true);
