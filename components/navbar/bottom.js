@@ -1,9 +1,4 @@
-import urls from '@/constants/api';
-import { useAuth } from '@/context/auth';
-import { createAdNav } from '@/data/adminNav';
-import { NavContainer } from '@/lib/Container';
-import { STYLES } from '@/styles/index';
-import mergeNames from '@/util/mergeNames';
+
 import { Image } from '@chakra-ui/react';
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
@@ -13,9 +8,14 @@ import { useRouter } from 'next/router';
 import { Fragment, useState } from 'react';
 import { HiOutlineSearch } from 'react-icons/hi';
 import { MdOutlineClear } from 'react-icons/md';
+import urls from '../../constants/api';
+import { useAuth } from '../../context/auth';
 import { UserIcon, WhiteHeartIcon } from './icons';
 import NavCategory from './navCategory';
 import UserDrawer from './userDrawer';
+import mergeNames from '../../util/mergeNames';
+import { NavContainer } from '@/lib/Container';
+import { createAdNav } from '@/data/adminNav';
 
 const Bottom = ({ sticky, user }) => {
   const { logout } = useAuth();

@@ -1,6 +1,6 @@
-@use 'vars' as *;
-@use 'component' as *;
-@import 'node_modules/react-image-gallery/styles/scss/image-gallery.scss';
+@use "vars" as *;
+@use "component" as *;
+@import "node_modules/react-image-gallery/styles/scss/image-gallery.scss";
 
 @tailwind base;
 @tailwind components;
@@ -20,6 +20,9 @@ a {
   animation: disappear 0.3s ease-in-out;
 }
 
+// .z {
+//   z-index: 999 !important;
+// }
 // .bom-bg {
 //   background: url(../public/images/logo/bom-white.png);
 //   background-size: cover;
@@ -40,8 +43,8 @@ a {
   flex-direction: unset !important;
 }
 
-input[type='date']::-webkit-inner-spin-button,
-input[type='date']::-webkit-calendar-picker-indicator {
+input[type="date"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-calendar-picker-indicator {
   display: none;
   -webkit-appearance: none;
 }
@@ -74,7 +77,7 @@ td {
 .delete {
   @apply w-6 h-6 bg-blue-500 ring-4 shadow-xl;
   &::before {
-    content: '';
+    content: "";
 
     @apply bg-white w-[13px] h-[2px] absolute top-[50%] left-[50%];
 

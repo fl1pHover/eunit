@@ -12,8 +12,7 @@
       "@/util/*": ["util/*"],
       "@/context/*": ["context/*"],
       "@/constants/*": ["constants/*"],
-      "@/layout/*": ["layout/*"],
-      "@/pages/*": ["pages/*"]
+      "@/layout/*": ["layout/*"]
     },
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
