@@ -7,7 +7,7 @@ import { STYLES } from "@/styles/index";
 import mergeNames from "@/util/mergeNames";
 import { getCookie } from "cookies-next";
 import { useRouter } from "next/router";
-import WalletPage from "@/pages/walletPage";
+import WalletPage from "pages/walletPage";
 import { useEffect, useState } from "react";
 import Bookmark from "./bookmark";
 import MyAds from "./myAds";
