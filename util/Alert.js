@@ -6,19 +6,19 @@ import {
   AlertDialogHeader,
   AlertDialogOverlay,
   useDisclosure,
-} from '@chakra-ui/react';
-import { useRef } from 'react';
-import { STYLES } from '../styles';
-import mergeNames from './mergeNames';
+} from "@chakra-ui/react";
+import { useRef } from "react";
+import { STYLES } from "../styles";
+import mergeNames from "./mergeNames";
 
-const Alerting = ({ btn, onclick = {}, body, isDelete = '' }) => {
+const Alerting = ({ btn, onclick = {}, body, isDelete = "" }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef();
 
   return (
     <>
       <button
-        className={mergeNames(STYLES.button, 'bg-red-500 hover:bg-red-900')}
+        className={mergeNames(STYLES.button, "bg-red-500 hover:bg-red-900")}
         onClick={onOpen}
       >
         {btn}
@@ -44,7 +44,7 @@ const Alerting = ({ btn, onclick = {}, body, isDelete = '' }) => {
               <button
                 className={mergeNames(
                   STYLES.button,
-                  'bg-gray-300 hover:bg-gray-400 ml-3 px-4 py-2'
+                  "bg-gray-300 hover:bg-gray-400 ml-3 px-4 py-2"
                 )}
                 ref={cancelRef}
                 onClick={onClose}
@@ -54,7 +54,7 @@ const Alerting = ({ btn, onclick = {}, body, isDelete = '' }) => {
               <button
                 className={mergeNames(
                   STYLES.button,
-                  'bg-red-500 hover:bg-red-900 ml-3 px-4 py-2'
+                  "bg-red-500 hover:bg-red-900 ml-3 px-4 py-2"
                 )}
                 onClick={() => {
                   onclick();

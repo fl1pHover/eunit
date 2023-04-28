@@ -91,7 +91,7 @@ function Card({
               className="relative overflow-hidden rounded-full w-9 h-9 bg-mainBlossom"
               onClick={(e) => {
                 stopPropagation(e);
-                router.push(`/account/${item.user._id}`);
+                router.push(`/account/${item.user}`);
               }}
             >
               <Image
