@@ -5,6 +5,7 @@ import WhiteBox from "@/util/product/WhiteBox";
 import { Box, Input, useDisclosure } from "@chakra-ui/react";
 import { GoogleMap, MarkerF, useLoadScript } from "@react-google-maps/api";
 import { Textarea } from "flowbite-react";
+
 import { ProductInfo } from "pages/ad/[slug]";
 import { useMemo, useState } from "react";
 import FieldPhotoUpload from "../createAd/step3/fieldPhotoUpload";

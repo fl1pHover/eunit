@@ -6,8 +6,8 @@ const nextConfig = {
   },
   images: {
     domains: [
-      'https://bom-file.s3.us-east-1.amazonaws.com',
-      'bom-file.s3.us-east-1.amazonaws.com',
+      "https://bom-file.s3.us-east-1.amazonaws.com",
+      "bom-file.s3.us-east-1.amazonaws.com",
     ],
   },
 };
