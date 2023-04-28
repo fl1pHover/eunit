@@ -33,7 +33,7 @@ function Card({
   const token = getCookie('token');
   const [drop, setDrop] = useState(false);
   const [btn, setBtn] = useState('');
-  const [time, setTime] = useState();
+
   const pushRouter = () => {
     item?._id && router.push(`/ad/${item.num}`);
   };
@@ -258,7 +258,7 @@ function Card({
               )}
             >
               {/* {item.adStatus} */}
-              Устгагдсан байна... {time}
+              Устгагдсан байна...
             </p>
           )}
         </div>
