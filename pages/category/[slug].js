@@ -30,11 +30,17 @@ import { useRouter } from 'next/router';
 import { useEffect, useMemo, useState } from 'react';
 import { useAuth } from '../../context/auth';
 
-const Category = ({ defaultAds, specialAds }) => {
+const Category = ({ dAds, sAds }) => {
   const router = useRouter();
-  const [ads, setAds] = useState();
-  const [sAds, setSAds] = useState();
-  const { categories } = useAuth();
+  const {
+    categories,
+    defaultAds,
+    setDefaultAds,
+    specialAds,
+    setSpecialAds,
+    ads,
+    setAds,
+  } = useAuth();
   const [category, setCategory] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -45,11 +51,19 @@ const Category = ({ defaultAds, specialAds }) => {
   };
   useEffect(() => {
     setIsLoading(true);
-    if (defaultAds) setAds(defaultAds);
-    if (specialAds) setSAds(specialAds);
+
+    if (sAds && dAds) {
+      let ad = sAds.ads.concat(dAds.ads);
+      setAds({ ads: ad, limit: ad.length });
+    }
+
+    if (sAds) setSpecialAds(sAds);
+
+    if (dAds) setDefaultAds(dAds);
+
     // console.log(defaultAds);
     setIsLoading(false);
-  }, [defaultAds, specialAds]);
+  }, [dAds, sAds]);
 
   const libraries = useMemo(() => ['places'], []);
   // const { categories, setAds } = useAuth();
@@ -80,7 +94,11 @@ const Category = ({ defaultAds, specialAds }) => {
         await axios
           .get(`${urls['test']}/ad/category/${router.query.slug}/${id}`)
           .then((d) => {
-            setAds(d.data);
+            setDefaultAds(d.data?.defaultAds);
+            setSpecialAds(d.data?.specialAds);
+
+            let ad = d.data?.specialAd?.ads.concat(d.data?.defaultAds?.ads);
+            setAds({ ads: ad, limit: ad.length });
           });
     } catch (error) {}
   };
@@ -97,19 +115,14 @@ const Category = ({ defaultAds, specialAds }) => {
         <div className="relative flex flex-col gap-3 p-2">
           {/* //TODO Filter Box */}
           {router.query?.slug && (
-            <FilterLayout
-              setDefaultAds={setAds}
-              setSpecialAds={setSAds}
-              data={router.query.slug}
-              isOpenMap={onOpen}
-            />
+            <FilterLayout data={router.query.slug} isOpenMap={onOpen} />
           )}
 
           <Box className="max-w-[100%] w-full rounded-[5px]">
             {/* //TODO Engiin zar */}
-            {sAds && (
+            {specialAds && (
               <ProAdContent
-                data={sAds}
+                data={specialAds}
                 tlc={toLowerCase}
                 title={category ?? ''}
                 showLink="hidden"
@@ -120,9 +133,9 @@ const Category = ({ defaultAds, specialAds }) => {
           </Box>
           <Box>
             {/* //TODO Engiin zar */}
-            {ads && (
+            {defaultAds && (
               <AdContent
-                data={ads}
+                data={defaultAds}
                 tlc={toLowerCase}
                 title={category ?? ''}
                 showLink="hidden"
@@ -130,7 +143,7 @@ const Category = ({ defaultAds, specialAds }) => {
                 func={getData}
               />
             )}
-            {ads?.limit <= 0 && sAds?.limit <= 0 && (
+            {defaultAds?.limit <= 0 && specialAds?.limit <= 0 && (
               <ContainerX>
                 <div className="grid h-[80vh] text-2xl place-items-center">
                   Зар байхгүй байна
@@ -146,7 +159,7 @@ const Category = ({ defaultAds, specialAds }) => {
             <ModalCloseButton />
             <ModalBody>
               <GoogleMap
-              className={'map'}
+                className={'map'}
                 options={mapOptions}
                 onClick={(e) => {
                   // setMap(e.latLng.toJSON());
@@ -172,7 +185,6 @@ const Category = ({ defaultAds, specialAds }) => {
                         >
                           {markerActive == i && (
                             <InfoWindow
-                            
                               children={
                                 <div
                                   onClick={() => router.push(`/ad/${m.num}`)}
@@ -234,6 +246,6 @@ export async function getServerSideProps(ctx) {
   const res = await fetch(`${urls['test']}/ad/category/${slug}/${0}`);
   const ads = await res.json();
   return {
-    props: { defaultAds: ads.defaultAds, specialAds: ads.specialAds },
+    props: { dAds: ads.defaultAds, sAds: ads.specialAds },
   };
 }

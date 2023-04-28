@@ -1,4 +1,5 @@
 // import Input from '@/lib/Input';
+import { useAuth } from '@/context/auth';
 import { categories } from '@/data/categories';
 import Select from '@/lib/Select';
 import { STYLES } from '@/styles/index';
@@ -28,7 +29,7 @@ import { MdFilterList } from 'react-icons/md';
 import urls from '../../constants/api';
 import FilterStack from '../../util/filterStack';
 
-const FilterLayout = ({ data, isOpenMap, setDefaultAds, setSpecialAds }) => {
+const FilterLayout = ({ data, isOpenMap }) => {
   const [subCategory, setSubCategory] = useState();
   const router = useRouter();
   const [value, setValue] = useState('');
@@ -36,6 +37,7 @@ const FilterLayout = ({ data, isOpenMap, setDefaultAds, setSpecialAds }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef();
   const [values, handle, typeId, min, max, clear] = useFilter();
+  const { setDefaultAds, setSpecialAds, setAds } = useAuth();
   const getItems = async (data) => {
     try {
       await axios
@@ -55,20 +57,20 @@ const FilterLayout = ({ data, isOpenMap, setDefaultAds, setSpecialAds }) => {
   }, [data]);
   const filterAd = async () => {
     try {
-      // let types = [];
-      // adType.map((a) => {
-      //   switch (a) {
-      //     case 0:
-      //       types.push("sell");
-      //       break;
-      //     case 1:
-      //       types.push("rent");
-      //       break;
-      //     case 2:
-      //       types.push("sellRent");
-      //       break;
-      //   }
-      // });
+      let types = [];
+      adType.map((a) => {
+        switch (a) {
+          case 0:
+            types.push('sell');
+            break;
+          case 1:
+            types.push('rent');
+            break;
+          case 2:
+            types.push('sellRent');
+            break;
+        }
+      });
       const filters = [];
       subCategory.steps.map((s) => {
         s.values.map((v) => {
@@ -88,10 +90,13 @@ const FilterLayout = ({ data, isOpenMap, setDefaultAds, setSpecialAds }) => {
       await axios
         .post(`${urls['test']}/ad/filter/1`, {
           items: filters,
+          types: types,
         })
         .then((d) => {
           setDefaultAds(d.data?.defaultAds);
           setSpecialAds(d.data?.specialAds);
+          let ad = d.data?.specialAd?.ads.concat(d.data?.defaultAds?.ads);
+          setAds({ ads: ad, limit: ad?.length });
           clear();
           onClose();
         });

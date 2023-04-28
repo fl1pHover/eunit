@@ -12,8 +12,10 @@ const AuthContext = createContext({});
 export const AuthProvider = ({ children }) => {
   const toast = useToast();
   const [loading, setLoading] = useState(false);
-  const [categories, setCategories] = useState();
-
+  const [categories, setCategories] = useState({ ads: [], limit: 0 });
+  const [defaultAds, setDefaultAds] = useState({ ads: [], limit: 0 });
+  const [ads, setAds] = useState({ ads: [], limit: 0 });
+  const [specialAds, setSpecialAds] = useState();
   const [comparison, setComparison] = useState([]);
   async function loadUserFromCookies() {
     const token = getCookie('token');
@@ -158,7 +160,13 @@ export const AuthProvider = ({ children }) => {
         categories,
         signup,
         comparison,
+        defaultAds,
+        setDefaultAds,
+        specialAds,
+        setSpecialAds,
         setComparison,
+        ads,
+        setAds,
       }}
     >
       {children}

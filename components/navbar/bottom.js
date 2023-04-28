@@ -1,6 +1,7 @@
-
+import { createAdNav } from '@/data/adminNav';
+import { NavContainer } from '@/lib/Container';
+import { STYLES } from '@/styles/index';
 import { Image } from '@chakra-ui/react';
-import axios from 'axios';
 import { getCookie } from 'cookies-next';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
@@ -10,18 +11,16 @@ import { HiOutlineSearch } from 'react-icons/hi';
 import { MdOutlineClear } from 'react-icons/md';
 import urls from '../../constants/api';
 import { useAuth } from '../../context/auth';
+import mergeNames from '../../util/mergeNames';
 import { UserIcon, WhiteHeartIcon } from './icons';
 import NavCategory from './navCategory';
 import UserDrawer from './userDrawer';
-import mergeNames from '../../util/mergeNames';
-import { NavContainer } from '@/lib/Container';
-import { createAdNav } from '@/data/adminNav';
 
 const Bottom = ({ sticky, user }) => {
-  const { logout } = useAuth();
   const router = useRouter();
   const token = getCookie('token');
 
+  const { setDefaultAds, setSpecialAds, setAds, logout } = useAuth();
   // Visible start
 
   const [isHoveringId, setIsHoveringId] = useState(true);
@@ -39,9 +38,14 @@ const Bottom = ({ sticky, user }) => {
   const [search, setSearch] = useState('');
   const searchAds = async (value) => {
     try {
-      await fetch(`${urls['test']}/ad/search/{value}?value=${value}`).then(
-        (d) => d.json()
-      );
+      await fetch(`${urls['test']}/ad/search/{value}?value=${value}`)
+        .then((d) => d.json())
+        .then((d) => {
+          setDefaultAds(d?.defaultAds);
+          setSpecialAds(d?.specialAds);
+          let ad = d?.specialAd?.ads.concat(d?.defaultAds?.ads);
+          setAds({ ads: ad, limit: ad?.length ?? 0 });
+        });
     } catch (err) {
       console.error(err);
     }
@@ -175,18 +179,7 @@ const Bottom = ({ sticky, user }) => {
               <button className="disabled">
                 <HiOutlineSearch
                   onClick={async () => {
-                    try {
-                      await axios
-                        .get(
-                          `${urls['test']}/ad/search/{value}?value=${search}`
-                        )
-                        .then((d) => {
-                          setAds(d.data);
-                          router.push('/search');
-                        });
-                    } catch (error) {
-                      console.error(error);
-                    }
+                    searchAds();
                   }}
                 />
               </button>

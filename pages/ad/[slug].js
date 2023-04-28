@@ -48,7 +48,6 @@ import { IoBedOutline } from "react-icons/io5";
 import { TbBath } from "react-icons/tb";
 import urls from "../../constants/api";
 import UserInfo from "./userInfo";
-import { ApartmentIconInfo } from "@/components/home/adCard";
 
 export const ProductInfo = ({
   title,
@@ -262,6 +261,7 @@ const Product = ({ propAds, user }) => {
                   value: sd.items.filter((s) => s.id == suggest)[0].value,
                 },
               ],
+              types: []
             })
             .then((d) => {
               setsData([]);
