@@ -76,12 +76,17 @@ const MyAds = ({ user }) => {
     try {
       if (token) {
         let ad = await axios
-          .get(`${urls['test']}/ad/update/${id}/pending`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              'Access-Control-Allow-Headers': '*',
-            },
-          })
+          .get(
+            `${
+              urls['test']
+            }/ad/update/${id}/pending/show/{message}?message=${' '}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                'Access-Control-Allow-Headers': '*',
+              },
+            }
+          )
           .then((d) => {
             toast({
               title: 'Зар сэргээгдлээ.',
@@ -98,12 +103,17 @@ const MyAds = ({ user }) => {
     try {
       if (token) {
         let ad = await axios
-          .delete(`${urls['test']}/ad/${id}`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              'Access-Control-Allow-Headers': '*',
-            },
-          })
+          .get(
+            `${
+              urls['test']
+            }/ad/update/${id}/deleted/hide/{message}?message=${' '}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                'Access-Control-Allow-Headers': '*',
+              },
+            }
+          )
           .then((d) => {
             toast({
               title: 'Зар устгагдлаа.',
@@ -257,7 +267,6 @@ const MyAds = ({ user }) => {
               item={item || {}}
               isDelete={true}
               deleteFunc={(e) => {
-                stopPropagation(e);
                 if (item.adStatus == 'deleted') {
                   restoreAd(item._id);
                 } else {
