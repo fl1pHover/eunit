@@ -2,7 +2,7 @@ import { Image, Stack, Text } from "@chakra-ui/react";
 import React from "react";
 import MainContainer from "../layout/mainContainer";
 
-const PageNot = () => {
+const ServerError = () => {
   return (
     <>
       <MainContainer>
@@ -25,7 +25,7 @@ const PageNot = () => {
             mx={"auto !important"}
           />
           <Text color={"grey"} fontSize="2em">
-            Уучлаарай. Таны хайсан хайлт байхгүй байна.
+            Уучлаарай. Серверт алдаа гарлаа.
           </Text>
         </Stack>
       </MainContainer>
@@ -33,4 +33,4 @@ const PageNot = () => {
   );
 };
 
-export default PageNot;
+export default ServerError;
