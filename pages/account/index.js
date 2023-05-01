@@ -79,10 +79,10 @@ const Account = ({ user }) => {
                 <button
                   key={index}
                   className={mergeNames(
-                    "pb-3",
-                    content === tab.title
-                      ? "border-b-2 border-mainBlue"
-                      : "border-none"
+                    "pb-3 relative "
+                    // content === tab.title
+                    //   ? "border-b-2 border-mainBlue"
+                    //   : "border-none"
                   )}
                   onClick={() => {
                     setContent(tab.title),
@@ -96,12 +96,17 @@ const Account = ({ user }) => {
                       );
                   }}
                 >
+                  <div
+                    className={mergeNames(
+                      "absolute bottom-0 left-1/2 -translate-x-1/2 bg-mainBlue h-[2px]  duration-300",
+                      content === tab.title ? "w-full " : "w-0"
+                    )}
+                  ></div>
                   {tab.tabHeader}
                 </button>
               );
             })}
           </div>
-          {/* Lorem ipsum dolor sit amet. */}
 
           {tabs.map((tab, index) => {
             return (

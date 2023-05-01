@@ -18,7 +18,9 @@ const capitalizeFirst = (str) => {
 
 const Accounts = ({ propUser }) => {
   const router = useRouter();
+  const [content, setContent] = useState("UserAds");
   const [ads, setAds] = useState([]);
+
   const getAds = async () => {
     await axios
       .post(`${urls["test"]}/ad/many/0/false/10/created`, propUser.ads)
@@ -26,6 +28,21 @@ const Accounts = ({ propUser }) => {
         setAds(d.data);
       });
   };
+
+  const tabs = [
+    {
+      tabHeader: "Зарууд",
+      title: "UserAds",
+
+      comp: <UserAds ads={ads} />,
+    },
+    {
+      tabHeader: "Хуваалцсан зарууд",
+      title: "SharingAds",
+
+      comp: <SharingAds />,
+    },
+  ];
 
   useEffect(() => {
     if (propUser) getAds();
@@ -98,7 +115,48 @@ const Accounts = ({ propUser }) => {
           </div>
         </div>
 
-        {ads && <AdContent data={ads} showLink="hidden" />}
+        <div className="flex flex-row gap-5 border-b cursor-pointer border-b-bgGrey lg:text-base text-[12px]">
+          {tabs.map((tab, index) => {
+            return (
+              <button
+                key={index}
+                className={mergeNames("pb-3 relative")}
+                onClick={() => {
+                  setContent(tab.title);
+                }}
+              >
+                {tab.tabHeader}
+                <div
+                  className={mergeNames(
+                    "absolute bottom-0 left-1/2 -translate-x-1/2 bg-mainBlue h-[2px]  duration-300",
+                    content === tab.title ? "w-full " : "w-0"
+                  )}
+                ></div>
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="min-h-[40vh]">
+          {tabs.map((tab, index) => {
+            return (
+              tab.title && (
+                <>
+                  <div
+                    className={
+                      mergeNames()
+
+                      // tab.title && tab.comp ? "block" : "hidden"
+                    }
+                    key={index}
+                  >
+                    {content === tab.title && tab.comp}
+                  </div>
+                </>
+              )
+            );
+          })}
+        </div>
       </div>
     </MainContainer>
   );
@@ -117,6 +175,15 @@ export async function getServerSideProps(ctx) {
     },
   };
 }
+
+const UserAds = ({ ads }) => {
+  return <>{ads && <AdContent title="" data={ads} showLink="hidden" />}</>;
+};
+const SharingAds = ({ ads }) => {
+  return (
+    <>{<AdContent title="" showLink="hidden" /> ?? <div>Зар байхгүй</div>}</>
+  );
+};
 
 const Socials = ({ propUser }) => {
   const [socials, setSocials] = useState([
