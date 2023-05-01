@@ -25,7 +25,7 @@ const PageNot = () => {
             mx={"auto !important"}
           />
           <Text color={"grey"} fontSize="2em">
-            Уучлаарай. Таны хайсан хайлт байхгүй байна.
+            аарай. Таны хайсан хуудас байхгүй байна.
           </Text>
         </Stack>
       </MainContainer>

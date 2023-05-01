@@ -18,7 +18,7 @@ import { GoogleMap, MarkerF, useLoadScript } from "@react-google-maps/api";
 import { getCookie } from "cookies-next";
 import SharingUpload from "./SharingUpload";
 import { getSellType } from "@/context/functions";
-import SharingStepButtons from "@/components/createAd/sharingStepButton";
+// import SharingStepButtons from "@/components/createAd/sharingStepButton";
 export default function SharingAd({ categories, user }) {
   const toast = useToast();
 

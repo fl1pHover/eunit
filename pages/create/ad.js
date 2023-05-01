@@ -202,7 +202,8 @@ export default function CreateAd({ categories, user }) {
         await sendAd();
       } else {
         toast({
-          title: "Та одоогоор зар илгээх боломжгүй байна.",
+          title:
+            "Та одоогоор зар илгээх боломжгүй байна. Email-ээ шалган Verify хийнэ үү",
           status: "warning",
           duration: 2000,
           isClosable: true,
