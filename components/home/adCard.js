@@ -19,7 +19,7 @@ import { AiFillEdit } from "react-icons/ai";
 import { BsThreeDots } from "react-icons/bs";
 import EditAd from "../ad/edit";
 import AdCardButton from "./adCardButton";
-import { detectContentType } from "next/dist/server/image-optimizer";
+// import { detectContentType } from "next/dist/server/image-optimizer";
 
 function Card({
   item,
@@ -81,7 +81,7 @@ function Card({
         </div>
         {/* Zariin body  */}
         <div
-          className="relative flex items-start justify-between flex-1 w-full h-full px-3 py-2 cursor-pointer"
+          className="relative flex items-start justify-between flex-1 w-full h-0 px-3 py-2 cursor-pointer"
           // onClick={(e) => {
           //   stopPropagation(e);
           //   pushRouter();
