@@ -29,6 +29,7 @@ function Card({
   setData,
   admin = false,
   changeAd = {},
+  mine,
 }) {
   const router = useRouter();
   const token = getCookie("token");
@@ -41,6 +42,8 @@ function Card({
   useEffect(() => {
     if (btn) router.push(btn);
   }, [btn]);
+
+  console.log(item);
 
   return (
     // <Skeleton>
@@ -89,10 +92,13 @@ function Card({
         >
           <Tip lbl="Зарын эзэн">
             <button
-              className="relative overflow-hidden rounded-full w-9 h-9 bg-mainBlossom"
+              className={mergeNames(
+                "relative overflow-hidden rounded-full w-9 h-9 bg-mainBlossom",
+                mine && "pointer-events-none "
+              )}
               onClick={(e) => {
                 stopPropagation(e);
-                router.push(`/account/${item.user}`);
+                router.push(`/account/${item.user._id}`);
               }}
             >
               <Image
@@ -107,7 +113,7 @@ function Card({
           {isDelete ? (
             // <DButton onClick={deleteFunc} />
             <div
-              className="relative z-10 flex flex-col items-center gap-2 rounded-full "
+              className="relative z-10 flex flex-col items-center float-right gap-2 rounded-full"
               onMouseEnter={() => setDrop(true)}
               onMouseLeave={() => setDrop(false)}
             >

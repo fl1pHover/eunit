@@ -1,16 +1,16 @@
-import AdCard from '@/components/home/adCard';
-import FilterAd from '@/components/Profile/filterAd';
-import urls from '@/constants/api';
-import { stopPropagation } from '@/context/functions';
-import { brk, STYLES } from '@/styles/index';
-import Alerting from '@/util/Alert';
-import mergeNames from '@/util/mergeNames';
-import { Radio, RadioGroup, useToast } from '@chakra-ui/react';
-import axios from 'axios';
-import { getCookie } from 'cookies-next';
+import AdCard from "@/components/home/adCard";
+import FilterAd from "@/components/Profile/filterAd";
+import urls from "@/constants/api";
+import { stopPropagation } from "@/context/functions";
+import { brk, STYLES } from "@/styles/index";
+import Alerting from "@/util/Alert";
+import mergeNames from "@/util/mergeNames";
+import { Radio, RadioGroup, useToast } from "@chakra-ui/react";
+import axios from "axios";
+import { getCookie } from "cookies-next";
 
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 const MyAds = ({ user }) => {
   const [ads, setAds] = useState({ ads: [], limit: 0 });
@@ -18,10 +18,10 @@ const MyAds = ({ user }) => {
   const [category, setCategory] = useState([]);
   const [subCategory, setSubCategory] = useState([]);
   const [num, setNum] = useState(0);
-  const [check, setCheck] = useState('created');
+  const [check, setCheck] = useState("created");
   const router = useRouter();
   const toast = useToast();
-  const token = getCookie('token');
+  const token = getCookie("token");
 
   const toLowerCase = (text) => {
     if (text) {
@@ -30,7 +30,7 @@ const MyAds = ({ user }) => {
   };
   const getAds = async (status, n) => {
     await axios
-      .post(`${urls['test']}/ad/many/${n ?? num}/true/9/${status}`, user)
+      .post(`${urls["test"]}/ad/many/${n ?? num}/true/9/${status}`, user)
       .then((d) => {
         setAds(d.data);
 
@@ -58,13 +58,13 @@ const MyAds = ({ user }) => {
   };
   useEffect(() => {
     if (user) {
-      getAds('created');
+      getAds("created");
     }
   }, [user]);
 
   useEffect(() => {
     if (user) {
-      getAds('created');
+      getAds("created");
     }
   }, [num]);
 
@@ -78,19 +78,19 @@ const MyAds = ({ user }) => {
         let ad = await axios
           .get(
             `${
-              urls['test']
-            }/ad/update/${id}/pending/show/{message}?message=${' '}`,
+              urls["test"]
+            }/ad/update/${id}/pending/show/{message}?message=${" "}`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
-                'Access-Control-Allow-Headers': '*',
+                "Access-Control-Allow-Headers": "*",
               },
             }
           )
           .then((d) => {
             toast({
-              title: 'Зар сэргээгдлээ.',
-              status: 'success',
+              title: "Зар сэргээгдлээ.",
+              status: "success",
               duration: 5000,
               isClosable: true,
             });
@@ -105,19 +105,19 @@ const MyAds = ({ user }) => {
         let ad = await axios
           .get(
             `${
-              urls['test']
-            }/ad/update/${id}/deleted/hide/{message}?message=${' '}`,
+              urls["test"]
+            }/ad/update/${id}/deleted/hide/{message}?message=${" "}`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
-                'Access-Control-Allow-Headers': '*',
+                "Access-Control-Allow-Headers": "*",
               },
             }
           )
           .then((d) => {
             toast({
-              title: 'Зар устгагдлаа.',
-              status: 'warning',
+              title: "Зар устгагдлаа.",
+              status: "warning",
               duration: 5000,
               isClosable: true,
             });
@@ -131,13 +131,13 @@ const MyAds = ({ user }) => {
 
   return (
     <>
-      <div className={mergeNames('flex flex-col gap-4 mt-5', brk)}>
+      <div className={mergeNames("flex flex-col gap-4 mt-5", brk)}>
         <div className="flex flex-col w-full">
           <div className="flex gap-4">
             <FilterAd
               plc="Бүх төрөл"
               onChange={(e) => {
-                if (e.target.value != '') {
+                if (e.target.value != "") {
                   let ad = ads?.ads.filter(
                     (d) => d.category.name == e.target.value
                   );
@@ -158,7 +158,7 @@ const MyAds = ({ user }) => {
             <FilterAd
               plc="Бүх дэд төрөл"
               onChange={(e) => {
-                if (e.target.value != '') {
+                if (e.target.value != "") {
                   let ad = ads.ads.filter(
                     (d) => d.subCategory.name == e.target.value
                   );
@@ -186,8 +186,8 @@ const MyAds = ({ user }) => {
               colorScheme="green"
               onChange={(e) => {
                 if (e.target.checked) {
-                  getAds('created', 0);
-                  setCheck('created');
+                  getAds("created", 0);
+                  setCheck("created");
                   setNum(0);
                 }
               }}
@@ -200,9 +200,9 @@ const MyAds = ({ user }) => {
               colorScheme="yellow"
               onChange={(e) => {
                 if (e.target.checked) {
-                  getAds('pending', 0);
+                  getAds("pending", 0);
                   setNum(0);
-                  setCheck('pending');
+                  setCheck("pending");
                 }
               }}
               value="2"
@@ -213,8 +213,8 @@ const MyAds = ({ user }) => {
               className="font-bold text-blue-400 whitespace-nowrap"
               onChange={(e) => {
                 if (e.target.checked) {
-                  getAds('returned');
-                  setCheck('returned');
+                  getAds("returned");
+                  setCheck("returned");
                 }
               }}
               value="3"
@@ -225,9 +225,9 @@ const MyAds = ({ user }) => {
               className="font-bold text-blue-400 whitespace-nowrap"
               onChange={(e) => {
                 if (e.target.checked) {
-                  getAds('checking', 0);
+                  getAds("checking", 0);
                   setNum(0);
-                  setCheck('checking');
+                  setCheck("checking");
                 }
               }}
               value="4"
@@ -239,9 +239,9 @@ const MyAds = ({ user }) => {
               colorScheme="red"
               onChange={(e) => {
                 if (e.target.checked) {
-                  getAds('deleted', 0);
+                  getAds("deleted", 0);
                   setNum(0);
-                  setCheck('deleted');
+                  setCheck("deleted");
                 }
               }}
               value="5"
@@ -256,6 +256,7 @@ const MyAds = ({ user }) => {
         {ads?.ads?.map((item, key) => {
           return (
             <AdCard
+              mine
               setData={setAds}
               data={ads}
               admin={true}
@@ -267,7 +268,7 @@ const MyAds = ({ user }) => {
               item={item || {}}
               isDelete={true}
               deleteFunc={(e) => {
-                if (item.adStatus == 'deleted') {
+                if (item.adStatus == "deleted") {
                   restoreAd(item._id);
                 } else {
                   deleteAd(item._id);
