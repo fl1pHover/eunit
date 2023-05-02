@@ -43,7 +43,6 @@ function Card({
     if (btn) router.push(btn);
   }, [btn]);
 
-  console.log(item);
 
   return (
     // <Skeleton>

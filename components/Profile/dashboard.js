@@ -1,9 +1,11 @@
+import urls from '@/constants/api';
 import { useAuth } from '@/context/auth';
 import { STYLES } from '@/styles/index';
 import mergeNames from '@/util/mergeNames';
 import { Center, Flex, Image } from '@chakra-ui/react';
+import axios from 'axios';
 import { getCookie } from 'cookies-next';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FiLogOut } from 'react-icons/fi';
 import DashStatus from './dashStatus';
 
@@ -12,12 +14,23 @@ import DashStatus from './dashStatus';
 
 const Dashboard = ({ user }) => {
   const [isDisabled, setIsDisabled] = useState(false);
+  const [ads, setAds] = useState(0);
   const { logout } = useAuth();
 
   const bookmark = getCookie('bookmarks');
   const handleClick = () => {
     setIsDisabled(!isDisabled);
   };
+  const getAdCount = async () => {
+    await axios
+      .post(`${urls['test']}/ad/count`, user?.ads)
+      .then((d) => setAds(d.data));
+  };
+  useEffect(() => {
+    if (user?.ads) {
+      getAdCount();
+    }
+  }, [user?.ads]);
 
   return (
     <div
@@ -52,7 +65,7 @@ const Dashboard = ({ user }) => {
             agent={user}
             phone={user?.phone}
             username={user?.username}
-            ads={user?.ads?.length}
+            ads={ads}
           />
         )}
       </div>

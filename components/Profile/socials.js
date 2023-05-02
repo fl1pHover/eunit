@@ -1,7 +1,7 @@
-import { STYLES } from "@/styles/index";
-import mergeNames from "@/util/mergeNames";
-import { Flex, Image } from "@chakra-ui/react";
-import Link from "next/link";
+import { STYLES } from '@/styles/index';
+import mergeNames from '@/util/mergeNames';
+import { Flex, Image } from '@chakra-ui/react';
+import Link from 'next/link';
 export const capitalizeFirst = (str) => {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
@@ -12,18 +12,17 @@ const Socials = ({ edit, socials, setSocials }) => {
         <h2 className="text-[20px] font-bold">Сошиал хаягууд</h2>
         <div
           className={mergeNames(
-            edit ? "flex flex-col gap-3" : STYLES.flexBetween,
-            "mt-4",
-            edit && "animate-pin"
+            edit ? 'flex flex-col gap-3' : STYLES.flexBetween,
+            'mt-4',
+            edit && 'animate-pin'
           )}
         >
           {socials?.map((s, i) => {
             return (
-              <div key={i} className={mergeNames(socials[i].url ?? "hidden")}>
-                {console.log(socials[i].url)}
+              <div key={i} className={mergeNames(socials[i].url ?? 'hidden')}>
                 <Link href={s.url} passHref>
                   <a
-                    className={mergeNames("pointer-events-none")}
+                    className={mergeNames('pointer-events-none')}
                     target="_blank"
                   >
                     <Flex alignItems="center" gap={2}>
@@ -48,7 +47,7 @@ const Socials = ({ edit, socials, setSocials }) => {
                       socials[i].url = e.target.value;
                     }}
                     key={i}
-                    className={mergeNames(STYLES.input, "w-full ")}
+                    className={mergeNames(STYLES.input, 'w-full ')}
                     placeholder={s.url}
                   />
                 )}
