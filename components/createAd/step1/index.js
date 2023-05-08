@@ -48,7 +48,7 @@ const Step1 = ({
               {...{ types, setTypes }}
               sharing={sharing}
             />
-            <FieldAdType {...{ types, setTypes }} sharing={sharing} />
+            {sharing && <FieldAdType {...{ types, setTypes }} />}
           </>
         )}
       </div>

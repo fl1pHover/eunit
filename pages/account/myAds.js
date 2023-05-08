@@ -31,7 +31,7 @@ const MyAds = ({ user }) => {
   };
   const getAds = async (status, n) => {
     await axios
-      .post(`${urls['test']}/ad/many/${n ?? num}/true/9/${status}`, user)
+      .post(`${urls['test']}/ad/many/${n ?? num}/true/12/${status}`, user)
       .then((d) => {
         setAds(d.data);
         setData(d.data);

@@ -1,63 +1,75 @@
-import urls from "@/constants/api";
-import { STYLES } from "@/styles/index";
-import CustomToast from "@/util/customToast";
-import mergeNames from "@/util/mergeNames";
-import { useToast } from "@chakra-ui/react";
-import { getCookie } from "cookies-next";
-import { Button } from "flowbite-react";
-import { useRouter } from "next/router";
-import { Fragment, useEffect, useState } from "react";
-import { BiEdit } from "react-icons/bi";
-import { MdDelete, MdOutlineArrowDropDownCircle } from "react-icons/md";
-import { SiVerizon } from "react-icons/si";
-const SharedAd = ({ propAds, propAllAds }) => {
-  const [ads, setAds] = useState([]);
+import urls from '@/constants/api';
+import { STYLES } from '@/styles/index';
+import CustomToast from '@/util/customToast';
+import mergeNames from '@/util/mergeNames';
+import { useToast } from '@chakra-ui/react';
+import axios from 'axios';
+import { getCookie } from 'cookies-next';
+import { Button } from 'flowbite-react';
+import { useRouter } from 'next/router';
+import { Fragment, useEffect, useState } from 'react';
+import { BiEdit } from 'react-icons/bi';
+import { MdDelete, MdOutlineArrowDropDownCircle } from 'react-icons/md';
+import { SiVerizon } from 'react-icons/si';
+const SharedAd = ({ user }) => {
+  const [ads, setAds] = useState({ ads: [], limit: 0 });
+  const [data, setData] = useState({ ads: [], limit: 0 });
 
-  const token = getCookie("token");
-  const [categories, setCategories] = useState([]);
+  const token = getCookie('token');
+  const [check, setCheck] = useState('all');
+  const [category, setCategory] = useState([]);
   const [subCategory, setSubCategory] = useState([]);
-  const [data, setData] = useState({});
+
   const [num, setNum] = useState(0);
   const toast = useToast();
   const router = useRouter();
-  let dummy = [];
+
+  const getAds = async (status, n) => {
+    await axios
+      .get(`${urls['test']}/ad/admin/sharing/${n ?? num}/${status}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((d) => {
+        setAds(d.data);
+        setData(d.data);
+
+        let c = [],
+          s = [];
+        d.data?.ads?.map((ad) => {
+          if (c.length > 0) {
+            if (c.find((a) => a == ad.category.name) === undefined) {
+              c.push(ad.category.name);
+            }
+          } else {
+            c.push(ad.category.name);
+          }
+          if (s.length > 0) {
+            if (s.find((a) => a == ad.subCategory.name) === undefined) {
+              s.push(ad.subCategory.name);
+            }
+          } else {
+            s.push(ad.subCategory.name);
+          }
+        });
+        setCategory(c);
+        setSubCategory(s);
+      });
+  };
+  useEffect(() => {
+    if (user) {
+      getAds(check);
+    }
+  }, [user]);
 
   useEffect(() => {
-    setAds({
-      ads: propAds.ads.slice(0, (num + 1) * 20),
-      limit: propAds.ads.slice(0, (num + 1) * 20).length,
-    });
-
-    let c = [],
-      s = [];
-    propAds?.ads?.map((ad) => {
-      if (c.length > 0) {
-        if (c.find((a) => a == ad.category.name) === undefined) {
-          c.push(ad.category.name);
-        }
-      } else {
-        c.push(ad.category.name);
-      }
-      if (s.length > 0) {
-        if (s.find((a) => a == ad.subCategory.name) === undefined) {
-          s.push(ad.subCategory.name);
-        }
-      } else {
-        s.push(ad.subCategory.name);
-      }
-    });
-    setCategories(c);
-    setSubCategory(s);
-  }, [propAds]);
-
-  useEffect(() => {
-    setAds({
-      ads: propAds.ads.slice(0, (num + 1) * 20),
-      limit: propAds.ads.slice(0, (num + 1) * 20).length,
-    });
+    if (user) {
+      getAds(check);
+    }
   }, [num]);
   const exportExcel = (data) => {};
-  const [content, setContent] = useState("");
+  const [content, setContent] = useState('');
   const [collapsedId, setCollapsed] = useState(false);
 
   const [expand, setExpand] = useState(0);
@@ -65,18 +77,18 @@ const SharedAd = ({ propAds, propAllAds }) => {
     try {
       await axios
         .get(
-          `${urls["test"]}/ad/update/${id}/created/${view}/{message}?message=%20`,
+          `${urls['test']}/ad/update/${id}/created/${view}/{message}?message=%20`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
-              "Access-Control-Allow-Headers": "*",
+              'Access-Control-Allow-Headers': '*',
             },
           }
         )
         .then((d) => {
           toast({
-            title: `${d?.data?.num ?? ""}-р зарыг нэмлээ.`,
-            status: "success",
+            title: `${d?.data?.num ?? ''}-р зарыг нэмлээ.`,
+            status: 'success',
             duration: 3000,
             isClosable: true,
           });
@@ -87,17 +99,17 @@ const SharedAd = ({ propAds, propAllAds }) => {
   };
   const deleteAd = async (id) => {
     await fetch(
-      `${urls["test"]}/ad/update/${id}/deleted/hide/{message}?message=%20`,
+      `${urls['test']}/ad/update/${id}/deleted/hide/{message}?message=%20`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
-          "Access-Control-Allow-Headers": "*",
+          'Access-Control-Allow-Headers': '*',
         },
       }
     ).then((d) => {
       toast({
-        title: `${d?.data?.num ?? ""} Зарыг устгалаа.`,
-        status: "warning",
+        title: `${d?.data?.num ?? ''} Зарыг устгалаа.`,
+        status: 'warning',
         duration: 3000,
         isClosable: true,
       });
@@ -147,7 +159,7 @@ const SharedAd = ({ propAds, propAllAds }) => {
                           as="a"
                           className={mergeNames(
                             STYLES.blueButton,
-                            "text-sm h-[30px]"
+                            'text-sm h-[30px]'
                           )}
                           target="_blank"
                           href={`/ad/${a.num}`}
@@ -160,8 +172,8 @@ const SharedAd = ({ propAds, propAllAds }) => {
                       <td>{a.adType}</td>
                       <td
                         className={mergeNames(
-                          "truncate ...",
-                          a.adStatus == "special" && "text-yellow-400"
+                          'truncate ...',
+                          a.adStatus == 'special' && 'text-yellow-400'
                         )}
                       >
                         {a.adStatus}
@@ -169,7 +181,7 @@ const SharedAd = ({ propAds, propAllAds }) => {
                       <td>
                         <div
                           className={mergeNames(
-                            "flex flex-row justify-between"
+                            'flex flex-row justify-between'
                             // 'p-2 rounded-md bg-white',
                           )}
                         >
@@ -185,25 +197,25 @@ const SharedAd = ({ propAds, propAllAds }) => {
                           >
                             <MdOutlineArrowDropDownCircle
                               className={mergeNames(
-                                expand == i + 1 ? "text-blue-600 " : ""
+                                expand == i + 1 ? 'text-blue-600 ' : ''
                               )}
                             />
                           </button>
                           <div
                             className={mergeNames(
-                              expand == i + 1 ? "flex" : "hidden",
-                              "justify-center  flex-end  gap-2"
+                              expand == i + 1 ? 'flex' : 'hidden',
+                              'justify-center  flex-end  gap-2'
                             )}
                             onClick={() => {
                               setExpand(0);
                             }}
                           >
-                            {a.adStatus != "created" && (
+                            {a.adStatus != 'created' && (
                               <CustomToast
                                 // status="error"
                                 className={mergeNames(
                                   STYLES.button,
-                                  "bg-teal-500 justify-center w-7 h-7 "
+                                  'bg-teal-500 justify-center w-7 h-7 '
                                 )}
                                 toastH="Амжилттай нэмэгдлээ"
                                 onclick={() => verify(a._id, a.isView)}
@@ -216,7 +228,7 @@ const SharedAd = ({ propAds, propAllAds }) => {
                               onClick={() => deleteAd(a._id)}
                               className={mergeNames(
                                 STYLES.button,
-                                "bg-yellow-500 w-7 h-7 justify-center"
+                                'bg-yellow-500 w-7 h-7 justify-center'
                               )}
                             >
                               <BiEdit />
@@ -225,7 +237,7 @@ const SharedAd = ({ propAds, propAllAds }) => {
                               // status="error"
                               className={mergeNames(
                                 STYLES.button,
-                                "bg-red-500 w-7 h-7 justify-center"
+                                'bg-red-500 w-7 h-7 justify-center'
                               )}
                               toastH="Амжилттай устгагдлаа"
                               onclick={() => deleteAd(a._id)}
@@ -240,21 +252,35 @@ const SharedAd = ({ propAds, propAllAds }) => {
                 })}
               </tbody>
             </table>
-            {ads?.limit >= (1 + num) * 20 && (
-              <ul className="flex float-right list-style-none">
-                <li className="mx-2 disabled">
+            <ul className="flex float-right list-style-none">
+              {num > 0 && (
+                <li className="mx-2">
+                  <button
+                    className={mergeNames(STYLES.notActive)}
+                    onClick={() => {
+                      let n = num - 1;
+                      getAds(check, n);
+                    }}
+                  >
+                    Өмнөх
+                  </button>
+                </li>
+              )}
+              {data.limit == 20 && (
+                <li className="mx-2">
                   <button
                     className={mergeNames(STYLES.notActive)}
                     onClick={() => {
                       let n = num + 1;
                       setNum(n);
+                      getAds(check, n);
                     }}
                   >
-                    more
+                    Дараах
                   </button>
                 </li>
-              </ul>
-            )}
+              )}
+            </ul>
           </div>
         </div>
       </div>
@@ -264,33 +290,27 @@ const SharedAd = ({ propAds, propAllAds }) => {
 export default SharedAd;
 
 export async function getServerSideProps({ req, res }) {
-  const token = getCookie("token", { req, res });
+  const token = getCookie('token', { req, res });
 
   if (token) {
     try {
-      const response = await fetch(`${urls["test"]}/user/me`, {
+      const response = await fetch(`${urls['test']}/user/me`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
       const user = await response.json();
       // const adRes = await
-      if (user?.userType == "admin" || user?.userType == "system") {
-        const ads = await fetch(`${urls["test"]}/ad/admin/sharing/${0}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const adsJson = await ads.json();
+      if (user?.userType == 'admin' || user?.userType == 'system') {
         return {
           props: {
-            propAds: adsJson,
+            user: user,
           },
         };
       } else {
         return {
           redirect: {
-            destination: "/",
+            destination: '/',
             permanent: false,
           },
         };
@@ -298,7 +318,7 @@ export async function getServerSideProps({ req, res }) {
     } catch (err) {
       return {
         redirect: {
-          destination: "/login",
+          destination: '/login',
           permanent: false,
         },
       };
@@ -306,7 +326,7 @@ export async function getServerSideProps({ req, res }) {
   } else {
     return {
       redirect: {
-        destination: "/login",
+        destination: '/login',
         permanent: false,
       },
     };

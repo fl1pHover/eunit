@@ -174,7 +174,7 @@ const UserRequest = ({ users }) => {
                               'text-sm h-[30px]'
                             )}
                             target="_blank"
-                            href={`/ad/${a.num}`}
+                            href={`/account/${a._id}`}
                             // onClick={() => router.push(`/product/${a.num}`)}
                           >
                             <a target="_blank">
