@@ -1,5 +1,5 @@
 import { Image } from "@chakra-ui/react";
-import { capitalizeFirst } from "../Profile/socials";
+
 
 const WalletCard = ({ user }) => {
   return (
