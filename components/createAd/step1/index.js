@@ -1,17 +1,17 @@
-import FormLabel from '@/components/createAd/formLabel';
-import Title from '@/components/createAd/title';
+import FormLabel from "@/components/createAd/formLabel";
+import Title from "@/components/createAd/title";
 
-import FieldAdType from './fieldAdType';
-import FieldCategory from './fieldCategory';
-import FieldSellType from './fieldSellType';
-import FieldSubCategory from './fieldSubCategory';
+import FieldAdType from "./fieldAdType";
+import FieldCategory from "./fieldCategory";
+import FieldSellType from "./fieldSellType";
+import FieldSubCategory from "./fieldSubCategory";
 
 const Step1 = ({
   types = {},
   setTypes = () => {},
   sharing = false,
   categories = [],
-  title = 'Таны зарах хөрөнгийн төрөл?',
+  title = "Таны зарах хөрөнгийн төрөл?",
   selltypeTitle,
 }) => {
   return (
@@ -44,7 +44,7 @@ const Step1 = ({
           // ZARIIN TURUL: DEFAULT, SPECIAL, POSTER
           <>
             <FieldSellType
-              title={selltypeTitle}
+              title={"Борлуулах төрөл"}
               {...{ types, setTypes }}
               sharing={sharing}
             />

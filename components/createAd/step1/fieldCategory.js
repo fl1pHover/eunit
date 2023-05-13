@@ -6,10 +6,11 @@ const FieldCategory = ({
   types = {},
   categories = [],
   setTypes = () => {},
+  line = false,
 }) => {
   return (
     <>
-      <div className="flex justify-center">
+      <div className="flex justify-center w-full">
         <div className="grid w-full grid-cols-3 gap-4 py-4 lg:grid-cols-6 lg:gap-4 auto-rows-fr md:w-4/5">
           {categories?.map((item, key) => {
             const isSelected = key.toString() === types.categoryId.toString();
@@ -33,7 +34,7 @@ const FieldCategory = ({
           })}
         </div>
       </div>
-      <Line />
+      {line && <Line />}
     </>
   );
 };

@@ -1,10 +1,10 @@
-import { categories } from '@/data/categories';
-import mergeNames from '@/util/mergeNames';
-import { Image } from '@chakra-ui/react';
-import { motion } from 'framer-motion';
-import Link from 'next/link';
-import { Fragment } from 'react';
-import { useState } from 'react';
+import { categories } from "@/data/categories";
+import mergeNames from "@/util/mergeNames";
+import { Image } from "@chakra-ui/react";
+import { motion } from "framer-motion";
+import Link from "next/link";
+import { Fragment } from "react";
+import { useState } from "react";
 const NavCategory = () => {
   const [isHoveringId, setIsHoveringId] = useState(true);
   const handleMouseOver = (id) => {
@@ -25,7 +25,7 @@ const NavCategory = () => {
             onMouseOver={() => handleMouseOver(id)}
             onMouseOut={handleMouseOut}
             className={mergeNames(
-              'hover:bg-blue-900 transition-colors ease-in-out'
+              "hover:bg-blue-900 transition-colors ease-in-out"
             )}
           >
             <div className="h-full">
@@ -60,10 +60,10 @@ const NavCategory = () => {
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           className={mergeNames(
-                            'px-2 lg:px-4 py-3 text-[10px] lg:text-sm font-medium text-white transition-colors ease-in cursor-pointer bg-blue-900/[96] hover:bg-blue-700 first-letter:uppercase whitespace-nowrap z-30',
+                            "px-2 lg:px-4 py-3 text-[10px] xl:text-sm font-medium text-white transition-colors ease-in cursor-pointer bg-blue-900/[96] hover:bg-blue-700 first-letter:uppercase whitespace-nowrap z-30",
                             subkey === submenu.length - 1
-                              ? ''
-                              : 'border-r border-blue-900/[96]'
+                              ? ""
+                              : "border-r border-blue-900/[96]"
                           )}
                         >
                           <p>{category}</p>

@@ -1,20 +1,19 @@
-import ButtonSelectItem from '@/components/createAd/formButtonSelectItem';
-import FormLabel from '@/components/createAd/formLabel';
-import Line from '@/components/createAd/formLine';
-import CheckItem from './checkItem';
+import ButtonSelectItem from "@/components/createAd/formButtonSelectItem";
+import FormLabel from "@/components/createAd/formLabel";
+import Line from "@/components/createAd/formLine";
+import CheckItem from "./checkItem";
 
-import { SellTypes, SharingSellTypes } from '@/constants/enums';
+import { SellTypes, SharingSellTypes } from "@/constants/enums";
 
 const FieldSellType = ({
   types = {},
   setTypes = () => {},
   sharing = false,
-  title = 'Борлуулах төрөл',
+  line = false,
 }) => {
   return (
     <>
-      <FormLabel num={2} title={title} />
-      <div className="flex flex-row flex-wrap justify-center gap-4 mt-2">
+      <div className="flex flex-row flex-wrap justify-center w-full gap-4 mt-2">
         {Object.keys(sharing ? SharingSellTypes : SellTypes).map(
           (type, key) => {
             const isSelected = sharing
@@ -41,7 +40,7 @@ const FieldSellType = ({
           }
         )}
       </div>
-      <Line />
+      {line && <Line />}
     </>
   );
 };

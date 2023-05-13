@@ -1,24 +1,25 @@
-import { createAdNav } from '@/data/adminNav';
-import { NavContainer } from '@/lib/Container';
-import { STYLES } from '@/styles/index';
-import { Image } from '@chakra-ui/react';
-import { getCookie } from 'cookies-next';
-import { motion } from 'framer-motion';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { Fragment, useState } from 'react';
-import { HiOutlineSearch } from 'react-icons/hi';
-import { MdOutlineClear } from 'react-icons/md';
-import urls from '../../constants/api';
-import { useAuth } from '../../context/auth';
-import mergeNames from '../../util/mergeNames';
-import { UserIcon, WhiteHeartIcon } from './icons';
-import NavCategory from './navCategory';
-import UserDrawer from './userDrawer';
+import { createAdNav } from "@/data/adminNav";
+import { NavContainer } from "@/lib/Container";
+import { STYLES } from "@/styles/index";
+import { Image } from "@chakra-ui/react";
+import { getCookie } from "cookies-next";
+import { motion } from "framer-motion";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { Fragment, useState } from "react";
+import { HiOutlineSearch } from "react-icons/hi";
+import { MdOutlineClear } from "react-icons/md";
+import urls from "../../constants/api";
+import { useAuth } from "../../context/auth";
+import mergeNames from "../../util/mergeNames";
+import { EstimatorIcon, UserIcon, WhiteHeartIcon } from "./icons";
+import NavCategory from "./navCategory";
+import UserDrawer from "./userDrawer";
+import CreateAdNav from "./createAdNav";
 
 const Bottom = ({ sticky, user }) => {
   const router = useRouter();
-  const token = getCookie('token');
+  const token = getCookie("token");
 
   const { setDefaultAds, setSpecialAds, setAds, logout } = useAuth();
   // Visible start
@@ -35,10 +36,10 @@ const Bottom = ({ sticky, user }) => {
   // Visible end
 
   // Search start
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
   const searchAds = async (value) => {
     try {
-      await fetch(`${urls['test']}/ad/search/{value}?value=${value}`)
+      await fetch(`${urls["test"]}/ad/search/{value}?value=${value}`)
         .then((d) => d.json())
         .then((d) => {
           setDefaultAds(d?.defaultAds);
@@ -53,14 +54,14 @@ const Bottom = ({ sticky, user }) => {
 
   const handleClear = (e) => {
     // 👇️ clear input value
-    setSearch('');
-    console.log('clear input');
+    setSearch("");
+    console.log("clear input");
   };
 
   // Search end
 
   return (
-    <div className={mergeNames('md:block hidden', 'bg-mainBlossom ')}>
+    <div className={mergeNames("md:block hidden", "bg-mainBlossom ")}>
       <NavContainer>
         <div className="flex flex-row items-center justify-center gap-10">
           <div className="flex flex-row items-center ">
@@ -75,7 +76,6 @@ const Bottom = ({ sticky, user }) => {
               </a>
             </Link>
 
-            {/* Categoriud */}
             <NavCategory />
           </div>
 
@@ -89,61 +89,18 @@ const Bottom = ({ sticky, user }) => {
             </button>
 
             <WhiteHeartIcon
-              onClick={() => router.push('/account?tab=Bookmark')}
+              onClick={() => router.push("/account?tab=Bookmark")}
             />
 
             {!token || user == undefined ? (
-              <UserIcon text="Нэвтрэх" onClick={() => router.push('/login')} />
+              <UserIcon text="Нэвтрэх" onClick={() => router.push("/login")} />
             ) : (
               <UserDrawer user={user} />
             )}
-            {createAdNav?.map(({ tabName, id, submenu }, key) => {
-              return (
-                <div
-                  key={key}
-                  onMouseOver={() => handleMouseOver(id)}
-                  onMouseOut={handleMouseOut}
-                  className={mergeNames(
-                    'hover:bg-teal-700 transition-colors ease-in-out bg-teal-800'
-                  )}
-                >
-                  <div className="h-full">
-                    <div className="flex flex-col justify-center h-full px-2 py-4 lg:py-3 lg:px-4">
-                      <Link href={`/${id}`}>
-                        <a className="text-[11px] font-medium text-center h-full text-white lg:text-[13px]">
-                          {tabName}
-                        </a>
-                      </Link>
-                    </div>
-                  </div>
-                  <div className="absolute  w-auto  flex flex-col overflow-hidden justify-center bg-teal-800/[96]">
-                    {submenu &&
-                      isHoveringId &&
-                      isHoveringId === id &&
-                      submenu.map(({ tab, href }, subkey) => {
-                        return (
-                          <Fragment key={subkey}>
-                            <Link href={`/${href}`}>
-                              <a
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                className={mergeNames(
-                                  'px-2 lg:px-4 py-3 text-[10px] lg:text-sm font-medium text-white transition-colors ease-in cursor-pointer bg-teal-700/[96] hover:bg-teal-600 first-letter:uppercase whitespace-nowrap z-30',
-                                  subkey === submenu.length - 1
-                                    ? ''
-                                    : 'border-r border-blue-900/[96]'
-                                )}
-                              >
-                                <p>{tab}</p>
-                              </a>
-                            </Link>
-                          </Fragment>
-                        );
-                      })}
-                  </div>
-                </div>
-              );
-            })}
+            <CreateAdNav />
+
+            <EstimatorIcon onClick={() => router.push("/estimator")} />
+
             {/* <Link href={'/createAd'}>
               <button className="px-4 py-1 ml-2 text-sm font-semibold transition-all bg-teal-700 rounded-lg hover:scale-105">
                 <p>Зар нэмх</p>
@@ -163,16 +120,16 @@ const Bottom = ({ sticky, user }) => {
               y: 0,
               transition: {
                 stiffness: 0,
-                ease: 'easeInOut',
+                ease: "easeInOut",
                 duration: 0.3,
               },
             }}
             onMouseOver={() => setActiveSearch(true)}
             className={mergeNames(
-              'bg-blue-900/[0.96] w-full absolute left-0',
-              'py-2',
+              "bg-blue-900/[0.96] w-full absolute left-0",
+              "py-2",
               STYLES.flexCenter,
-              'items-center text-2xl text-blue-300'
+              "items-center text-2xl text-blue-300"
             )}
           >
             <div className="relative flex flex-row items-center w-2/5 h-10">
@@ -188,20 +145,20 @@ const Bottom = ({ sticky, user }) => {
                 type="text"
                 placeholder="Зараа хайна уу"
                 onKeyPress={(e) => {
-                  if (event.key === 'Enter') {
-                    () => func(search), console.log('Search enter press!!');
+                  if (event.key === "Enter") {
+                    () => func(search), console.log("Search enter press!!");
                   }
                 }}
                 value={search}
                 className={mergeNames(
-                  'h-full w-full ml-2 border-none rounded-md placeholder-blue-300/40 bg-mainBlossom bg-opacity-40  focus:ring-0 '
+                  "h-full w-full ml-2 border-none rounded-md placeholder-blue-300/40 bg-mainBlossom bg-opacity-40  focus:ring-0 "
                 )}
               />
               <button
                 onClick={handleClear}
                 className={mergeNames(
-                  'text-xs rounded-full p-[2px] bg-mainBlossom/80',
-                  'absolute right-2'
+                  "text-xs rounded-full p-[2px] bg-mainBlossom/80",
+                  "absolute right-2"
                 )}
               >
                 <MdOutlineClear />
@@ -217,12 +174,12 @@ const Bottom = ({ sticky, user }) => {
 export default Bottom;
 
 export async function getServerSideProps({ req, res }) {
-  const token = getCookie('token', { req, res });
+  const token = getCookie("token", { req, res });
 
   if (!token)
     return {
       redirect: {
-        destination: '/login',
+        destination: "/login",
         permanent: false,
       },
     };

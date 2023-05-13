@@ -1,8 +1,7 @@
-
-import React from 'react';
-import { BiX } from 'react-icons/bi';
-import { FiUploadCloud } from 'react-icons/fi';
-import { AtomLabel } from './atom';
+import React from "react";
+import { BiX } from "react-icons/bi";
+import { FiUploadCloud } from "react-icons/fi";
+import { AtomLabel } from "./atom";
 
 const FieldPhotoUpload = ({
   label,
@@ -38,7 +37,7 @@ const FieldPhotoUpload = ({
     });
 
     // FOR BUG IN CHROME
-    event.target.value = '';
+    event.target.value = "";
     setIsImageSelected(true);
     setGeneralData((prev) => ({
       ...prev,
@@ -66,13 +65,14 @@ const FieldPhotoUpload = ({
 
   return (
     <div className="">
-      <AtomLabel>{label ? label : 'Зураг оруулах'}</AtomLabel>
+      <AtomLabel>{label ? label : "Зураг оруулах"}</AtomLabel>
       <>
         <input
           type="file"
-          accept={'image/*'}
+          // accept={'image/*'}
+          accept={"image/jpeg, image/png, image/jpg"}
           ref={hiddenFileInput}
-          style={{ display: 'none' }}
+          style={{ display: "none" }}
           multiple
           onChange={handleChange}
         />

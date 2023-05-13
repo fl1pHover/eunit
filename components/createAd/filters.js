@@ -1,17 +1,17 @@
-import Counter from '@/lib/Counter';
-import { DateYearSelector } from '@/lib/DateSelector';
-import Input from '@/lib/Input';
-import Select from '@/lib/Select';
-import mergeNames from '@/util/mergeNames';
+import Counter from "@/lib/Counter";
+import { DateYearSelector } from "@/lib/DateSelector";
+import Input from "@/lib/Input";
+import Select from "@/lib/Select";
+import mergeNames from "@/util/mergeNames";
 import {
   NumberDecrementStepper,
   NumberIncrementStepper,
   NumberInput,
   NumberInputField,
   NumberInputStepper,
-} from '@chakra-ui/react';
-import FormLabel from './formLabel';
-import { ItemContainer } from './step4';
+} from "@chakra-ui/react";
+import FormLabel from "./formLabel";
+import { ItemContainer } from "./step4";
 
 const FilterDate = ({ defValue, title, name, onSelect = () => {} }) => {
   return (
@@ -30,7 +30,7 @@ export default FilterDate;
 export const FilterYear = ({ title, onChange = () => {} }) => {
   return (
     <ItemContainer>
-      <FormLabel title={title + ' / жил'} />
+      <FormLabel title={title + " / жил"} />
       <NumberInput
         size="md"
         allowMouseWheel
@@ -38,8 +38,8 @@ export const FilterYear = ({ title, onChange = () => {} }) => {
         clampValueOnBlur={false}
         defaultValue={0}
         className={mergeNames(
-          onChange && 'border-blue-400',
-          'flex flex-row justify-between mx-auto overflow-hidden border-2  rounded-full md:w-2/3'
+          onChange && "border-blue-400",
+          "flex flex-row justify-between mx-auto overflow-hidden border-2  rounded-full md:w-2/3"
         )}
         onChange={onChange}
       >
@@ -60,7 +60,7 @@ export const FilterCounter = ({
   title,
 }) => {
   return (
-    <ItemContainer className={'flex flex-col items-center justify-center'}>
+    <ItemContainer className={"flex flex-col items-center justify-center"}>
       <FormLabel title={title} />
       <Counter
         limit={parseInt(limit)}
@@ -71,9 +71,9 @@ export const FilterCounter = ({
   );
 };
 
-export const FilterText = ({ title, ph, onChange = () => {}, value = '' }) => {
+export const FilterText = ({ title, ph, onChange = () => {}, value = "" }) => {
   return (
-    <ItemContainer className={'flex flex-col items-center justify-center'}>
+    <ItemContainer className={"flex flex-col items-center justify-center"}>
       <FormLabel title={title} />
       <Input ph={ph} onChange={onChange} value={value} />
     </ItemContainer>

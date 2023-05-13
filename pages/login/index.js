@@ -103,7 +103,7 @@ export default function Login() {
             <Image
               src="/images/logo/bom-blue-text.png"
               alt="bom logo"
-              className="w-[150px] mx-auto mb-10"
+              className="w-[120px] mx-auto"
             />
             <h1 className="my-3 text-2xl font-bold text-center">Бүртгүүлэх</h1>
 
@@ -183,7 +183,10 @@ export const LoginComp = ({ credential, setCredential, fc }) => {
 
       <input
         type="submit"
-        className={mergeNames("w-full h-auto py-3 ", STYLES.blueButton)}
+        className={mergeNames(
+          "w-full h-auto py-3 cursor-pointer",
+          STYLES.blueButton
+        )}
         onClick={() => fc()}
         value={"Нэвтрэх"}
       />
@@ -257,7 +260,10 @@ export const SignUpComp = ({ credential, setCredential, fc }) => {
       /> */}
       <input
         type="submit"
-        className={mergeNames("w-full h-auto py-3", STYLES.blueButton)}
+        className={mergeNames(
+          "w-full h-auto py-3 cursor-pointer",
+          STYLES.blueButton
+        )}
         onClick={(e) => {
           e.preventDefault();
           fc(), hm();
