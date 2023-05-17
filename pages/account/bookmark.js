@@ -6,15 +6,16 @@ import { getCookie } from 'cookies-next';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-const Bookmark = ({ user }) => {
+const Bookmark = () => {
   const [ads, setAds] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const { bookmarks } = useSelector((state) => state.bookmarks);
+  const { user } = useSelector((state) => state.user);
   const [category, setCategory] = useState([]);
   const [subCategory, setSubCategory] = useState([]);
   const [data, setData] = useState([]);
-
+  const token = getCookie('token');
   const getData = async () => {
     setIsLoading(true);
     if (bookmarks)
@@ -45,6 +46,11 @@ const Bookmark = ({ user }) => {
             setCategory(c);
             setSubCategory(s);
           });
+        await axios.patch(`${urls['test']}/user/bookmark`, bookmarks, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
       } catch (error) {
         console.error(error);
         setIsLoading(false);
@@ -60,7 +66,7 @@ const Bookmark = ({ user }) => {
     if (user) {
       getData();
     }
-  }, [user]);
+  }, [user, token]);
 
   return (
     <>
@@ -81,30 +87,3 @@ const Bookmark = ({ user }) => {
 };
 
 export default Bookmark;
-
-export async function getServerSideProps(req, res) {
-  const token = getCookie('token', req, res);
-
-  if (!token) {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      },
-    };
-  } else {
-    let userRes = await fetch(`${urls['test']}/user/me`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Access-Control-Allow-Headers': '*',
-      },
-    });
-
-    user = await userRes.json();
-    return {
-      props: {
-        user,
-      },
-    };
-  }
-}

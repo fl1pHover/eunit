@@ -279,23 +279,28 @@ const Product = ({ propAds }) => {
   };
 
   const getData = async () => {
-    setData(propAds);
-    dummyData = propAds;
+    await axios.get(`${urls['test']}/ad/id/${router.query.slug}`).then((d) => {
+      setData(d.data);
+      dummyData = d.data;
+    });
 
     await getSuggestion(propAds?.subCategory?.suggestionItem[0], propAds);
   };
-  useEffect(() => {
-    if (propAds) {
-      setGeneralData((prev) => ({
-        ...prev,
-        imgSelected: propAds?.images[0] ? true : false,
-        images: [...propAds?.images],
-      }));
-      setImages(propAds.images ?? []);
-      getData();
-    }
-  }, [propAds]);
+  // useEffect(() => {
+  //   if (propAds) {
+  //     setGeneralData((prev) => ({
+  //       ...prev,
+  //       imgSelected: propAds?.images[0] ? true : false,
+  //       images: [...propAds?.images],
+  //     }));
+  //     setImages(propAds.images ?? []);
+  //     getData();
+  //   }
+  // }, [propAds]);
 
+  useEffect(() => {
+    getData();
+  }, []);
   const [open, setOpen] = useState(false);
   const copyToClipboard = (e) => {
     navigator.clipboard.writeText(window.location.toString());
@@ -622,7 +627,7 @@ const Product = ({ propAds }) => {
                         }
                       />
                     </div>
-                    {user && JSON.parse(user)._id == data?.user?._id && (
+                    {user && user._id == data?.user?._id && (
                       <EditAd
                         images={images}
                         data={data}
@@ -803,20 +808,20 @@ const Product = ({ propAds }) => {
 // 890
 export default Product;
 
-export async function getServerSideProps(ctx, req, res) {
-  const { params } = ctx;
-  const { slug } = params;
-  const token = getCookie('token', { req, res });
-  const adRes = await fetch(`${urls['test']}/ad/id/${slug}`);
+// export async function getServerSideProps(ctx, req, res) {
+//   const { params } = ctx;
+//   const { slug } = params;
+//   const token = getCookie('token', { req, res });
+//   const adRes = await fetch(`${urls['test']}/ad/id/${slug}`);
 
-  const ads = await adRes.json();
+//   const ads = await adRes.json();
 
-  return {
-    props: {
-      propAds: ads,
-    },
-  };
-}
+//   return {
+//     props: {
+//       propAds: ads,
+//     },
+//   };
+// }
 
 const calcValue = (props, checker = 'Байхгүй', suffix) => {
   // p?.value?.toLowerCase() === "байхгүй"

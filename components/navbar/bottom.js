@@ -86,20 +86,17 @@ const Bottom = ({ sticky }) => {
             >
               <HiOutlineSearch />
             </button>
-
             <WhiteHeartIcon
               onClick={() => router.push('/account?tab=Bookmark')}
             />
 
-            {user ? (
+            {user?.userType != undefined ? (
               <UserDrawer user={user} />
             ) : (
               <UserIcon text="Нэвтрэх" onClick={() => router.push('/login')} />
             )}
             <CreateAdNav />
-
             <EstimatorIcon onClick={() => router.push('/estimator')} />
-
             {/* <Link href={'/createAd'}>
               <button className="px-4 py-1 ml-2 text-sm font-semibold transition-all bg-teal-700 rounded-lg hover:scale-105">
                 <p>Зар нэмх</p>

@@ -17,14 +17,23 @@ import { getSellType } from '@/context/functions';
 import useAd from '@/util/useAd';
 import { GoogleMap, MarkerF, useLoadScript } from '@react-google-maps/api';
 import { getCookie } from 'cookies-next';
+import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-export default function CreateAd({ categories }) {
+export default function CreateAd() {
   const toast = useToast();
   const router = useRouter();
   const { user } = useSelector((state) => state.user);
   const [step, setStep] = useState(-1);
-  const passcategory = useMemo(() => categories, [categories]);
+  const [passcategory, setPassCategory] = useState([]);
 
+  useEffect(() => {
+    getCategory();
+  }, []);
+  const getCategory = async () => {
+    await axios
+      .get(`${urls['test']}/category`)
+      .then((d) => setPassCategory(d.data));
+  };
   //  STEP 1 DATA => HURUHNGIIN TURUL, DED TURUL, ZARIIN TURUL, ZARAH TURUL
   const [types, setTypes] = useState({
     categoryId: false,
@@ -76,15 +85,14 @@ export default function CreateAd({ categories }) {
   const handleNextStep = () => {
     if (step === -1)
       return checkConditionOnNextStep(
-        types.adType != '' &&
-          types.categoryName != '' &&
+        types.categoryName != '' &&
           types.sellType != '' &&
           types.subCategoryId != ''
       );
     if (step == 0) {
       let check = true;
       subCategory.steps[0].values.map((s) => {
-        if (values[s.type] == '') check = false;
+        if (values[s.type] == undefined) check = false;
       });
       return checkConditionOnNextStep(check);
     }
@@ -199,11 +207,10 @@ export default function CreateAd({ categories }) {
   };
   const validateStep4 = async () => {
     setIsLoading(true);
-    // filter hooson esehiig shalgah
 
     let emptyAd = true;
     subCategory.steps[2].values.map((f) => {
-      if (values[f.type] == '') {
+      if (values[f.type] == undefined) {
         emptyAd = false;
       }
     });

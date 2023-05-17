@@ -30,7 +30,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useMemo, useState } from 'react';
 import { useAuth } from '../../context/auth';
 
-const Category = ({ dAds, sAds }) => {
+const Category = () => {
   const router = useRouter();
   const {
     categories,
@@ -49,21 +49,6 @@ const Category = ({ dAds, sAds }) => {
       return text.toLowerCase();
     }
   };
-  useEffect(() => {
-    setIsLoading(true);
-
-    if (sAds && dAds) {
-      let ad = sAds.ads.concat(dAds.ads);
-      setAds({ ads: ad, limit: ad.length });
-    }
-
-    if (sAds) setSpecialAds(sAds);
-
-    if (dAds) setDefaultAds(dAds);
-
-    // console.log(defaultAds);
-    setIsLoading(false);
-  }, [dAds, sAds]);
 
   const libraries = useMemo(() => ['places'], []);
   // const { categories, setAds } = useAuth();
@@ -102,6 +87,9 @@ const Category = ({ dAds, sAds }) => {
           });
     } catch (error) {}
   };
+  useEffect(() => {
+    getData(0);
+  }, []);
   if (!isLoaded) {
     return <SkeletonContent />;
   }
@@ -240,12 +228,12 @@ const Category = ({ dAds, sAds }) => {
 
 export default Category;
 
-export async function getServerSideProps(ctx) {
-  const { params } = ctx;
-  const { slug } = params;
-  const res = await fetch(`${urls['test']}/ad/category/${slug}/${0}`);
-  const ads = await res.json();
-  return {
-    props: { dAds: ads.defaultAds, sAds: ads.specialAds },
-  };
-}
+// export async function getServerSideProps(ctx) {
+//   const { params } = ctx;
+//   const { slug } = params;
+//   const res = await fetch(`${urls['test']}/ad/category/${slug}/${0}`);
+//   const ads = await res.json();
+//   return {
+//     props: { dAds: ads.defaultAds, sAds: ads.specialAds },
+//   };
+// }

@@ -6,8 +6,6 @@ import urls from '@/constants/api';
 import { useToast } from '@chakra-ui/react';
 import axios from 'axios';
 import { deleteCookie, getCookie, setCookie } from 'cookies-next';
-import { useDispatch } from 'react-redux';
-import { setUser } from 'store/slice/user';
 
 const AuthContext = createContext({});
 
@@ -17,13 +15,9 @@ export const AuthProvider = ({ children }) => {
   const [categories, setCategories] = useState({ ads: [], limit: 0 });
   const [defaultAds, setDefaultAds] = useState({ ads: [], limit: 0 });
   const [ads, setAds] = useState({ ads: [], limit: 0 });
-  const [specialAds, setSpecialAds] = useState();
-  const [comparison, setComparison] = useState([]);
+  const [specialAds, setSpecialAds] = useState({ ads: [], limit: 0 });
   async function loadUserFromCookies() {
- 
     const token = getCookie('token');
-    const bookmarks = getCookie('bookmarks');
-    const comparisonCategory = getCookie('comparisonCategory');
 
     setLoading(true);
     try {
@@ -151,12 +145,11 @@ export const AuthProvider = ({ children }) => {
         setLoading,
         categories,
         signup,
-        comparison,
+
         defaultAds,
         setDefaultAds,
         specialAds,
         setSpecialAds,
-        setComparison,
         ads,
         setAds,
       }}

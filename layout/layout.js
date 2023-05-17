@@ -1,30 +1,48 @@
-import CompareSelect from "@/components/Profile/CompareSelect";
-import urls from "@/constants/api";
-import { useAuth } from "@/context/auth";
-import axios from "axios";
-import { getCookie, setCookie } from "cookies-next";
-import Head from "next/head";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import Footer from "../components/footer/index";
+import CompareSelect from '@/components/Profile/CompareSelect';
+import urls from '@/constants/api';
+import axios from 'axios';
+import { getCookie } from 'cookies-next';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateBookmark } from 'store/slice/bookmark';
+import { setUser } from 'store/slice/user';
+import Footer from '../components/footer/index';
 
 const Layout = ({ children }) => {
-  const { comparison } = useAuth();
-  const comparisonCategory = getCookie("comparisonCategory");
-  const [ads, setAds] = useState([]);
-  const getAds = async () => {
-    await axios
-      .post(`${urls["test"]}/ad/many/0/false/5/created`, comparison)
-      .then((d) => setAds(d.data.ads));
+  const token = getCookie('token');
+  const dispatch = useDispatch();
+  const { compare } = useSelector((state) => state.compare);
+  const { user } = useSelector((state) => state.user);
+  const { bookmarks } = useSelector((state) => state.bookmarks);
+  const getUser = async () => {
+    if (user.userType == undefined && token) {
+      await axios
+        .get(`${urls['test']}/user/me`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((d) => {
+          dispatch(setUser(d.data));
+        });
+    }
   };
   useEffect(() => {
-    if (comparison.length > 0) {
-      getAds();
-    } else {
-      setAds([]);
-      setCookie("comparisonCategory", "");
+    if (
+      user &&
+      bookmarks &&
+      bookmarks.length == 0 &&
+      user?.bookmarks?.length > 0
+    ) {
+      dispatch(updateBookmark(user.bookmarks));
     }
-  }, [comparison]);
+  }, [user?.bookmarks]);
+  useEffect(() => {
+    getUser();
+  }, [user, token]);
+
   const router = useRouter();
   return (
     <>
@@ -39,16 +57,15 @@ const Layout = ({ children }) => {
       // exit={{ opacity: 0 }}
       >
         {children}
-        {comparison &&
-          ads &&
-          (router?.pathname == "/" ||
-            router?.pathname == "/category" ||
-            router?.pathname == "/category/[slug]" ||
-            router?.pathname == "/account/[slug]" ||
-            (router?.pathname == "/account" &&
-              (router?.query?.tab == "MyAds" ||
-                router?.query?.tab == "Bookmark"))) && (
-            <CompareSelect btnView={false} compareAds={ads} />
+        {compare &&
+          (router?.pathname == '/' ||
+            router?.pathname == '/category' ||
+            router?.pathname == '/category/[slug]' ||
+            router?.pathname == '/account/[slug]' ||
+            (router?.pathname == '/account' &&
+              (router?.query?.tab == 'MyAds' ||
+                router?.query?.tab == 'Bookmark'))) && (
+            <CompareSelect btnView={false} />
           )}
       </div>
 

@@ -1,29 +1,15 @@
-import urls from '@/constants/api';
-import { useAuth } from '@/context/auth';
 import { Image } from '@chakra-ui/react';
-import axios from 'axios';
 import currency from 'currency.js';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
 import { BiRightArrowAlt } from 'react-icons/bi';
+import { useSelector } from 'react-redux';
 import MainContainer from '../layout/mainContainer';
 import { STYLES } from '../styles';
 
 const Comparing = () => {
-  const [ads, setAds] = useState({});
-  const { comparison } = useAuth();
+  const { compare } = useSelector((state) => state.compare);
   const router = useRouter();
-  const getAds = async () => {
-    await axios
-      .post(`${urls['test']}/ad/many/0/false/5/created`, comparison)
-      .then((d) => {
-        setAds(d.data?.ads);
-        console.log(d.data);
-      });
-  };
-  useEffect(() => {
-    if (comparison) getAds();
-  }, [comparison]);
+
   return (
     <div className="">
       <MainContainer>
@@ -46,8 +32,8 @@ const Comparing = () => {
             </h2>
             {/* Fixed information */}
             <div className="border-r border-r-blue">
-              {ads.length > 0 &&
-                ads[0]?.items?.map((f, index) => (
+              {compare.length > 0 &&
+                compare?.[0]?.items?.map((f, index) => (
                   <p
                     key={index}
                     className={`${
@@ -61,8 +47,8 @@ const Comparing = () => {
           </div>
           <div className="flex w-full overflow-x-scroll ">
             {/* Product 1 */}
-            {ads.length > 0 &&
-              ads?.map((c, i) => {
+            {compare.length > 0 &&
+              compare?.map((c, i) => {
                 return (
                   <div href="/" target="_blank" key={i}>
                     <div className="min-w-[150px] max-w-[350px] flex-1 border-r border-r-blue">

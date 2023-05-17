@@ -290,28 +290,28 @@ const SharedAd = () => {
 };
 export default SharedAd;
 
-export async function getServerSideProps({ req, res }) {
-  const token = getCookie('token', { req, res });
-  const { user } = useSelector((state) => state.user);
-  if (token) {
-    if (user?.userType == 'admin' || user?.userType == 'system') {
-      return {
-        props: {},
-      };
-    } else {
-      return {
-        redirect: {
-          destination: '/',
-          permanent: false,
-        },
-      };
-    }
-  } else {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      },
-    };
-  }
-}
+// export async function getServerSideProps({ req, res }) {
+//   const token = getCookie('token', { req, res });
+//   const { user } = useSelector((state) => state.user);
+//   if (token) {
+//     if (user?.userType == 'admin' || user?.userType == 'system') {
+//       return {
+//         props: {},
+//       };
+//     } else {
+//       return {
+//         redirect: {
+//           destination: '/',
+//           permanent: false,
+//         },
+//       };
+//     }
+//   } else {
+//     return {
+//       redirect: {
+//         destination: '/login',
+//         permanent: false,
+//       },
+//     };
+//   }
+// }

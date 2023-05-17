@@ -1,3 +1,9 @@
+import urls from "@/constants/api";
+import axios from "axios";
+import { getCookie } from "cookies-next";
+import { useDispatch } from "react-redux";
+import { setUser } from "store/slice/user";
+
 export const getJson = (data) => {
   let apartmentJson = [];
   let officeJson = [];
@@ -199,4 +205,16 @@ export const getSellType = (type) => {
 export const stopPropagation = (e) => {
   e.stopPropagation();
   e.nativeEvent.stopImmediatePropagation();
+};
+
+export const getUser = async () => {
+  let token = getCookie('token');
+  let dispatch = useDispatch();
+  await axios
+    .get(`${urls['test']}/user/me`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((d) => dispatch(setUser(d.data)));
 };
