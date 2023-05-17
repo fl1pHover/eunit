@@ -4,16 +4,15 @@ import { useSelector } from 'react-redux';
 const Request = ({ propAds }) => {
   const router = useRouter();
   const { user } = useSelector((state) => state.user);
-  if (user) {
-    if (user.userType == 'admin' || user.userType == 'system') {
-      console.log(user);
-      router.push('/admin/request/realState');
-    } else {
-      router.push('/');
-    }
-  } else {
-    router.push('/login');
-  }
+  // if (user) {
+  //   if (user.userType == 'admin' || user.userType == 'system') {
+  //     router.push('/admin/request/realState');
+  //   } else {
+  //     router.push('/');
+  //   }
+  // } else {
+  //   router.push('/login');
+  // }
 };
 
 export default Request;
