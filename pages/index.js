@@ -1,14 +1,14 @@
-import AdContent from '@/components/home/adContent';
-import CategorySelect from '@/components/home/categorySelect';
-import ProAdContent from '@/components/home/proAdContent';
-import SwiperHeader from '@/components/home/swiperHeader';
-import urls from '@/constants/api';
-import { ContainerX } from '@/lib/Container';
-import axios from 'axios';
-import { getCookie } from 'cookies-next';
-import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { setUser } from 'store/slice/user';
+import AdContent from "@/components/home/adContent";
+import CategorySelect from "@/components/home/categorySelect";
+import ProAdContent from "@/components/home/proAdContent";
+import SwiperHeader from "@/components/home/swiperHeader";
+import urls from "@/constants/api";
+import { ContainerX } from "@/lib/Container";
+import axios from "axios";
+import { getCookie } from "cookies-next";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { setUser } from "store/slice/user";
 // import required modules
 
 export default function Home() {
@@ -17,11 +17,11 @@ export default function Home() {
   const [sAds, setSAds] = useState();
 
   const [limitAd, setLimitAd] = useState(0);
-  const token = getCookie('token');
+  const token = getCookie("token");
   const getAds = async () => {
     try {
       setIsLoading(true);
-      const resAds = await fetch(`${urls['test']}/ad/${0}`);
+      const resAds = await fetch(`${urls["test"]}/ad/${0}`);
       const ads = await resAds.json();
       setAds(ads.defaultAds);
       setSAds(ads.specialAds);
@@ -33,11 +33,11 @@ export default function Home() {
   };
   useEffect(() => {
     getAds();
-  });
+  }, []);
   const dispatch = useDispatch();
   const getUser = async () => {
     await axios
-      .get(`${urls['test']}/user/me`, {
+      .get(`${urls["test"]}/user/me`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
