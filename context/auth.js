@@ -1,11 +1,13 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from 'react';
 
 //api here is an axios instance which has the baseURL set according to the env.
 
-import { useToast } from "@chakra-ui/react";
-import axios from "axios";
-import urls from "@/constants/api";
-import { deleteCookie, getCookie, setCookie } from "cookies-next";
+import urls from '@/constants/api';
+import { useToast } from '@chakra-ui/react';
+import axios from 'axios';
+import { deleteCookie, getCookie, setCookie } from 'cookies-next';
+import { useDispatch } from 'react-redux';
+import { setUser } from 'store/slice/user';
 
 const AuthContext = createContext({});
 
@@ -18,24 +20,14 @@ export const AuthProvider = ({ children }) => {
   const [specialAds, setSpecialAds] = useState();
   const [comparison, setComparison] = useState([]);
   async function loadUserFromCookies() {
-    const token = getCookie("token");
-    const bookmarks = getCookie("bookmarks");
-    const comparisonCategory = getCookie("comparisonCategory");
-    if (token) {
-      await axios
-        .get(`${urls["test"]}/user/me`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Access-Control-Allow-Headers": "*",
-          },
-        })
-        .then((d) => {
-          setCookie("bookmarks", d.data.bookmarks);
-        });
-    }
+ 
+    const token = getCookie('token');
+    const bookmarks = getCookie('bookmarks');
+    const comparisonCategory = getCookie('comparisonCategory');
+
     setLoading(true);
     try {
-      const { data: category } = await axios.get(`${urls["test"]}/category`);
+      const { data: category } = await axios.get(`${urls['test']}/category`);
       setCategories(category.categories);
     } catch (e) {
       setLoading(false);
@@ -49,61 +41,61 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = async (email, password) => {
-    const token = getCookie("token");
+    const token = getCookie('token');
     email = email.toLowerCase();
     if (!token) {
       setLoading(true);
       try {
-        const { data: data } = await axios.post(`${urls["test"]}/auth/login`, {
+        const { data: data } = await axios.post(`${urls['test']}/auth/login`, {
           email: email,
           password,
         });
         if (!data?.status) {
-          if (data.message == "banned") {
+          if (data.message == 'banned') {
             toast({
-              title: "Бандуулсан байна",
-              status: "warning",
+              title: 'Бандуулсан байна',
+              status: 'warning',
               duration: 3000,
               isClosable: true,
             });
           }
-          if (data.message == "password not match") {
+          if (data.message == 'password not match') {
             toast({
-              title: "Нууц үг буруу байна",
-              status: "warning",
+              title: 'Нууц үг буруу байна',
+              status: 'warning',
               duration: 3000,
               isClosable: true,
             });
           }
-          if (data.message == "not found user") {
+          if (data.message == 'not found user') {
             toast({
-              title: "И-майл хаяг буруу байна",
-              status: "warning",
+              title: 'И-майл хаяг буруу байна',
+              status: 'warning',
               duration: 3000,
               isClosable: true,
             });
           }
         } else {
           if (data?.token) {
-            setCookie("token", data.token);
+            setCookie('token', data.token);
 
             toast({
-              title: "Амжилттай нэвтэрлээ",
-              status: "success",
+              title: 'Амжилттай нэвтэрлээ',
+              status: 'success',
               duration: 3000,
               isClosable: true,
             });
-            window.location.pathname = "/";
+            window.location.pathname = '/';
           } else {
-            window.location.pathname = "/account/check";
+            window.location.pathname = '/account/check';
           }
         }
       } catch (error) {
         setLoading(false);
         toast({
           // title: error.message,
-          title: "И-майл хаяг эсвэл нууц үг буруу байна",
-          status: "error",
+          title: 'И-майл хаяг эсвэл нууц үг буруу байна',
+          status: 'error',
           duration: 5000,
           isClosable: true,
         });
@@ -112,14 +104,14 @@ export const AuthProvider = ({ children }) => {
     }
   };
   const signup = async (email, password, username, phone) => {
-    const token = getCookie("token");
+    const token = getCookie('token');
     email = email.toLowerCase();
 
     if (!token) {
       setLoading(true);
       try {
         const { data: data } = await axios.post(
-          `${urls["test"]}/auth/register`,
+          `${urls['test']}/auth/register`,
           {
             email,
             password,
@@ -129,7 +121,7 @@ export const AuthProvider = ({ children }) => {
         );
 
         if (!data) {
-          window.location.pathname = "/account/check";
+          window.location.pathname = '/account/check';
         }
       } catch (err) {
         setLoading(false);
@@ -140,14 +132,14 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    deleteCookie("token");
-    deleteCookie("user");
-    deleteCookie("bookmarks");
+    deleteCookie('token');
+    deleteCookie('user');
+    deleteCookie('bookmarks');
     setComparison([]);
-    deleteCookie("comparisonCategory");
+    deleteCookie('comparisonCategory');
 
     setLoading(false);
-    window.location.pathname = "/login";
+    window.location.pathname = '/login';
   };
 
   return (

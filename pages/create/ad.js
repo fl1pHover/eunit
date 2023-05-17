@@ -1,26 +1,27 @@
-import { Heading, useToast } from "@chakra-ui/react";
-import axios from "axios";
-import { useRouter } from "next/router";
-import React, { useMemo, useState } from "react";
+import { Heading, useToast } from '@chakra-ui/react';
+import axios from 'axios';
+import { useRouter } from 'next/router';
+import React, { useMemo, useState } from 'react';
 
-import Step1 from "@/components/createAd/step1";
-import Step4 from "@/components/createAd/step4";
+import Step1 from '@/components/createAd/step1';
+import Step4 from '@/components/createAd/step4';
 
-import StepButtons from "@/components/createAd/stepButtons";
-import StepProgress from "@/components/createAd/stepProgress";
-import FormTitle from "@/components/createAd/title";
-import { ContainerX } from "@/lib/Container";
+import StepButtons from '@/components/createAd/stepButtons';
+import StepProgress from '@/components/createAd/stepProgress';
+import FormTitle from '@/components/createAd/title';
+import { ContainerX } from '@/lib/Container';
 
-import Step3 from "@/components/createAd/step3";
-import urls from "@/constants/api";
-import { getSellType } from "@/context/functions";
-import useAd from "@/util/useAd";
-import { GoogleMap, MarkerF, useLoadScript } from "@react-google-maps/api";
-import { getCookie } from "cookies-next";
-export default function CreateAd({ categories, user }) {
+import Step3 from '@/components/createAd/step3';
+import urls from '@/constants/api';
+import { getSellType } from '@/context/functions';
+import useAd from '@/util/useAd';
+import { GoogleMap, MarkerF, useLoadScript } from '@react-google-maps/api';
+import { getCookie } from 'cookies-next';
+import { useSelector } from 'react-redux';
+export default function CreateAd({ categories }) {
   const toast = useToast();
   const router = useRouter();
-
+  const { user } = useSelector((state) => state.user);
   const [step, setStep] = useState(-1);
   const passcategory = useMemo(() => categories, [categories]);
 
@@ -58,7 +59,7 @@ export default function CreateAd({ categories, user }) {
         passcategory[types.categoryId].subCategory.filter((item) => {
           if (item.href == types.subCategoryId) {
             axios
-              .get(`${urls["test"]}/category/filters/${item._id}`)
+              .get(`${urls['test']}/category/filters/${item._id}`)
               .then((res) => {
                 setSubCategory(res.data);
               });
@@ -75,15 +76,15 @@ export default function CreateAd({ categories, user }) {
   const handleNextStep = () => {
     if (step === -1)
       return checkConditionOnNextStep(
-        types.adType != "" &&
-          types.categoryName != "" &&
-          types.sellType != "" &&
-          types.subCategoryId != ""
+        types.adType != '' &&
+          types.categoryName != '' &&
+          types.sellType != '' &&
+          types.subCategoryId != ''
       );
     if (step == 0) {
       let check = true;
       subCategory.steps[0].values.map((s) => {
-        if (values[s.type] == "") check = false;
+        if (values[s.type] == '') check = false;
       });
       return checkConditionOnNextStep(check);
     }
@@ -100,24 +101,24 @@ export default function CreateAd({ categories, user }) {
   };
 
   const checkConditionOnNextStep = (booleanValue) => {
-    return booleanValue === undefined || booleanValue === "" || booleanValue
+    return booleanValue === undefined || booleanValue === '' || booleanValue
       ? setStep((prev) => prev + 1)
       : toast({
-          title: "Та бүх талбарыг бөглөнө үү.",
-          status: "error",
+          title: 'Та бүх талбарыг бөглөнө үү.',
+          status: 'error',
           duration: 1000,
           isClosable: true,
         });
   };
 
   const sendAd = async () => {
-    const token = getCookie("token");
+    const token = getCookie('token');
 
     const filters = [];
     const pushedImages = [];
     subCategory.steps.map((s) => {
       s.values.map((v) => {
-        if (s.step != "general") {
+        if (s.step != 'general') {
           filters.push({
             name: v.name,
             id: v.type,
@@ -146,21 +147,21 @@ export default function CreateAd({ categories, user }) {
     let fImages = new FormData();
 
     images?.map((prev) => {
-      fImages.append("images", prev);
+      fImages.append('images', prev);
     });
     try {
       await axios
-        .post(`${urls["test"]}/ad/uploadFields`, fImages, {
+        .post(`${urls['test']}/ad/uploadFields`, fImages, {
           headers: {
             Authorization: `Bearer ${token}`,
-            "Access-Control-Allow-Headers": "*",
+            'Access-Control-Allow-Headers': '*',
           },
         })
         .then((d) => (pushedImages = d.data));
 
       await axios
         .post(
-          `${urls["test"]}/ad`,
+          `${urls['test']}/ad`,
           {
             images: pushedImages,
             title: generalData.title,
@@ -170,22 +171,22 @@ export default function CreateAd({ categories, user }) {
             category: categories[types.categoryId]._id,
             sellType: getSellType(types.sellType),
             items: filters,
-            adType: types.adType == "sharing" ? "sharing" : "default",
-            adStatus: "pending",
-            view: "hide",
+            adType: types.adType == 'sharing' ? 'sharing' : 'default',
+            adStatus: 'pending',
+            view: 'hide',
           },
           {
             headers: {
               Authorization: `Bearer ${token}`,
-              "Access-Control-Allow-Headers": "*",
-              charset: "UTF-8",
+              'Access-Control-Allow-Headers': '*',
+              charset: 'UTF-8',
             },
           }
         )
         .then((d) => {
           toast({
-            title: "Амжилттай нэмэгдлээ.",
-            status: "success",
+            title: 'Амжилттай нэмэгдлээ.',
+            status: 'success',
             duration: 1000,
             isClosable: true,
           });
@@ -202,26 +203,26 @@ export default function CreateAd({ categories, user }) {
 
     let emptyAd = true;
     subCategory.steps[2].values.map((f) => {
-      if (values[f.type] == "") {
+      if (values[f.type] == '') {
         emptyAd = false;
       }
     });
     if (emptyAd) {
-      if (user?.status == "active") {
+      if (user?.status == 'active') {
         await sendAd();
       } else {
         toast({
           title:
-            "Та одоогоор зар илгээх боломжгүй байна. Email-ээ шалган Verify хийнэ үү",
-          status: "warning",
+            'Та одоогоор зар илгээх боломжгүй байна. Email-ээ шалган Verify хийнэ үү',
+          status: 'warning',
           duration: 2000,
           isClosable: true,
         });
       }
     } else {
       toast({
-        title: "Та бүх талбарыг бөглөнө үү.",
-        status: "warning",
+        title: 'Та бүх талбарыг бөглөнө үү.',
+        status: 'warning',
         duration: 2000,
         isClosable: true,
       });
@@ -240,10 +241,10 @@ export default function CreateAd({ categories, user }) {
   const top = () => {
     window.scrollTo(0, 0);
   };
-  const libraries = useMemo(() => ["places"], []);
+  const libraries = useMemo(() => ['places'], []);
 
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: "AIzaSyC2u2OzBNo53GxJJdN3Oc_W6Yc42OmdZcE",
+    googleMapsApiKey: 'AIzaSyC2u2OzBNo53GxJJdN3Oc_W6Yc42OmdZcE',
     libraries: libraries,
   });
   const mapOptions = useMemo(
@@ -270,7 +271,7 @@ export default function CreateAd({ categories, user }) {
         <StepProgress
           activeStep={step}
           handleClick={(stepId) => setStep(stepId)}
-          hasFourStep={types?.categoryName === "realState"}
+          hasFourStep={types?.categoryName === 'realState'}
         />
         {
           // STEP1 TYPES: CATEGORY, SUBCATEGORY, ADTYPE, SELLTYPE
@@ -305,7 +306,7 @@ export default function CreateAd({ categories, user }) {
                       zoom={14}
                       center={mapCenter}
                       mapTypeId={google.maps.MapTypeId.ROADMAP}
-                      mapContainerStyle={{ width: "100%", height: "40vh" }}
+                      mapContainerStyle={{ width: '100%', height: '40vh' }}
                     >
                       <MarkerF
                         position={map}
@@ -357,7 +358,7 @@ export default function CreateAd({ categories, user }) {
           filter={subCategory?.steps}
           generalData={generalData}
           loading={isLoading}
-          txt={step == 2 ? "Илгээх" : "Дараах"}
+          txt={step == 2 ? 'Илгээх' : 'Дараах'}
           step={step}
           map={map}
           // onClick={() => step == 2 && <CustomModal />}
@@ -369,25 +370,19 @@ export default function CreateAd({ categories, user }) {
 }
 //360
 export async function getServerSideProps({ req, res }) {
-  const response = await fetch(`${urls["test"]}/category`);
+  const response = await fetch(`${urls['test']}/category`);
   const categories = await response.json();
-  const token = getCookie("token", { req, res });
+  const token = getCookie('token', { req, res });
 
   if (!token)
     return {
       redirect: {
-        destination: "/login",
+        destination: '/login',
         permanent: false,
       },
     };
-  let userRes = await fetch(`${urls["test"]}/user/me`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Access-Control-Allow-Headers": "*",
-    },
-  });
-  let user = await userRes.json();
+
   return {
-    props: { categories, user },
+    props: { categories },
   };
 }

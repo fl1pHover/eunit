@@ -9,8 +9,9 @@ import axios from 'axios';
 import { getCookie } from 'cookies-next';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
-const SharedAds = ({user}) => {
+const SharedAds = () => {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [category, setCategory] = useState([]);
@@ -20,6 +21,7 @@ const SharedAds = ({user}) => {
   const [data, setData] = useState([]);
   const router = useRouter();
   const toast = useToast();
+  const { user } = useSelector((state) => state.user);
   const token = getCookie('token');
   const getAds = async () => {
     try {
@@ -359,18 +361,8 @@ export async function getServerSideProps({ req, res }) {
 
   if (token) {
     try {
-      const response = await fetch(`${urls['test']}/user/me`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const user = await response.json();
-      // const adRes = await
-
       return {
-        props: {
-          user: user,
-        },
+        props: {},
       };
     } catch (err) {
       return {

@@ -7,33 +7,20 @@ import axios from 'axios';
 import { getCookie } from 'cookies-next';
 import { Button } from 'flowbite-react';
 import NextLink from 'next/link';
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useState } from 'react';
 import { BiEdit } from 'react-icons/bi';
 import { MdDelete, MdOutlineArrowDropDownCircle } from 'react-icons/md';
 import { SiVerizon } from 'react-icons/si';
+import { useSelector } from 'react-redux';
 
-const Users = ({ users }) => {
-  const [user, setUser] = useState([]);
-
+const Users = () => {
+  const { user } = useSelector((state) => state.user);
   const token = getCookie('token');
   const [num, setNum] = useState(0);
   const toast = useToast();
 
   let dummy = [];
-  const getData = async () => {
-    fetch(`${urls['test']}/user`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }).then((d) => d.json());
-  };
 
-  useEffect(() => {
-    setUser(users);
-  }, [users]);
-  useEffect(() => {
-    getData();
-  }, [num]);
   const verifyUser = async (id) => {
     try {
       await axios
@@ -370,40 +357,16 @@ export default Users;
 
 export async function getServerSideProps({ req, res }) {
   const token = getCookie('token', { req, res });
-
+  const { user } = useSelector((state) => state.user);
   if (token) {
-    try {
-      const response = await fetch(`${urls['test']}/user/me`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const user = await response.json();
-      // const adRes = await
-      if (user?.userType == 'admin' || user?.userType == 'system') {
-        const users = await fetch(`${urls['test']}/user`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const usersJson = await users.json();
-        return {
-          props: {
-            users: usersJson,
-          },
-        };
-      } else {
-        return {
-          redirect: {
-            destination: '/',
-            permanent: false,
-          },
-        };
-      }
-    } catch (err) {
+    if (user?.userType == 'admin' || user?.userType == 'system') {
+      return {
+        props: {},
+      };
+    } else {
       return {
         redirect: {
-          destination: '/login',
+          destination: '/',
           permanent: false,
         },
       };

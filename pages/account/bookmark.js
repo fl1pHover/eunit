@@ -4,11 +4,13 @@ import urls from '@/constants/api';
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 const Bookmark = ({ user }) => {
   const [ads, setAds] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const bookmarks = getCookie('bookmarks');
+
+  const { bookmarks } = useSelector((state) => state.bookmarks);
   const [category, setCategory] = useState([]);
   const [subCategory, setSubCategory] = useState([]);
   const [data, setData] = useState([]);
@@ -18,7 +20,7 @@ const Bookmark = ({ user }) => {
     if (bookmarks)
       try {
         await axios
-          .post(`${urls['test']}/ad/many/0/false/10/created`, JSON.parse(bookmarks))
+          .post(`${urls['test']}/ad/many/0/false/10/created`, bookmarks)
           .then((d) => {
             setAds(d.data);
             setIsLoading(false);
@@ -82,7 +84,7 @@ export default Bookmark;
 
 export async function getServerSideProps(req, res) {
   const token = getCookie('token', req, res);
-  const bookmark = getCookie('bookmarks', req, res);
+
   if (!token) {
     return {
       redirect: {
@@ -97,13 +99,7 @@ export async function getServerSideProps(req, res) {
         'Access-Control-Allow-Headers': '*',
       },
     });
-    if (bookmark)
-      await axios.patch(`${urls['test']}/user/bookmark`, JSON.parse(bookmark), {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Access-Control-Allow-Headers': '*',
-        },
-      });
+
     user = await userRes.json();
     return {
       props: {

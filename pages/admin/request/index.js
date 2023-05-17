@@ -1,21 +1,14 @@
-import urls from '@/constants/api';
 import { getCookie } from 'cookies-next';
+import { useSelector } from 'react-redux';
 
 const Request = ({ propAds }) => {};
 export default Request;
 
 export async function getServerSideProps({ req, res }) {
   const token = getCookie('token', { req, res });
-
+  const { user } = useSelector((state) => state.user);
   if (token) {
     try {
-      const response = await fetch(`${urls['test']}/user/me`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const user = await response.json();
-      // const adRes = await
       if (user?.userType == 'Request' || user?.userType == 'system') {
         return {
           redirect: {

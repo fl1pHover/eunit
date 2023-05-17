@@ -7,11 +7,11 @@ import mergeNames from '@/util/mergeNames';
 import { Button, Radio, RadioGroup, useToast } from '@chakra-ui/react';
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
-import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 import { Fragment, useEffect, useState } from 'react';
 import { MdDelete, MdOutlineArrowDropDownCircle } from 'react-icons/md';
 import { SiVerizon } from 'react-icons/si';
+import { useSelector } from 'react-redux';
 const Tab = ({ num, children }) => {
   const [activeTab, setActiveTab] = useState('');
   const handleClick = (event) => {
@@ -437,16 +437,9 @@ export default RequestAds;
 
 export async function getServerSideProps({ req, res }) {
   const token = getCookie('token', { req, res });
-
+  const { user } = useSelector((state) => state.user);
   if (token) {
     try {
-      const response = await fetch(`${urls['test']}/user/me`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const user = await response.json();
-      // const adRes = await
       if (user?.userType == 'admin' || user?.userType == 'system') {
         return {
           props: {

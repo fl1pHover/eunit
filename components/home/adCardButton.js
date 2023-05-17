@@ -1,57 +1,48 @@
-import React, { useEffect, useState } from "react";
-import { FaHeart } from "react-icons/fa";
+import React from 'react';
+import { FaHeart } from 'react-icons/fa';
 
-import urls from "@/constants/api";
-import { useAuth } from "@/context/auth";
-import { stopPropagation } from "@/context/functions";
-import mergeNames from "@/util/mergeNames";
-import { Tooltip, useToast } from "@chakra-ui/react";
-import axios from "axios";
-import { getCookie, setCookie } from "cookies-next";
-import { useRouter } from "next/router";
-import { BiGitCompare } from "react-icons/bi";
+import { useAuth } from '@/context/auth';
+import { stopPropagation } from '@/context/functions';
+import mergeNames from '@/util/mergeNames';
+import { Tooltip, useToast } from '@chakra-ui/react';
+import { getCookie, setCookie } from 'cookies-next';
+import { useRouter } from 'next/router';
+import { BiGitCompare } from 'react-icons/bi';
+import { useDispatch, useSelector } from 'react-redux';
+import { setBookmark } from 'store/slice/bookmark';
 const AdCardButton = ({ id, adId, cateId }) => {
   const toast = useToast();
   const [isLiked, setIsLiked] = React.useState(false);
   const [isCompare, setIsCompare] = React.useState(false);
-  const token = getCookie("token");
-  let bookmarks = getCookie("bookmarks");
-  let { comparison, setComparison } = useAuth();
-  let comparisonCategory = getCookie("comparisonCategory");
-  const [user, setUser] = useState({});
 
+  let { comparison, setComparison } = useAuth();
+  let comparisonCategory = getCookie('comparisonCategory');
+  const { user } = useSelector((state) => state.user);
+  const { bookmarks } = useSelector((state) => state.bookmarks);
+  const dispatch = useDispatch();
   const router = useRouter();
   const addToBookmark = async () => {
     if (bookmarks != undefined) {
-      if (JSON.parse(bookmarks).find((b) => b == adId) != undefined) {
-        setIsLiked(false);
-        let arr = [...JSON.parse(bookmarks)];
-        arr = arr.filter((a) => a !== adId);
-        setCookie("bookmarks", arr);
+      dispatch(setBookmark(adId));
+      if (bookmarks.includes(adId)) {
         toast({
-          title: "Зар хүслээс хасагдлаа.",
-          status: "warning",
+          title: 'Зар хүслээс хасагдлаа.',
+          status: 'warning',
           duration: 5000,
           isClosable: true,
         });
       } else {
-        setIsLiked(true);
-
-        let arr = [...JSON.parse(bookmarks)];
-        arr.push(adId);
-        setCookie("bookmarks", arr);
         toast({
-          title: "Зар хүсэлд нэмэгдлээ.",
-          status: "success",
+          title: 'Зар хүсэлд нэмэгдлээ.',
+          status: 'success',
           duration: 5000,
           isClosable: true,
         });
       }
     } else {
-      console.log(bookmarks)
       toast({
-        title: "Та нэвтэрнэ үү",
-        status: "warning",
+        title: 'Та нэвтэрнэ үү',
+        status: 'warning',
         duration: 5000,
         isClosable: true,
       });
@@ -65,11 +56,11 @@ const AdCardButton = ({ id, adId, cateId }) => {
       ) {
         if (comparisonCategory == cateId) {
           setIsCompare(true);
-          setCookie("comparisonCategory", cateId);
+          setCookie('comparisonCategory', cateId);
           setComparison((prev) => [...prev, adId]);
         } else {
-          if (comparisonCategory == "") {
-            setCookie("comparisonCategory", cateId);
+          if (comparisonCategory == '') {
+            setCookie('comparisonCategory', cateId);
             setIsCompare(true);
             setComparison((prev) => [...prev, adId]);
           } else {
@@ -89,24 +80,10 @@ const AdCardButton = ({ id, adId, cateId }) => {
       }
     }
   };
-  const getUser = async () => {
-    await axios
-      .get(`${urls["test"]}/user/me`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Access-Control-Allow-Headers": "*",
-        },
-      })
-      .then((d) => {
-        setUser(d.data);
-      });
-  };
-  useEffect(() => {
-    if (token) getUser();
-  }, [token]);
+
   const cardIcon = {
-    div: "flex items-center justify-center transition-all duration-300 ease-in-out rounded-full bg-slate-200/40 group-a hover:bg-slate-200  shadow-md",
-    icon: "md:p-2 p-[5px] h-7 w-7 md:w-8 md:h-8",
+    div: 'flex items-center justify-center transition-all duration-300 ease-in-out rounded-full bg-slate-200/40 group-a hover:bg-slate-200  shadow-md',
+    icon: 'md:p-2 p-[5px] h-7 w-7 md:w-8 md:h-8',
   };
 
   return (
@@ -121,14 +98,14 @@ const AdCardButton = ({ id, adId, cateId }) => {
         >
           <FaHeart
             className={mergeNames(
-              "hover:text-red-400 ",
+              'hover:text-red-400 ',
               cardIcon.icon,
               isLiked ||
                 (bookmarks &&
-                  token &&
-                  JSON.parse(bookmarks).find((b) => b == adId) != undefined)
-                ? "text-red-500/90"
-                : "text-slate-200/90"
+                  user &&
+                  bookmarks.find((b) => b == adId) != undefined)
+                ? 'text-red-500/90'
+                : 'text-slate-200/90'
             )}
           />
         </button>
@@ -143,7 +120,7 @@ const AdCardButton = ({ id, adId, cateId }) => {
           }}
         >
           <BiGitCompare
-            className={mergeNames("text-blue-700", cardIcon.icon)}
+            className={mergeNames('text-blue-700', cardIcon.icon)}
           />
         </button>
       </Tooltip>

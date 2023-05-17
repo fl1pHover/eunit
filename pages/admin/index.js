@@ -1,32 +1,25 @@
-import urls from "@/constants/api";
-import { getCookie } from "cookies-next";
+import { getCookie } from 'cookies-next';
+import { useSelector } from 'react-redux';
 
 const Admin = ({ propAds }) => {};
 export default Admin;
 
 export async function getServerSideProps({ req, res }) {
-  const token = getCookie("token", { req, res });
-
+  const token = getCookie('token', { req, res });
+  const { user } = useSelector((state) => state.user);
   if (token) {
     try {
-      const response = await fetch(`${urls["test"]}/user/me`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const user = await response.json();
-      // const adRes = await
-      if (user?.userType == "admin" || user?.userType == "system") {
+      if (user?.userType == 'admin' || user?.userType == 'system') {
         return {
           redirect: {
-            destination: "/admin/request/realState",
+            destination: '/admin/request/realState',
             permanent: false,
           },
         };
       } else {
         return {
           redirect: {
-            destination: "/",
+            destination: '/',
             permanent: false,
           },
         };
@@ -34,7 +27,7 @@ export async function getServerSideProps({ req, res }) {
     } catch (err) {
       return {
         redirect: {
-          destination: "/login",
+          destination: '/login',
           permanent: false,
         },
       };
@@ -42,7 +35,7 @@ export async function getServerSideProps({ req, res }) {
   } else {
     return {
       redirect: {
-        destination: "/login",
+        destination: '/login',
         permanent: false,
       },
     };

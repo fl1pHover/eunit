@@ -55,15 +55,15 @@ const Profile = ({
   const [socials, setSocials] = useState([
     {
       name: 'facebook',
-      url: user?.socials[0]?.url ?? '',
+      url: user?.socials?.[0]?.url ?? '',
     },
     {
       name: 'instagram',
-      url: user?.socials[1]?.url ?? '',
+      url: user?.socials?.[1]?.url ?? '',
     },
     {
       name: 'telegram',
-      url: user?.socials[2]?.url ?? '',
+      url: user?.socials?.[2]?.url ?? '',
     },
   ]);
 

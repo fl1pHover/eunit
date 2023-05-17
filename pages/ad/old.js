@@ -641,13 +641,7 @@ export async function getServerSideProps(ctx, req, res) {
   const { slug } = params;
   const resAds = await fetch(`${urls['test']}/ad/id/${slug}`);
   const ads = await resAds.json();
-  let userRes = await fetch(`${urls['test']}/user/me`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Access-Control-Allow-Headers': '*',
-    },
-  });
-  let user = await userRes.json();
+
   return {
     props: {
       propAds: ads,

@@ -4,26 +4,51 @@ import ProAdContent from '@/components/home/proAdContent';
 import SwiperHeader from '@/components/home/swiperHeader';
 import urls from '@/constants/api';
 import { ContainerX } from '@/lib/Container';
+import axios from 'axios';
+import { getCookie } from 'cookies-next';
 import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { setUser } from 'store/slice/user';
 // import required modules
 
-export default function Home({ defaultAds, specialAds }) {
+export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [ads, setAds] = useState();
   const [sAds, setSAds] = useState();
 
   const [limitAd, setLimitAd] = useState(0);
-
+  const token = getCookie('token');
+  const getAds = async () => {
+    try {
+      setIsLoading(true);
+      const resAds = await fetch(`${urls['test']}/ad/${0}`);
+      const ads = await resAds.json();
+      setAds(ads.defaultAds);
+      setSAds(ads.specialAds);
+      setIsLoading(false);
+    } catch (error) {
+      console.error(error);
+      throw new Error(error);
+    }
+  };
   useEffect(() => {
-    setIsLoading(true);
-    if (typeof defaultAds === 'object' && defaultAds?.ads) {
-      setAds(defaultAds);
-    }
-    if (typeof specialAds === 'object' && specialAds?.ads) {
-      setSAds(specialAds);
-    }
-    setIsLoading(false);
-  }, [defaultAds, specialAds]);
+    getAds();
+  });
+  const dispatch = useDispatch();
+  const getUser = async () => {
+    await axios
+      .get(`${urls['test']}/user/me`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((d) => {
+        dispatch(setUser(d.data));
+      });
+  };
+  useEffect(() => {
+    if (token) getUser();
+  }, [token]);
   return (
     <>
       <SwiperHeader />
@@ -58,18 +83,4 @@ export default function Home({ defaultAds, specialAds }) {
       </ContainerX>
     </>
   );
-}
-
-export async function getServerSideProps({ params, query, req, res }) {
-  try {
-    const resAds = await fetch(`${urls['test']}/ad/${0}`);
-    const ads = await resAds.json();
-
-    return {
-      props: { defaultAds: ads.defaultAds, specialAds: ads.specialAds },
-    };
-  } catch (error) {
-    console.error(error);
-    throw new Error(error);
-  }
 }

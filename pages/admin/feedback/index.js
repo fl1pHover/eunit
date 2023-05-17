@@ -1,8 +1,8 @@
 import urls from '@/constants/api';
-import MainContainer from '@/layout/mainContainer';
 import { ContainerX } from '@/lib/Container';
 import { getCookie } from 'cookies-next';
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 const Feedback = ({ feedbacks }) => {
   const [feedback, setF] = useState([]);
@@ -54,16 +54,9 @@ export default Feedback;
 
 export async function getServerSideProps({ req, res }) {
   const token = getCookie('token', { req, res });
-
+  const { user } = useSelector((state) => state.user);
   if (token) {
     try {
-      const response = await fetch(`${urls['test']}/user/me`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const user = await response.json();
-      // const adRes = await
       if (user?.userType == 'admin' || user?.userType == 'system') {
         const feedbacks = await fetch(`${urls['test']}/user/feedback/get`, {
           headers: {

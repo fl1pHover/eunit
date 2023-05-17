@@ -11,7 +11,8 @@ import { Fragment, useEffect, useState } from 'react';
 import { BiEdit } from 'react-icons/bi';
 import { MdDelete, MdOutlineArrowDropDownCircle } from 'react-icons/md';
 import { SiVerizon } from 'react-icons/si';
-const SharedAd = ({ user }) => {
+import { useSelector } from 'react-redux';
+const SharedAd = () => {
   const [ads, setAds] = useState({ ads: [], limit: 0 });
   const [data, setData] = useState({ ads: [], limit: 0 });
 
@@ -23,7 +24,7 @@ const SharedAd = ({ user }) => {
   const [num, setNum] = useState(0);
   const toast = useToast();
   const router = useRouter();
-
+  const { user } = useSelector((state) => state.user);
   const getAds = async (status, n) => {
     await axios
       .get(`${urls['test']}/ad/admin/sharing/${n ?? num}/${status}`, {
@@ -291,34 +292,16 @@ export default SharedAd;
 
 export async function getServerSideProps({ req, res }) {
   const token = getCookie('token', { req, res });
-
+  const { user } = useSelector((state) => state.user);
   if (token) {
-    try {
-      const response = await fetch(`${urls['test']}/user/me`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const user = await response.json();
-      // const adRes = await
-      if (user?.userType == 'admin' || user?.userType == 'system') {
-        return {
-          props: {
-            user: user,
-          },
-        };
-      } else {
-        return {
-          redirect: {
-            destination: '/',
-            permanent: false,
-          },
-        };
-      }
-    } catch (err) {
+    if (user?.userType == 'admin' || user?.userType == 'system') {
+      return {
+        props: {},
+      };
+    } else {
       return {
         redirect: {
-          destination: '/login',
+          destination: '/',
           permanent: false,
         },
       };
