@@ -1,11 +1,10 @@
 import urls from '@/constants/api';
-import { STYLES } from '@/styles/index';
+import { STYLES, brk } from '@/styles/index';
 import CustomToast from '@/util/customToast';
 import mergeNames from '@/util/mergeNames';
-import { useToast } from '@chakra-ui/react';
+import { Button, Radio, RadioGroup, useToast } from '@chakra-ui/react';
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
-import { Button } from 'flowbite-react';
 import { useRouter } from 'next/router';
 import { Fragment, useEffect, useState } from 'react';
 import { BiEdit } from 'react-icons/bi';
@@ -17,7 +16,7 @@ const SharedAd = () => {
   const [data, setData] = useState({ ads: [], limit: 0 });
 
   const token = getCookie('token');
-  const [check, setCheck] = useState('all');
+  const [check, setCheck] = useState('checking');
   const [category, setCategory] = useState([]);
   const [subCategory, setSubCategory] = useState([]);
 
@@ -120,7 +119,12 @@ const SharedAd = () => {
     <Fragment>
       <div className="flex flex-row p-5 min-h-[60vh]">
         <div className="p-5 ">
-          <div className="w-full overflow-scroll">
+          <div
+            className={mergeNames(
+              'flex flex-col justify-between gap-4 mt-5 mb-5',
+              brk
+            )}
+          >
             {ads?.ads && (
               <button
                 className="p-2 mb-2 font-bold text-white bg-teal-500 rounded-md"
@@ -129,6 +133,38 @@ const SharedAd = () => {
                 Excel татах
               </button>
             )}
+            <RadioGroup className="flex flex-col justify-end" defaultValue="2">
+              <Radio
+                colorScheme="green"
+                className="font-bold text-green-400 whitespace-nowrap"
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    getAds('created', 0);
+                    setCheck('created');
+                    setNum(0);
+                  }
+                }}
+                value="1"
+              >
+                Нэмсэн зарууд
+              </Radio>
+              <Radio
+                colorScheme="yellow"
+                className="font-bold text-yellow-400 whitespace-nowrap"
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    getAds('checking', 0);
+                    setNum(0);
+                    setCheck('checking');
+                  }
+                }}
+                value="2"
+              >
+                Шалгагдаж байгаа зарууд
+              </Radio>
+            </RadioGroup>
+          </div>
+          <div className="w-full overflow-scroll">
             <table className="w-full p-2 text-sm text-left border border-collapse border-gray-400 table-fixed">
               <thead>
                 <tr>
