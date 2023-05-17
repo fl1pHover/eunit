@@ -1,12 +1,13 @@
 import FilterAd from '@/components/Profile/filterAd';
 import urls from '@/constants/api';
-
-import { brk, STYLES } from '@/styles/index';
+import { STYLES, brk } from '@/styles/index';
 import CustomToast from '@/util/customToast';
+
 import mergeNames from '@/util/mergeNames';
 import { Button, Radio, RadioGroup, useToast } from '@chakra-ui/react';
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
+
 import { useRouter } from 'next/router';
 import { Fragment, useEffect, useState } from 'react';
 import { MdDelete, MdOutlineArrowDropDownCircle } from 'react-icons/md';
@@ -30,11 +31,13 @@ const Tab = ({ num, children }) => {
   );
 };
 
-const RequestAds = ({ user }) => {
+const RequestAds = () => {
   const [ads, setAds] = useState({ ads: [], limit: 0 });
   const [data, setData] = useState({ ads: [], limit: 0 });
 
   const token = getCookie('token');
+  const { user } = useSelector((state) => state.user);
+
   const [check, setCheck] = useState('all');
   const [category, setCategory] = useState([]);
   const [subCategory, setSubCategory] = useState([]);
@@ -78,7 +81,12 @@ const RequestAds = ({ user }) => {
   };
   useEffect(() => {
     if (user) {
+      if (user.userType == 'admin' || user.userType) {
+      } else {
+        router.push('/');
+      }
       getAds(check);
+    } else {
     }
   }, [user]);
 
@@ -435,39 +443,39 @@ const RequestAds = ({ user }) => {
 };
 export default RequestAds;
 
-export async function getServerSideProps({ req, res }) {
-  const token = getCookie('token', { req, res });
-  const { user } = useSelector((state) => state.user);
-  if (token) {
-    try {
-      if (user?.userType == 'admin' || user?.userType == 'system') {
-        return {
-          props: {
-            user: user,
-          },
-        };
-      } else {
-        return {
-          redirect: {
-            destination: '/',
-            permanent: false,
-          },
-        };
-      }
-    } catch (err) {
-      return {
-        redirect: {
-          destination: '/login',
-          permanent: false,
-        },
-      };
-    }
-  } else {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      },
-    };
-  }
-}
+// export async function getServerSideProps({ req, res }) {
+//   const token = getCookie('token', { req, res });
+//   const { user } = useSelector((state) => state.user);
+//   if (token) {
+//     try {
+//       if (user?.userType == 'admin' || user?.userType == 'system') {
+//         return {
+//           props: {
+//             user: user,
+//           },
+//         };
+//       } else {
+//         return {
+//           redirect: {
+//             destination: '/',
+//             permanent: false,
+//           },
+//         };
+//       }
+//     } catch (err) {
+//       return {
+//         redirect: {
+//           destination: '/login',
+//           permanent: false,
+//         },
+//       };
+//     }
+//   } else {
+//     return {
+//       redirect: {
+//         destination: '/login',
+//         permanent: false,
+//       },
+//     };
+//   }
+// }

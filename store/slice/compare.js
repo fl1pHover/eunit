@@ -9,15 +9,17 @@ export const compareSlice = createSlice({
   initialState,
   reducers: {
     setCompare: (state, action) => {
-      if (state.compare.includes(action.payload)) {
-        state.compare = state.compare.filter((com) => com !== action.payload);
-      } else {
-        state.compare = [...state.compare, action.payload];
-      }
+      state.compare = [...state.compare, action.payload];
+    },
+    clearCompare: (state) => {
+      state.compare = [];
+    },
+    updateCompare: (state, action) => {
+      state.compare = action.payload;
     },
   },
 });
 
-export const { setCompare } = compareSlice.actions;
+export const { setCompare, clearCompare, updateCompare } = compareSlice.actions;
 
 export default compareSlice.reducer;

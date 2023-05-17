@@ -164,7 +164,6 @@ const Step3 = ({ filter, handle, state, typeId }) => {
                           f.isSearch
                         );
                         onClick();
-                        console.log(typeId);
                       }}
                     >
                       {data}

@@ -12,13 +12,14 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 
-const AdminWallet = ({ user }) => {
+const AdminWallet = () => {
   const [point, setPoint] = useState({
     email: '',
     point: '',
     message: '',
     type: 'default',
   });
+  const { user } = useSelector((state) => state.user);
   const toast = useToast();
   const token = getCookie('token');
   const router = useRouter();
@@ -176,28 +177,28 @@ const AdminWallet = ({ user }) => {
 };
 export default AdminWallet;
 
-export async function getServerSideProps({ req, res }) {
-  const token = getCookie('token', { req, res });
-  const { user } = useSelector((state) => state.user);
-  if (token) {
-    if (user?.userType == 'admin' || user?.userType == 'system') {
-      return {
-        props: {},
-      };
-    } else {
-      return {
-        redirect: {
-          destination: '/',
-          permanent: false,
-        },
-      };
-    }
-  } else {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      },
-    };
-  }
-}
+// export async function getServerSideProps({ req, res }) {
+//   const token = getCookie('token', { req, res });
+//   const { user } = useSelector((state) => state.user);
+//   if (token) {
+//     if (user?.userType == 'admin' || user?.userType == 'system') {
+//       return {
+//         props: {},
+//       };
+//     } else {
+//       return {
+//         redirect: {
+//           destination: '/',
+//           permanent: false,
+//         },
+//       };
+//     }
+//   } else {
+//     return {
+//       redirect: {
+//         destination: '/login',
+//         permanent: false,
+//       },
+//     };
+//   }
+// }

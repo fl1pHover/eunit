@@ -17,9 +17,12 @@ export const bookmarkSlice = createSlice({
         state.bookmarks = [...state.bookmarks, action.payload];
       }
     },
+    updateBookmark: (state, action) => {
+      state.bookmarks = action.payload;
+    },
   },
 });
 
-export const { setBookmark } = bookmarkSlice.actions;
+export const { setBookmark, updateBookmark } = bookmarkSlice.actions;
 
 export default bookmarkSlice.reducer;

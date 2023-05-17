@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import AdContent from "@/components/home/adContent";
 import CategorySelect from "@/components/home/categorySelect";
 import ProAdContent from "@/components/home/proAdContent";
@@ -9,6 +10,16 @@ import { getCookie } from "cookies-next";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setUser } from "store/slice/user";
+=======
+import AdContent from '@/components/home/adContent';
+import CategorySelect from '@/components/home/categorySelect';
+import ProAdContent from '@/components/home/proAdContent';
+import SwiperHeader from '@/components/home/swiperHeader';
+import urls from '@/constants/api';
+import { ContainerX } from '@/lib/Container';
+import { getCookie } from 'cookies-next';
+import { useEffect, useState } from 'react';
+>>>>>>> 2809c9e7c0578a51654bae809e3f2591e31fdf39
 // import required modules
 
 export default function Home() {
@@ -34,21 +45,6 @@ export default function Home() {
   useEffect(() => {
     getAds();
   }, []);
-  const dispatch = useDispatch();
-  const getUser = async () => {
-    await axios
-      .get(`${urls["test"]}/user/me`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((d) => {
-        dispatch(setUser(d.data));
-      });
-  };
-  useEffect(() => {
-    if (token) getUser();
-  }, [token]);
   return (
     <>
       <SwiperHeader />

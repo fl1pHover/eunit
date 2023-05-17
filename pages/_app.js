@@ -3,13 +3,18 @@ import { AuthProvider } from 'context/auth';
 import { AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 
+import urls from '@/constants/api';
 import Layout from '@/layout/layout';
 import { MainLoader } from '@/lib/Loader';
 import ScrollTop from '@/lib/ScrollTop';
 import theme from '@/lib/theme';
 import '@/styles/globals.scss';
+import axios from 'axios';
+import { getCookie } from 'cookies-next';
 import Router, { useRouter } from 'next/router';
-import { Provider } from 'react-redux';
+import { useEffect } from 'react';
+import { Provider, useDispatch, useSelector } from 'react-redux';
+import { setUser } from 'store/slice/user';
 import { wrapper } from 'store/store';
 import AdminBar from '../components/admin/AdminBar';
 import Navbar from '../components/navbar';
@@ -20,6 +25,7 @@ function MyApp({ Component, ...pageProps }) {
   const handleComplete = (url) => {
     setIsLoading(false);
   };
+ 
 
   const router = useRouter();
   Router.events.on('routeChangeStart', handleStart);
@@ -27,8 +33,8 @@ function MyApp({ Component, ...pageProps }) {
   Router.events.on('routeChangeError', handleComplete);
 
   return (
-    <AuthProvider>
       <Provider store={store}>
+    <AuthProvider>
         <ChakraProvider theme={theme}>
           <AnimatePresence>
             <Layout>
@@ -44,8 +50,8 @@ function MyApp({ Component, ...pageProps }) {
             </Layout>
           </AnimatePresence>
         </ChakraProvider>
-      </Provider>
     </AuthProvider>
+      </Provider>
   );
 }
 

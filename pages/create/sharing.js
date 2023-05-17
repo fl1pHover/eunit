@@ -20,7 +20,7 @@ import { getCookie } from 'cookies-next';
 import { useSelector } from 'react-redux';
 import SharingUpload from './SharingUpload';
 // import SharingStepButtons from "@/components/createAd/sharingStepButton";
-export default function SharingAd({ categories, user }) {
+export default function SharingAd({ categories }) {
   const toast = useToast();
 
   const router = useRouter();

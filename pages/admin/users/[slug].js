@@ -8,7 +8,7 @@ import { getCookie } from 'cookies-next';
 import { Button } from 'flowbite-react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { BiEdit } from 'react-icons/bi';
 import { MdDelete, MdOutlineArrowDropDownCircle } from 'react-icons/md';
 import { SiVerizon } from 'react-icons/si';
@@ -16,13 +16,38 @@ import { useSelector } from 'react-redux';
 
 const UserRequest = () => {
   const { user } = useSelector((state) => state.user);
-
+  const [users, setUser] = useState([]);
   const token = getCookie('token');
   const [num, setNum] = useState(0);
   const toast = useToast();
   const router = useRouter();
   let dummy = [];
+  const getData = async () => {
+    await axios
+      .get(`${urls['test']}/user`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((d) => {
+        if (router?.query?.slug == 'organization') {
+          setUser(d.data.filter((u) => u.userType == 'organization'));
+        }
+        if (router?.query?.slug == 'agent') {
+          setUser(d.data.filter((u) => u.userType == 'agent'));
+        }
+        if (router?.query?.slug == 'default') {
+          setUser(d.data.filter((u) => u.userType == 'default'));
+        }
+      });
+  };
 
+  useEffect(() => {
+    getData();
+  }, [users, router?.query?.slug]);
+  useEffect(() => {
+    getData();
+  }, [num]);
   const verifyUser = async (id) => {
     try {
       await axios
@@ -138,7 +163,7 @@ const UserRequest = () => {
                 </tr>
               </thead>
               <tbody>
-                {user
+                {users
                   .filter((u) => u.userType != 'system')
                   ?.map((a, i) => {
                     let adData = { ...a };
@@ -357,28 +382,28 @@ const UserRequest = () => {
 };
 export default UserRequest;
 
-export async function getServerSideProps({ req, res }) {
-  const token = getCookie('token', { req, res });
-  const { user } = useSelector((state) => state.user);
-  if (token) {
-    if (user?.userType == 'admin' || user?.userType == 'system') {
-      return {
-        props: {},
-      };
-    } else {
-      return {
-        redirect: {
-          destination: '/',
-          permanent: false,
-        },
-      };
-    }
-  } else {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      },
-    };
-  }
-}
+// export async function getServerSideProps({ req, res }) {
+//   const token = getCookie('token', { req, res });
+//   const { user } = useSelector((state) => state.user);
+//   if (token) {
+//     if (user?.userType == 'admin' || user?.userType == 'system') {
+//       return {
+//         props: {},
+//       };
+//     } else {
+//       return {
+//         redirect: {
+//           destination: '/',
+//           permanent: false,
+//         },
+//       };
+//     }
+//   } else {
+//     return {
+//       redirect: {
+//         destination: '/login',
+//         permanent: false,
+//       },
+//     };
+//   }
+// }

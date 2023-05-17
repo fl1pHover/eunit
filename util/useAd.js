@@ -12,7 +12,6 @@ export const useAd = () => {
     setIndex((prev) => ({ ...prev, [name]: i }));
     setPosition((prev) => ({ ...prev, [name]: pos }));
     setSearch((prev) => ({ ...prev, [name]: search }));
-    console.log(value, i);
     if (type != '' && type != null) {
       setId((prev) => ({ ...prev, [name]: type }));
     }
