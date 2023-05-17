@@ -4,6 +4,7 @@ import { STYLES } from "@/styles/index";
 import mergeNames from "@/util/mergeNames";
 import {
   Box,
+  Button,
   FormControl,
   FormLabel,
   Image,
@@ -17,9 +18,9 @@ import NextLink from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { BiHide, BiShow } from "react-icons/bi";
+import { useSession, signIn, signOut } from "next-auth/react";
 export default function Login() {
-  const { logout, login, signup } = useAuth();
-
+  const { session } = useSession();
   const [signupCredential, setSignupcredential] = useState({
     email: "",
     phone: "",
@@ -45,19 +46,10 @@ export default function Login() {
     }
   };
 
-  const signIn = () => {
-    if (credential.email && credential.password) {
-      login(credential.email, credential.password);
-      setCredential((credential) => ({
-        ...credential,
-        email: "",
-        password: "",
-      }));
-    }
-  };
-
   const [sign, setSign] = useState(1);
-
+  const handleGoogleSignIn = () => {
+    signIn("google", { callbackUrl: "http://localhost:3000" });
+  };
   return (
     <ContainerXP
       classname={mergeNames(
@@ -84,11 +76,11 @@ export default function Login() {
             />
             <h1 className="my-3 text-2xl font-bold text-center">Нэвтрэх</h1>
 
-            <LoginComp
-              credential={credential}
-              setCredential={setCredential}
-              fc={signIn}
-            />
+            {session ? (
+              <Button onClick={() => signOut()}>sign</Button>
+            ) : (
+              <Button onClick={() => handleGoogleSignIn()}>log in</Button>
+            )}
 
             <p className="my-10 text-sm font-bold text-gray-600">
               Та бүртгүүлээгүй юм биш биз?{" "}

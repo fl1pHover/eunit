@@ -1,22 +1,22 @@
-import urls from '@/constants/api';
-import { STYLES, brk } from '@/styles/index';
-import CustomToast from '@/util/customToast';
-import mergeNames from '@/util/mergeNames';
-import { Button, Radio, RadioGroup, useToast } from '@chakra-ui/react';
-import axios from 'axios';
-import { getCookie } from 'cookies-next';
-import { useRouter } from 'next/router';
-import { Fragment, useEffect, useState } from 'react';
-import { BiEdit } from 'react-icons/bi';
-import { MdDelete, MdOutlineArrowDropDownCircle } from 'react-icons/md';
-import { SiVerizon } from 'react-icons/si';
-import { useSelector } from 'react-redux';
+import urls from "@/constants/api";
+import { STYLES, brk } from "@/styles/index";
+import CustomToast from "@/util/customToast";
+import mergeNames from "@/util/mergeNames";
+import { Button, Radio, RadioGroup, useToast } from "@chakra-ui/react";
+import axios from "axios";
+import { getCookie } from "cookies-next";
+import { useRouter } from "next/router";
+import { Fragment, useEffect, useState } from "react";
+import { BiEdit } from "react-icons/bi";
+import { MdDelete, MdOutlineArrowDropDownCircle } from "react-icons/md";
+import { SiVerizon } from "react-icons/si";
+import { useSelector } from "react-redux";
 const SharedAd = () => {
   const [ads, setAds] = useState({ ads: [], limit: 0 });
   const [data, setData] = useState({ ads: [], limit: 0 });
 
-  const token = getCookie('token');
-  const [check, setCheck] = useState('checking');
+  const token = getCookie("token");
+  const [check, setCheck] = useState("checking");
   const [category, setCategory] = useState([]);
   const [subCategory, setSubCategory] = useState([]);
 
@@ -26,7 +26,7 @@ const SharedAd = () => {
   const { user } = useSelector((state) => state.user);
   const getAds = async (status, n) => {
     await axios
-      .get(`${urls['test']}/ad/admin/sharing/${n ?? num}/${status}`, {
+      .get(`${urls["test"]}/ad/admin/sharing/${n ?? num}/${status}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -69,7 +69,7 @@ const SharedAd = () => {
     }
   }, [num]);
   const exportExcel = (data) => {};
-  const [content, setContent] = useState('');
+  const [content, setContent] = useState("");
   const [collapsedId, setCollapsed] = useState(false);
 
   const [expand, setExpand] = useState(0);
@@ -77,18 +77,18 @@ const SharedAd = () => {
     try {
       await axios
         .get(
-          `${urls['test']}/ad/update/${id}/created/${view}/{message}?message=%20`,
+          `${urls["test"]}/ad/update/${id}/created/${view}/{message}?message=%20`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
-              'Access-Control-Allow-Headers': '*',
+              "Access-Control-Allow-Headers": "*",
             },
           }
         )
         .then((d) => {
           toast({
-            title: `${d?.data?.num ?? ''}-р зарыг нэмлээ.`,
-            status: 'success',
+            title: `${d?.data?.num ?? ""}-р зарыг нэмлээ.`,
+            status: "success",
             duration: 3000,
             isClosable: true,
           });
@@ -99,17 +99,17 @@ const SharedAd = () => {
   };
   const deleteAd = async (id) => {
     await fetch(
-      `${urls['test']}/ad/update/${id}/deleted/hide/{message}?message=%20`,
+      `${urls["test"]}/ad/update/${id}/deleted/hide/{message}?message=%20`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
-          'Access-Control-Allow-Headers': '*',
+          "Access-Control-Allow-Headers": "*",
         },
       }
     ).then((d) => {
       toast({
-        title: `${d?.data?.num ?? ''} Зарыг устгалаа.`,
-        status: 'warning',
+        title: `${d?.data?.num ?? ""} Зарыг устгалаа.`,
+        status: "warning",
         duration: 3000,
         isClosable: true,
       });
@@ -121,7 +121,7 @@ const SharedAd = () => {
         <div className="p-5 ">
           <div
             className={mergeNames(
-              'flex flex-col justify-between gap-4 mt-5 mb-5',
+              "flex flex-col justify-between gap-4 mt-5 mb-5",
               brk
             )}
           >
@@ -139,8 +139,8 @@ const SharedAd = () => {
                 className="font-bold text-green-400 whitespace-nowrap"
                 onChange={(e) => {
                   if (e.target.checked) {
-                    getAds('created', 0);
-                    setCheck('created');
+                    getAds("created", 0);
+                    setCheck("created");
                     setNum(0);
                   }
                 }}
@@ -153,9 +153,9 @@ const SharedAd = () => {
                 className="font-bold text-yellow-400 whitespace-nowrap"
                 onChange={(e) => {
                   if (e.target.checked) {
-                    getAds('checking', 0);
+                    getAds("checking", 0);
                     setNum(0);
-                    setCheck('checking');
+                    setCheck("checking");
                   }
                 }}
                 value="2"
@@ -196,7 +196,7 @@ const SharedAd = () => {
                           as="a"
                           className={mergeNames(
                             STYLES.blueButton,
-                            'text-sm h-[30px]'
+                            "text-sm h-[30px]"
                           )}
                           target="_blank"
                           href={`/ad/${a.num}`}
@@ -209,8 +209,8 @@ const SharedAd = () => {
                       <td>{a.adType}</td>
                       <td
                         className={mergeNames(
-                          'truncate ...',
-                          a.adStatus == 'special' && 'text-yellow-400'
+                          "truncate ...",
+                          a.adStatus == "special" && "text-yellow-400"
                         )}
                       >
                         {a.adStatus}
@@ -218,7 +218,7 @@ const SharedAd = () => {
                       <td>
                         <div
                           className={mergeNames(
-                            'flex flex-row justify-between'
+                            "flex flex-row justify-between"
                             // 'p-2 rounded-md bg-white',
                           )}
                         >
@@ -234,28 +234,28 @@ const SharedAd = () => {
                           >
                             <MdOutlineArrowDropDownCircle
                               className={mergeNames(
-                                expand == i + 1 ? 'text-blue-600 ' : ''
+                                expand == i + 1 ? "text-blue-600 " : ""
                               )}
                             />
                           </button>
                           <div
                             className={mergeNames(
-                              expand == i + 1 ? 'flex' : 'hidden',
-                              'justify-center  flex-end  gap-2'
+                              expand == i + 1 ? "flex" : "hidden",
+                              "justify-center  flex-end  gap-2"
                             )}
                             onClick={() => {
                               setExpand(0);
                             }}
                           >
-                            {a.adStatus != 'created' && (
+                            {a.adStatus != "created" && (
                               <CustomToast
                                 // status="error"
                                 className={mergeNames(
                                   STYLES.button,
-                                  'bg-teal-500 justify-center w-7 h-7 '
+                                  "bg-teal-500 justify-center w-7 h-7 "
                                 )}
                                 toastH="Амжилттай нэмэгдлээ"
-                                onclick={() => verify(a._id, a.isView)}
+                                onclick={() => verify(a._id, a.view)}
                                 stats="error"
                                 toastBtn={<SiVerizon />}
                               />
@@ -265,7 +265,7 @@ const SharedAd = () => {
                               onClick={() => deleteAd(a._id)}
                               className={mergeNames(
                                 STYLES.button,
-                                'bg-yellow-500 w-7 h-7 justify-center'
+                                "bg-yellow-500 w-7 h-7 justify-center"
                               )}
                             >
                               <BiEdit />
@@ -274,7 +274,7 @@ const SharedAd = () => {
                               // status="error"
                               className={mergeNames(
                                 STYLES.button,
-                                'bg-red-500 w-7 h-7 justify-center'
+                                "bg-red-500 w-7 h-7 justify-center"
                               )}
                               toastH="Амжилттай устгагдлаа"
                               onclick={() => deleteAd(a._id)}

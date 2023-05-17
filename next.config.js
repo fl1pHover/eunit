@@ -10,8 +10,10 @@ const nextConfig = {
   // },
   images: {
     domains: [
-      'https://bom-file.s3.us-east-1.amazonaws.com',
-      'bom-file.s3.us-east-1.amazonaws.com',
+      "https://eunit.s3.eu-north-1.amazonaws.com",
+      "https://lh3.googleusercontent.com",
+      "eunit.s3.eu-north-1.amazonaws.com",
+      "lh3.googleusercontent.com",
     ],
   },
 };

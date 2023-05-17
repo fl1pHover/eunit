@@ -1,12 +1,14 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import { HYDRATE, createWrapper } from 'next-redux-wrapper';
-import bookmarks from './slice/bookmark';
-import compare from './slice/compare';
-import user from './slice/user';
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import { HYDRATE, createWrapper } from "next-redux-wrapper";
+import bookmarks from "./slice/bookmark";
+import compare from "./slice/compare";
+import user from "./slice/user";
+import categories from "./slice/category";
 const combinedReducer = combineReducers({
   user,
   bookmarks,
   compare,
+  categories,
 });
 
 const masterReducer = (state, action) => {
@@ -26,6 +28,12 @@ const masterReducer = (state, action) => {
 
       compare: {
         compare: [...action.payload.compare.compare, ...state.compare.compare],
+      },
+      categories: {
+        categories: [
+          ...action.payload.categories.categories,
+          ...state.categories.categories,
+        ],
       },
     };
     return nextState;

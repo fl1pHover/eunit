@@ -11,24 +11,38 @@ import { FaPhoneAlt } from "react-icons/fa";
 import urls from "../../constants/api";
 import { useRouter } from "next/router";
 import CustomToast from "@/util/customToast";
+import { useSelector } from "react-redux";
 
 const capitalizeFirst = (str) => {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
 
-const Accounts = ({ propUser }) => {
+const Accounts = () => {
   const router = useRouter();
+  const [user, setUser] = useState();
   const [content, setContent] = useState("UserAds");
   const [ads, setAds] = useState([]);
+  const [sAds, setSAds] = useState([]);
 
+  const getUser = async () => {
+    await axios
+      .get(`${urls["test"]}/user/${router.query.slug}`)
+      .then(async (d) => {
+        setUser(d.data);
+      });
+  };
   const getAds = async () => {
     await axios
-      .post(`${urls["test"]}/ad/many/0/false/10/created`, propUser.ads)
+      .post(`${urls["test"]}/ad/many/0/false/10/created/all`, user.ads)
       .then((d) => {
         setAds(d.data);
       });
+    await axios
+      .post(`${urls["test"]}/ad/many/0/false/10/created/sharing`, user.ads)
+      .then((d) => {
+        setSAds(d.data);
+      });
   };
-
   const tabs = [
     {
       tabHeader: "Зарууд",
@@ -40,13 +54,16 @@ const Accounts = ({ propUser }) => {
       tabHeader: "Хуваалцсан зарууд",
       title: "SharingAds",
 
-      comp: <SharingAds />,
+      comp: <SharingAds ads={sAds} />,
     },
   ];
+  useEffect(() => {
+    if (user) getAds();
+  }, [user]);
 
   useEffect(() => {
-    if (propUser) getAds();
-  }, [propUser]);
+    getUser();
+  }, [router.query.slug]);
   return (
     <MainContainer py={5}>
       <div className={mergeNames("flex flex-col gap-3 px-2")}>
@@ -64,7 +81,7 @@ const Accounts = ({ propUser }) => {
           >
             <Image
               src={
-                propUser?.profileImg ??
+                user?.profileImg ??
                 "https://www.pikpng.com/pngl/m/80-805068_my-profile-icon-blank-profile-picture-circle-clipart.png"
               }
               alt="User"
@@ -84,16 +101,16 @@ const Accounts = ({ propUser }) => {
               >
                 <div>
                   <h1 className="text-lg font-bold md:text-3xl">
-                    {propUser.username}
+                    {user?.username}
                   </h1>
                   <h3 className="font-bold text-blue-600 capitalize text-md">
-                    {propUser.userType == "default"
+                    {user?.userType == "default"
                       ? "Энгийн"
-                      : propUser.userType == "agent"
+                      : user?.userType == "agent"
                       ? "Агент"
-                      : propUser.userType == "organization"
+                      : user?.userType == "organization"
                       ? "Байгууллага"
-                      : propUser.userType}
+                      : user?.userType}
                   </h3>
                 </div>
                 <p
@@ -102,16 +119,15 @@ const Accounts = ({ propUser }) => {
                     "items-center",
                     "px-4 py-2 text-md md:text-lg font-bold text-white bg-blue-600 rounded-md cursor-pointer gap-1 md:gap-2"
                   )}
-                  onClick={() => router.push(`tel:${propUser.phone}`)}
+                  onClick={() => router.push(`tel:${user?.phone}`)}
                 >
-                  <FaPhoneAlt /> +976 {propUser.phone}
+                  <FaPhoneAlt /> +976 {user?.phone}
                 </p>
               </div>
               {/* //TODO: Social Hayg */}
 
-              {propUser?.socials && <Socials propUser={propUser} />}
+              {user?.socials && <Socials user={user} />}
             </div>
-            {/* {propUser?.socials && <Socials propUser={propUser} />} */}
           </div>
         </div>
 
@@ -163,41 +179,34 @@ const Accounts = ({ propUser }) => {
 };
 export default Accounts;
 
-export async function getServerSideProps(ctx) {
-  const { params } = ctx;
-  const { slug } = params;
-
-  const res = await fetch(`${urls["test"]}/user/${slug}`);
-  const user = await res.json();
-  return {
-    props: {
-      propUser: user,
-    },
-  };
-}
-
 const UserAds = ({ ads }) => {
   return <>{ads && <AdContent title="" data={ads} showLink="hidden" />}</>;
 };
 const SharingAds = ({ ads }) => {
   return (
-    <>{<AdContent title="" showLink="hidden" /> ?? <div>Зар байхгүй</div>}</>
+    <>
+      {ads ? (
+        <AdContent title="" showLink="hidden" data={ads} />
+      ) : (
+        <div>Зар байхгүй</div>
+      )}
+    </>
   );
 };
 
-const Socials = ({ propUser }) => {
+const Socials = ({ user }) => {
   const [socials, setSocials] = useState([
     {
       name: "facebook",
-      url: propUser?.socials[0]?.url ?? "",
+      url: user?.socials[0]?.url ?? "",
     },
     {
       name: "instagram",
-      url: propUser?.socials[1]?.url ?? "",
+      url: user?.socials[1]?.url ?? "",
     },
     {
       name: "telegram",
-      url: propUser?.socials[2]?.url ?? "",
+      url: user?.socials[2]?.url ?? "",
     },
   ]);
 

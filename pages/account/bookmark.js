@@ -1,10 +1,10 @@
-import AdCard from '@/components/home/adCard';
-import CompareSelect from '@/components/Profile/CompareSelect';
-import urls from '@/constants/api';
-import axios from 'axios';
-import { getCookie } from 'cookies-next';
-import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import AdCard from "@/components/home/adCard";
+import CompareSelect from "@/components/Profile/CompareSelect";
+import urls from "@/constants/api";
+import axios from "axios";
+import { getCookie } from "cookies-next";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 const Bookmark = () => {
   const [ads, setAds] = useState([]);
@@ -15,13 +15,13 @@ const Bookmark = () => {
   const [category, setCategory] = useState([]);
   const [subCategory, setSubCategory] = useState([]);
   const [data, setData] = useState([]);
-  const token = getCookie('token');
+  const token = getCookie("token");
   const getData = async () => {
     setIsLoading(true);
     if (bookmarks)
       try {
         await axios
-          .post(`${urls['test']}/ad/many/0/false/10/created`, bookmarks)
+          .post(`${urls["test"]}/ad/many/0/false/10/created/all`, bookmarks)
           .then((d) => {
             setAds(d.data);
             setIsLoading(false);
@@ -46,7 +46,7 @@ const Bookmark = () => {
             setCategory(c);
             setSubCategory(s);
           });
-        await axios.patch(`${urls['test']}/user/bookmark`, bookmarks, {
+        await axios.patch(`${urls["test"]}/user/bookmark`, bookmarks, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

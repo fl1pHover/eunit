@@ -1,33 +1,33 @@
-import { Heading, useToast } from '@chakra-ui/react';
-import axios from 'axios';
-import { useRouter } from 'next/router';
-import React, { useMemo, useState } from 'react';
+import { Heading, useToast } from "@chakra-ui/react";
+import axios from "axios";
+import { useRouter } from "next/router";
+import React, { useMemo, useState } from "react";
 
-import Step1 from '@/components/createAd/step1';
-import Step4 from '@/components/createAd/step4';
+import Step1 from "@/components/createAd/step1";
+import Step4 from "@/components/createAd/step4";
 
-import StepButtons from '@/components/createAd/stepButtons';
-import StepProgress from '@/components/createAd/stepProgress';
-import FormTitle from '@/components/createAd/title';
-import { ContainerX } from '@/lib/Container';
+import StepButtons from "@/components/createAd/stepButtons";
+import StepProgress from "@/components/createAd/stepProgress";
+import FormTitle from "@/components/createAd/title";
+import { ContainerX } from "@/lib/Container";
 
-import Step3 from '@/components/createAd/step3';
-import urls from '@/constants/api';
-import { getSellType } from '@/context/functions';
-import useAd from '@/util/useAd';
-import { GoogleMap, MarkerF, useLoadScript } from '@react-google-maps/api';
-import { getCookie } from 'cookies-next';
-import { useSelector } from 'react-redux';
-import SharingUpload from './SharingUpload';
+import Step3 from "@/components/createAd/step3";
+import urls from "@/constants/api";
+import { getSellType } from "@/context/functions";
+import useAd from "@/util/useAd";
+import { GoogleMap, MarkerF, useLoadScript } from "@react-google-maps/api";
+import { getCookie } from "cookies-next";
+import { useSelector } from "react-redux";
+import SharingUpload from "./SharingUpload";
 // import SharingStepButtons from "@/components/createAd/sharingStepButton";
-export default function SharingAd({ categories }) {
+export default function SharingAd() {
   const toast = useToast();
 
   const router = useRouter();
   // // if (!user) router.push("/login");
   const { user } = useSelector((state) => state.user);
   const [step, setStep] = useState(-2);
-  const passcategory = useMemo(() => categories, [categories]);
+  const { categories } = useSelector((state) => state.categories);
 
   //  STEP 1 DATA => HURUHNGIIN TURUL, DED TURUL, ZARIIN TURUL, ZARAH TURUL
   const [types, setTypes] = useState({
@@ -63,10 +63,10 @@ export default function SharingAd({ categories }) {
   React.useEffect(() => {
     if (types.categoryName && types.subCategoryId) {
       try {
-        passcategory[types.categoryId].subCategory.filter((item) => {
+        categories[types.categoryId].subCategory.filter((item) => {
           if (item.href == types.subCategoryId) {
             axios
-              .get(`${urls['test']}/category/filters/${item._id}`)
+              .get(`${urls["test"]}/category/filters/${item._id}`)
               .then((res) => {
                 setSubCategory(res.data);
               });
@@ -77,20 +77,20 @@ export default function SharingAd({ categories }) {
       }
     } else {
     }
-  }, [passcategory, types.categoryId, types.subCategoryId, types.categoryName]);
+  }, [types.categoryId, types.subCategoryId, types.categoryName]);
   const [isLoading, setIsLoading] = useState(false);
   // checking validation of steps in here
   const handleNextStep = () => {
     if (step === -2)
       return checkConditionOnNextStep(
-        types.adType != '' &&
-          types.categoryName != '' &&
-          types.sellType != '' &&
-          types.subCategoryId != ''
+        types.adType != "" &&
+          types.categoryName != "" &&
+          types.sellType != "" &&
+          types.subCategoryId != ""
       );
     if (step == -1)
       return checkConditionOnNextStep(
-        subCategory.steps[0].values.find((s) => values[s.type] == '')
+        subCategory.steps[0].values.find((s) => values[s.type] == "")
       );
     if (step === 0)
       return checkConditionOnNextStep(
@@ -106,24 +106,24 @@ export default function SharingAd({ categories }) {
   };
 
   const checkConditionOnNextStep = (booleanValue) => {
-    return booleanValue === undefined || booleanValue === '' || booleanValue
+    return booleanValue === undefined || booleanValue === "" || booleanValue
       ? setStep((prev) => prev + 1)
       : toast({
-          title: 'Та бүх талбарыг бөглөнө үү.',
-          status: 'error',
+          title: "Та бүх талбарыг бөглөнө үү.",
+          status: "error",
           duration: 1000,
           isClosable: true,
         });
   };
 
   const sendAd = async () => {
-    const token = getCookie('token');
+    const token = getCookie("token");
     const filters = [];
     const pushedImages = [];
     const pushedFile = [];
     subCategory.steps.map((s) => {
       s.values.map((v) => {
-        if (s.step != 'general') {
+        if (s.step != "general") {
           filters.push({
             name: v.name,
             id: v.type,
@@ -152,32 +152,32 @@ export default function SharingAd({ categories }) {
     let fImages = new FormData();
 
     images?.map((prev) => {
-      fImages.append('images', prev);
+      fImages.append("images", prev);
     });
     let fileUrl = new FormData();
-    generalData.file?.map((prev) => fileUrl.append('images', prev));
+    generalData.file?.map((prev) => fileUrl.append("images", prev));
     let ad;
     try {
       await axios
-        .post(`${urls['test']}/ad/uploadFields`, fImages, {
+        .post(`${urls["test"]}/ad/uploadFields`, fImages, {
           headers: {
             Authorization: `Bearer ${token}`,
-            'Access-Control-Allow-Headers': '*',
+            "Access-Control-Allow-Headers": "*",
           },
         })
         .then((d) => (pushedImages = d.data));
       await axios
-        .post(`${urls['test']}/ad/uploadFields`, fileUrl, {
+        .post(`${urls["test"]}/ad/uploadFields`, fileUrl, {
           headers: {
             Authorization: `Bearer ${token}`,
-            'Access-Control-Allow-Headers': '*',
+            "Access-Control-Allow-Headers": "*",
           },
         })
         .then((d) => (pushedFile = d.data[0]));
 
       ad = await axios
         .post(
-          `${urls['test']}/ad`,
+          `${urls["test"]}/ad`,
           {
             images: pushedImages,
             title: generalData.title,
@@ -187,23 +187,23 @@ export default function SharingAd({ categories }) {
             category: categories[types.categoryId]._id,
             sellType: getSellType(types.sellType),
             items: filters,
-            adType: 'sharing',
+            adType: "sharing",
             file: pushedFile,
-            adStatus: 'checking',
+            adStatus: "checking",
             view: types.adType,
           },
           {
             headers: {
               Authorization: `Bearer ${token}`,
-              'Access-Control-Allow-Headers': '*',
-              charset: 'UTF-8',
+              "Access-Control-Allow-Headers": "*",
+              charset: "UTF-8",
             },
           }
         )
         .then((d) => {
           toast({
-            title: 'Амжилттай нэмэгдлээ.',
-            status: 'success',
+            title: "Амжилттай нэмэгдлээ.",
+            status: "success",
             duration: 1000,
             isClosable: true,
           });
@@ -217,22 +217,22 @@ export default function SharingAd({ categories }) {
   const validateStep4 = async () => {
     setIsLoading(true);
     // filter hooson esehiig shalgah
-    let emptyAd = subCategory.steps[2].values.find((f) => f.input == '');
+    let emptyAd = subCategory.steps[2].values.find((f) => f.input == "");
     if (emptyAd === undefined) {
-      if (user?.status == 'active') {
+      if (user?.status == "active") {
         await sendAd();
       } else {
         toast({
-          title: 'Та одоогоор зар илгээх боломжгүй байна.',
-          status: 'warning',
+          title: "Та одоогоор зар илгээх боломжгүй байна.",
+          status: "warning",
           duration: 2000,
           isClosable: true,
         });
       }
     } else {
       toast({
-        title: 'Та бүх талбарыг бөглөнө үү.',
-        status: 'warning',
+        title: "Та бүх талбарыг бөглөнө үү.",
+        status: "warning",
         duration: 2000,
         isClosable: true,
       });
@@ -251,12 +251,12 @@ export default function SharingAd({ categories }) {
   const top = () => {
     window.scrollTo(0, 0);
   };
-  const libraries = useMemo(() => ['places'], []);
+  const libraries = useMemo(() => ["places"], []);
 
   const [markerActive, setMarkerActive] = useState(null);
 
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: 'AIzaSyC2u2OzBNo53GxJJdN3Oc_W6Yc42OmdZcE',
+    googleMapsApiKey: "AIzaSyC2u2OzBNo53GxJJdN3Oc_W6Yc42OmdZcE",
     libraries: libraries,
   });
   const mapOptions = useMemo(
@@ -284,7 +284,7 @@ export default function SharingAd({ categories }) {
           sharing={true}
           activeStep={step}
           handleClick={(stepId) => setStep(stepId)}
-          hasFourStep={types?.categoryName === 'realState'}
+          hasFourStep={types?.categoryName === "realState"}
         />
         {
           // STEP1 TYPES: CATEGORY, SUBCATEGORY, ADTYPE, SELLTYPE
@@ -294,7 +294,7 @@ export default function SharingAd({ categories }) {
               selltypeTitle="Борлуулсан төрөл"
               sharing={true}
               {...{ types, setTypes }}
-              categories={passcategory}
+              categories={categories}
             />
           )
         }
@@ -347,7 +347,7 @@ export default function SharingAd({ categories }) {
                       zoom={14}
                       center={mapCenter}
                       mapTypeId={google.maps.MapTypeId.ROADMAP}
-                      mapContainerStyle={{ width: '100%', height: '40vh' }}
+                      mapContainerStyle={{ width: "100%", height: "40vh" }}
                     >
                       <MarkerF
                         position={map}
@@ -401,7 +401,7 @@ export default function SharingAd({ categories }) {
           filter={subCategory?.steps}
           generalData={generalData}
           loading={isLoading}
-          txt={step == 2 ? 'Илгээх' : 'Дараах'}
+          txt={step == 2 ? "Илгээх" : "Дараах"}
           step={step}
           map={map}
           // onClick={() => step == 2 && <CustomModal />}
@@ -412,19 +412,19 @@ export default function SharingAd({ categories }) {
   // router.push("/login");
 }
 export async function getServerSideProps({ req, res }) {
-  const response = await fetch(`${urls['test']}/category`);
-  const categories = await response.json();
-  const token = getCookie('token', { req, res });
+  const response = await fetch(`${urls["test"]}/category`);
+
+  const token = getCookie("token", { req, res });
 
   if (!token)
     return {
       redirect: {
-        destination: '/login',
+        destination: "/login",
         permanent: false,
       },
     };
 
   return {
-    props: { categories },
+    props: {},
   };
 }

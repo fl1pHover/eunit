@@ -1,25 +1,27 @@
-import CompareSelect from '@/components/Profile/CompareSelect';
-import urls from '@/constants/api';
-import axios from 'axios';
-import { getCookie } from 'cookies-next';
-import Head from 'next/head';
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { updateBookmark } from 'store/slice/bookmark';
-import { setUser } from 'store/slice/user';
-import Footer from '../components/footer/index';
+import CompareSelect from "@/components/Profile/CompareSelect";
+import urls from "@/constants/api";
+import axios from "axios";
+import { getCookie } from "cookies-next";
+import Head from "next/head";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { updateBookmark } from "store/slice/bookmark";
+import { setUser } from "store/slice/user";
+import Footer from "../components/footer/index";
+import { setCategories } from "store/slice/category";
 
 const Layout = ({ children }) => {
-  const token = getCookie('token');
+  const token = getCookie("token");
   const dispatch = useDispatch();
   const { compare } = useSelector((state) => state.compare);
   const { user } = useSelector((state) => state.user);
   const { bookmarks } = useSelector((state) => state.bookmarks);
+  const { categories } = useSelector((state) => state.categories);
   const getUser = async () => {
     if (user.userType == undefined && token) {
       await axios
-        .get(`${urls['test']}/user/me`, {
+        .get(`${urls["test"]}/user/me`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -27,6 +29,11 @@ const Layout = ({ children }) => {
         .then((d) => {
           dispatch(setUser(d.data));
         });
+    }
+    if (categories?.length == 0) {
+      await axios.get(`${urls["test"]}/category`).then((d) => {
+        dispatch(setCategories(d.data));
+      });
     }
   };
   useEffect(() => {
@@ -58,13 +65,13 @@ const Layout = ({ children }) => {
       >
         {children}
         {compare &&
-          (router?.pathname == '/' ||
-            router?.pathname == '/category' ||
-            router?.pathname == '/category/[slug]' ||
-            router?.pathname == '/account/[slug]' ||
-            (router?.pathname == '/account' &&
-              (router?.query?.tab == 'MyAds' ||
-                router?.query?.tab == 'Bookmark'))) && (
+          (router?.pathname == "/" ||
+            router?.pathname == "/category" ||
+            router?.pathname == "/category/[slug]" ||
+            router?.pathname == "/account/[slug]" ||
+            (router?.pathname == "/account" &&
+              (router?.query?.tab == "MyAds" ||
+                router?.query?.tab == "Bookmark"))) && (
             <CompareSelect btnView={false} />
           )}
       </div>

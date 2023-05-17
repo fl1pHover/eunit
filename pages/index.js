@@ -1,34 +1,25 @@
-<<<<<<< HEAD
 import AdContent from "@/components/home/adContent";
 import CategorySelect from "@/components/home/categorySelect";
 import ProAdContent from "@/components/home/proAdContent";
 import SwiperHeader from "@/components/home/swiperHeader";
 import urls from "@/constants/api";
 import { ContainerX } from "@/lib/Container";
+import { useToast } from "@chakra-ui/react";
 import axios from "axios";
-import { getCookie } from "cookies-next";
+import { getCookie, setCookie } from "cookies-next";
+import { getToken } from "next-auth/jwt";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { setUser } from "store/slice/user";
-=======
-import AdContent from '@/components/home/adContent';
-import CategorySelect from '@/components/home/categorySelect';
-import ProAdContent from '@/components/home/proAdContent';
-import SwiperHeader from '@/components/home/swiperHeader';
-import urls from '@/constants/api';
-import { ContainerX } from '@/lib/Container';
-import { getCookie } from 'cookies-next';
-import { useEffect, useState } from 'react';
->>>>>>> 2809c9e7c0578a51654bae809e3f2591e31fdf39
 // import required modules
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [ads, setAds] = useState();
   const [sAds, setSAds] = useState();
-
+  const { data: session } = useSession();
   const [limitAd, setLimitAd] = useState(0);
   const token = getCookie("token");
+  const toast = useToast();
   const getAds = async () => {
     try {
       setIsLoading(true);
@@ -42,6 +33,32 @@ export default function Home() {
       throw new Error(error);
     }
   };
+  const login = async () => {
+    await axios
+      .post(`${urls["test"]}/auth/login`, {
+        name: session.user.name,
+        email: session.user.email,
+        profileImg: session.user.image,
+      })
+      .then((d) => {
+        if (d.data.status) {
+          setCookie("token", d.data.token);
+        } else {
+          toast({
+            duration: 5000,
+            title:
+              d.data?.message == "banned"
+                ? "Бандуулсан хэрэглэгч байна."
+                : d.data.message,
+          });
+        }
+      });
+  };
+  useEffect(() => {
+    if (session?.user) {
+      login();
+    }
+  }, [session?.user?.email]);
   useEffect(() => {
     getAds();
   }, []);

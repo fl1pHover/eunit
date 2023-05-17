@@ -1,13 +1,14 @@
-import urls from '@/constants/api';
-import { useAuth } from '@/context/auth';
-import { STYLES } from '@/styles/index';
-import mergeNames from '@/util/mergeNames';
-import { Center, Flex, Image } from '@chakra-ui/react';
-import axios from 'axios';
-import { getCookie } from 'cookies-next';
-import { useEffect, useState } from 'react';
-import { FiLogOut } from 'react-icons/fi';
-import DashStatus from './dashStatus';
+import urls from "@/constants/api";
+import { useAuth } from "@/context/auth";
+import { STYLES } from "@/styles/index";
+import mergeNames from "@/util/mergeNames";
+import { Center, Flex, Image } from "@chakra-ui/react";
+import axios from "axios";
+import { deleteCookie, getCookie } from "cookies-next";
+import { useEffect, useState } from "react";
+import { FiLogOut } from "react-icons/fi";
+import DashStatus from "./dashStatus";
+import { signOut } from "next-auth/react";
 
 // user image
 // main dashboard layout
@@ -17,13 +18,13 @@ const Dashboard = ({ user }) => {
   const [ads, setAds] = useState(0);
   const { logout } = useAuth();
 
-  const bookmark = getCookie('bookmarks');
+  const bookmark = getCookie("bookmarks");
   const handleClick = () => {
     setIsDisabled(!isDisabled);
   };
   const getAdCount = async () => {
     await axios
-      .post(`${urls['test']}/ad/count`, user?.ads)
+      .post(`${urls["test"]}/ad/count`, user?.ads)
       .then((d) => setAds(d.data));
   };
   useEffect(() => {
@@ -35,18 +36,18 @@ const Dashboard = ({ user }) => {
   return (
     <div
       className={mergeNames(
-        'rounded-xl shadow-xl ',
+        "rounded-xl shadow-xl ",
         STYLES.flexBetween,
-        'flex-col text-[14px] bg-mainBlossom relative',
-        'p-5 md:p-10 min-w-[250px] w-[300px] md:h-[70vh] h-auto'
+        "flex-col text-[14px] bg-mainBlossom relative",
+        "p-5 md:p-10 min-w-[250px] w-[300px] md:h-[70vh] h-auto"
       )}
     >
-      <div className={mergeNames(STYLES.flexBetween, 'flex-col w-full')}>
-        <Center flexDirection={'column'}>
+      <div className={mergeNames(STYLES.flexBetween, "flex-col w-full")}>
+        <Center flexDirection={"column"}>
           <Image
             src={
               user?.profileImg ??
-              'https://www.pikpng.com/pngl/m/80-805068_my-profile-icon-blank-profile-picture-circle-clipart.png'
+              "https://www.pikpng.com/pngl/m/80-805068_my-profile-icon-blank-profile-picture-circle-clipart.png"
             }
             className="w-[100px] aspect-square rounded-full object-cover"
             alt="profile "
@@ -73,7 +74,10 @@ const Dashboard = ({ user }) => {
       {/* Logout button */}
       <button
         className="mt-5 py-3 w-full border-t border-t-[#a6c4d4] group"
-        onClick={() => logout()}
+        onClick={() => {
+          signOut();
+          deleteCookie("token");
+        }}
       >
         <Flex className="items-center gap-3 font-bold text-white ">
           <FiLogOut className="text-[18px] group-hover:scale-110 duration-200" />
