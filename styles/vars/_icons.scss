@@ -52,6 +52,18 @@
   }
 }
 
+.white__animated__estimator {
+  .animated__icon {
+    background-image: url(../../public/utils/icons/static/estimator-solid.png);
+    background-size: cover;
+    width: 28px;
+    height: 28px;
+  }
+  &:hover .animated__icon {
+    background-image: url(../../public/utils/icons/estimator-solid.gif);
+  }
+}
+
 @media only screen and (max-width: 720px) {
   .animated__icon {
     width: 30px !important;

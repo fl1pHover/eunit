@@ -53,10 +53,10 @@ const Accounts = () => {
     {
       tabHeader: "Хуваалцсан зарууд",
       title: "SharingAds",
-
       comp: <SharingAds ads={sAds} />,
     },
   ];
+
   useEffect(() => {
     if (user) getAds();
   }, [user]);

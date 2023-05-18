@@ -334,7 +334,7 @@ const Product = ({ propAds }) => {
                     <div className="object-contain">
                       <ImageGallery
                         // thumbnailPosition="bottom"
-
+                        lazyLoad={true}
                         showPlayButton={false}
                         // showBullets={true}
                         // showThumbnails={false}
@@ -342,6 +342,8 @@ const Product = ({ propAds }) => {
                         items={data?.images?.map((i) => ({
                           original: i,
                           thumbnail: i,
+                          loading: "lazy",
+                          thumbnailLoading: "lazy",
                         }))}
                       />
                     </div>

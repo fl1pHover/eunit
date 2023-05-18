@@ -23,6 +23,7 @@ import { FiHeart } from "react-icons/fi";
 import { IoWalletOutline } from "react-icons/io5";
 import { signOut } from "next-auth/react";
 import { deleteCookie } from "cookies-next";
+import { AiOutlineCalculator } from "react-icons/ai";
 
 const drawerItem = [
   {
@@ -49,6 +50,11 @@ const drawerItem = [
     icon: <IoWalletOutline />,
     text: "Хэтэвч",
     href: "WalletPage",
+  },
+  {
+    icon: <AiOutlineCalculator />,
+    text: "Үнэлгээ",
+    href: "Estimated",
   },
 ];
 
