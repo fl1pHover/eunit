@@ -28,20 +28,15 @@ import {
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect, useMemo, useState } from 'react';
-import { useAuth } from '../../context/auth';
+import { useDispatch, useSelector } from 'react-redux';
+import { setAds } from 'store/slice/ad';
 
 const Category = () => {
   const router = useRouter();
-  const {
-    categories,
-    defaultAds,
-    setDefaultAds,
-    specialAds,
-    setSpecialAds,
-    ads,
-    setAds,
-  } = useAuth();
-  const [category, setCategory] = useState();
+  const dispatch = useDispatch();
+  const { ads } = useSelector((state) => state.ads);
+  const { categories } = useSelector((state) => state.categories);
+
   const [isLoading, setIsLoading] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toLowerCase = (text) => {
@@ -51,7 +46,6 @@ const Category = () => {
   };
 
   const libraries = useMemo(() => ['places'], []);
-  // const { categories, setAds } = useAuth();
   const [markerActive, setMarkerActive] = useState(null);
 
   const { isLoaded } = useLoadScript({
@@ -79,17 +73,14 @@ const Category = () => {
         await axios
           .get(`${urls['test']}/ad/category/${router.query.slug}/${id}`)
           .then((d) => {
-            setDefaultAds(d.data?.defaultAds);
-            setSpecialAds(d.data?.specialAds);
-
-            let ad = d.data?.specialAd?.ads.concat(d.data?.defaultAds?.ads);
-            setAds({ ads: ad, limit: ad.length });
+            console.log(d.data);
+            dispatch(setAds(d.data));
           });
     } catch (error) {}
   };
   useEffect(() => {
     getData(0);
-  }, []);
+  }, [router?.query?.slug]);
   if (!isLoaded) {
     return <SkeletonContent />;
   }
@@ -108,11 +99,11 @@ const Category = () => {
 
           <Box className="max-w-[100%] w-full rounded-[5px]">
             {/* //TODO Engiin zar */}
-            {specialAds && (
+            {ads?.specialAds && (
               <ProAdContent
-                data={specialAds}
+                data={ads.specialAds}
                 tlc={toLowerCase}
-                title={category ?? ''}
+                title={''}
                 showLink="hidden"
                 inCat
                 func={getData}
@@ -121,17 +112,17 @@ const Category = () => {
           </Box>
           <Box>
             {/* //TODO Engiin zar */}
-            {defaultAds && (
+            {ads?.defaultAds && (
               <AdContent
-                data={defaultAds}
+                data={ads.defaultAds}
                 tlc={toLowerCase}
-                title={category ?? ''}
+                title={''}
                 showLink="hidden"
                 inCat
                 func={getData}
               />
             )}
-            {defaultAds?.limit <= 0 && specialAds?.limit <= 0 && (
+            {ads?.defaultAds?.limit <= 0 && ads?.specialAds?.limit <= 0 && (
               <ContainerX>
                 <div className="grid h-[80vh] text-2xl place-items-center">
                   Зар байхгүй байна

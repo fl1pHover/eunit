@@ -224,19 +224,6 @@ const MyAds = ({ user }) => {
               Буцаагдсан зар
             </Radio>
             <Radio
-              className="font-bold text-blue-400 whitespace-nowrap"
-              onChange={(e) => {
-                if (e.target.checked) {
-                  getAds('checking', 0);
-                  setNum(0);
-                  setCheck('checking');
-                }
-              }}
-              value="4"
-            >
-              Шалгаж байгаа зар
-            </Radio>
-            <Radio
               className="font-bold text-red-400 whitespace-nowrap"
               colorScheme="red"
               onChange={(e) => {
@@ -246,7 +233,7 @@ const MyAds = ({ user }) => {
                   setCheck('deleted');
                 }
               }}
-              value="5"
+              value="4"
             >
               Устгасан зар
             </Radio>

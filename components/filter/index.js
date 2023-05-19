@@ -1,5 +1,4 @@
 // import Input from '@/lib/Input';
-import { useAuth } from '@/context/auth';
 import { categories } from '@/data/categories';
 import Select from '@/lib/Select';
 import { STYLES } from '@/styles/index';
@@ -26,6 +25,8 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 import { MdFilterList } from 'react-icons/md';
+import { useDispatch } from 'react-redux';
+import { setAds } from 'store/slice/ad';
 import urls from '../../constants/api';
 import FilterStack from '../../util/filterStack';
 
@@ -37,7 +38,7 @@ const FilterLayout = ({ data, isOpenMap }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef();
   const [values, handle, typeId, min, max, clear] = useFilter();
-  const { setDefaultAds, setSpecialAds, setAds } = useAuth();
+  const dispatch = useDispatch();
   const getItems = async (data) => {
     try {
       await axios
@@ -93,10 +94,7 @@ const FilterLayout = ({ data, isOpenMap }) => {
           types: types,
         })
         .then((d) => {
-          setDefaultAds(d.data?.defaultAds);
-          setSpecialAds(d.data?.specialAds);
-          let ad = d.data?.specialAd?.ads.concat(d.data?.defaultAds?.ads);
-          setAds({ ads: ad, limit: ad?.length });
+          dispatch(setAds(d.data));
           clear();
           onClose();
         });
