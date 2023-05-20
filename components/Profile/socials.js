@@ -2,12 +2,16 @@ import { STYLES } from "@/styles/index";
 import mergeNames from "@/util/mergeNames";
 import { Flex, Image } from "@chakra-ui/react";
 import Link from "next/link";
+import { useState } from "react";
+import { Fragment } from "react";
 
 const capitalizeFirst = (str) => {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
 
 const Socials = ({ edit, socials, setSocials }) => {
+  const [urls, setUrls] = useState(socials);
+
   return (
     <>
       <div className="col-span-full">
@@ -21,11 +25,15 @@ const Socials = ({ edit, socials, setSocials }) => {
         >
           {socials?.map((s, i) => {
             return (
-              <div key={i} className={mergeNames(socials[i].url ?? "hidden")}>
-                {console.log(socials[i].url)}
-                <Link href={s.url} passHref>
+              <div
+                key={i}
+                className={mergeNames(s.url == "" && !edit ? "hidden" : "")}
+              >
+                <Link href={s.url != undefined ? s.url : ""} passHref>
                   <a
-                    className={mergeNames("pointer-events-none")}
+                    className={mergeNames(
+                      s.url == "" ? "pointer-events-none" : ""
+                    )}
                     target="_blank"
                   >
                     <Flex alignItems="center" gap={2}>
@@ -47,7 +55,56 @@ const Socials = ({ edit, socials, setSocials }) => {
                   <input
                     type="text"
                     onChange={(e) => {
-                      socials[i].url = e.target.value;
+                      switch (i) {
+                        case 0:
+                          setSocials([
+                            {
+                              name: "facebook",
+                              url: e.target.value,
+                            },
+                            {
+                              name: "instagram",
+                              url: socials?.[1]?.url,
+                            },
+                            {
+                              name: "telegram",
+                              url: socials?.[2]?.url,
+                            },
+                          ]);
+                          break;
+                        case 1:
+                          setSocials([
+                            {
+                              name: "facebook",
+                              url: socials?.[0]?.url,
+                            },
+                            {
+                              name: "instagram",
+                              url: e.target.value,
+                            },
+                            {
+                              name: "telegram",
+                              url: socials?.[2]?.url,
+                            },
+                          ]);
+                          break;
+                        case 0:
+                          setSocials([
+                            {
+                              name: "facebook",
+                              url: socials?.[0]?.url,
+                            },
+                            {
+                              name: "instagram",
+                              url: socials?.[1]?.url,
+                            },
+                            {
+                              name: "telegram",
+                              url: e.target.value,
+                            },
+                          ]);
+                          break;
+                      }
                     }}
                     key={i}
                     className={mergeNames(STYLES.input, "w-full ")}

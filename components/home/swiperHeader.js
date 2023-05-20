@@ -15,19 +15,19 @@ import Image from "next/image";
 
 const headerImageData = [
   {
-    image: "/images/HeaderSlider/1.jpg",
+    image: "/images/HeaderSlider/4.png",
     href: "/1",
   },
   {
-    image: "/images/HeaderSlider/2.jpg",
+    image: "/images/HeaderSlider/4.png",
     href: "/1",
   },
   {
-    image: "/images/HeaderSlider/1.jpg",
+    image: "/images/HeaderSlider/4.png",
     href: "/1",
   },
   {
-    image: "/images/HeaderSlider/2.jpg",
+    image: "/images/HeaderSlider/4.png",
     href: "/1",
   },
 ];
@@ -66,9 +66,9 @@ const SwiperHeader = () => {
                   objectFit="cover"
                   alt="swiper image"
                 />
-                <div className="absolute top-0 bottom-0 right-0 left-0 w-full h-full bg-slate-900/30">
-                  <div className="flex flex-col justify-center items-center h-full w-full">
-                    <p className="text-white md:text-6xl text-4xl font-semibold">
+                <div className="absolute top-0 bottom-0 left-0 right-0 w-full h-full bg-slate-900/30">
+                  <div className="flex flex-col items-center justify-center w-full h-full">
+                    <p className="text-4xl font-semibold text-white md:text-6xl">
                       Онцгой зар
                     </p>
                   </div>
