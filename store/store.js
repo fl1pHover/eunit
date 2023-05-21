@@ -1,10 +1,10 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import { HYDRATE, createWrapper } from 'next-redux-wrapper';
-import ads from './slice/ad';
-import bookmarks from './slice/bookmark';
-import categories from './slice/category';
-import compare from './slice/compare';
-import user from './slice/user';
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import { HYDRATE, createWrapper } from "next-redux-wrapper";
+import ads from "./slice/ad";
+import bookmarks from "./slice/bookmark";
+import categories from "./slice/category";
+import compare from "./slice/compare";
+import user from "./slice/user";
 const combinedReducer = combineReducers({
   user,
   bookmarks,
@@ -51,8 +51,8 @@ export const makeStore = () =>
   configureStore(
     {
       reducer: masterReducer,
-    },
-    { devTools: true }
+    }
+    // { devTools: true }
   );
 
-export const wrapper = createWrapper(makeStore, { debug: true });
+export const wrapper = createWrapper(makeStore);

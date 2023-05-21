@@ -1,18 +1,31 @@
+import FilterDate, {
+  FilterSelect,
+  FilterText,
+  FilterYear,
+} from "@/components/createAd/filters";
 import ButtonSelectItem from "@/components/createAd/formButtonSelectItem";
+import FormLabel from "@/components/createAd/formLabel";
 import Step1 from "@/components/createAd/step1";
 import FieldCategory from "@/components/createAd/step1/fieldCategory";
 import FieldSellType from "@/components/createAd/step1/fieldSellType";
 import FieldSubCategory from "@/components/createAd/step1/fieldSubCategory";
+import { ItemContainer } from "@/components/createAd/step4";
 import urls from "@/constants/api";
+import { Committee } from "@/constants/enums";
 import { categories } from "@/data/categories";
 import { ContainerX } from "@/lib/Container";
+import Input from "@/lib/Input";
+import Select from "@/lib/Select";
 import { TEXT } from "@/styles/index";
 import mergeNames from "@/util/mergeNames";
+
 import useEstimate from "@/util/useEstimate";
-import { FormLabel, Heading, useToast } from "@chakra-ui/react";
+import { Button, Heading, useToast } from "@chakra-ui/react";
 import axios from "axios";
+import { getCookie } from "cookies-next";
 import { useRouter } from "next/router";
 import React from "react";
+import { Fragment } from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useMemo } from "react";
@@ -25,25 +38,18 @@ const Estimator = ({}) => {
     file: [],
   });
   const [values, change, typeId] = useEstimate();
-  const [subCategory, setSubCategory] = useState([]);
-  const [items, setItems] = useState();
+  const [est, setEst] = useState([]);
   const toast = useToast();
   const router = useRouter();
+  const token = getCookie("token");
   const { categories } = useSelector((state) => state.categories);
-  const getSubcategory = async (id) => {
+  const getEstimate = async () => {
     try {
       await axios
-        .get(`${urls["test"]}/category/${id}`)
-        .then((d) => setSubCategory(d.data));
-    } catch (error) {
-      console.error(error?.message);
-    }
-  };
-  const getItems = async (id) => {
-    try {
-      await axios.get(`${urls["test"]}/category/filters/${id}`).then((d) => {
-        setItems(d.data);
-      });
+        .get(`${urls["test"]}/category/filters/6468e73ee15122dbb07a4364`)
+        .then((d) => {
+          setEst(d.data?.steps?.[0]?.values ?? []);
+        });
     } catch (error) {
       console.error(error?.message);
     }
@@ -54,7 +60,7 @@ const Estimator = ({}) => {
       let file = "";
       let fileUrl = new FormData();
       let filters = [];
-      subCategory.steps[0].values.map((v) => {
+      est.map((v) => {
         filters.push({
           name: v.name,
           id: v.type,
@@ -62,7 +68,8 @@ const Estimator = ({}) => {
           type: v.types,
         });
       });
-      estimate.file?.map((prev) => fileUrl.append("images", prev));
+
+      fileUrl.append("images", estimate.file);
       await axios
         .post(`${urls["test"]}/ad/uploadFields`, fileUrl, {
           headers: {
@@ -70,14 +77,16 @@ const Estimator = ({}) => {
             "Access-Control-Allow-Headers": "*",
           },
         })
-        .then((d) => (file = d.data));
+        .then((d) => {
+          file = d.data[0];
+        });
       await axios
         .post(
           `${urls["test"]}/estimate`,
           {
             file: file,
             subCategory: estimate.subCategoryId,
-            category: estimate.categoryId,
+            category: categories[estimate.categoryId]._id,
             sellType: "sell",
             items: filters,
             status: "pending",
@@ -104,6 +113,9 @@ const Estimator = ({}) => {
     }
   };
 
+  useEffect(() => {
+    getEstimate();
+  }, []);
   return (
     <section className="px-0 xl:px-28 lg:px-20 ">
       <div className="flex flex-col items-center">
@@ -137,27 +149,38 @@ const Estimator = ({}) => {
         </div>
         <div className="flex p-10 flex-col gap-5 w-[93%] -translate-y-16 mx-10 bg-white shadow-xl   xl:w-[70%] rounded-3xl">
           <Box label="Хөрөнгийн төрөл" className="justify-center">
-            <FieldCategory {...{ estimate, categories, setEstimate }} />
+            <FieldCategory
+              categories={categories}
+              setTypes={setEstimate}
+              types={estimate}
+            />
           </Box>
-          <Box label="Хөрөнгийн дэд төрөл" className="justify-center">
-            {categories?.map((item, key) => {
-              const isSelected = estimate.subCategoryId === item.href;
-              return (
-                <ButtonSelectItem
-                  key={key}
-                  isSelected={isSelected}
-                  text={item?.categoryName}
-                  onClick={() => {
-                    // setTypes((prev) => ({
-                    //   ...prev,
-                    //   subCategoryId: item.href,
-                    // }));
-                  }}
-                />
-              );
-            })}
-          </Box>
-          <Box label="Үнэлэх төрөл" className="justify-center">
+
+          {estimate.categoryId && (
+            <Box label="Хөрөнгийн дэд төрөл" className="justify-center">
+              {categories?.map((item, key) => {
+                const isSelected = estimate.subCategoryId === item._id;
+
+                return (
+                  item.parent == categories?.[estimate.categoryId]?._id &&
+                  item.parent != null && (
+                    <ButtonSelectItem
+                      key={key}
+                      isSelected={isSelected}
+                      text={item?.name}
+                      onClick={() => {
+                        setEstimate((prev) => ({
+                          ...prev,
+                          subCategoryId: item._id,
+                        }));
+                      }}
+                    />
+                  )
+                );
+              })}
+            </Box>
+          )}
+          {/* <Box label="Үнэлэх төрөл" className="justify-center">
             {categories && (
               // ZARAH TURUL BOLON ZARIIN TURUL
               // ZARAH TURUL: SELL OR RENT
@@ -169,16 +192,192 @@ const Estimator = ({}) => {
                 />
               </>
             )}
-          </Box>
-          <Box label="Үнэлгээний зориулалт" className="justify-center">
-            {/* children */}
-          </Box>
-          <Box label="Хаяг" className="justify-center">
-            {/* children */}
-          </Box>
-          <Box label="Мэдээлэл" className="justify-center">
-            {/* children */}
-          </Box>
+          </Box> */}
+          {est &&
+            estimate.categoryId &&
+            est.map((f, i) => {
+              if (
+                f.other == true &&
+                f.value.find((v) => v.id == "other") == undefined
+              )
+                f.value.push({ id: "other", value: "Бусад" });
+
+              if (f.types == "date")
+                return (
+                  <FilterDate
+                    key={i}
+                    title={f.name}
+                    name={f.name}
+                    onSelect={(num) => {
+                      change(f.type, num, "");
+                    }}
+                  />
+                );
+              if (f.types == "text")
+                return (
+                  <FilterText
+                    key={i}
+                    title={f.name}
+                    ph={f.name}
+                    value={values[f.type]}
+                    onChange={(e) => {
+                      e.persist();
+                      change(f.type, e.target.value, "");
+                    }}
+                  />
+                );
+
+              if (f.type == "committee") {
+                return (
+                  typeId && (
+                    <FilterSelect
+                      key={i}
+                      label={values[f.name] ?? f.name}
+                      title={f.name}
+                      data={
+                        typeId[f.parentId] != "country"
+                          ? Committee
+                          : f.value.filter(
+                              (v) => v.parentId == typeId[v.parent]
+                            )
+                      }
+                      Item={({ data, onClick, id, ...props }) => {
+                        return (
+                          <button
+                            {...props}
+                            onClick={(e) => {
+                              e.persist();
+                              change(f.type, data, "");
+                              onClick();
+                            }}
+                          >
+                            {data}
+                            {props.children}
+                          </button>
+                        );
+                      }}
+                    />
+                  )
+                );
+              }
+              if (f.types == "dropdown")
+                if (f.parentId == null) {
+                  return (
+                    <FilterSelect
+                      key={i}
+                      title={f.name}
+                      data={f.value}
+                      label={values[f.type] ?? f.name}
+                      Item={({ data, onClick, id, ...props }) => {
+                        return (
+                          <button
+                            {...props}
+                            onClick={(e) => {
+                              e.persist();
+                              change(f.type, data, id);
+                              onClick();
+                            }}
+                          >
+                            {data}
+                            {props.children}
+                          </button>
+                        );
+                      }}
+                    />
+                  );
+                } else {
+                  return (
+                    typeId && (
+                      <ItemContainer
+                        key={i}
+                        className={"flex flex-col items-center justify-center"}
+                      >
+                        <FormLabel title={f.name} />
+                        <Select
+                          width="long"
+                          data={
+                            f.value.filter(
+                              (v) =>
+                                (f.parentId == v.parent &&
+                                  typeId[f.parentId] == v.parentId) ||
+                                v.id == "other"
+                            ).length > 0
+                              ? f.value.filter(
+                                  (v) =>
+                                    (f.parentId == v.parent &&
+                                      typeId[f.parentId] == v.parentId) ||
+                                    v.id == "other"
+                                )
+                              : est
+                                  .filter((fil) => fil.type == f.parentId)[0]
+                                  .value.filter(
+                                    (v) =>
+                                      v.id == "B2" ||
+                                      v.id == "B1" ||
+                                      parseInt(typeId[f.parentId]) >=
+                                        parseInt(v.id)
+                                  )
+                          }
+                          label={values[f.type] ?? f.name}
+                          Item={({ data, onClick, id, ...props }) => {
+                            return (
+                              <button
+                                {...props}
+                                onClick={(e) => {
+                                  e.persist();
+                                  change(f.type, data, id);
+                                  onClick();
+                                }}
+                              >
+                                {data}
+                                {props.children}
+                              </button>
+                            );
+                          }}
+                        />
+                        {typeId[f.type] == "other" ? (
+                          <Fragment>
+                            <Box h={4} />
+                            <Input
+                              ph={values[f.type]}
+                              onChange={(e) => {
+                                change(f.type, e.target.value, "");
+                              }}
+                              value={
+                                values[f.type] != "Бусад" ? values[f.type] : ""
+                              }
+                            />
+                          </Fragment>
+                        ) : (
+                          <Box />
+                        )}
+                      </ItemContainer>
+                    )
+                  );
+                }
+            })}
+          {estimate.categoryId && (
+            <ItemContainer>
+              <FormLabel title={"Гэрчилгээний хуулбар"} />
+              <form action="">
+                <input
+                  type="file"
+                  name="upload"
+                  accept="application/pdf"
+                  // ref={hiddenFileInput}
+                  // style={{ display: "none" }}
+                  onChange={(e) => {
+                    setEstimate((prev) => ({
+                      ...prev,
+                      file: e.target.files[0],
+                    }));
+                  }}
+                />
+              </form>
+            </ItemContainer>
+          )}
+
+          <Button onClick={() => sendEstimate()}>send</Button>
         </div>
       </div>
     </section>

@@ -30,7 +30,7 @@ export default function Home() {
       setIsLoading(false);
     } catch (error) {
       console.error(error);
-      throw new Error(error);
+      // throw new Error(error);
     }
   };
   const login = async () => {

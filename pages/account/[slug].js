@@ -96,7 +96,7 @@ const Accounts = () => {
               <div
                 className={mergeNames(
                   STYLES.flexBetween,
-                  "xs:flex-row flex-col sm:justify-between justify-around items-center gap-2 xs:text-left text-center"
+                  "xs:flex-row flex-col w-full sm:justify-between justify-around items-center gap-2 xs:text-left text-center"
                 )}
               >
                 <div>
@@ -211,7 +211,7 @@ const Socials = ({ user }) => {
   ]);
 
   return (
-    <div className="flex flex-row justify-center gap-2 sm:justify-start md:gap-5 ">
+    <div className="flex w-[320px] flex-row justify-center gap-2 sm:justify-start md:gap-5 ">
       {socials?.map((s, i) => {
         return s.url != "" ? (
           <Link href={s.url} key={i}>

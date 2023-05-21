@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 const CheckStatus = () => {
   return (
     <ContainerX
-      classname={mergeNames(STYLES.flexCenter, 'items-center h-[70vh]')}
+      className={mergeNames(STYLES.flexCenter, 'items-center h-[70vh]')}
     >
       <Heading variant="mainHeading">Мэйл хаягаа шалгана уу!</Heading>
     </ContainerX>

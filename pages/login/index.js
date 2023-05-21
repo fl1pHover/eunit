@@ -19,6 +19,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { BiHide, BiShow } from "react-icons/bi";
 import { useSession, signIn, signOut } from "next-auth/react";
+import { GoogleIcon } from "@/util/Icons";
 export default function Login() {
   const { session } = useSession();
   const [signupCredential, setSignupcredential] = useState({
@@ -79,7 +80,14 @@ export default function Login() {
             {session ? (
               <Button onClick={() => signOut()}>sign</Button>
             ) : (
-              <Button onClick={() => handleGoogleSignIn()}>log in</Button>
+              <>
+                <Button
+                  onClick={() => handleGoogleSignIn()}
+                  className="p-0 mx-auto aspect-square"
+                >
+                  <GoogleIcon />
+                </Button>
+              </>
             )}
 
             <p className="my-10 text-sm font-bold text-gray-600">
