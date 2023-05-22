@@ -52,6 +52,9 @@ module.exports = {
       backgroundImage: {
         "calc-banner": "url('/utils/banner/calc-banner-blue.svg')",
       },
+      gridAutoColumns: {
+        "1fr": "minmax(200px, 1fr)",
+      },
     },
   },
   plugins: [require("flowbite/plugin"), require("@tailwindcss/line-clamp")],

@@ -80,14 +80,16 @@ export default function Login() {
             {session ? (
               <Button onClick={() => signOut()}>sign</Button>
             ) : (
-              <>
+              <div className="flex flex-col gap-3 my-auto">
                 <Button
                   onClick={() => handleGoogleSignIn()}
-                  className="p-0 mx-auto aspect-square"
+                  className="gap-3 p-0 px-2 border-gray-200 rounded-lg"
                 >
-                  <GoogleIcon />
+                  <GoogleIcon size="1.2em" />
+                  Google хаягаар нэвтрэх
                 </Button>
-              </>
+              
+              </div>
             )}
 
             <p className="my-10 text-sm font-bold text-gray-600">

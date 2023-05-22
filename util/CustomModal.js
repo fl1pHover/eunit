@@ -6,13 +6,14 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-} from '@chakra-ui/react';
-import { useState } from 'react';
+  useDisclosure,
+} from "@chakra-ui/react";
+import { useState } from "react";
 
 function CustomModal({
   children,
   header,
-  btnClose = <></>,
+  btnClose,
   btnClose2,
   btnOpen,
   alert,
@@ -21,21 +22,20 @@ function CustomModal({
   onClose,
   func,
   onclick,
+  className = "flex items-center gap-1 px-2 py-2 text-white bg-blue-500 rounded-full",
 }) {
-  const [scrollBehavior, setScrollBehavior] = useState('inside');
+  const [scrollBehavior, setScrollBehavior] = useState("inside");
+
   return (
     <>
-      <button
-        onClick={onOpen}
-        className="flex items-center gap-1 px-2 py-2 text-white bg-blue-500 rounded-full"
-      >
+      <button onClick={onOpen} className={className}>
         {btnOpen}
       </button>
       <Modal
         onClose={onClose}
         isOpen={isOpen}
         isCentered
-        size={{ base: 'sm', sm: 'xl', md: '2xl', lg: '6xl', xl: '6xl' }}
+        size={{ base: "sm", sm: "xl", md: "2xl", lg: "6xl", xl: "6xl" }}
         className="overflow-hidden "
         scrollBehavior={scrollBehavior}
       >
@@ -43,7 +43,7 @@ function CustomModal({
         <ModalContent>
           <ModalHeader
             className="mb-5 w-[90%] "
-            fontSize={{ base: '15px', lg: '22px' }}
+            fontSize={{ base: "15px", lg: "22px" }}
           >
             {header}
           </ModalHeader>
@@ -51,13 +51,15 @@ function CustomModal({
           <ModalBody>{children}</ModalBody>
           <ModalFooter className="gap-2 font-bold bg-gray-200 rounded-b-md">
             <div onClick={(onClose, alert)}>
-              <button
-                className="px-4 py-2 text-white bg-green-400 rounded-full"
-                // onClick={async () => await func()}
-                onClick={onclick}
-              >
-                {btnClose}
-              </button>
+              {btnClose && (
+                <button
+                  className="px-4 py-2 text-white bg-green-400 rounded-full"
+                  // onClick={async () => await func()}
+                  onClick={onclick}
+                >
+                  {btnClose}
+                </button>
+              )}
             </div>
             <button
               onClick={onClose}

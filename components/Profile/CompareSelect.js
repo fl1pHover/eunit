@@ -1,17 +1,21 @@
-import { STYLES } from '@/styles/index';
-import mergeNames from '@/util/mergeNames';
-import { Image } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
-import { useState } from 'react';
-import { MdCompareArrows } from 'react-icons/md';
-import { useDispatch, useSelector } from 'react-redux';
-import { clearCompare, updateCompare } from 'store/slice/compare';
+import { STYLES } from "@/styles/index";
+import mergeNames from "@/util/mergeNames";
+import { Image } from "@chakra-ui/react";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import { MdCompareArrows } from "react-icons/md";
+import { useDispatch, useSelector } from "react-redux";
+import { clearCompare, updateCompare } from "store/slice/compare";
 
 const CompareItem = ({ item, onClick }) => {
-  let image = item.images?.[0] ?? '/images/noImage.png';
+  let image = item.images?.[0] ?? "/images/noImage.png";
   return (
-    <div className="w-full h-full bg-white max-w-[250px]  relative ">
-      <Image src={image} alt="compare ads image" />
+    <div className=" h-full bg-white max-w-[250px] relative ">
+      <Image
+        src={image}
+        alt="compare ads image"
+        className="object-cover w-full h-full"
+      />
 
       {/* Delete button*/}
       <div
@@ -22,7 +26,7 @@ const CompareItem = ({ item, onClick }) => {
   );
 };
 
-const CompareSelect = ({ btnView = true,  }) => {
+const CompareSelect = ({ btnView = true }) => {
   const router = useRouter();
   const [expand, setExpand] = useState(false);
   const { compare } = useSelector((state) => state.compare);
@@ -40,12 +44,12 @@ const CompareSelect = ({ btnView = true,  }) => {
       </div> */}
       <div
         className={mergeNames(
-          'fixed px-[10%] bottom-0 left-0',
-          'bg-secondary/90 w-screen transition-all ease-in-out pb-[68px] md:pb-0',
-          ' text-[12px] sm:text-base  z-10',
-          compare.length > 0 && router?.pathname != '/compare'
-            ? 'h-[250px]'
-            : 'h-0'
+          "fixed px-[10%] bottom-0 left-0",
+          "bg-secondary/90 w-screen transition-all ease-in-out pb-[68px] md:pb-0",
+          " text-[12px] sm:text-base  z-10",
+          compare.length > 0 && router?.pathname != "/compare"
+            ? "h-[250px]"
+            : "h-0"
         )}
       >
         {btnView && (
@@ -55,15 +59,15 @@ const CompareSelect = ({ btnView = true,  }) => {
           >
             <MdCompareArrows
               className={mergeNames(
-                'text-xl ',
-                expand ? 'rotate-0' : 'rotate-180'
+                "text-xl ",
+                expand ? "rotate-0" : "rotate-180"
               )}
             />
             <p className="text-[12px]">Харьцуулах</p>
           </button>
         )}
         <div
-          className={mergeNames(STYLES.flexBetween, 'pt-5 text-white w-full')}
+          className={mergeNames(STYLES.flexBetween, "pt-5 text-white w-full")}
         >
           <p>
             Харьцуулах ( <span> {compare.length}</span>/4 )
@@ -77,7 +81,7 @@ const CompareSelect = ({ btnView = true,  }) => {
               Цэвэрлэх
             </button>
             <button
-              onClick={() => router.push('/compare')}
+              onClick={() => router.push("/compare")}
               className="px-4 py-2 bg-blue-500 hover:bg-blue-700 rounded-2xl"
             >
               Харьцуулах

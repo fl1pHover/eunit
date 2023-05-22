@@ -54,16 +54,18 @@ const EstimatedCard = ({ est }) => {
   return (
     <div className="text-left">
       <div className="bg-white shadow-md rounded-md p-5 border border-gray-200  h-[125px]">
-        <div className="flex h-full gap-3 ">
-          <Link href={est.file ?? ""} target="_blank">
+        <div className="flex h-full gap-3">
+          <Link
+            href={est.file ?? ""}
+            target="_blank"
+            className="flex items-center"
+          >
             <Image
               src={
                 "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/PDF_file_icon.svg/1200px-PDF_file_icon.svg.png"
               }
               alt="Үнэлгээ зураг"
-              width={100}
-              height={100}
-              className="overflow-hidden border border-gray-300 rounded-md"
+              className="w-[60px] overflow-hidden border border-gray-300 rounded-md "
             />
           </Link>
           <div className="flex flex-col justify-between w-full h-full ">
@@ -78,7 +80,15 @@ const EstimatedCard = ({ est }) => {
             </div>
             <div className="flex items-center justify-between w-full">
               <div className="text-sm">
-                <h1 className="text-gray-400">{est.status ?? ""}</h1>
+                <h1
+                  className={mergeNames(
+                    "text-gray-400 font-semibold",
+                    est.status && "text-yellow-400",
+                    est.deleted && "text-red-400"
+                  )}
+                >
+                  {est.status ?? ""}
+                </h1>
                 <h1>Lorem, ipsum dolor.</h1>
               </div>
               <div>

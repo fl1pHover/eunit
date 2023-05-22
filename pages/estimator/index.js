@@ -13,14 +13,21 @@ import { ItemContainer } from "@/components/createAd/step4";
 import urls from "@/constants/api";
 import { Committee } from "@/constants/enums";
 import { categories } from "@/data/categories";
-import { ContainerX } from "@/lib/Container";
+import { Container, ContainerX } from "@/lib/Container";
 import Input from "@/lib/Input";
 import Select from "@/lib/Select";
-import { TEXT } from "@/styles/index";
+import { STYLES, TEXT } from "@/styles/index";
+import CustomModal from "@/util/CustomModal";
 import mergeNames from "@/util/mergeNames";
 
 import useEstimate from "@/util/useEstimate";
-import { Button, Heading, useToast } from "@chakra-ui/react";
+import {
+  Button,
+
+  Heading,
+  useDisclosure,
+  useToast,
+} from "@chakra-ui/react";
 import axios from "axios";
 import { getCookie } from "cookies-next";
 import { useRouter } from "next/router";
@@ -117,7 +124,7 @@ const Estimator = ({}) => {
     getEstimate();
   }, []);
   return (
-    <section className="px-0 xl:px-28 lg:px-20 ">
+    <section className="px-0 xl:px-28 lg:px-20">
       <div className="flex flex-col items-center">
         {/* <Step1 categories={passcategory} /> */}
         <div className="relative w-full overflow-hidden rounded-b-[50px] ">
@@ -357,13 +364,14 @@ const Estimator = ({}) => {
                 }
             })}
           {estimate.categoryId && (
-            <ItemContainer>
+            <ItemContainer className="mx-auto">
               <FormLabel title={"Гэрчилгээний хуулбар"} />
               <form action="">
                 <input
                   type="file"
                   name="upload"
                   accept="application/pdf"
+                  className="bg-blue-100 cursor-pointer "
                   // ref={hiddenFileInput}
                   // style={{ display: "none" }}
                   onChange={(e) => {
@@ -377,10 +385,49 @@ const Estimator = ({}) => {
             </ItemContainer>
           )}
 
-          <Button onClick={() => sendEstimate()}>send</Button>
+          <Button className="px-10 mx-auto" onClick={() => sendEstimate()}>
+            Нэмэх
+          </Button>
+        </div>
+        <div className="grid  grid-cols-4 gap-2 mt-6 p-5 flex-col  w-[93%] -translate-y-16 mx-10 bg-white shadow-xl   xl:w-[70%] rounded-3xl">
+          <EstimatorModal />
+          <Button
+            className={mergeNames(
+              STYLES.blueButton,
+              "mx-auto col-span-full px-10"
+            )}
+          >
+            Илгээх
+          </Button>
         </div>
       </div>
     </section>
+  );
+};
+
+const EstimatorModal = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  return (
+    <CustomModal
+      isOpen={isOpen}
+      onClose={onClose}
+      onOpen={onOpen}
+      btnClose2={"Буцах"}
+      className=""
+      btnOpen={
+        <div className="w-full bg-blue-200 h-[100px] relative grid place-items-center ">
+          <h2>{"1"}</h2>
+        </div>
+      }
+      header="Үнэлгээ хийлгэх хөрөнгийн мэдээлэл"
+    >
+      <div className="flex flex-col">
+        <div className="flex gap-2">
+          <h2>Төрөл:</h2>
+          <h2>Lorem ipsum dolor sit</h2>
+        </div>
+      </div>
+    </CustomModal>
   );
 };
 
