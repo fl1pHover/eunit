@@ -20,6 +20,7 @@ import { BsThreeDots } from "react-icons/bs";
 import { useSelector } from "react-redux";
 import EditAd from "../ad/edit";
 import AdCardButton from "./adCardButton";
+import { CgTimer } from "react-icons/cg";
 // import { detectContentType } from "next/dist/server/image-optimizer";
 
 function Card({
@@ -44,6 +45,16 @@ function Card({
     if (btn) router.push(btn);
   }, [btn]);
   const { user } = useSelector((state) => state.user);
+
+  const amountTime = Math.round(
+    (new Date(item.updatedAt).getTime() +
+      (item?.adStatus == "created"
+        ? 24 * 3600 * 30 * 1000
+        : 24 * 3600 * 3 * 1000) -
+      Date.now()) /
+      (24 * 3600 * 1000)
+  );
+
   return (
     // <Skeleton>
     <Skeleton isLoaded>
@@ -109,6 +120,7 @@ function Card({
               />
             </button>
           </Tip>
+
           {isDelete ? (
             // <DButton onClick={deleteFunc} />
             <div
@@ -209,22 +221,6 @@ function Card({
                 .format()
                 .toString() ?? 0}
             </p>
-
-            {user._id == item?.user &&
-              (item?.adStatus == "created" || item.adStatus == "deleted") && (
-                <p className="flex items-center gap-1">
-                  <AiOutlineFieldTime className="text-lg" />
-                  {Math.round(
-                    (new Date(item.updatedAt).getTime() +
-                      (item?.adStatus == "created"
-                        ? 24 * 3600 * 30 * 1000
-                        : 24 * 3600 * 3 * 1000) -
-                      Date.now()) /
-                      (24 * 3600 * 1000)
-                  )}
-                  хоног
-                </p>
-              )}
           </div>
           <div className="relative flex flex-row justify-between w-full">
             <TextContainer
@@ -286,11 +282,68 @@ function Card({
               {/* <p>{item.updatedAt}</p> */}
             </>
           )}
+          {user._id == item?.user &&
+            (item?.adStatus == "created" || item.adStatus == "deleted") && (
+              <>
+                <p
+                  className={mergeNames(
+                    "flex items-center gap-1 font-semibold animate-pulse",
+                    item?.adStatus == "deleted"
+                      ? "text-red-400"
+                      : "text-teal-500"
+                  )}
+                >
+                  {/* <CgTimer className="text-lg" /> */}
+                  <CircleTimer
+                    amountTime={
+                      amountTime * (item?.adStatus == "deleted" ? 29.32 : 2.932)
+                    }
+                  />
+                  Устахад
+                  {" " + amountTime + " "}
+                  хоног
+                </p>
+              </>
+            )}
         </div>
       </div>
     </Skeleton>
   );
 }
+
+const CircleTimer = ({ amountTime }) => {
+  return (
+    <div className="flex h-[40px] w-[40px] scale-50 -rotate-90">
+      <svg width="40" heigh="40">
+        <g>
+          <circle
+            r="14"
+            cx="20"
+            cy="20"
+            fill="transparent"
+            stroke="currentColor"
+            strokeWidth="5px"
+            strokeDasharray={"87.96"}
+            strokeDashoffset="0"
+            className="text-gray-300"
+          ></circle>
+          <circle
+            r="14"
+            cx="20"
+            cy="20"
+            fill="transparent"
+            stroke="currentColor"
+            strokeWidth="5px"
+            strokeDasharray={"87.96"}
+            strokeDashoffset={amountTime}
+            className="text-red-500"
+          ></circle>
+        </g>
+      </svg>
+    </div>
+  );
+};
+
 export const ApartmentIconInfo = ({ p }) => {
   // END YG ROOM MASTERBEDROOM AND BATHROOM IIN MEDEELEL BAIAGA
   return (

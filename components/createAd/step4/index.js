@@ -1,18 +1,18 @@
-import { Committee } from '@/constants/enums';
-import Input from '@/lib/Input';
-import Select from '@/lib/Select';
-import mergeNames from '@/util/mergeNames';
-import { Box } from '@chakra-ui/react';
-import { Fragment } from 'react';
+import { Committee } from "@/constants/enums";
+import Input from "@/lib/Input";
+import Select from "@/lib/Select";
+import mergeNames from "@/util/mergeNames";
+import { Box } from "@chakra-ui/react";
+import { Fragment } from "react";
 import FilterDate, {
   FilterButtonSelector,
   FilterCounter,
   FilterSelect,
   FilterText,
   FilterYear,
-} from '../filters';
-import ButtonSelectItem from '../formButtonSelectItem';
-import FormLabel from '../formLabel';
+} from "../filters";
+import ButtonSelectItem from "../formButtonSelectItem";
+import FormLabel from "../formLabel";
 
 const Step3 = ({ filter, handle, state, typeId }) => {
   return (
@@ -20,31 +20,31 @@ const Step3 = ({ filter, handle, state, typeId }) => {
       {filter?.values?.map((f, i) => {
         if (
           f.other == true &&
-          f.value.find((v) => v.id == 'other') == undefined
+          f.value.find((v) => v.id == "other") == undefined
         )
-          f.value.push({ id: 'other', value: 'Бусад' });
-        if (f.types == 'date')
+          f.value.push({ id: "other", value: "Бусад" });
+        if (f.types == "date")
           return (
             <FilterDate
               key={i}
               title={f.name}
               name={f.name}
               onSelect={(num) => {
-                handle(f.type, num, '', f.index, f.position, f.isSearch);
+                handle(f.type, num, "", f.index, f.position, f.isSearch);
               }}
             />
           );
-        if (f.types == 'year')
+        if (f.types == "year")
           return (
             <FilterYear
               key={i}
               title={f.name}
               onChange={(e) => {
-                handle(f.type, e, '', f.index, f.position, f.isSearch);
+                handle(f.type, e, "", f.index, f.position, f.isSearch);
               }}
             />
           );
-        if (f.types === 'number')
+        if (f.types === "number")
           return (
             <FilterCounter
               key={i}
@@ -52,11 +52,11 @@ const Step3 = ({ filter, handle, state, typeId }) => {
               limit={f.value[f.value.length - 2].value}
               maxValue={f.value[f.value.length - 1].value}
               setValue={(val) => {
-                handle(f.type, val, '', f.index, f.position, f.isSearch);
+                handle(f.type, val, "", f.index, f.position, f.isSearch);
               }}
             />
           );
-        if (f.types == 'text')
+        if (f.types == "text")
           return (
             <FilterText
               key={i}
@@ -68,7 +68,7 @@ const Step3 = ({ filter, handle, state, typeId }) => {
                 handle(
                   f.type,
                   e.target.value,
-                  '',
+                  "",
                   f.index,
                   f.position,
                   f.isSearch
@@ -76,7 +76,7 @@ const Step3 = ({ filter, handle, state, typeId }) => {
               }}
             />
           );
-        if (f.types === 'radio')
+        if (f.types === "radio")
           return (
             <FilterButtonSelector
               key={i}
@@ -91,7 +91,7 @@ const Step3 = ({ filter, handle, state, typeId }) => {
                     isSelected={isSelected}
                     {...props}
                     onClick={() => {
-                      handle(f.type, text, '', f.index, f.position, f.isSearch);
+                      handle(f.type, text, "", f.index, f.position, f.isSearch);
                       onClick();
                     }}
                   >
@@ -103,7 +103,7 @@ const Step3 = ({ filter, handle, state, typeId }) => {
             />
           );
 
-        if (f.type == 'committee') {
+        if (f.type == "committee") {
           return (
             typeId && (
               <FilterSelect
@@ -111,7 +111,7 @@ const Step3 = ({ filter, handle, state, typeId }) => {
                 label={state[f.name] ?? f.name}
                 title={f.name}
                 data={
-                  typeId[f.parentId] != 'country'
+                  typeId[f.parentId] != "country"
                     ? Committee
                     : f.value.filter((v) => v.parentId == typeId[v.parent])
                 }
@@ -124,7 +124,7 @@ const Step3 = ({ filter, handle, state, typeId }) => {
                         handle(
                           f.type,
                           data,
-                          '',
+                          "",
                           f.index,
                           f.position,
                           f.isSearch
@@ -141,7 +141,7 @@ const Step3 = ({ filter, handle, state, typeId }) => {
             )
           );
         }
-        if (f.types == 'dropdown')
+        if (f.types == "dropdown")
           if (f.parentId == null) {
             return (
               <FilterSelect
@@ -178,7 +178,7 @@ const Step3 = ({ filter, handle, state, typeId }) => {
               typeId && (
                 <ItemContainer
                   key={i}
-                  className={'flex flex-col items-center justify-center'}
+                  className={"flex flex-col items-center justify-center"}
                 >
                   <FormLabel title={f.name} />
                   <Select
@@ -188,20 +188,20 @@ const Step3 = ({ filter, handle, state, typeId }) => {
                         (v) =>
                           (f.parentId == v.parent &&
                             typeId[f.parentId] == v.parentId) ||
-                          v.id == 'other'
+                          v.id == "other"
                       ).length > 0
                         ? f.value.filter(
                             (v) =>
                               (f.parentId == v.parent &&
                                 typeId[f.parentId] == v.parentId) ||
-                              v.id == 'other'
+                              v.id == "other"
                           )
                         : filter.values
                             .filter((fil) => fil.type == f.parentId)[0]
                             .value.filter(
                               (v) =>
-                                v.id == 'B2' ||
-                                v.id == 'B1' ||
+                                v.id == "B2" ||
+                                v.id == "B1" ||
                                 parseInt(typeId[f.parentId]) >= parseInt(v.id)
                             )
                     }
@@ -229,7 +229,7 @@ const Step3 = ({ filter, handle, state, typeId }) => {
                       );
                     }}
                   />
-                  {typeId[f.type] == 'other' ? (
+                  {typeId[f.type] == "other" ? (
                     <Fragment>
                       <Box h={4} />
                       <Input
@@ -238,13 +238,13 @@ const Step3 = ({ filter, handle, state, typeId }) => {
                           handle(
                             f.type,
                             e.target.value,
-                            '',
+                            "",
                             f.index,
                             f.position,
                             f.isSearch
                           );
                         }}
-                        value={state[f.type] != 'Бусад' ? state[f.type] : ''}
+                        value={state[f.type] != "Бусад" ? state[f.type] : ""}
                       />
                     </Fragment>
                   ) : (
@@ -272,7 +272,7 @@ const Col = (props) => (
 );
 
 export const ItemContainer = ({ children, className }) => (
-  <div className={mergeNames('mb-10', className)}>{children}</div>
+  <div className={mergeNames("mb-4 lg:mb-10", className)}>{children}</div>
 );
 
 export default Step3;

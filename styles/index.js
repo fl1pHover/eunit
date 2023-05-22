@@ -17,6 +17,12 @@ export const STYLES = {
     "font-bold text-white transition-all easeIn rounded-full grid place-items-center",
 };
 
+export const radioGroup =
+  "flex flex-wrap justify-end gap-4 mt-4 whitespace-nowrap";
+
+  export const radioStatus = {
+    green: ''
+  }
 export const TEXT = {
   mainHeading: "text-[60px]",
 };

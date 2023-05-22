@@ -21,13 +21,7 @@ import CustomModal from "@/util/CustomModal";
 import mergeNames from "@/util/mergeNames";
 
 import useEstimate from "@/util/useEstimate";
-import {
-  Button,
-
-  Heading,
-  useDisclosure,
-  useToast,
-} from "@chakra-ui/react";
+import { Button, Heading, useDisclosure, useToast } from "@chakra-ui/react";
 import axios from "axios";
 import { getCookie } from "cookies-next";
 import { useRouter } from "next/router";
@@ -36,6 +30,7 @@ import { Fragment } from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useMemo } from "react";
+import { BsChevronDoubleDown } from "react-icons/bs";
 import { useSelector } from "react-redux";
 
 const Estimator = ({}) => {
@@ -200,202 +195,216 @@ const Estimator = ({}) => {
               </>
             )}
           </Box> */}
-          {est &&
-            estimate.categoryId &&
-            est.map((f, i) => {
-              if (
-                f.other == true &&
-                f.value.find((v) => v.id == "other") == undefined
-              )
-                f.value.push({ id: "other", value: "Бусад" });
+          <div className="grid grid-cols-1 lg:grid-cols-2">
+            {est &&
+              estimate.categoryId &&
+              est.map((f, i) => {
+                if (
+                  f.other == true &&
+                  f.value.find((v) => v.id == "other") == undefined
+                )
+                  f.value.push({ id: "other", value: "Бусад" });
 
-              if (f.types == "date")
-                return (
-                  <FilterDate
-                    key={i}
-                    title={f.name}
-                    name={f.name}
-                    onSelect={(num) => {
-                      change(f.type, num, "");
-                    }}
-                  />
-                );
-              if (f.types == "text")
-                return (
-                  <FilterText
-                    key={i}
-                    title={f.name}
-                    ph={f.name}
-                    value={values[f.type]}
-                    onChange={(e) => {
-                      e.persist();
-                      change(f.type, e.target.value, "");
-                    }}
-                  />
-                );
-
-              if (f.type == "committee") {
-                return (
-                  typeId && (
-                    <FilterSelect
-                      key={i}
-                      label={values[f.name] ?? f.name}
-                      title={f.name}
-                      data={
-                        typeId[f.parentId] != "country"
-                          ? Committee
-                          : f.value.filter(
-                              (v) => v.parentId == typeId[v.parent]
-                            )
-                      }
-                      Item={({ data, onClick, id, ...props }) => {
-                        return (
-                          <button
-                            {...props}
-                            onClick={(e) => {
-                              e.persist();
-                              change(f.type, data, "");
-                              onClick();
-                            }}
-                          >
-                            {data}
-                            {props.children}
-                          </button>
-                        );
-                      }}
-                    />
-                  )
-                );
-              }
-              if (f.types == "dropdown")
-                if (f.parentId == null) {
+                if (f.types == "date")
                   return (
-                    <FilterSelect
+                    <FilterDate
                       key={i}
                       title={f.name}
-                      data={f.value}
-                      label={values[f.type] ?? f.name}
-                      Item={({ data, onClick, id, ...props }) => {
-                        return (
-                          <button
-                            {...props}
-                            onClick={(e) => {
-                              e.persist();
-                              change(f.type, data, id);
-                              onClick();
-                            }}
-                          >
-                            {data}
-                            {props.children}
-                          </button>
-                        );
+                      name={f.name}
+                      onSelect={(num) => {
+                        change(f.type, num, "");
                       }}
                     />
                   );
-                } else {
+                if (f.types == "text")
+                  return (
+                    <FilterText
+                      key={i}
+                      title={f.name}
+                      ph={f.name}
+                      value={values[f.type]}
+                      onChange={(e) => {
+                        e.persist();
+                        change(f.type, e.target.value, "");
+                      }}
+                    />
+                  );
+
+                if (f.type == "committee") {
                   return (
                     typeId && (
-                      <ItemContainer
+                      <FilterSelect
                         key={i}
-                        className={"flex flex-col items-center justify-center"}
-                      >
-                        <FormLabel title={f.name} />
-                        <Select
-                          width="long"
-                          data={
-                            f.value.filter(
-                              (v) =>
-                                (f.parentId == v.parent &&
-                                  typeId[f.parentId] == v.parentId) ||
-                                v.id == "other"
-                            ).length > 0
-                              ? f.value.filter(
-                                  (v) =>
-                                    (f.parentId == v.parent &&
-                                      typeId[f.parentId] == v.parentId) ||
-                                    v.id == "other"
-                                )
-                              : est
-                                  .filter((fil) => fil.type == f.parentId)[0]
-                                  .value.filter(
-                                    (v) =>
-                                      v.id == "B2" ||
-                                      v.id == "B1" ||
-                                      parseInt(typeId[f.parentId]) >=
-                                        parseInt(v.id)
-                                  )
-                          }
-                          label={values[f.type] ?? f.name}
-                          Item={({ data, onClick, id, ...props }) => {
-                            return (
-                              <button
-                                {...props}
-                                onClick={(e) => {
-                                  e.persist();
-                                  change(f.type, data, id);
-                                  onClick();
-                                }}
-                              >
-                                {data}
-                                {props.children}
-                              </button>
-                            );
-                          }}
-                        />
-                        {typeId[f.type] == "other" ? (
-                          <Fragment>
-                            <Box h={4} />
-                            <Input
-                              ph={values[f.type]}
-                              onChange={(e) => {
-                                change(f.type, e.target.value, "");
+                        label={values[f.name] ?? f.name}
+                        title={f.name}
+                        data={
+                          typeId[f.parentId] != "country"
+                            ? Committee
+                            : f.value.filter(
+                                (v) => v.parentId == typeId[v.parent]
+                              )
+                        }
+                        Item={({ data, onClick, id, ...props }) => {
+                          return (
+                            <button
+                              {...props}
+                              onClick={(e) => {
+                                e.persist();
+                                change(f.type, data, "");
+                                onClick();
                               }}
-                              value={
-                                values[f.type] != "Бусад" ? values[f.type] : ""
-                              }
-                            />
-                          </Fragment>
-                        ) : (
-                          <Box />
-                        )}
-                      </ItemContainer>
+                            >
+                              {data}
+                              {props.children}
+                            </button>
+                          );
+                        }}
+                      />
                     )
                   );
                 }
-            })}
-          {estimate.categoryId && (
-            <ItemContainer className="mx-auto">
-              <FormLabel title={"Гэрчилгээний хуулбар"} />
-              <form action="">
-                <input
-                  type="file"
-                  name="upload"
-                  accept="application/pdf"
-                  className="bg-blue-100 cursor-pointer "
-                  // ref={hiddenFileInput}
-                  // style={{ display: "none" }}
-                  onChange={(e) => {
-                    setEstimate((prev) => ({
-                      ...prev,
-                      file: e.target.files[0],
-                    }));
-                  }}
-                />
-              </form>
-            </ItemContainer>
-          )}
+                if (f.types == "dropdown")
+                  if (f.parentId == null) {
+                    return (
+                      <FilterSelect
+                        key={i}
+                        title={f.name}
+                        data={f.value}
+                        label={values[f.type] ?? f.name}
+                        Item={({ data, onClick, id, ...props }) => {
+                          return (
+                            <button
+                              {...props}
+                              onClick={(e) => {
+                                e.persist();
+                                change(f.type, data, id);
+                                onClick();
+                              }}
+                            >
+                              {data}
+                              {props.children}
+                            </button>
+                          );
+                        }}
+                      />
+                    );
+                  } else {
+                    return (
+                      typeId && (
+                        <ItemContainer
+                          key={i}
+                          className={
+                            "flex flex-col items-center justify-center"
+                          }
+                        >
+                          <FormLabel title={f.name} />
+                          <Select
+                            width="long"
+                            data={
+                              f.value.filter(
+                                (v) =>
+                                  (f.parentId == v.parent &&
+                                    typeId[f.parentId] == v.parentId) ||
+                                  v.id == "other"
+                              ).length > 0
+                                ? f.value.filter(
+                                    (v) =>
+                                      (f.parentId == v.parent &&
+                                        typeId[f.parentId] == v.parentId) ||
+                                      v.id == "other"
+                                  )
+                                : est
+                                    .filter((fil) => fil.type == f.parentId)[0]
+                                    .value.filter(
+                                      (v) =>
+                                        v.id == "B2" ||
+                                        v.id == "B1" ||
+                                        parseInt(typeId[f.parentId]) >=
+                                          parseInt(v.id)
+                                    )
+                            }
+                            label={values[f.type] ?? f.name}
+                            Item={({ data, onClick, id, ...props }) => {
+                              return (
+                                <button
+                                  {...props}
+                                  onClick={(e) => {
+                                    e.persist();
+                                    change(f.type, data, id);
+                                    onClick();
+                                  }}
+                                >
+                                  {data}
+                                  {props.children}
+                                </button>
+                              );
+                            }}
+                          />
+                          {typeId[f.type] == "other" ? (
+                            <Fragment>
+                              <Box h={4} />
+                              <Input
+                                ph={values[f.type]}
+                                onChange={(e) => {
+                                  change(f.type, e.target.value, "");
+                                }}
+                                value={
+                                  values[f.type] != "Бусад"
+                                    ? values[f.type]
+                                    : ""
+                                }
+                              />
+                            </Fragment>
+                          ) : (
+                            <Box />
+                          )}
+                        </ItemContainer>
+                      )
+                    );
+                  }
+              })}
+            {estimate.categoryId && (
+              <ItemContainer className="mx-auto">
+                <FormLabel title={"Гэрчилгээний хуулбар"} />
+                <form action="">
+                  <input
+                    type="file"
+                    name="upload"
+                    accept="application/pdf"
+                    className="bg-blue-100 cursor-pointer "
+                    onChange={(e) => {
+                      setEstimate((prev) => ({
+                        ...prev,
+                        file: e.target.files[0],
+                      }));
+                    }}
+                  />
+                </form>
+              </ItemContainer>
+            )}
+          </div>
 
-          <Button className="px-10 mx-auto" onClick={() => sendEstimate()}>
-            Нэмэх
-          </Button>
+          <a href="#items">
+            <Button
+              className="flex flex-col gap-1 px-10 mx-auto"
+              // onClick={() => sendEstimate()}
+            >
+              <span>Нэмэх</span>
+              <BsChevronDoubleDown className="w-3 h-3 animate-bounce" />
+            </Button>
+          </a>
         </div>
-        <div className="grid  grid-cols-4 gap-2 mt-6 p-5 flex-col  w-[93%] -translate-y-16 mx-10 bg-white shadow-xl   xl:w-[70%] rounded-3xl">
+        <div
+          id="items"
+          className="grid grid-cols-4 gap-2 mt-6 p-5 flex-col  w-[93%] -translate-y-16 mx-10 bg-white shadow-xl   xl:w-[70%] rounded-3xl"
+        >
           <EstimatorModal />
           <Button
             className={mergeNames(
               STYLES.blueButton,
               "mx-auto col-span-full px-10"
             )}
+            onClick={() => sendEstimate()}
           >
             Илгээх
           </Button>
