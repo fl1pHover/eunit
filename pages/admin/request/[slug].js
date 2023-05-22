@@ -1,28 +1,31 @@
-import FilterAd from '@/components/Profile/filterAd';
-import urls from '@/constants/api';
-import { STYLES, brk } from '@/styles/index';
-import CustomToast from '@/util/customToast';
+import FilterAd from "@/components/Profile/filterAd";
+import urls from "@/constants/api";
+import { STYLES, brk } from "@/styles/index";
+import CustomToast from "@/util/customToast";
+// import { saveAs } from "file-saver";
+// import XlsxPopulate from "xlsx-populate";
 
-import mergeNames from '@/util/mergeNames';
-import { Button, Radio, RadioGroup, useToast } from '@chakra-ui/react';
-import axios from 'axios';
-import { getCookie } from 'cookies-next';
+import mergeNames from "@/util/mergeNames";
+import { Button, Radio, RadioGroup, useToast } from "@chakra-ui/react";
+import axios from "axios";
+import { getCookie } from "cookies-next";
 
-import { useRouter } from 'next/router';
-import { Fragment, useEffect, useState } from 'react';
-import { MdDelete, MdOutlineArrowDropDownCircle } from 'react-icons/md';
-import { SiVerizon } from 'react-icons/si';
-import { useSelector } from 'react-redux';
+import { useRouter } from "next/router";
+import { Fragment, useEffect, useState } from "react";
+import { MdDelete, MdOutlineArrowDropDownCircle } from "react-icons/md";
+import { SiVerizon } from "react-icons/si";
+import { useSelector } from "react-redux";
+
 const Tab = ({ num, children }) => {
-  const [activeTab, setActiveTab] = useState('');
+  const [activeTab, setActiveTab] = useState("");
   const handleClick = (event) => {
     setActiveTab(event.target.id);
   };
   return (
     <p
       className={mergeNames(
-        'flex justify-between py-2 font-bold cursor-pointer',
-        activeTab === num ? 'text-green-200' : 'text-red-200'
+        "flex justify-between py-2 font-bold cursor-pointer",
+        activeTab === num ? "text-green-200" : "text-red-200"
       )}
       onClick={() => setActiveTab(num)}
     >
@@ -35,10 +38,10 @@ const RequestAds = () => {
   const [ads, setAds] = useState({ ads: [], limit: 0 });
   const [data, setData] = useState({ ads: [], limit: 0 });
 
-  const token = getCookie('token');
+  const token = getCookie("token");
   const { user } = useSelector((state) => state.user);
 
-  const [check, setCheck] = useState('all');
+  const [check, setCheck] = useState("all");
   const [category, setCategory] = useState([]);
   const [subCategory, setSubCategory] = useState([]);
 
@@ -48,7 +51,7 @@ const RequestAds = () => {
 
   const getAds = async (status, n) => {
     await axios
-      .get(`${urls['test']}/ad/admin/all/${n ?? num}/${status}`, {
+      .get(`${urls["test"]}/ad/admin/all/${n ?? num}/${status}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -81,9 +84,9 @@ const RequestAds = () => {
   };
   useEffect(() => {
     if (user) {
-      if (user.userType == 'admin' || user.userType) {
+      if (user.userType == "admin" || user.userType) {
       } else {
-        router.push('/');
+        router.push("/");
       }
       getAds(check);
     } else {
@@ -100,19 +103,19 @@ const RequestAds = () => {
       await axios
         .get(
           `${
-            urls['test']
-          }/ad/update/${id}/created/show/{message}?message=${' '}`,
+            urls["test"]
+          }/ad/update/${id}/created/show/{message}?message=${" "}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
-              'Access-Control-Allow-Headers': '*',
+              "Access-Control-Allow-Headers": "*",
             },
           }
         )
         .then((d) => {
           toast({
-            title: `${d?.data?.num ?? ''}-р зарыг нэмлээ.`,
-            status: 'success',
+            title: `${d?.data?.num ?? ""}-р зарыг нэмлээ.`,
+            status: "success",
             duration: 3000,
             isClosable: true,
           });
@@ -124,26 +127,50 @@ const RequestAds = () => {
   const deleteAd = async (id) => {
     await axios
       .get(
-        `${urls['test']}/ad/update/${id}/deleted/hide/{message}?message=%20`,
+        `${urls["test"]}/ad/update/${id}/deleted/hide/{message}?message=%20`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
-            'Access-Control-Allow-Headers': '*',
+            "Access-Control-Allow-Headers": "*",
           },
         }
       )
       .then((d) => {
         toast({
-          title: `${d?.data?.num ?? ''} Зарыг устгалаа.`,
-          status: 'warning',
+          title: `${d?.data?.num ?? ""} Зарыг устгалаа.`,
+          status: "warning",
           duration: 3000,
           isClosable: true,
         });
       });
   };
-  const exportExcel = (data) => {};
-  const [content, setContent] = useState('');
-  const [collapsedId, setCollapsed] = useState(false);
+  const getSheetData = (data) => {
+    let fields = Object.keys(data[0]);
+    let sheetData = data.map((row) => {
+      return fields.map((field) => {
+        return row[field] ? row[field] : "";
+      });
+    });
+    return sheetData;
+  };
+  const exportExcel = async () => {
+    let data = [];
+    // const XlsxPopulate = require("xlsx-populate");
+    // const { saveAs } = require("file-saver");
+    // await axios.get(`${urls["test"]}/ad/json/all`).then((d) => (data = d.data));
+    // XlsxPopulate.fromBlankAsync().then(async (workbook) => {
+    //   data.map((d) => {
+    //     const sheet = workbook.sheet(d.id);
+
+    //     const sheetData = getSheetData(d.ads);
+    //     sheet.cell("A1").value(sheetData);
+    //   });
+    //   return workbook.outputAsync().then((res) => {
+    //     saveAs(res, "file.xlsx");
+    //   });
+    // });
+  };
+
   const adStatusChecker = async () => {
     getAds;
   };
@@ -158,12 +185,12 @@ const RequestAds = () => {
               <Button onClick={() => deleteAd(a._id)}>delete</Button> */}
           {/* {content && <> {content} </>} */}
 
-          <div className={mergeNames('flex flex-col gap-4 mt-5', brk)}>
+          <div className={mergeNames("flex flex-col gap-4 mt-5", brk)}>
             <div className="flex w-full gap-4">
               <FilterAd
                 plc="Бүх төрөл"
                 onChange={(e) => {
-                  if (e.target.value != '') {
+                  if (e.target.value != "") {
                     let ad = data.ads.filter(
                       (d) => d.category.name == e.target.value
                     );
@@ -187,7 +214,7 @@ const RequestAds = () => {
               <FilterAd
                 plc="Бүх дэд төрөл"
                 onChange={(e) => {
-                  if (e.target.value != '') {
+                  if (e.target.value != "") {
                     let ad = data.ads.filter(
                       (d) => d.subCategory.name == e.target.value
                     );
@@ -215,8 +242,8 @@ const RequestAds = () => {
                 className="font-bold text-green-400 whitespace-nowrap"
                 onChange={(e) => {
                   if (e.target.checked) {
-                    getAds('created', 0);
-                    setCheck('created');
+                    getAds("created", 0);
+                    setCheck("created");
                     setNum(0);
                   }
                 }}
@@ -229,9 +256,9 @@ const RequestAds = () => {
                 className="font-bold text-yellow-400 whitespace-nowrap"
                 onChange={(e) => {
                   if (e.target.checked) {
-                    getAds('pending', 0);
+                    getAds("pending", 0);
                     setNum(0);
-                    setCheck('pending');
+                    setCheck("pending");
                   }
                 }}
                 value="2"
@@ -243,8 +270,8 @@ const RequestAds = () => {
                 className="font-bold text-primary whitespace-nowrap"
                 onChange={(e) => {
                   if (e.target.checked) {
-                    getAds('returned');
-                    setCheck('returned');
+                    getAds("returned");
+                    setCheck("returned");
                   }
                 }}
                 value="3"
@@ -287,7 +314,7 @@ const RequestAds = () => {
                           as="a"
                           className={mergeNames(
                             STYLES.blueButton,
-                            'text-sm h-[30px]'
+                            "text-sm h-[30px]"
                           )}
                           target="_blank"
                           href={`/ad/${a.num}`}
@@ -301,20 +328,20 @@ const RequestAds = () => {
                       </td>
                       <td
                         className={mergeNames(
-                          'truncate ... font-bold',
-                          a.adType == 'special' && 'text-purple-900',
-                          a.adType == 'default' && 'text-primary'
+                          "truncate ... font-bold",
+                          a.adType == "special" && "text-purple-900",
+                          a.adType == "default" && "text-primary"
                         )}
                       >
                         {a.adType}
                       </td>
                       <td
                         className={mergeNames(
-                          'truncate ... font-bold',
-                          a.adStatus == 'special' && 'text-yellow-400',
-                          a.adStatus == 'created' && 'text-green-500',
-                          a.adStatus == 'pending' && 'text-yellow-500',
-                          a.adStatus == 'default' && 'text-primary'
+                          "truncate ... font-bold",
+                          a.adStatus == "special" && "text-yellow-400",
+                          a.adStatus == "created" && "text-green-500",
+                          a.adStatus == "pending" && "text-yellow-500",
+                          a.adStatus == "default" && "text-primary"
                         )}
                       >
                         {a.adStatus}
@@ -322,7 +349,7 @@ const RequestAds = () => {
                       <td>
                         <div
                           className={mergeNames(
-                            'flex flex-row justify-between'
+                            "flex flex-row justify-between"
                             // 'p-2 rounded-md bg-white',
                           )}
                         >
@@ -338,25 +365,25 @@ const RequestAds = () => {
                           >
                             <MdOutlineArrowDropDownCircle
                               className={mergeNames(
-                                expand == i + 1 ? 'text-blue-600 ' : ''
+                                expand == i + 1 ? "text-blue-600 " : ""
                               )}
                             />
                           </button>
                           <div
                             className={mergeNames(
-                              expand == i + 1 ? 'flex' : 'hidden',
-                              'justify-center  flex-end  gap-2'
+                              expand == i + 1 ? "flex" : "hidden",
+                              "justify-center  flex-end  gap-2"
                             )}
                             onClick={() => {
                               setExpand(0);
                             }}
                           >
-                            {a.adStatus != 'created' && (
+                            {a.adStatus != "created" && (
                               <CustomToast
                                 // status="error"
                                 className={mergeNames(
                                   STYLES.button,
-                                  'bg-teal-500 justify-center w-7 h-7 '
+                                  "bg-teal-500 justify-center w-7 h-7 "
                                 )}
                                 toastH="Амжилттай нэмэгдлээ"
                                 onclick={() => verify(a._id)}
@@ -369,7 +396,7 @@ const RequestAds = () => {
                               // status="error"
                               className={mergeNames(
                                 STYLES.button,
-                                'bg-red-500 w-7 h-7 justify-center'
+                                "bg-red-500 w-7 h-7 justify-center"
                               )}
                               toastH="Амжилттай устгагдлаа"
                               onclick={() => deleteAd(a._id)}

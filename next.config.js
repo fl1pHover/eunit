@@ -4,6 +4,7 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+
   // webp: {
   //   preset: 'default',
   //   quality: 100,
