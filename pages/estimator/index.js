@@ -1,27 +1,24 @@
 import FilterDate, {
   FilterSelect,
   FilterText,
-  FilterYear,
 } from "@/components/createAd/filters";
 import ButtonSelectItem from "@/components/createAd/formButtonSelectItem";
 import FormLabel from "@/components/createAd/formLabel";
-import Step1 from "@/components/createAd/step1";
+
 import FieldCategory from "@/components/createAd/step1/fieldCategory";
-import FieldSellType from "@/components/createAd/step1/fieldSellType";
-import FieldSubCategory from "@/components/createAd/step1/fieldSubCategory";
+
 import { ItemContainer } from "@/components/createAd/step4";
 import urls from "@/constants/api";
 import { Committee } from "@/constants/enums";
-import { categories } from "@/data/categories";
-import { Container, ContainerX } from "@/lib/Container";
+
 import Input from "@/lib/Input";
 import Select from "@/lib/Select";
-import { STYLES, TEXT } from "@/styles/index";
+import { STYLES } from "@/styles/index";
 import CustomModal from "@/util/CustomModal";
 import mergeNames from "@/util/mergeNames";
 
 import useEstimate from "@/util/useEstimate";
-import { Button, Heading, useDisclosure, useToast } from "@chakra-ui/react";
+import { Button, useDisclosure, useToast } from "@chakra-ui/react";
 import axios from "axios";
 import { getCookie } from "cookies-next";
 import { useRouter } from "next/router";
@@ -29,7 +26,7 @@ import React from "react";
 import { Fragment } from "react";
 import { useState } from "react";
 import { useEffect } from "react";
-import { useMemo } from "react";
+
 import { BsChevronDoubleDown } from "react-icons/bs";
 import { useSelector } from "react-redux";
 
@@ -39,7 +36,8 @@ const Estimator = ({}) => {
     subCategoryId: "",
     file: [],
   });
-  const [values, change, typeId] = useEstimate();
+  const [estimates, setEstimates] = useState([]);
+  const [values, change, typeId, clear] = useEstimate();
   const [est, setEst] = useState([]);
   const toast = useToast();
   const router = useRouter();
@@ -56,63 +54,104 @@ const Estimator = ({}) => {
       console.error(error?.message);
     }
   };
-
-  const sendEstimate = async () => {
-    try {
-      let file = "";
-      let fileUrl = new FormData();
-      let filters = [];
-      est.map((v) => {
+  const checker = (filters) => {
+    return (
+      filters == est.length &&
+      estimate.file.length != 0 &&
+      estimate.categoryId != "" &&
+      estimate.subCategoryId != ""
+    );
+  };
+  const addEstimate = () => {
+    let filters = [];
+    est.map((v) => {
+      if (values[v.type] != "" || values[v.type] != undefined)
         filters.push({
           name: v.name,
           id: v.type,
           value: values[v.type],
           type: v.types,
         });
+    });
+    if (checker(filters.length)) {
+      setEstimates((prev) => [
+        ...prev,
+        {
+          file: estimate.file,
+          items: filters,
+          subCategory: estimate.subCategoryId,
+          category: categories[estimate.categoryId]._id,
+          sellType: "sell",
+          status: "pending",
+        },
+      ]);
+      setEstimate({ categoryId: "", subCategoryId: "", file: [] });
+      clear();
+    } else {
+      toast({
+        title: "Та бүх талбарыг бөглөнө үү.",
+        status: "warning",
+        duration: 2000,
+        isClosable: true,
       });
-
-      fileUrl.append("images", estimate.file);
-      await axios
-        .post(`${urls["test"]}/ad/uploadFields`, fileUrl, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Access-Control-Allow-Headers": "*",
-          },
-        })
-        .then((d) => {
-          file = d.data[0];
-        });
-      await axios
-        .post(
-          `${urls["test"]}/estimate`,
-          {
-            file: file,
-            subCategory: estimate.subCategoryId,
-            category: categories[estimate.categoryId]._id,
-            sellType: "sell",
-            items: filters,
-            status: "pending",
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Access-Control-Allow-Headers": "*",
-              charset: "UTF-8",
-            },
-          }
-        )
-        .then((d) => {
-          toast({
-            title: "Амжилттай нэмэгдлээ.",
-            status: "success",
-            duration: 1000,
-            isClosable: true,
-          });
-          router.reload();
-        });
-    } catch (error) {
-      console.error(error?.message);
     }
+  };
+
+  const sendEstimate = async () => {
+    if (estimates.length == 0) addEstimate();
+    let count = 0;
+    if (estimates.length > 0) {
+      estimates.map(async (e) => {
+        try {
+          let file = "";
+          let fileUrl = new FormData();
+
+          fileUrl.append("images", e.file);
+          await axios
+            .post(`${urls["test"]}/ad/uploadFields`, fileUrl, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Access-Control-Allow-Headers": "*",
+              },
+            })
+            .then((d) => {
+              file = d.data[0];
+            });
+          await axios
+            .post(
+              `${urls["test"]}/estimate`,
+              {
+                file: file,
+                subCategory: e.subCategory,
+                category: e.category,
+                sellType: "sell",
+                items: e.items,
+                status: "pending",
+              },
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                  "Access-Control-Allow-Headers": "*",
+                  charset: "UTF-8",
+                },
+              }
+            )
+            .then((d) => {
+              count++;
+              console.log(d.data);
+              toast({
+                title: "Амжилттай нэмэгдлээ.",
+                status: "success",
+                duration: 1000,
+                isClosable: true,
+              });
+            });
+        } catch (error) {
+          console.error(error?.message);
+        }
+      });
+    }
+    if (estimates.length == count) setEstimates([]);
   };
 
   useEffect(() => {
@@ -384,38 +423,57 @@ const Estimator = ({}) => {
             )}
           </div>
 
-          <a href="#items">
-            <Button
-              className="flex flex-col gap-1 px-10 mx-auto"
-              // onClick={() => sendEstimate()}
-            >
-              <span>Нэмэх</span>
-              <BsChevronDoubleDown className="w-3 h-3 animate-bounce" />
-            </Button>
-          </a>
-        </div>
-        <div
-          id="items"
-          className="grid grid-cols-4 gap-2 mt-6 p-5 flex-col  w-[93%] -translate-y-16 mx-10 bg-white shadow-xl   xl:w-[70%] rounded-3xl"
-        >
-          <EstimatorModal />
-          <Button
-            className={mergeNames(
-              STYLES.blueButton,
-              "mx-auto col-span-full px-10"
+          <div className="flex col-span-full">
+            <a href="#items">
+              <Button
+                className="flex flex-col gap-1 px-10 mx-auto"
+                onClick={() => addEstimate()}
+              >
+                <span>Нэмэх</span>
+                <BsChevronDoubleDown className="w-3 h-3 animate-bounce" />
+              </Button>
+            </a>
+            {estimates.length == 0 && (
+              <Button
+                className={mergeNames(
+                  STYLES.blueButton,
+                  "mx-auto col-span-full px-10"
+                )}
+                onClick={() => sendEstimate()}
+              >
+                Илгээх
+              </Button>
             )}
-            onClick={() => sendEstimate()}
-          >
-            Илгээх
-          </Button>
+          </div>
         </div>
+        {estimates.length > 0 && (
+          <div
+            id="items"
+            className="grid grid-cols-4 gap-2 mt-6 p-5 flex-col  w-[93%] -translate-y-16 mx-10 bg-white shadow-xl   xl:w-[70%] rounded-3xl"
+          >
+            {estimates.map((est, i) => {
+              return <EstimatorModal est={est} key={i} />;
+            })}
+            <Button
+              className={mergeNames(
+                STYLES.blueButton,
+                "mx-auto col-span-full px-10"
+              )}
+              onClick={() => sendEstimate()}
+            >
+              Илгээх
+            </Button>
+          </div>
+        )}
       </div>
     </section>
   );
 };
 
-const EstimatorModal = () => {
+const EstimatorModal = ({ est }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { categories } = useSelector((state) => state.categories);
+
   return (
     <CustomModal
       isOpen={isOpen}
@@ -432,8 +490,21 @@ const EstimatorModal = () => {
     >
       <div className="flex flex-col">
         <div className="flex gap-2">
-          <h2>Төрөл:</h2>
-          <h2>Lorem ipsum dolor sit</h2>
+          <h2>
+            Төрөл:{categories.filter((c) => c._id == est.category)?.[0]?.name}
+          </h2>
+          <h2>
+            Дэд төрөл:
+            {categories.filter((c) => c._id == est.subCategory)?.[0]?.name}
+          </h2>
+          {est?.items?.map((item, i) => {
+            return (
+              <h2>
+                {item.name}:{item.value}
+              </h2>
+            );
+          })}
+          <h2>{JSON.stringify(est.file)}</h2>
         </div>
       </div>
     </CustomModal>

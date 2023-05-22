@@ -11,6 +11,10 @@ export const useEstimate = () => {
       setId((prev) => ({ ...prev, [name]: type }));
     }
   };
-  return [state, handle, id];
+  const clear = () => {
+    setState({});
+    setId({});
+  };
+  return [state, handle, id, clear];
 };
 export default useEstimate;
