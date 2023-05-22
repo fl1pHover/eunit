@@ -15,6 +15,7 @@ import Input from "@/lib/Input";
 import Select from "@/lib/Select";
 import { STYLES } from "@/styles/index";
 import CustomModal from "@/util/CustomModal";
+import { InfoIcon } from "@/util/Icons";
 import mergeNames from "@/util/mergeNames";
 
 import useEstimate from "@/util/useEstimate";
@@ -421,9 +422,14 @@ const Estimator = ({}) => {
                 </form>
               </ItemContainer>
             )}
+            <p className="flex items-center justify-center gap-1 col-span-full">
+              <InfoIcon className="text-lg" />
+              Нэмэх товч дээр даран олон үнэлгээний мэдээллийг нэг дор илгээх
+              боломжтой.
+            </p>
           </div>
 
-          <div className="flex col-span-full">
+          <div className="flex justify-center w-full gap-4 col-span-full">
             <a href="#items">
               <Button
                 className="flex flex-col gap-1 px-10 mx-auto"
@@ -435,10 +441,7 @@ const Estimator = ({}) => {
             </a>
             {estimates.length == 0 && (
               <Button
-                className={mergeNames(
-                  STYLES.blueButton,
-                  "mx-auto col-span-full px-10"
-                )}
+                className={mergeNames(STYLES.blueButton, "  px-10")}
                 onClick={() => sendEstimate()}
               >
                 Илгээх
@@ -452,7 +455,7 @@ const Estimator = ({}) => {
             className="grid grid-cols-4 gap-2 mt-6 p-5 flex-col  w-[93%] -translate-y-16 mx-10 bg-white shadow-xl   xl:w-[70%] rounded-3xl"
           >
             {estimates.map((est, i) => {
-              return <EstimatorModal est={est} key={i} />;
+              return <EstimatorModal est={est} key={i} index={i + 1} />;
             })}
             <Button
               className={mergeNames(
@@ -470,7 +473,7 @@ const Estimator = ({}) => {
   );
 };
 
-const EstimatorModal = ({ est }) => {
+const EstimatorModal = ({ est, index }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { categories } = useSelector((state) => state.categories);
 
@@ -482,29 +485,42 @@ const EstimatorModal = ({ est }) => {
       btnClose2={"Буцах"}
       className=""
       btnOpen={
-        <div className="w-full bg-blue-200 h-[100px] relative grid place-items-center ">
-          <h2>{"1"}</h2>
+        <div className="w-full bg-blue-200 animate-pulse rounded-md h-[100px] relative grid place-items-center ">
+          <h2>Үнэлгээ мэдээлэл: {index}</h2>
         </div>
       }
       header="Үнэлгээ хийлгэх хөрөнгийн мэдээлэл"
     >
       <div className="flex flex-col">
-        <div className="flex gap-2">
+        <div className="grid grid-cols-2 gap-3 text-lg ">
           <h2>
-            Төрөл:{categories.filter((c) => c._id == est.category)?.[0]?.name}
+            Төрөл:&nbsp;
+            <span className="font-semibold">
+              {categories.filter((c) => c._id == est.category)?.[0]?.name}
+            </span>
           </h2>
           <h2>
-            Дэд төрөл:
-            {categories.filter((c) => c._id == est.subCategory)?.[0]?.name}
+            Дэд төрөл:&nbsp;
+            <span className="font-semibold">
+              {categories.filter((c) => c._id == est.subCategory)?.[0]?.name}{" "}
+            </span>
           </h2>
+
+          {/* medeelel */}
           {est?.items?.map((item, i) => {
             return (
               <h2>
-                {item.name}:{item.value}
+                {item.name}:
+                <span className="font-semibold">&nbsp;{item.value} </span>
               </h2>
             );
           })}
-          <h2>{JSON.stringify(est.file)}</h2>
+          <h2>
+            Хавсаргасан файл: &nbsp;
+            <span className="font-semibold">
+              {JSON.stringify(est.file.name)}
+            </span>
+          </h2>
         </div>
       </div>
     </CustomModal>

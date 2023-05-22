@@ -1,3 +1,5 @@
+import { RiInformationLine } from "react-icons/ri";
+
 export function GoogleIcon({ size = "1em", props }) {
   return (
     <svg
@@ -47,3 +49,5 @@ export function FacebookIcon({ size = "1em", props }) {
     </svg>
   );
 }
+
+export const InfoIcon = (props) => <RiInformationLine {...props} />;
