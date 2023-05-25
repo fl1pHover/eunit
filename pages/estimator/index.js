@@ -493,7 +493,7 @@ const EstimatorModal = ({ est, index }) => {
           </h2>
           <button
             onClick={() => {
-              console.log("Ustgalaa);
+              console.log("Ustgalaa");
             }}
             className="absolute text-white transition-all bg-gray-500 rounded-full -bottom-2 -right-2 hover:bg-red-500"
           >

@@ -75,9 +75,12 @@ const EstimatedCard = ({ est }) => {
                 <h1>{est?.subCategory?.name ?? ""}</h1>
               </div>
               <div>
-                <p className="font-semibold">251,100 ₮</p>
+                <p className="font-semibold">
+                  {est.status == "pending" ? " " : "Value"}
+                </p>
               </div>
             </div>
+
             <div className="flex items-center justify-between w-full">
               <div className="text-sm">
                 <h1
