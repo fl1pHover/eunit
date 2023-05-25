@@ -1,6 +1,5 @@
-import React from "react";
-import CategoryButtonSelect from "@/components/createAd/categoryButtonSelect";
-import Line from "@/components/createAd/formLine";
+import CategoryButtonSelect from '@/components/createAd/categoryButtonSelect';
+import Line from '@/components/createAd/formLine';
 
 const FieldCategory = ({
   types = {},
@@ -27,6 +26,7 @@ const FieldCategory = ({
                       categoryName: item?.href,
                       subCategoryId: false,
                     }));
+                    console.log(types);
                   }}
                 />
               );
