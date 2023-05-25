@@ -27,6 +27,7 @@ import React from "react";
 import { Fragment } from "react";
 import { useState } from "react";
 import { useEffect } from "react";
+import { BiX } from "react-icons/bi";
 
 import { BsChevronDoubleDown } from "react-icons/bs";
 import { useSelector } from "react-redux";
@@ -485,8 +486,19 @@ const EstimatorModal = ({ est, index }) => {
       btnClose2={"Буцах"}
       className=""
       btnOpen={
-        <div className="w-full bg-blue-200 animate-pulse rounded-md h-[100px] relative grid place-items-center ">
-          <h2>Үнэлгээ мэдээлэл: {index}</h2>
+        <div className="w-full relative bg-blue-200 animate-pulse rounded-md h-[100px]  grid place-items-center ">
+          <h2 className="flex flex-col">
+            <span>Үнэлгээ мэдээлэл: {index}</span>
+            <span className="font-bold">ХАРАХ</span>
+          </h2>
+          <button
+            onClick={() => {
+              console.log("Ustgalaa);
+            }}
+            className="absolute text-white transition-all bg-gray-500 rounded-full -bottom-2 -right-2 hover:bg-red-500"
+          >
+            <BiX size={30} />
+          </button>
         </div>
       }
       header="Үнэлгээ хийлгэх хөрөнгийн мэдээлэл"
