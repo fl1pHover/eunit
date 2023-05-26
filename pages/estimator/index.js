@@ -1,41 +1,38 @@
 import FilterDate, {
   FilterSelect,
   FilterText,
-} from "@/components/createAd/filters";
-import ButtonSelectItem from "@/components/createAd/formButtonSelectItem";
-import FormLabel from "@/components/createAd/formLabel";
+} from '@/components/createAd/filters';
+import ButtonSelectItem from '@/components/createAd/formButtonSelectItem';
+import FormLabel from '@/components/createAd/formLabel';
 
-import FieldCategory from "@/components/createAd/step1/fieldCategory";
+import FieldCategory from '@/components/createAd/step1/fieldCategory';
 
-import { ItemContainer } from "@/components/createAd/step4";
-import urls from "@/constants/api";
-import { Committee } from "@/constants/enums";
+import { ItemContainer } from '@/components/createAd/step4';
+import urls from '@/constants/api';
+import { Committee } from '@/constants/enums';
 
-import Input from "@/lib/Input";
-import Select from "@/lib/Select";
-import { STYLES } from "@/styles/index";
-import CustomModal from "@/util/CustomModal";
-import { InfoIcon } from "@/util/Icons";
-import mergeNames from "@/util/mergeNames";
+import Input from '@/lib/Input';
+import Select from '@/lib/Select';
+import { STYLES } from '@/styles/index';
+import CustomModal from '@/util/CustomModal';
+import { InfoIcon } from '@/util/Icons';
+import mergeNames from '@/util/mergeNames';
 
-import useEstimate from "@/util/useEstimate";
-import { Button, useDisclosure, useToast } from "@chakra-ui/react";
-import axios from "axios";
-import { getCookie } from "cookies-next";
-import { useRouter } from "next/router";
-import React from "react";
-import { Fragment } from "react";
-import { useState } from "react";
-import { useEffect } from "react";
-import { BiX } from "react-icons/bi";
+import useEstimate from '@/util/useEstimate';
+import { Button, useDisclosure, useToast } from '@chakra-ui/react';
+import axios from 'axios';
+import { getCookie } from 'cookies-next';
+import { useRouter } from 'next/router';
+import { Fragment, useEffect, useState } from 'react';
+import { BiX } from 'react-icons/bi';
 
-import { BsChevronDoubleDown } from "react-icons/bs";
-import { useSelector } from "react-redux";
+import { BsChevronDoubleDown } from 'react-icons/bs';
+import { useSelector } from 'react-redux';
 
 const Estimator = ({}) => {
   const [estimate, setEstimate] = useState({
-    categoryId: "",
-    subCategoryId: "",
+    categoryId: '',
+    subCategoryId: '',
     file: [],
   });
   const [estimates, setEstimates] = useState([]);
@@ -43,12 +40,12 @@ const Estimator = ({}) => {
   const [est, setEst] = useState([]);
   const toast = useToast();
   const router = useRouter();
-  const token = getCookie("token");
+  const token = getCookie('token');
   const { categories } = useSelector((state) => state.categories);
   const getEstimate = async () => {
     try {
       await axios
-        .get(`${urls["test"]}/category/filters/6468e73ee15122dbb07a4364`)
+        .get(`${urls['test']}/category/filters/6468e73ee15122dbb07a4364`)
         .then((d) => {
           setEst(d.data?.steps?.[0]?.values ?? []);
         });
@@ -60,14 +57,14 @@ const Estimator = ({}) => {
     return (
       filters == est.length &&
       estimate.file.length != 0 &&
-      estimate.categoryId != "" &&
-      estimate.subCategoryId != ""
+      estimate.categoryId.length != 0 &&
+      estimate.subCategoryId.length != 0
     );
   };
   const addEstimate = () => {
     let filters = [];
     est.map((v) => {
-      if (values[v.type] != "" || values[v.type] != undefined)
+      if (values[v.type] != '' || values[v.type] != undefined)
         filters.push({
           name: v.name,
           id: v.type,
@@ -83,16 +80,16 @@ const Estimator = ({}) => {
           items: filters,
           subCategory: estimate.subCategoryId,
           category: categories[estimate.categoryId]._id,
-          sellType: "sell",
-          status: "pending",
+          sellType: 'sell',
+          status: 'pending',
         },
       ]);
-      setEstimate({ categoryId: "", subCategoryId: "", file: [] });
+      setEstimate({ categoryId: '', subCategoryId: '', file: [] });
       clear();
     } else {
       toast({
-        title: "Та бүх талбарыг бөглөнө үү.",
-        status: "warning",
+        title: 'Та бүх талбарыг бөглөнө үү.',
+        status: 'warning',
         duration: 2000,
         isClosable: true,
       });
@@ -105,15 +102,15 @@ const Estimator = ({}) => {
     if (estimates.length > 0) {
       estimates.map(async (e) => {
         try {
-          let file = "";
+          let file = '';
           let fileUrl = new FormData();
 
-          fileUrl.append("images", e.file);
+          fileUrl.append('images', e.file);
           await axios
-            .post(`${urls["test"]}/ad/uploadFields`, fileUrl, {
+            .post(`${urls['test']}/ad/uploadFields`, fileUrl, {
               headers: {
                 Authorization: `Bearer ${token}`,
-                "Access-Control-Allow-Headers": "*",
+                'Access-Control-Allow-Headers': '*',
               },
             })
             .then((d) => {
@@ -121,20 +118,20 @@ const Estimator = ({}) => {
             });
           await axios
             .post(
-              `${urls["test"]}/estimate`,
+              `${urls['test']}/estimate`,
               {
                 file: file,
                 subCategory: e.subCategory,
                 category: e.category,
-                sellType: "sell",
+                sellType: 'sell',
                 items: e.items,
-                status: "pending",
+                status: 'pending',
               },
               {
                 headers: {
                   Authorization: `Bearer ${token}`,
-                  "Access-Control-Allow-Headers": "*",
-                  charset: "UTF-8",
+                  'Access-Control-Allow-Headers': '*',
+                  charset: 'UTF-8',
                 },
               }
             )
@@ -142,8 +139,8 @@ const Estimator = ({}) => {
               count++;
               console.log(d.data);
               toast({
-                title: "Амжилттай нэмэгдлээ.",
-                status: "success",
+                title: 'Амжилттай нэмэгдлээ.',
+                status: 'success',
                 duration: 1000,
                 isClosable: true,
               });
@@ -179,12 +176,12 @@ const Estimator = ({}) => {
             <div className="w-full md:w-4/5 text-[18px] relative z-10 font-semibold ">
               <h1
                 className={mergeNames(
-                  "md:text-[50px] text-[40px] leading-[50px] mb-5"
+                  'md:text-[50px] text-[40px] leading-[50px] mb-5'
                 )}
               >
                 Хөрөнгийн үнэлгээ
               </h1>
-              <p className={mergeNames("md:text-lg text-base")}>
+              <p className={mergeNames('md:text-lg text-base')}>
                 Өөрийн хөрөнгийн үнэлгээг түргэн шуурхай мэдэж аваарай.
               </p>
             </div>
@@ -199,7 +196,7 @@ const Estimator = ({}) => {
             />
           </Box>
 
-          {estimate.categoryId && (
+          {estimate.categoryId.length != 0 && (
             <Box label="Хөрөнгийн дэд төрөл" className="justify-center">
               {categories?.map((item, key) => {
                 const isSelected = estimate.subCategoryId === item._id;
@@ -236,28 +233,28 @@ const Estimator = ({}) => {
               </>
             )}
           </Box> */}
+
           <div className="grid grid-cols-1 lg:grid-cols-2">
-            {est &&
-              estimate.categoryId &&
-              est.map((f, i) => {
+            {estimate.categoryId.length != 0 &&
+              est?.map((f, i) => {
                 if (
                   f.other == true &&
-                  f.value.find((v) => v.id == "other") == undefined
+                  f.value.find((v) => v.id == 'other') == undefined
                 )
-                  f.value.push({ id: "other", value: "Бусад" });
+                  f.value.push({ id: 'other', value: 'Бусад' });
 
-                if (f.types == "date")
+                if (f.types == 'date')
                   return (
                     <FilterDate
                       key={i}
                       title={f.name}
                       name={f.name}
                       onSelect={(num) => {
-                        change(f.type, num, "");
+                        change(f.type, num, '');
                       }}
                     />
                   );
-                if (f.types == "text")
+                if (f.types == 'text')
                   return (
                     <FilterText
                       key={i}
@@ -266,12 +263,12 @@ const Estimator = ({}) => {
                       value={values[f.type]}
                       onChange={(e) => {
                         e.persist();
-                        change(f.type, e.target.value, "");
+                        change(f.type, e.target.value, '');
                       }}
                     />
                   );
 
-                if (f.type == "committee") {
+                if (f.type == 'committee') {
                   return (
                     typeId && (
                       <FilterSelect
@@ -279,7 +276,7 @@ const Estimator = ({}) => {
                         label={values[f.name] ?? f.name}
                         title={f.name}
                         data={
-                          typeId[f.parentId] != "country"
+                          typeId[f.parentId] != 'country'
                             ? Committee
                             : f.value.filter(
                                 (v) => v.parentId == typeId[v.parent]
@@ -291,7 +288,7 @@ const Estimator = ({}) => {
                               {...props}
                               onClick={(e) => {
                                 e.persist();
-                                change(f.type, data, "");
+                                change(f.type, data, '');
                                 onClick();
                               }}
                             >
@@ -304,7 +301,7 @@ const Estimator = ({}) => {
                     )
                   );
                 }
-                if (f.types == "dropdown")
+                if (f.types == 'dropdown')
                   if (f.parentId == null) {
                     return (
                       <FilterSelect
@@ -335,7 +332,7 @@ const Estimator = ({}) => {
                         <ItemContainer
                           key={i}
                           className={
-                            "flex flex-col items-center justify-center"
+                            'flex flex-col items-center justify-center'
                           }
                         >
                           <FormLabel title={f.name} />
@@ -346,20 +343,20 @@ const Estimator = ({}) => {
                                 (v) =>
                                   (f.parentId == v.parent &&
                                     typeId[f.parentId] == v.parentId) ||
-                                  v.id == "other"
+                                  v.id == 'other'
                               ).length > 0
                                 ? f.value.filter(
                                     (v) =>
                                       (f.parentId == v.parent &&
                                         typeId[f.parentId] == v.parentId) ||
-                                      v.id == "other"
+                                      v.id == 'other'
                                   )
                                 : est
                                     .filter((fil) => fil.type == f.parentId)[0]
                                     .value.filter(
                                       (v) =>
-                                        v.id == "B2" ||
-                                        v.id == "B1" ||
+                                        v.id == 'B2' ||
+                                        v.id == 'B1' ||
                                         parseInt(typeId[f.parentId]) >=
                                           parseInt(v.id)
                                     )
@@ -381,18 +378,18 @@ const Estimator = ({}) => {
                               );
                             }}
                           />
-                          {typeId[f.type] == "other" ? (
+                          {typeId[f.type] == 'other' ? (
                             <Fragment>
                               <Box h={4} />
                               <Input
                                 ph={values[f.type]}
                                 onChange={(e) => {
-                                  change(f.type, e.target.value, "");
+                                  change(f.type, e.target.value, '');
                                 }}
                                 value={
-                                  values[f.type] != "Бусад"
+                                  values[f.type] != 'Бусад'
                                     ? values[f.type]
-                                    : ""
+                                    : ''
                                 }
                               />
                             </Fragment>
@@ -404,9 +401,9 @@ const Estimator = ({}) => {
                     );
                   }
               })}
-            {estimate.categoryId && (
+            {estimate.categoryId.length != 0 && (
               <ItemContainer className="mx-auto">
-                <FormLabel title={"Гэрчилгээний хуулбар"} />
+                <FormLabel title={'Гэрчилгээний хуулбар'} />
                 <form action="">
                   <input
                     type="file"
@@ -442,7 +439,7 @@ const Estimator = ({}) => {
             </a>
             {estimates.length == 0 && (
               <Button
-                className={mergeNames(STYLES.blueButton, "  px-10")}
+                className={mergeNames(STYLES.blueButton, '  px-10')}
                 onClick={() => sendEstimate()}
               >
                 Илгээх
@@ -456,12 +453,20 @@ const Estimator = ({}) => {
             className="grid grid-cols-4 gap-2 mt-6 p-5 flex-col  w-[93%] -translate-y-16 mx-10 bg-white shadow-xl   xl:w-[70%] rounded-3xl"
           >
             {estimates.map((est, i) => {
-              return <EstimatorModal est={est} key={i} index={i + 1} />;
+              return (
+                <EstimatorModal
+                  est={est}
+                  key={i}
+                  index={i + 1}
+                  setEstimates={setEstimates}
+                  estimates={estimates}
+                />
+              );
             })}
             <Button
               className={mergeNames(
                 STYLES.blueButton,
-                "mx-auto col-span-full px-10"
+                'mx-auto col-span-full px-10'
               )}
               onClick={() => sendEstimate()}
             >
@@ -474,7 +479,7 @@ const Estimator = ({}) => {
   );
 };
 
-const EstimatorModal = ({ est, index }) => {
+const EstimatorModal = ({ est, index, estimates, setEstimates }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { categories } = useSelector((state) => state.categories);
 
@@ -483,7 +488,7 @@ const EstimatorModal = ({ est, index }) => {
       isOpen={isOpen}
       onClose={onClose}
       onOpen={onOpen}
-      btnClose2={"Буцах"}
+      btnClose2={'Буцах'}
       className=""
       btnOpen={
         <div className="w-full relative bg-blue-200 animate-pulse rounded-md h-[100px]  grid place-items-center ">
@@ -493,7 +498,8 @@ const EstimatorModal = ({ est, index }) => {
           </h2>
           <button
             onClick={() => {
-              console.log("Ustgalaa");
+              let e = estimates.filter((e, i) => i != index - 1);
+              setEstimates(e);
             }}
             className="absolute text-white transition-all bg-gray-500 rounded-full -bottom-2 -right-2 hover:bg-red-500"
           >
@@ -514,7 +520,7 @@ const EstimatorModal = ({ est, index }) => {
           <h2>
             Дэд төрөл:&nbsp;
             <span className="font-semibold">
-              {categories.filter((c) => c._id == est.subCategory)?.[0]?.name}{" "}
+              {categories.filter((c) => c._id == est.subCategory)?.[0]?.name}{' '}
             </span>
           </h2>
 
@@ -546,7 +552,7 @@ const Box = ({ children, className, label }) => {
         {label}
       </h1>
       <div
-        className={mergeNames("flex gap-3 flex-wrap w-full mx-auto", className)}
+        className={mergeNames('flex gap-3 flex-wrap w-full mx-auto', className)}
       >
         {children}
       </div>
@@ -561,7 +567,7 @@ const GridBox = ({ children, className, label }) => {
       </h1>
       <div
         className={mergeNames(
-          "grid grid-cols-1 md:grid-cols-2 gap-3 w-full ",
+          'grid grid-cols-1 md:grid-cols-2 gap-3 w-full ',
           className
         )}
       >
