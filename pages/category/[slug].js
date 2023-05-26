@@ -73,7 +73,6 @@ const Category = () => {
         await axios
           .get(`${urls['test']}/ad/category/${router.query.slug}/${id}`)
           .then((d) => {
-            console.log(d.data);
             dispatch(setAds(d.data));
           });
     } catch (error) {}
@@ -150,61 +149,66 @@ const Category = () => {
                 mapContainerStyle={{ width: '100%', height: '50vh' }}
               >
                 {isLoaded &&
-                  ads?.ads?.map((m, i) => {
-                    return (
-                      <div key={i}>
-                        <MarkerF
-                          position={{
-                            lat: parseFloat(m.location?.lat ?? 47.74604),
-                            lng: parseFloat(m.location?.lng ?? 107.341515),
-                          }}
-                          onMouseOver={() => setMarkerActive(i)}
-                          animation={google.maps.Animation.DROP}
-                          className={mergeNames('group')}
-                        >
-                          {markerActive == i && (
-                            <InfoWindow
-                              children={
-                                <div
-                                  onClick={() => router.push(`/ad/${m.num}`)}
-                                  className={mergeNames(
-                                    'h-[125px] aspect-4/3 flex flex-col cursor-pointer justify-end relative',
-                                    'group-hover:block '
-                                  )}
-                                >
-                                  <Image
-                                    src={
-                                      m.images[0] ??
-                                      '/images/HeaderSlider/1.jpg'
-                                    }
-                                    alt="map image"
+                  ads?.defaultAds?.ads
+                    .concat(ads?.specialAds?.ads)
+                    ?.map((m, i) => {
+                      return (
+                        <div key={i}>
+                          <MarkerF
+                            position={{
+                              lat: parseFloat(m.location?.lat ?? 47.74604),
+                              lng: parseFloat(m.location?.lng ?? 107.341515),
+                            }}
+                            onMouseOver={() => setMarkerActive(i)}
+                            animation={google.maps.Animation.DROP}
+                            className={mergeNames('group')}
+                          >
+                            {markerActive == i && (
+                              <InfoWindow
+                                children={
+                                  <div
+                                    onClick={() => router.push(`/ad/${m.num}`)}
                                     className={mergeNames(
-                                      'absolute top-0 left-0 object-cover w-full h-full ',
-                                      ''
+                                      'h-[125px] aspect-4/3 flex flex-col cursor-pointer justify-end relative',
+                                      'group-hover:block '
                                     )}
-                                  />
-                                  <div className="absolute top-0 left-0 object-cover w-full h-full bg-gradient-to-b from-slate-700/0 via-slate-700/50 to-slate-900/100 "></div>
-                                  <p className="z-10 text-base font-bold text-white">
-                                    {m.title}
-                                  </p>
-                                  <p className="z-10 text-base font-bold text-white">
-                                    {
-                                      m.items?.filter((f) => f.id == 'price')[0]
-                                        ?.value
-                                    }
-                                  </p>
-                                </div>
-                              }
-                              position={{
-                                lat: parseFloat(m.location?.lat ?? 47.74604),
-                                lng: parseFloat(m.location?.lng ?? 107.341515),
-                              }}
-                            />
-                          )}
-                        </MarkerF>
-                      </div>
-                    );
-                  })}
+                                  >
+                                    <Image
+                                      src={
+                                        m.images[0] ??
+                                        '/images/HeaderSlider/1.jpg'
+                                      }
+                                      alt="map image"
+                                      className={mergeNames(
+                                        'absolute top-0 left-0 object-cover w-full h-full ',
+                                        ''
+                                      )}
+                                    />
+                                    <div className="absolute top-0 left-0 object-cover w-full h-full bg-gradient-to-b from-slate-700/0 via-slate-700/50 to-slate-900/100 "></div>
+                                    <p className="z-10 text-base font-bold text-white">
+                                      {m.title}
+                                    </p>
+                                    <p className="z-10 text-base font-bold text-white">
+                                      {
+                                        m.items?.filter(
+                                          (f) => f.id == 'price'
+                                        )[0]?.value
+                                      }
+                                    </p>
+                                  </div>
+                                }
+                                position={{
+                                  lat: parseFloat(m.location?.lat ?? 47.74604),
+                                  lng: parseFloat(
+                                    m.location?.lng ?? 107.341515
+                                  ),
+                                }}
+                              />
+                            )}
+                          </MarkerF>
+                        </div>
+                      );
+                    })}
               </GoogleMap>
             </ModalBody>
             <ModalFooter>

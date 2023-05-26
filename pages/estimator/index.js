@@ -57,8 +57,8 @@ const Estimator = ({}) => {
     return (
       filters == est.length &&
       estimate.file.length != 0 &&
-      estimate.categoryId != '' &&
-      estimate.subCategoryId != ''
+      estimate.categoryId.length != 0 &&
+      estimate.subCategoryId.length != 0
     );
   };
   const addEstimate = () => {
@@ -401,7 +401,7 @@ const Estimator = ({}) => {
                     );
                   }
               })}
-            {estimate.categoryId && (
+            {estimate.categoryId.length != 0 && (
               <ItemContainer className="mx-auto">
                 <FormLabel title={'Гэрчилгээний хуулбар'} />
                 <form action="">
@@ -453,7 +453,15 @@ const Estimator = ({}) => {
             className="grid grid-cols-4 gap-2 mt-6 p-5 flex-col  w-[93%] -translate-y-16 mx-10 bg-white shadow-xl   xl:w-[70%] rounded-3xl"
           >
             {estimates.map((est, i) => {
-              return <EstimatorModal est={est} key={i} index={i + 1} />;
+              return (
+                <EstimatorModal
+                  est={est}
+                  key={i}
+                  index={i + 1}
+                  setEstimates={setEstimates}
+                  estimates={estimates}
+                />
+              );
             })}
             <Button
               className={mergeNames(
@@ -471,7 +479,7 @@ const Estimator = ({}) => {
   );
 };
 
-const EstimatorModal = ({ est, index }) => {
+const EstimatorModal = ({ est, index, estimates, setEstimates }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { categories } = useSelector((state) => state.categories);
 
@@ -490,7 +498,8 @@ const EstimatorModal = ({ est, index }) => {
           </h2>
           <button
             onClick={() => {
-              console.log('Ustgalaa');
+              let e = estimates.filter((e, i) => i != index - 1);
+              setEstimates(e);
             }}
             className="absolute text-white transition-all bg-gray-500 rounded-full -bottom-2 -right-2 hover:bg-red-500"
           >
