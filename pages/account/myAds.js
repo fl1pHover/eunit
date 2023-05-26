@@ -4,6 +4,7 @@ import urls from "@/constants/api";
 import { stopPropagation } from "@/context/functions";
 import { brk, radioGroup, STYLES } from "@/styles/index";
 import Alerting from "@/util/Alert";
+import CustomPagination from "@/util/CustomPagination";
 import mergeNames from "@/util/mergeNames";
 import { Radio, RadioGroup, useToast } from "@chakra-ui/react";
 import axios from "axios";
@@ -261,10 +262,26 @@ const MyAds = ({ user }) => {
           );
         })}
       </div>
-      <ul className="flex float-right list-style-none">
+      <CustomPagination
+        num={num}
+        prev={() => {
+          if (num > 0) {
+            let n = num - 1;
+            getAds(check, n);
+          }
+        }}
+        next={() => {
+          if (user?.length > 12) {
+            let n = num + 1;
+            setNum(n);
+            getAds(check, n);
+          }
+        }}
+      />
+      {/* <ul className="flex float-right list-style-none">
         <li className="mx-2">
           <button
-            className={mergeNames(STYLES.notActive)}
+            className={mergeNames(num > 0 ? STYLES.active : STYLES.notActive)}
             onClick={() => {
               if (num > 0) {
                 let n = num - 1;
@@ -290,7 +307,7 @@ const MyAds = ({ user }) => {
             Дараах
           </button>
         </li>
-      </ul>
+      </ul> */}
     </>
   );
 };

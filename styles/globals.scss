@@ -34,8 +34,6 @@ body {
 //   background-position: center;
 // }
 
-
-
 @keyframes disappear {
   0% {
     width: 100%;
@@ -101,7 +99,7 @@ html {
 // Custom scroll bar
 // Note: Not supported on Firefox bruh
 ::-webkit-scrollbar {
-  width: 3px;
+  width: 10px;
 }
 
 /* Track */
@@ -112,7 +110,12 @@ html {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: $mainBlossom;
+  // background: $mainBlossom;
+  background: linear-gradient(
+    181deg,
+    rgb(2, 0, 97) 15%,
+    rgb(97, 149, 219) 158.5%
+  );
 }
 
 .info__icon {

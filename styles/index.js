@@ -11,7 +11,7 @@ export const STYLES = {
   active:
     "relative block py-1.5 px-3 rounded border-0 bg-blue-600 outline-none transition-all duration-300 rounded text-white hover:text-white hover:bg-blue-600 shadow-md focus:shadow-md",
   notActive:
-    "relative block py-1.5 px-3 rounded border-0 bg-transparent outline-none transition-all duration-300 rounded text-gray-800 hover:text-gray-800 hover:bg-gray-200 focus:shadow-none",
+    "relative block py-1.5 border-gray-200 px-3 rounded border bg-transparent outline-none transition-all duration-300 rounded text-gray-800 hover:text-gray-800 hover:bg-gray-200 focus:shadow-none",
   select: "border-1 border-blue-400 rounded-full text-[14px] text-sm",
   button:
     "font-bold text-white transition-all easeIn rounded-full grid place-items-center",
@@ -20,9 +20,9 @@ export const STYLES = {
 export const radioGroup =
   "flex flex-wrap justify-end gap-4 mt-4 whitespace-nowrap";
 
-  export const radioStatus = {
-    green: ''
-  }
+export const radioStatus = {
+  green: "",
+};
 export const TEXT = {
   mainHeading: "text-[60px]",
 };

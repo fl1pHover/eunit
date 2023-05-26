@@ -268,7 +268,23 @@ const SharingAds = ({ user }) => {
           );
         })}
       </div>
-      <ul className="flex float-right list-style-none">
+      <CustomPagination
+        num={num}
+        prev={() => {
+          if (num > 0) {
+            let n = num - 1;
+            getAds(check, n);
+          }
+        }}
+        next={() => {
+          if (user?.length > 12) {
+            let n = num + 1;
+            setNum(n);
+            getAds(check, n);
+          }
+        }}
+      />
+      {/* <ul className="flex float-right list-style-none">
         <li className="mx-2">
           <button
             className={mergeNames(STYLES.notActive)}
@@ -297,7 +313,7 @@ const SharingAds = ({ user }) => {
             Дараах
           </button>
         </li>
-      </ul>
+      </ul> */}
     </>
   );
 };
