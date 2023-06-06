@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Box,
   Button,
   GridItem,
@@ -49,7 +50,7 @@ import { TbBath } from "react-icons/tb";
 import { useDispatch, useSelector } from "react-redux";
 import { setBookmark } from "store/slice/bookmark";
 import urls from "../../constants/api";
-import UserInfo from "./userInfo";
+import UserInfo, { SmallProductHeader, SmallUserInfo } from "./userInfo";
 
 export const ProductInfo = ({
   title,
@@ -314,21 +315,107 @@ const Product = () => {
         <Stack direction={"row"} py={2} gap={3} pos="relative">
           <Box maxWidth={"100%"} flex="0 0 100%" borderRadius="5px">
             <div className="flex flex-col-reverse xl:flex-row gap-7">
-              <div className="flex flex-col w-full gap-5 max-w-[1160px]">
+              <div className="flex flex-col w-full gap-5 max-w-[1030px]">
                 {/* <p className="text-darkBlue">/Үл хөдлөх/Орон сууц</p> */}
                 <h1 className="my-5 text-lg font-semibold md:text-3xl">
-                  {data.title}{" "}
+                  {data.title}
                 </h1>
-                <Engage
-                  date={moment(data.createdAt).format("lll")}
-                  num={data.num}
-                  view={
-                    data?.views?.length > 0 && (
-                      <p>Үзсэн хүний тоо: {data.views.length}</p>
-                    )
-                  }
-                />
-                <div className="relative overflow-hidden bg-gray-900 rounded-lg gallery">
+                <div className="flex items-center justify-between">
+                  <Engage
+                    date={moment(data.createdAt).format("lll")}
+                    num={data.num}
+                    view={
+                      data?.views?.length > 0 && (
+                        <p>Үзсэн хүний тоо: {data.views.length}</p>
+                      )
+                    }
+                  />
+                  <div className="flex xl:hidden">
+                    <AdButton
+                      icon={<FaHeart />}
+                      color={
+                        bookmarks?.find((b) => b == data._id) != undefined
+                          ? "red"
+                          : "gray"
+                      }
+                      onClick={() => {
+                        if (bookmarks != undefined) {
+                          dispatch(setBookmark(data._id));
+                          if (bookmarks.includes(data._id)) {
+                            toast({
+                              title: "Зар хүслээс хасагдлаа.",
+                              status: "warning",
+                              duration: 5000,
+                              isClosable: true,
+                            });
+                          } else {
+                            toast({
+                              title: "Зар хүсэлд нэмэгдлээ.",
+                              status: "success",
+                              duration: 5000,
+                              isClosable: true,
+                            });
+                          }
+                        } else {
+                          toast({
+                            title: "Та нэвтэрнэ үү",
+                            status: "warning",
+                            duration: 5000,
+                            isClosable: true,
+                          });
+                        }
+                      }}
+                    />
+                    <AdButton
+                      icon={<FaCopy />}
+                      onClick={() => {
+                        copyToClipboard(),
+                          toast({
+                            title: `Холбоосыг хуулж авлаа`,
+                            status: "info",
+                            isClosable: true,
+                            duration: 1500,
+                          });
+                      }}
+                    />
+                  </div>
+                </div>
+                {data && (
+                  <div className="flex items-end justify-between xl:hidden">
+                    <SmallUserInfo
+                      id={data.user._id}
+                      email={data.user.email}
+                      username={data.user?.username}
+                      phone={
+                        data.items?.filter((f) => f.id == "phone")[0].value
+                      }
+                      agent={
+                        data.user?.userType == "default"
+                          ? "Энгийн"
+                          : data.user?.userType == "organization"
+                          ? "Байгууллага"
+                          : data.user?.userType == "agent"
+                          ? "Агент"
+                          : data.user?.userType
+                      }
+                      avatar={
+                        data.user?.profileImg ??
+                        "https://www.pikpng.com/pngl/m/80-805068_my-profile-icon-blank-profile-picture-circle-clipart.png"
+                      }
+                    />
+
+                    <SmallProductHeader
+                      price={
+                        data?.items?.find((d) => d.id == "price")?.value ?? 0
+                      }
+                      unitPrice={
+                        data?.items?.find((d) => d.id == "unitPrice")?.value ??
+                        0
+                      }
+                    />
+                  </div>
+                )}
+                <div className="relative w-full overflow-hidden bg-gray-900 rounded-lg gallery">
                   {data?.images?.length > 0 ? (
                     <div className="object-contain">
                       <ImageGallery
@@ -504,7 +591,7 @@ const Product = () => {
                   })}
                 </WhiteBox>
               </div>
-              <div className="flex flex-row-reverse justify-between h-full gap-3 xl:sticky top-20 xl:flex-col">
+              <div className="flex-col justify-between hidden h-full gap-3 xl:flex xl:sticky top-20">
                 {data && (
                   <>
                     <div>
@@ -517,15 +604,8 @@ const Product = () => {
                             ?.value ?? 0
                         }
                       />
-
-                      <IconButton
-                        className="float-right bg-white border-2 border-gray-200"
-                        aria-label="Bookmark add"
+                      <AdButton
                         icon={<FaHeart />}
-                        _hover={{
-                          color: "red",
-                        }}
-                        size={{ base: "xs", sm: "md" }}
                         color={
                           bookmarks?.find((b) => b == data._id) != undefined
                             ? "red"
@@ -559,9 +639,7 @@ const Product = () => {
                           }
                         }}
                       />
-                      <IconButton
-                        className="float-right bg-white border-2 border-gray-200 hover:text-blue-600"
-                        aria-label="Get link"
+                      <AdButton
                         icon={<FaCopy />}
                         onClick={() => {
                           copyToClipboard(),
@@ -572,11 +650,10 @@ const Product = () => {
                               duration: 1500,
                             });
                         }}
-                        size={{ base: "xs", sm: "md" }}
                       />
                     </div>
                     <div>
-                      <div className="p-2 bg-white rounded-md w-[320px]">
+                      <div className="p-2 bg-white rounded-md w-auto xl:w-[320px]">
                         <UserInfo
                           id={data.user._id}
                           email={data.user.email}
@@ -796,6 +873,19 @@ export default Product;
 //     },
 //   };
 // }
+
+function AdButton({ onClick = func(), color, icon }) {
+  return (
+    <IconButton
+      className="float-right bg-white border-2 border-gray-200 hover:text-blue-600"
+      aria-label="Get link"
+      icon={icon}
+      onClick={onClick}
+      size={{ base: "xs", sm: "md" }}
+      color={color}
+    />
+  );
+}
 
 const calcValue = (props, checker = "Байхгүй", suffix) => {
   // p?.value?.toLowerCase() === "байхгүй"

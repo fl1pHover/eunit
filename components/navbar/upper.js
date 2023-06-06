@@ -20,16 +20,16 @@ const calcSize = (pt) => {
     case "2xl":
     case "xl":
     case "lg":
-      return { width: 130, height: 63 };
+      return { width: 60, height: 63 };
     case "md":
     case "sm":
     case "xs": {
-      return { width: 110, height: 43 };
+      return { width: 90, height: 43 };
     }
     case "default":
-      return { width: 105, height: 38 };
+      return { width: 85, height: 38 };
     default: {
-      return { width: 140, height: 73 };
+      return { width: 105, height: 73 };
     }
   }
 };
@@ -74,12 +74,12 @@ const UpperNav = () => {
             </a>
           </Link>
           <div className="flex items-center">
-            <Link href={"/create/ad"}>
+            {/* <Link href={"/create/ad"}>
               <button className="px-4 py-1 ml-2 text-sm font-semibold text-white transition-all bg-teal-700 rounded-lg hover:scale-105">
                 <p>Зар нэмэх</p>
-                {/* <BiPlusCircle className="hidden lg:block" /> */}
+            
               </button>
-            </Link>
+            </Link> */}
             <WhiteHeartIcon
               word={false}
               onClick={() => router.push("/account?tab=Bookmark")}
