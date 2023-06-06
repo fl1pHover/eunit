@@ -4,6 +4,7 @@ import urls from "@/constants/api";
 import { stopPropagation } from "@/context/functions";
 import { brk, radioGroup, STYLES } from "@/styles/index";
 import Alerting from "@/util/Alert";
+import CustomPagination from "@/util/CustomPagination";
 import mergeNames from "@/util/mergeNames";
 import { Radio, RadioGroup, useToast } from "@chakra-ui/react";
 import axios from "axios";
