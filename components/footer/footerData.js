@@ -1,6 +1,6 @@
 const footerData = [
   {
-    title: "Bom.mn",
+    title: "Eunit.mn",
     footerItem: [
       {
         href: "/aboutus",
@@ -20,7 +20,7 @@ const footerData = [
     title: "Санхүүгийн үйлчилгээнүүд",
     footerItem: [
       {
-        href: "/",
+        href: "/estimator",
         text: "Үнэлгээ",
       },
       {
@@ -52,10 +52,10 @@ const footerData = [
         href: "/",
         text: "Хамтран ажиллагаа",
       },
-      {
-        href: "/feedback",
-        text: "Санал хүсэлт",
-      },
+      // {
+      //   href: "/feedback",
+      //   text: "Санал хүсэлт",
+      // },
     ],
   },
 ];

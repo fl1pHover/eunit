@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 
 import Title from "../../lib/Title";
-import { FooterText } from "./footerLink";
+import FooterLink, { FooterText } from "./footerLink";
 import footerIcon from "./footerIcons";
 
 const ContactGrid = () => {
@@ -10,10 +10,10 @@ const ContactGrid = () => {
     <React.Fragment>
       <div>
         <Title>Хаяг</Title>
-        <FooterText>
+        <FooterLink href="https://goo.gl/maps/LkMjLdhSTbNKoGqx7">
           Үндсэн хуулийн гудамж 2-р хороо, Баянгол дүүрэг, Улаанбаатар хот,
           Монгол улс, Рокмон Бюлдинг - 1003 тоот
-        </FooterText>
+        </FooterLink>
       </div>
       <div>
         <Title>Холбоо барих</Title>
@@ -27,7 +27,7 @@ const ContactGrid = () => {
                 <a target="_blank">
                   <props.Icon
                     size={20}
-                    className="hover:text-blue-600 hover:scale-125 transition-all ease-in-out"
+                    className="transition-all ease-in-out hover:text-blue-600 hover:scale-125"
                   />
                 </a>
               </Link>

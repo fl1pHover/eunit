@@ -9,7 +9,7 @@ const Bottom = () => {
     <div className="py-3 border-t border-gray-200">
       <ContainerX>
         <div className="flex flex-col justify-between md:flex-row md:items-center">
-          <Title classname="text-xl font-bold text-gray-900">Bom.mn</Title>
+          <Title classname="text-xl font-bold text-gray-900">Eunit.mn</Title>
           <FooterText>
             Copyright&copy;
             {new Date().getFullYear()}&nbsp;Зохиогчийн эрхээр хамгаалагдсан

@@ -40,7 +40,7 @@ const NavCategory = () => {
                   </p> */}
               </div>
             </div>
-            <div className="absolute left-[50%] -translate-x-[50%] w-full  flex flex-row overflow-hidden justify-center ">
+            <div className="absolute left-[50%] bg-blue-900 -translate-x-[50%] w-full  flex flex-row overflow-hidden justify-center ">
               {submenu &&
                 isHoveringId &&
                 isHoveringId === id &&
@@ -48,12 +48,12 @@ const NavCategory = () => {
                   return (
                     <Fragment key={subkey}>
                       {/* <div className="absolute left-0 w-1/2 h-full from-blue-900/0 via-blue-900/40 to-blue-900/100 bg-[url('/images/flurry.svg')] bg-no-repeat" /> */}
-                      <Image
+                      {/* <Image
                         src="/images/flurry.svg"
                         alt="asd"
                         className="absolute left-0 object-cover w-1/2"
                         bgRepeat="repeat"
-                      />
+                      /> */}
 
                       <Link href={`/category/${href}`}>
                         <motion.a
@@ -69,12 +69,12 @@ const NavCategory = () => {
                           <p>{category}</p>
                         </motion.a>
                       </Link>
-                      <Image
+                      {/* <Image
                         src="/images/flurry.svg"
                         alt="asd"
                         className="absolute top-0 right-0 w-1/2 rotate-90"
                         bgRepeat="repeat"
-                      />
+                      /> */}
                       {/* <div className="absolute right-0 w-1/2 h-full bg-gradient-to-r from-blue-900/100 via-blue-900/40 to-white/0" /> */}
                     </Fragment>
                   );

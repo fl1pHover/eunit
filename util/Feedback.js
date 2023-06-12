@@ -1,4 +1,4 @@
-import urls from '@/constants/api';
+import urls from "@/constants/api";
 import {
   Modal,
   ModalBody,
@@ -9,28 +9,30 @@ import {
   ModalOverlay,
   useDisclosure,
   useToast,
-} from '@chakra-ui/react';
-import axios from 'axios';
-import { getCookie } from 'cookies-next';
-import { useState } from 'react';
-import { STYLES } from '../styles';
-import mergeNames from './mergeNames';
+} from "@chakra-ui/react";
+import axios from "axios";
+import { getCookie } from "cookies-next";
+import { useState } from "react";
+import { STYLES } from "../styles";
+import mergeNames from "./mergeNames";
 
-const Feedback = () => {
+const Feedback = ({
+  openFeedback = "py-2 font-semibold border-2 border-gray-200 rounded-md",
+}) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [count, setCount] = useState(0);
   const [feedback, setFeedback] = useState({
-    title: '',
-    message: '',
+    title: "",
+    message: "",
   });
-  const token = getCookie('token');
+  const token = getCookie("token");
   const toast = useToast();
   const sendFeedback = async () => {
     if (token) {
       try {
         await axios
           .post(
-            `${urls['test']}/user/feedback`,
+            `${urls["test"]}/user/feedback`,
             {
               message: feedback.message,
               title: feedback.title,
@@ -38,16 +40,16 @@ const Feedback = () => {
             {
               headers: {
                 Authorization: `Bearer ${token}`,
-                'Access-Control-Allow-Headers': '*',
+                "Access-Control-Allow-Headers": "*",
               },
             }
           )
           .then((d) => {
             toast({
-              title: 'Баярлалаа',
+              title: "Баярлалаа",
               duration: 3000,
               isClosable: true,
-              status: 'success',
+              status: "success",
             });
             onClose();
           });
@@ -58,14 +60,11 @@ const Feedback = () => {
   };
   return (
     <>
-      <button
-        className="py-2 font-semibold border-2 border-gray-200 rounded-md"
-        onClick={onOpen}
-      >
+      <button className={openFeedback} onClick={onOpen}>
         Санал хүсэлт
       </button>
 
-      <Modal size={'lg'} onClose={onClose} isOpen={isOpen} isCentered>
+      <Modal size={"lg"} onClose={onClose} isOpen={isOpen} isCentered>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Санал хүсэлт</ModalHeader>
@@ -76,7 +75,7 @@ const Feedback = () => {
                 <h1>Гарчиг</h1>
                 <input
                   type="text"
-                  className={mergeNames(STYLES.input, 'rounded-md')}
+                  className={mergeNames(STYLES.input, "rounded-md")}
                   onChange={(e) => {
                     setFeedback((prev) => ({ ...prev, title: e.target.value }));
                   }}
@@ -105,7 +104,7 @@ const Feedback = () => {
                 <h1>Дэлгэрэнгүй</h1>
                 <textarea
                   type="text"
-                  className={mergeNames(STYLES.input, 'rounded-md ')}
+                  className={mergeNames(STYLES.input, "rounded-md ")}
                   onChange={(e) =>
                     setFeedback((prev) => ({
                       ...prev,
@@ -120,13 +119,13 @@ const Feedback = () => {
             <button
               onClick={onClose}
               className={mergeNames(
-                'p-2 px-3 rounded-md bg-white border-2 border-gray-400 font-bold text-gray-500'
+                "p-2 px-3 rounded-md bg-white border-2 border-gray-400 font-bold text-gray-500"
               )}
             >
               Буцах
             </button>
             <button
-              className={mergeNames(STYLES.blueButton, 'p-2 px-3 rounded-md')}
+              className={mergeNames(STYLES.blueButton, "p-2 px-3 rounded-md")}
               onClick={() => sendFeedback()}
             >
               Илгээх

@@ -1,25 +1,25 @@
-import { NavContainer } from '@/lib/Container';
-import { STYLES } from '@/styles/index';
-import { Image } from '@chakra-ui/react';
-import { getCookie } from 'cookies-next';
-import { motion } from 'framer-motion';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useState } from 'react';
-import { HiOutlineSearch } from 'react-icons/hi';
-import { MdOutlineClear } from 'react-icons/md';
-import { useSelector } from 'react-redux';
-import urls from '../../constants/api';
-import { useAuth } from '../../context/auth';
-import mergeNames from '../../util/mergeNames';
-import CreateAdNav from './createAdNav';
-import { EstimatorIcon, UserIcon, WhiteHeartIcon } from './icons';
-import NavCategory from './navCategory';
-import UserDrawer from './userDrawer';
+import { NavContainer } from "@/lib/Container";
+import { STYLES } from "@/styles/index";
+import { Image } from "@chakra-ui/react";
+import { getCookie } from "cookies-next";
+import { motion } from "framer-motion";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import { HiOutlineSearch } from "react-icons/hi";
+import { MdOutlineClear } from "react-icons/md";
+import { useSelector } from "react-redux";
+import urls from "../../constants/api";
+import { useAuth } from "../../context/auth";
+import mergeNames from "../../util/mergeNames";
+import CreateAdNav from "./createAdNav";
+import { EstimatorIcon, UserIcon, WhiteHeartIcon } from "./icons";
+import NavCategory from "./navCategory";
+import UserDrawer from "./userDrawer";
 
 const Bottom = ({ sticky }) => {
   const router = useRouter();
-  const token = getCookie('token');
+  const token = getCookie("token");
   const { user } = useSelector((state) => state.user);
   const { setDefaultAds, setSpecialAds, setAds, logout } = useAuth();
   // Visible start
@@ -36,10 +36,10 @@ const Bottom = ({ sticky }) => {
   // Visible end
 
   // Search start
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
   const searchAds = async (value) => {
     try {
-      await fetch(`${urls['test']}/ad/search/{value}?value=${value}`)
+      await fetch(`${urls["test"]}/ad/search/{value}?value=${value}`)
         .then((d) => d.json())
         .then((d) => {
           setDefaultAds(d?.defaultAds);
@@ -54,14 +54,14 @@ const Bottom = ({ sticky }) => {
 
   const handleClear = (e) => {
     // 👇️ clear input value
-    setSearch('');
-    console.log('clear input');
+    setSearch("");
+    console.log("clear input");
   };
 
   // Search end
 
   return (
-    <div className={mergeNames('md:block hidden', 'bg-mainBlossom ')}>
+    <div className={mergeNames("md:block hidden", "bg-mainBlossom ")}>
       <NavContainer>
         <div className="flex flex-row items-center justify-center gap-10">
           <div className="flex flex-row items-center ">
@@ -87,16 +87,16 @@ const Bottom = ({ sticky }) => {
               <HiOutlineSearch />
             </button>
             <WhiteHeartIcon
-              onClick={() => router.push('/account?tab=Bookmark')}
+              onClick={() => router.push("/account?tab=Bookmark")}
             />
 
             {user?.userType != undefined ? (
               <UserDrawer user={user} />
             ) : (
-              <UserIcon text="Нэвтрэх" onClick={() => router.push('/login')} />
+              <UserIcon text="Нэвтрэх" onClick={() => router.push("/login")} />
             )}
             <CreateAdNav />
-            <EstimatorIcon onClick={() => router.push('/estimator')} />
+            <EstimatorIcon onClick={() => router.push("/estimator")} />
             {/* <Link href={'/createAd'}>
               <button className="px-4 py-1 ml-2 text-sm font-semibold transition-all bg-teal-700 rounded-lg hover:scale-105">
                 <p>Зар нэмх</p>
@@ -116,16 +116,16 @@ const Bottom = ({ sticky }) => {
               y: 0,
               transition: {
                 stiffness: 0,
-                ease: 'easeInOut',
+                ease: "easeInOut",
                 duration: 0.3,
               },
             }}
             onMouseOver={() => setActiveSearch(true)}
             className={mergeNames(
-              'bg-blue-900/[0.96] w-full absolute left-0',
-              'py-2',
+              "bg-blue-900/[0.96] w-full absolute left-0",
+              "py-2",
               STYLES.flexCenter,
-              'items-center text-2xl text-blue-300'
+              "items-center text-2xl text-blue-300"
             )}
           >
             <div className="relative flex flex-row items-center w-2/5 h-10">
@@ -141,20 +141,20 @@ const Bottom = ({ sticky }) => {
                 type="text"
                 placeholder="Зараа хайна уу"
                 onKeyPress={(e) => {
-                  if (event.key === 'Enter') {
-                    () => func(search), console.log('Search enter press!!');
+                  if (event.key === "Enter") {
+                    () => func(search), console.log("Searching!!");
                   }
                 }}
                 value={search}
                 className={mergeNames(
-                  'h-full w-full ml-2 border-none rounded-md placeholder-blue-300/40 bg-mainBlossom bg-opacity-40  focus:ring-0 '
+                  "h-full w-full ml-2 border-none rounded-md placeholder-blue-300/40 bg-mainBlossom bg-opacity-40  focus:ring-0 "
                 )}
               />
               <button
                 onClick={handleClear}
                 className={mergeNames(
-                  'text-xs rounded-full p-[2px] bg-mainBlossom/80',
-                  'absolute right-2'
+                  "text-xs rounded-full p-[2px] bg-mainBlossom/80",
+                  "absolute right-2"
                 )}
               >
                 <MdOutlineClear />
@@ -170,12 +170,12 @@ const Bottom = ({ sticky }) => {
 export default Bottom;
 
 export async function getServerSideProps({ req, res }) {
-  const token = getCookie('token', { req, res });
+  const token = getCookie("token", { req, res });
 
   if (!token)
     return {
       redirect: {
-        destination: '/login',
+        destination: "/login",
         permanent: false,
       },
     };

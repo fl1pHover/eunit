@@ -6,7 +6,7 @@ import { BsFacebook, BsTwitter, BsYoutube } from "react-icons/bs";
 const footerIcon = [
   {
     Icon: (props) => <BsFacebook {...props} />,
-    href: "https://www.facebook.com/Bestofmarketmanagement",
+    href: "https://www.facebook.com/BOMMLLC",
   },
   {
     Icon: (props) => <GrInstagram {...props} />,
