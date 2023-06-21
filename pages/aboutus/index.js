@@ -26,7 +26,7 @@ const AboutUs = () => {
           <source src="./videos/eunit-teaser.mp4" type="video/ogg" />
           Your browser does not support the video tag.
         </video>
-        <SectionTitle classname="text-bgGrey">Бидний тухай</SectionTitle>
+        <SectionTitle classname="text-white">Бидний тухай</SectionTitle>
       </div>
 
       <div className="bg-bgGrey">

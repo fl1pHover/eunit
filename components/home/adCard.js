@@ -9,7 +9,7 @@ import { DButton, ImageCount, PButton } from "@/lib/Button";
 import Tip from "@/lib/Tip";
 import Alerting from "@/util/Alert";
 import mergeNames from "@/util/mergeNames";
-import { Skeleton } from "@chakra-ui/react";
+import { Select, Skeleton } from "@chakra-ui/react";
 import { getCookie } from "cookies-next";
 import currency from "currency.js";
 import Image from "next/image";
@@ -21,6 +21,7 @@ import { useSelector } from "react-redux";
 import EditAd from "../ad/edit";
 import AdCardButton from "./adCardButton";
 import { CgTimer } from "react-icons/cg";
+
 // import { detectContentType } from "next/dist/server/image-optimizer";
 
 function Card({
@@ -184,7 +185,15 @@ function Card({
                 {item.adType == "default" && (
                   <Tip lbl="Онцгой зар болгох">
                     <Alerting
-                      body={"Танаас 10,000 enunit хасагдах болохыг анхаарна уу"}
+                      body={
+                        <div className="flex flex-col gap-2">
+                          "Танаас eunit wallet-с хасагдах болохыг анхаарна уу"
+                          <Select placeholder="Онцгой зарын төрөл сонгох">
+                            <option value="5k">5000 eunit = хоног</option>
+                            <option value="10k">10000 eunit = хоног</option>
+                          </Select>
+                        </div>
+                      }
                       isDelete={"Онцгой зар болгох"}
                       btn={<PButton onClick={deleteFunc} isDelete={false} />}
                       onclick={changeAd}

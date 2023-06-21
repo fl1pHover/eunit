@@ -1,3 +1,4 @@
+import EstimatedCard from "@/components/estimator/EstimatedCard";
 import urls from "@/constants/api";
 import MainContainer from "@/layout/mainContainer";
 import { ContainerX } from "@/lib/Container";
@@ -82,8 +83,8 @@ const Estimating = () => {
           </Radio>
         </RadioGroup>
         <div className="flex bg-white p-5 my-10 rounded-[20px] sm:text-[14px] md:text-[16px] text-[12px]">
-          <div className="flex overflow-scroll">
-            <div className={mergeNames(colSize)}>
+          <div className="flex flex-col w-full gap-2">
+            {/* <div className={mergeNames(colSize)}>
               <h1 className="p-2">Дугаар</h1>
               {estimates.length > 0 &&
                 estimates[0].items.map((est, i) => {
@@ -101,12 +102,12 @@ const Estimating = () => {
                     </Fragment>
                   );
                 })}
-            </div>
-            {estimates.length > 0 &&
+            </div> 
+             {estimates.length > 0 &&
               estimates.map((est, i) => {
                 return (
-                  <div key={i} className={mergeNames(colSize, "text-center")}>
-                    <h1 className="p-2">{i + 1}</h1>
+                  <div key={i} className={mergeNames("text-center")}>
+                    <h1 className="pr-4">{i + 1}</h1>
                     {est?.items?.map((item, i) => {
                       return (
                         <>
@@ -123,13 +124,36 @@ const Estimating = () => {
                       );
                     })}
 
-                    {/* <p>{JSON.stringify(est)}</p> */}
+                    <p>{JSON.stringify(est)}</p>
                     <Button
                       onClick={() => updateEstimate("estimated", est._id)}
                       className="px-5 mx-auto my-4"
                     >
                       TEST
                     </Button>
+                    <Button className="px-5 mx-auto my-4">open</Button>
+                  </div>
+                );
+              })} */}
+
+            {estimates &&
+              estimates.map((est, i) => {
+                console.log(est);
+                return (
+                  <div className="flex items-center gap-2">
+                    <h1>{i + 1}</h1>
+                    <EstimatedCard
+                      est={est}
+                      key={i}
+                      adminBtn={
+                        <Button
+                          onClick={() => updateEstimate("estimated", est._id)}
+                          className="px-5 mx-auto my-4"
+                        >
+                          TEST
+                        </Button>
+                      }
+                    />
                   </div>
                 );
               })}
