@@ -5,6 +5,7 @@ import mergeNames from '@/util/mergeNames';
 import { Button, Radio, RadioGroup, useToast } from '@chakra-ui/react';
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Fragment, useEffect, useState } from 'react';
 import { BiEdit } from 'react-icons/bi';
@@ -184,6 +185,8 @@ const SharedAd = () => {
                   <th>Зарын төрөл</th>
                   <th>Зарын статус</th>
                   <th>Зөвшөөрөх</th>
+                  <th>Файл</th>
+                  {/* <th>Зөвшөөрөх</th> */}
                   <th>Үйлдэл</th>
                   {/* <th>Засах</th> */}
                 </tr>
@@ -224,6 +227,11 @@ const SharedAd = () => {
                         )}
                       >
                         {a.adStatus}
+                      </td>
+                      <td>
+                        <Link target="_blank" href={a.file}>
+                          <a target="_blank">Файл</a>
+                        </Link>
                       </td>
                       <td>
                         <div

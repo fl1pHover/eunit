@@ -1,7 +1,7 @@
-import React from "react";
-import { BiX } from "react-icons/bi";
-import { FiUploadCloud } from "react-icons/fi";
-import { AtomLabel } from "./atom";
+import React from 'react';
+import { BiX } from 'react-icons/bi';
+import { FiUploadCloud } from 'react-icons/fi';
+import { AtomLabel } from './atom';
 
 const FieldPhotoUpload = ({
   label,
@@ -26,18 +26,23 @@ const FieldPhotoUpload = ({
 
   const handleChange = (event) => {
     const fileUploaded = event.target.files;
-    const selectedFilesArray = Array.from(fileUploaded);
+    const selectedFilesArray = Array.from(fileUploaded).slice(0, 8);
 
-    const imagesArray = selectedFilesArray.map((file) => {
+    const imagesArray = selectedFilesArray.map((file, i) => {
       return URL.createObjectURL(file);
     });
-    setSelectedImages((previousImages) => [...previousImages, ...imagesArray]);
-    Object.values(fileUploaded)?.map((f) => {
-      setImages((images) => [...images, f]);
-    });
+    if (selectedImages.length < 8) {
+      setSelectedImages((previousImages) => [
+        ...previousImages,
+        ...imagesArray,
+      ]);
+      Object.values(fileUploaded)?.map((f, i) => {
+        setImages((images) => [...images, f]);
+      });
+    }
 
     // FOR BUG IN CHROME
-    event.target.value = "";
+    event.target.value = '';
     setIsImageSelected(true);
     setGeneralData((prev) => ({
       ...prev,
@@ -52,12 +57,13 @@ const FieldPhotoUpload = ({
       setGeneralData((prev) => ({ ...prev, imgSelected: false }));
       setIsImageSelected(false);
     }
-    setSelectedImages(selectedImages.filter((e) => e !== image));
-    if (images) setImages(images.filter((e) => e !== image));
+
+    setSelectedImages(selectedImages.filter((e, i) => e !== image && i < 8));
+    if (images) setImages(images.filter((e, i) => e !== image && i < 8));
     setGeneralData((prev) => ({
       ...prev,
       imgSelected: true,
-      images: selectedImages.filter((e) => e !== image),
+      images: selectedImages.filter((e, i) => e !== image && i < 8),
     }));
 
     URL.revokeObjectURL(image);
@@ -65,14 +71,17 @@ const FieldPhotoUpload = ({
 
   return (
     <div className="">
-      <AtomLabel>{label ? label : "Зураг оруулах"}</AtomLabel>
+      <div className="flex items-center justify-between w-full">
+        <AtomLabel>Зураг оруулах</AtomLabel>
+        <p className="font-semibold">{selectedImages.length}/8</p>
+      </div>
       <>
         <input
           type="file"
           // accept={'image/*'}
-          accept={"image/jpeg, image/png, image/jpg"}
+          accept={'image/jpeg, image/png, image/jpg'}
           ref={hiddenFileInput}
-          style={{ display: "none" }}
+          style={{ display: 'none' }}
           multiple
           onChange={handleChange}
         />

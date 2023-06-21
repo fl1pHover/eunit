@@ -8,10 +8,7 @@ import axios from "axios";
 import { getCookie } from "cookies-next";
 import { Button } from "flowbite-react";
 
-import React from "react";
-import { Fragment } from "react";
-import { useState } from "react";
-import { useEffect } from "react";
+import { Fragment, useEffect, useState } from "react";
 
 const Estimating = () => {
   const token = getCookie("token");
@@ -36,6 +33,27 @@ const Estimating = () => {
           isClosable: true,
         });
       });
+  };
+  const updatePrice = async (id, price) => {
+    try {
+      await axios
+        .get(`${urls["test"]}/estimate/price/${id}/${price}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((d) => {
+          console.log(d.data);
+          toast({
+            title: "Амжилттай  солилоо.",
+            status: "success",
+            duration: 2000,
+            isClosable: true,
+          });
+        });
+    } catch (error) {
+      console.error(error);
+    }
   };
   const getEstimate = async (check) => {
     await axios
@@ -86,15 +104,15 @@ const Estimating = () => {
           <div className="flex flex-col w-full gap-2">
             {/* <div className={mergeNames(colSize)}>
               <h1 className="p-2">Дугаар</h1>
+              <h1 className={mergeNames('p-2 bg-gray-200')}>Үнэ </h1>
               {estimates.length > 0 &&
                 estimates[0].items.map((est, i) => {
-                  console.log(est);
                   return (
                     <Fragment key={i}>
                       <h1
                         className={mergeNames(
-                          i % 2 == 0 ? "bg-gray-200" : "",
-                          "p-2 truncate"
+                          i % 2 != 0 ? 'bg-gray-200' : '',
+                          'p-2 truncate'
                         )}
                       >
                         {est.name}
@@ -114,8 +132,8 @@ const Estimating = () => {
                           <h2
                             key={i}
                             className={mergeNames(
-                              i % 2 == 0 ? "bg-gray-200" : "",
-                              "p-2 truncate"
+                              i % 2 != 0 ? 'bg-gray-200' : '',
+                              'p-2 truncate'
                             )}
                           >
                             &nbsp;{item.value}
@@ -126,10 +144,16 @@ const Estimating = () => {
 
                     <p>{JSON.stringify(est)}</p>
                     <Button
-                      onClick={() => updateEstimate("estimated", est._id)}
+                      onClick={() => {
+                        if (est.price != undefined)
+                          updateEstimate('estimated', est._id);
+                        else {
+                          
+                        }
+                      }}
                       className="px-5 mx-auto my-4"
                     >
-                      TEST
+                      {est.price != undefined ? 'Үнэлсэн' : 'Үнэлэх'}
                     </Button>
                     <Button className="px-5 mx-auto my-4">open</Button>
                   </div>
