@@ -4,14 +4,15 @@ import urls from '@/constants/api';
 import { stopPropagation } from '@/context/functions';
 import { brk, radioGroup } from '@/styles/index';
 import Alerting from '@/util/Alert';
+import CustomPagination from '@/util/CustomPagination';
 import mergeNames from '@/util/mergeNames';
 import { Radio, RadioGroup, useToast } from '@chakra-ui/react';
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
 
-import CustomPagination from '@/util/CustomPagination';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+
 const SharingAds = ({ user }) => {
   const [ads, setAds] = useState({ ads: [], limit: 0 });
   const [data, setData] = useState({ ads: [], limit: 0 });

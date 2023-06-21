@@ -1,19 +1,15 @@
-import urls from "@/constants/api";
-import MainContainer from "@/layout/mainContainer";
-import { ContainerX } from "@/lib/Container";
-import mergeNames from "@/util/mergeNames";
-import { Radio, RadioGroup, useToast } from "@chakra-ui/react";
-import axios from "axios";
-import { getCookie } from "cookies-next";
-import { Button } from "flowbite-react";
+import urls from '@/constants/api';
+import MainContainer from '@/layout/mainContainer';
+import mergeNames from '@/util/mergeNames';
+import { Radio, RadioGroup, useToast } from '@chakra-ui/react';
+import axios from 'axios';
+import { getCookie } from 'cookies-next';
+import { Button } from 'flowbite-react';
 
-import React from "react";
-import { Fragment } from "react";
-import { useState } from "react";
-import { useEffect } from "react";
+import { Fragment, useEffect, useState } from 'react';
 
 const Estimating = () => {
-  const token = getCookie("token");
+  const token = getCookie('token');
   const [estimates, setEstimates] = useState([]);
   //   types
   //   export enum EstimateStatus {
@@ -25,20 +21,41 @@ const Estimating = () => {
   const toast = useToast();
   const updateEstimate = async (status, id) => {
     await axios
-      .get(`${urls["test"]}/estimate/update/${status}/${id}`)
+      .get(`${urls['test']}/estimate/update/${status}/${id}`)
       .then((d) => {
         console.log(d.data);
         toast({
-          title: "Амжилттай  солилоо.",
-          status: "success",
+          title: 'Амжилттай  солилоо.',
+          status: 'success',
           duration: 2000,
           isClosable: true,
         });
       });
   };
+  const updatePrice = async (id, price) => {
+    try {
+      await axios
+        .get(`${urls['test']}/estimate/price/${id}/${price}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((d) => {
+          console.log(d.data);
+          toast({
+            title: 'Амжилттай  солилоо.',
+            status: 'success',
+            duration: 2000,
+            isClosable: true,
+          });
+        });
+    } catch (error) {
+      console.error(error);
+    }
+  };
   const getEstimate = async (check) => {
     await axios
-      .get(`${urls["test"]}/estimate/${check}`, {
+      .get(`${urls['test']}/estimate/${check}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -46,7 +63,7 @@ const Estimating = () => {
       .then((d) => setEstimates(d.data));
   };
   useEffect(() => {
-    if (token) getEstimate("pending");
+    if (token) getEstimate('pending');
   }, [token]);
   return (
     <div className="">
@@ -57,7 +74,7 @@ const Estimating = () => {
             className="font-bold text-green-400 whitespace-nowrap"
             onChange={(e) => {
               if (e.target.checked) {
-                getEstimate("estimated", 0);
+                getEstimate('estimated', 0);
 
                 // setNum(0);
               }
@@ -71,7 +88,7 @@ const Estimating = () => {
             className="font-bold text-yellow-400 whitespace-nowrap"
             onChange={(e) => {
               if (e.target.checked) {
-                getEstimate("pending", 0);
+                getEstimate('pending', 0);
                 // setNum(0);
                 // setCheck("checking");
               }
@@ -85,15 +102,15 @@ const Estimating = () => {
           <div className="flex overflow-scroll">
             <div className={mergeNames(colSize)}>
               <h1 className="p-2">Дугаар</h1>
+              <h1 className={mergeNames('p-2 bg-gray-200')}>Үнэ </h1>
               {estimates.length > 0 &&
                 estimates[0].items.map((est, i) => {
-                  console.log(est);
                   return (
                     <Fragment key={i}>
                       <h1
                         className={mergeNames(
-                          i % 2 == 0 ? "bg-gray-200" : "",
-                          "p-2 truncate"
+                          i % 2 != 0 ? 'bg-gray-200' : '',
+                          'p-2 truncate'
                         )}
                       >
                         {est.name}
@@ -105,16 +122,19 @@ const Estimating = () => {
             {estimates.length > 0 &&
               estimates.map((est, i) => {
                 return (
-                  <div key={i} className={mergeNames(colSize, "text-center")}>
+                  <div key={i} className={mergeNames(colSize, 'text-center')}>
                     <h1 className="p-2">{i + 1}</h1>
+                    <h2 className={mergeNames('bg-gray-200 p-2')}>
+                      &nbsp;{est.price ?? 0}
+                    </h2>
                     {est?.items?.map((item, i) => {
                       return (
                         <>
                           <h2
                             key={i}
                             className={mergeNames(
-                              i % 2 == 0 ? "bg-gray-200" : "",
-                              "p-2 truncate"
+                              i % 2 != 0 ? 'bg-gray-200' : '',
+                              'p-2 truncate'
                             )}
                           >
                             &nbsp;{item.value}
@@ -125,10 +145,16 @@ const Estimating = () => {
 
                     {/* <p>{JSON.stringify(est)}</p> */}
                     <Button
-                      onClick={() => updateEstimate("estimated", est._id)}
+                      onClick={() => {
+                        if (est.price != undefined)
+                          updateEstimate('estimated', est._id);
+                        else {
+                          
+                        }
+                      }}
                       className="px-5 mx-auto my-4"
                     >
-                      TEST
+                      {est.price != undefined ? 'Үнэлсэн' : 'Үнэлэх'}
                     </Button>
                   </div>
                 );
@@ -144,4 +170,4 @@ const Estimating = () => {
 
 export default Estimating;
 
-const colSize = "flex flex-col min-w-[250px]   border-r border-gray-400";
+const colSize = 'flex flex-col min-w-[250px]   border-r border-gray-400';

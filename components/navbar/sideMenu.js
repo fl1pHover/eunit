@@ -1,32 +1,33 @@
-import React from 'react';
-import { CgChevronRight, CgClose } from 'react-icons/cg';
+import React from "react";
+import { CgChevronRight, CgClose } from "react-icons/cg";
 
-import mergeNames from '@/util/mergeNames';
-import { useRouter } from 'next/router';
+import mergeNames from "@/util/mergeNames";
+import { useRouter } from "next/router";
 
-import Footer from '@/components/footer/index';
-import { categories } from '@/data/categories';
-import { AiOutlineCar } from 'react-icons/ai';
-import { BsBuilding, BsPhone } from 'react-icons/bs';
-import { CgSmartHomeWashMachine } from 'react-icons/cg';
-import { MdComputer } from 'react-icons/md';
-import { RiHomeSmile2Line } from 'react-icons/ri';
-import { FiSmartphone } from 'react-icons/fi';
-import { IoPhonePortraitOutline } from 'react-icons/io5';
+import Footer from "@/components/footer/index";
+import { categories } from "@/data/categories";
+import { AiOutlineCar } from "react-icons/ai";
+import { BsBuilding, BsPhone } from "react-icons/bs";
+import { CgSmartHomeWashMachine } from "react-icons/cg";
+import { MdComputer } from "react-icons/md";
+import { RiHomeSmile2Line } from "react-icons/ri";
+import { FiSmartphone } from "react-icons/fi";
+import { IoPhonePortraitOutline } from "react-icons/io5";
+import Link from "next/link";
 
 const Icon = ({ id, ...props }) => {
   switch (id) {
-    case 'realState':
+    case "realState":
       return <BsBuilding {...props} />;
-    case 'vehicle':
+    case "vehicle":
       return <AiOutlineCar {...props} />;
-    case 'computer':
+    case "computer":
       return <MdComputer {...props} />;
-    case 'phone':
+    case "phone":
       return <IoPhonePortraitOutline {...props} />;
-    case 'electronic':
+    case "electronic":
       return <CgSmartHomeWashMachine {...props} />;
-    case 'household-items':
+    case "household-items":
       return <RiHomeSmile2Line {...props} />;
     default:
       return <></>;
@@ -45,27 +46,27 @@ const SideMenu = ({
     <React.Fragment>
       <div
         className={mergeNames(
-          'transition-all ease-in-out duration-100',
+          "transition-all ease-in-out duration-100",
           show
-            ? 'w-screen h-screen absolute top-0 bottom-0 left-0 right-0 bg-gray-900/50'
-            : ''
+            ? "w-screen h-screen absolute top-0 bottom-0 left-0 right-0 bg-gray-900/50"
+            : ""
         )}
       />
       <div
-        style={{ width: show ? '100%' : '0rem' }}
+        style={{ width: show ? "100%" : "0rem" }}
         className={mergeNames(
           // show ? "absolute": "hidden",
-          'absolute z-50',
-          show ? 'translate-x-0' : 'translate-x-0',
-          'transition-all ease-in-out duration-300',
-          'left right-0 top-0 bottom-0 h-screen '
+          "absolute z-50",
+          show ? "translate-x-0" : "translate-x-0",
+          "transition-all ease-in-out duration-300",
+          "left right-0 top-0 bottom-0 h-screen "
         )}
       >
         <div className="static z-50 flex flex-col items-end h-screen overflow-y-scroll">
           <div className="w-3/4 h-screen bg-slate-100">
             <div
               className={mergeNames(
-                'flex justify-between items-center bg-mainBlossom/100 py-4 w-full px-6'
+                "flex justify-between items-center bg-mainBlossom/100 py-4 w-full px-6"
               )}
             >
               <p className="text-base font-semibold text-slate-50">Ангилал</p>
@@ -86,10 +87,10 @@ const SideMenu = ({
                         });
                       }}
                       className={mergeNames(
-                        'hover:bg-slate-300',
-                        'sm:px-4 sm:py-4 px-3 py-3',
-                        'border-b border-gray-200',
-                        'w-full flex flex-row items-center justify-between'
+                        "hover:bg-slate-300",
+                        "sm:px-4 sm:py-4 px-3 py-3",
+                        "border-b border-gray-200",
+                        "w-full flex flex-row items-center justify-between"
                       )}
                     >
                       <div className="flex flex-row items-center gap-2">
@@ -105,8 +106,8 @@ const SideMenu = ({
                       <CgChevronRight
                         size={20}
                         className={mergeNames(
-                          collapsedId === item.id && 'rotate-90',
-                          'transition-all ease-in-out'
+                          collapsedId === item.id && "rotate-90",
+                          "transition-all ease-in-out"
                         )}
                       />
                     </button>
@@ -136,6 +137,18 @@ const SideMenu = ({
                   </div>
                 );
               })}
+              <div className="grid items-center grid-cols-2 text-sm font-semibold text-center text-white">
+                <div className="p-3 bg-teal-500 border border-teal-600 hover:bg-teal-600">
+                  <Link href="/create/ad" passHref>
+                    <a>Зар нэмэх</a>
+                  </Link>
+                </div>
+                <div className="p-3 bg-teal-500 border border-teal-600 hover:bg-teal-600">
+                  <Link href="/create/sharing" passHref>
+                    <a> Зар хуваалцах</a>
+                  </Link>
+                </div>
+              </div>
               <Footer />
             </div>
           </div>
