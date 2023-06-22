@@ -11,7 +11,6 @@ import { setUser } from "store/slice/user";
 import Footer from "../components/footer/index";
 import { setCategories } from "store/slice/category";
 
-
 const Layout = ({ children }) => {
   const token = getCookie("token");
   const dispatch = useDispatch();
@@ -46,7 +45,6 @@ const Layout = ({ children }) => {
       user?.bookmarks?.length > 0
     ) {
       dispatch(updateBookmark(user.bookmarks));
-
     }
   }, [user?.bookmarks]);
   useEffect(() => {
@@ -66,7 +64,7 @@ const Layout = ({ children }) => {
       // animate={{ opacity: 1 }}
       // exit={{ opacity: 0 }}
       >
-        {children}
+        {/* {children} */}
         {compare &&
           (router?.pathname == "/" ||
             router?.pathname == "/category" ||

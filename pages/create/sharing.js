@@ -271,7 +271,7 @@ export default function SharingAd() {
   }
   return (
     <div className="min-h-[80vh] py-10">
-      {/* <ContainerX>
+      <ContainerX>
         <StepProgress
           sharing={true}
           activeStep={step}
@@ -389,7 +389,7 @@ export default function SharingAd() {
           map={map}
           // onClick={() => step == 2 && <CustomModal />}
         />
-      </ContainerX> */}
+      </ContainerX>
     </div>
   );
   // router.push("/login");
