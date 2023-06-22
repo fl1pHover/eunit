@@ -16,7 +16,7 @@ function DialogBox({ btnDialog, dlHeader, dlBody, dlFooter }) {
 
   return (
     <>
-      <div className="flex" onClick={onOpen}>
+      <div className="flex cursor-pointer" onClick={onOpen}>
         {btnDialog}
       </div>
       <AlertDialog
@@ -33,7 +33,11 @@ function DialogBox({ btnDialog, dlHeader, dlBody, dlFooter }) {
           <AlertDialogCloseButton />
           <AlertDialogBody>{dlBody}</AlertDialogBody>
           <AlertDialogFooter>
-            <button ref={cancelRef} onClick={onClose}>
+            <button
+              ref={cancelRef}
+              className="px-4 py-2 rounded-lg bg-grey/20"
+              onClick={onClose}
+            >
               Буцах
             </button>
 

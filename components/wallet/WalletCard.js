@@ -1,5 +1,5 @@
 import { Image } from "@chakra-ui/react";
-
+import TransactionGuide from "./TransactionGuide";
 
 const WalletCard = ({ user }) => {
   return (
@@ -18,9 +18,12 @@ const WalletCard = ({ user }) => {
             <h1 className="text-white/80">Нэр</h1>
             <h1 className="">{user?.username}</h1>
           </div>
-          <div>
-            <h1 className="text-white/80">Үлдэгдэл</h1>
-            <h1 className="text-xl">{user?.point ?? 0} E-unit</h1>
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-white/80">Үлдэгдэл</h1>
+              <h1 className="text-xl">{user?.point ?? 0} E-unit - ₮</h1>
+            </div>
+            <TransactionGuide />
           </div>
         </div>
       </div>

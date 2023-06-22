@@ -9,6 +9,7 @@ import { STYLES } from "../styles";
 import DialogBox from "@/util/Dialog";
 import WalletCard from "@/components/wallet/WalletCard";
 import WHistory from "@/components/wallet/History";
+import TransactionGuide from "@/components/wallet/TransactionGuide";
 
 const WalletPage = ({ user }) => {
   const [point, setPoint] = useState({
@@ -75,6 +76,7 @@ const WalletPage = ({ user }) => {
         )}
       >
         {/* Card */}
+
         <WalletCard user={user} />
 
         <form className="flex flex-col justify-center w-full gap-2 mx-auto">

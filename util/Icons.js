@@ -1,3 +1,4 @@
+import { IoIosAddCircle } from "react-icons/io";
 import { RiInformationLine } from "react-icons/ri";
 
 export function GoogleIcon({ size = "1em", props }) {
@@ -49,5 +50,7 @@ export function FacebookIcon({ size = "1em", props }) {
     </svg>
   );
 }
+
+export const AddIcon = (props) => <IoIosAddCircle {...props} />;
 
 export const InfoIcon = (props) => <RiInformationLine {...props} />;

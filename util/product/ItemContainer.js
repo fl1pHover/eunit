@@ -1,22 +1,29 @@
-import Tip from '@/lib/Tip';
-import Link from 'next/link';
+import Tip from "@/lib/Tip";
+import Link from "next/link";
+import mergeNames from "../mergeNames";
 
 const ItemContainer = ({
   Icon = () => <></>,
-  text = '',
+  text = "",
   lbl,
   name,
   href = false,
   value,
   id,
-  cateId
+  cateId,
+  txtWhite = false,
 }) => {
   return (
     <Tip lbl={lbl}>
-      <div className="flex flex-col items-center text-mainBlossom">
+      <div
+        className={mergeNames(
+          "flex flex-col items-center",
+          txtWhite ? " text-white" : "text-mainBlossom"
+        )}
+      >
         <Icon className="" />
-        <div className="flex items-center">
-          <p className="text-xs md:text-sm">{name}:  &nbsp;</p>
+        <div className="flex items-center ">
+          <p className="text-xs md:text-sm">{name}&nbsp;</p>
           {href ? (
             <Link
               href={{
