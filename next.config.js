@@ -5,10 +5,8 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   experimental: {
-    // outputFileTracingRoot: path.join(__dirname, "../../"),
-    outputFileTracingExcludes: {
-      "*": ["node_modules/canvas"],
-    },
+    legacyBrowsers: false,
+    outputFileTracingIgnores: ["**canvas**"],
   },
 
   // webp: {
