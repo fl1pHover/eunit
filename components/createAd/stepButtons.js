@@ -168,7 +168,7 @@ const StepButtons = ({
                     </Text>
                   </WhiteBox>
                   <WhiteBox heading="Газрын зураг">
-                    {/* <GoogleMap
+                    <GoogleMap
                       onClick={() => {
                         onClose(), setStep(0);
                       }}
@@ -190,7 +190,7 @@ const StepButtons = ({
                           />
                         </div>
                       )}
-                    </GoogleMap> */}
+                    </GoogleMap>
                   </WhiteBox>
                 </div>
                 {data && (

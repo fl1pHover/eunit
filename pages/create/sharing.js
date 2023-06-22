@@ -320,7 +320,7 @@ export default function SharingAd() {
                   <Heading variant="mediumHeading" className="mb-5 text-center">
                     Газрын зураг дээр байршлаа сонгоно уу
                   </Heading>
-                  {/* {isLoaded && (
+                  {isLoaded && (
                     <GoogleMap
                       className="shadow aspect-video"
                       options={mapOptions}
@@ -338,7 +338,7 @@ export default function SharingAd() {
                         animation={google.maps.Animation.DROP}
                       />
                     </GoogleMap>
-                  )} */}
+                  )}
                 </div>
               );
             if (index - 1 == 0)
