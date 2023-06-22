@@ -1,8 +1,6 @@
 import { ContainerX } from "@/lib/Container";
 import { SectionTitle } from "@/lib/Title";
-import { STYLES } from "@/styles/index";
 import mergeNames from "@/util/mergeNames";
-import { Heading } from "@chakra-ui/react";
 import React from "react";
 
 const AboutUs = () => {

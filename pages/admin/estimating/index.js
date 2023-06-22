@@ -1,14 +1,12 @@
 import EstimatedCard from "@/components/estimator/EstimatedCard";
 import urls from "@/constants/api";
 import MainContainer from "@/layout/mainContainer";
-import { ContainerX } from "@/lib/Container";
-import mergeNames from "@/util/mergeNames";
 import { Radio, RadioGroup, useToast } from "@chakra-ui/react";
 import axios from "axios";
 import { getCookie } from "cookies-next";
 import { Button } from "flowbite-react";
 
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const Estimating = () => {
   const token = getCookie("token");
@@ -36,7 +34,7 @@ const Estimating = () => {
             duration: 2000,
             isClosable: true,
           });
-          router.reload();
+          // router.reload();
         });
     } catch (error) {
       console.error(error);

@@ -1,14 +1,11 @@
 import React from "react";
-// import swiper
+
 import { Swiper, SwiperSlide } from "swiper/react";
 
-// Import Swiper styles
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
-// import required modules
-import { Box, Link } from "@chakra-ui/react";
 import { Autoplay, Navigation, Pagination } from "swiper";
 
 import Image from "next/image";

@@ -39,11 +39,8 @@ const UpperNav = () => {
 
   const [size, setSize] = useState(() => calcSize(pt));
   const [showSideMenu, setShowSideMenu] = useState(false);
-  const [showBottomMenu, setShowBottomMenu] = useState(false);
-  const { logout } = useAuth();
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const btnRef = useRef();
+  const { logout } = useAuth();
 
   useEffect(() => {
     setSize(calcSize(pt));
@@ -99,7 +96,7 @@ const UpperNav = () => {
           </div>
         </div>
         {/* </div> */}
-      </NavContainer>a
+      </NavContainer>
       <SideMenu
         show={showSideMenu}
         closeNav={() => {

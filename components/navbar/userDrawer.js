@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import mergeNames from "../../util/mergeNames";
 import { UserIcon } from "./icons";
 
-import { useAuth } from "@/context/auth";
+// import { useAuth } from "@/context/auth";
 import { STYLES } from "@/styles/index";
 import Feedback from "@/util/Feedback";
 import {
@@ -24,6 +24,7 @@ import { IoWalletOutline } from "react-icons/io5";
 import { signOut } from "next-auth/react";
 import { deleteCookie } from "cookies-next";
 import { AiOutlineCalculator } from "react-icons/ai";
+import { MdShare } from "react-icons/md";
 
 const drawerItem = [
   {
@@ -36,11 +37,11 @@ const drawerItem = [
     text: "Миний зарууд",
     href: "MyAds",
   },
-  // {
-  //   icon: <MdShare />,
-  //   text: "Хуваалцсан зарууд",
-  //   href: "SharedAds",
-  // },
+  {
+    icon: <MdShare />,
+    text: "Хуваалцсан зарууд",
+    href: "SharedAds",
+  },
   {
     icon: <FiHeart />,
     text: "Миний хүслүүд",

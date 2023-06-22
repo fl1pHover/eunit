@@ -64,7 +64,7 @@ const Layout = ({ children }) => {
       // animate={{ opacity: 1 }}
       // exit={{ opacity: 0 }}
       >
-        {/* {children} */}
+        {children}
         {compare &&
           (router?.pathname == "/" ||
             router?.pathname == "/category" ||

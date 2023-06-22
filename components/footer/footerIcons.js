@@ -1,7 +1,7 @@
 import React from "react";
 
-import { GrInstagram } from "react-icons/gr";
-import { BsFacebook, BsTwitter, BsYoutube } from "react-icons/bs";
+
+import { BsFacebook } from "react-icons/bs";
 
 const footerIcon = [
   {

@@ -15,12 +15,12 @@ import currency from "currency.js";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { AiFillEdit, AiOutlineFieldTime } from "react-icons/ai";
+import { AiFillEdit } from "react-icons/ai";
 import { BsThreeDots } from "react-icons/bs";
 import { useSelector } from "react-redux";
 import EditAd from "../ad/edit";
 import AdCardButton from "./adCardButton";
-import { CgTimer } from "react-icons/cg";
+
 
 // import { detectContentType } from "next/dist/server/image-optimizer";
 

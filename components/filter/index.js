@@ -114,7 +114,6 @@ const FilterLayout = ({ data, isOpenMap }) => {
           " bg-blue-600 rounded-md text-white font-bold h-[50px]",
           STYLES.flexCenter,
           "relative ",
-          // 'sticky top-[100px] left-[0] z-30',
           "px-5 ",
           "flex gap-2 items-center"
         )}
@@ -133,9 +132,7 @@ const FilterLayout = ({ data, isOpenMap }) => {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-
           <DrawerBody
-          // className="text-white bg-mainBlossom"
           >
             <FilterStack>
               <Heading variant={"smallHeading"} mb={2}>

@@ -1,5 +1,5 @@
 import {
-  Avatar,
+
   Box,
   Button,
   GridItem,

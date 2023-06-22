@@ -1,7 +1,7 @@
 import React from "react";
 
 import Title from "@/lib/Title";
-import { ContainerX, NavContainer } from "@/lib/Container";
+import { ContainerX } from "@/lib/Container";
 import { FooterText } from "./footerLink";
 
 const Bottom = () => {

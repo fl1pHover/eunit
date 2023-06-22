@@ -1,6 +1,5 @@
 import { categories } from "@/data/categories";
 import mergeNames from "@/util/mergeNames";
-import { Image } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Fragment } from "react";

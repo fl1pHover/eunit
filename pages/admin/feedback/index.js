@@ -11,19 +11,6 @@ const Feedback = ({ feedbacks }) => {
   }, [feedbacks]);
 
   return (
-    // <MainContainer>
-    //   <div className="flex flex-col w-full ">
-    //     <div className="grid w-full grid-cols-3 py-2 border-2 " key={i}>
-    //       <button className="mx-5 font-semibold text-left text-gray-500">
-    //         {d.user?.username}
-    //       </button>
-    //       <button className="mx-5 font-semibold text-gray-500">
-    //         {d.title}
-    //       </button>
-    //       <p className="font-bold text-right text-blue-700">{d.message}</p>
-    //     </div>
-    //   </div>
-    // </MainContainer>
 
     <ContainerX classname="p-2 my-5">
       <table class="table-auto border border-gray-400">

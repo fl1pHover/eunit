@@ -2,7 +2,7 @@ import { LoadingButton } from "@/lib/Button";
 import CustomModal from "@/util/CustomModal";
 import mergeNames from "@/util/mergeNames";
 import WhiteBox from "@/util/product/WhiteBox";
-import { Box, Heading, Text, useDisclosure } from "@chakra-ui/react";
+import { Box, Heading,  useDisclosure } from "@chakra-ui/react";
 import { GoogleMap, MarkerF, useLoadScript } from "@react-google-maps/api";
 import { ProductInfo } from "pages/ad/[slug]";
 import { useMemo } from "react";

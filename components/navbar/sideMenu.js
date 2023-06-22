@@ -11,7 +11,6 @@ import { BsBuilding, BsPhone } from "react-icons/bs";
 import { CgSmartHomeWashMachine } from "react-icons/cg";
 import { MdComputer } from "react-icons/md";
 import { RiHomeSmile2Line } from "react-icons/ri";
-import { FiSmartphone } from "react-icons/fi";
 import { IoPhonePortraitOutline } from "react-icons/io5";
 import Link from "next/link";
 

@@ -1,11 +1,11 @@
 import React from "react";
 
-import { ContainerX, NavContainer } from "@/lib/Container";
+import { ContainerX } from "@/lib/Container";
 
 import LinkGrid from "./linkGrid";
 import ContactGrid from "./contactGrid";
 import Bottom from "./bottom";
-import { useBreakpoints } from "@/hooks/index";
+
 
 const Footer = () => {
   // const pt = useBreakpoints();

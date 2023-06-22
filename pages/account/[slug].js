@@ -10,8 +10,6 @@ import { useEffect, useState } from "react";
 import { FaPhoneAlt } from "react-icons/fa";
 import urls from "../../constants/api";
 import { useRouter } from "next/router";
-import CustomToast from "@/util/customToast";
-import { useSelector } from "react-redux";
 
 const capitalizeFirst = (str) => {
   return str.charAt(0).toUpperCase() + str.slice(1);
