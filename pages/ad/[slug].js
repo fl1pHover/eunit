@@ -833,14 +833,10 @@ const Product = () => {
                               className={mergeNames(
                                 "relative overflow-hidden rounded-md ] h-[200px] aspect-4/3  shadow-md bg-zinc-200 group"
                               )}
+                              onClick={() => router.push(`/ad/${m.num}`)}
                             >
                               {/* zarin zurag absolute  */}
-                              <div
-                                className="absolute top-0 bottom-0 left-0 right-0 z-0 w-full h-full cursor-pointer"
-                                onClick={() => {
-                                  pushRouter();
-                                }}
-                              >
+                              <div className="absolute top-0 bottom-0 left-0 right-0 z-0 w-full h-full cursor-pointer">
                                 {m?.images && (
                                   <Image
                                     src={m?.images[0] ?? "/images/noImage.png"}
@@ -892,12 +888,7 @@ const Product = () => {
                               </div>
 
                               {/* Zariin info  */}
-                              <div
-                                className="absolute bottom-0 left-0 flex flex-col justify-end w-full p-2 mb-2 space-y-2 cursor-pointer"
-                                onClick={(e) => {
-                                  pushRouter();
-                                }}
-                              >
+                              <div className="absolute bottom-0 left-0 flex flex-col justify-end w-full p-2 mb-2 space-y-2 cursor-pointer">
                                 <div className="flex items-center justify-between gap-4 text-sm text-white font-md">
                                   <p
                                     className={mergeNames("font-bold text-xl")}
