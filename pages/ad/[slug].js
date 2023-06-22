@@ -557,6 +557,8 @@ const Product = () => {
                           onClick={() => getFilterByItem(p.id, p.value)}
                         />
                       );
+                    } else {
+                      return <Fragment key={i}></Fragment>;
                     }
                   })}
                 </WhiteBox>
@@ -768,7 +770,7 @@ const Product = () => {
               >
                 <Fragment>
                   {data?.subCategory?.suggestionItem?.map((sug, i) => {
-                    return getSuggestionValue(sug);
+                    return getSuggestionValue(sug, i);
                   })}
                   <option value={"map"}>Газрын зургаар</option>
                 </Fragment>

@@ -164,14 +164,26 @@ export const getJson = (data) => {
   };
 };
 
-export const getSuggestionValue = (suggestion) => {
+export const getSuggestionValue = (suggestion, key) => {
   switch (suggestion) {
     case "room":
-      return <option value="room">Өрөөгөөр</option>;
+      return (
+        <option value="room" key={key}>
+          Өрөөгөөр
+        </option>
+      );
     case "location":
-      return <option value="location">Байршлаар</option>;
+      return (
+        <option value="location" key={key}>
+          Байршлаар
+        </option>
+      );
     case "landUsage":
-      return <option value="landUsage">Зориулалтаар</option>;
+      return (
+        <option value="landUsage" key={key}>
+          Зориулалтаар
+        </option>
+      );
     default:
       return;
   }

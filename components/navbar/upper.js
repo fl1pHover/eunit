@@ -99,7 +99,7 @@ const UpperNav = () => {
           </div>
         </div>
         {/* </div> */}
-      </NavContainer>
+      </NavContainer>a
       <SideMenu
         show={showSideMenu}
         closeNav={() => {

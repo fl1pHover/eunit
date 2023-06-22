@@ -4,10 +4,6 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  experimental: {
-    legacyBrowsers: false,
-    outputFileTracingIgnores: ["**canvas**"],
-  },
 
   // webp: {
   //   preset: 'default',
