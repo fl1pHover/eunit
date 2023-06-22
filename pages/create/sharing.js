@@ -56,7 +56,6 @@ export default function SharingAd() {
   });
   // STEP 3IIN RAW IMAGE FILES
   const [images, setImages] = useState([]);
-  const [imageUrl, setImageUrl] = useState([]);
 
   // THIS EFFECT IS FOR FETCHING FILTER DATA FOR STEP2,STEP3,STEP4
   React.useEffect(() => {

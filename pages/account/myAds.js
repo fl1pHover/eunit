@@ -1,7 +1,11 @@
 import AdCard from "@/components/home/adCard";
 import FilterAd from "@/components/Profile/filterAd";
 import urls from "@/constants/api";
-import { setAdType, stopPropagation } from "@/context/functions";
+import {
+  setAdType,
+  stopPropagation,
+  updateBookmarks,
+} from "@/context/functions";
 import { brk, radioGroup, STYLES } from "@/styles/index";
 import Alerting from "@/util/Alert";
 import CustomPagination from "@/util/CustomPagination";
@@ -12,6 +16,7 @@ import { getCookie } from "cookies-next";
 
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 const MyAds = ({ user }) => {
   const [ads, setAds] = useState({ ads: [], limit: 0 });
@@ -26,11 +31,7 @@ const MyAds = ({ user }) => {
   const toast = useToast();
   const token = getCookie("token");
 
-  const toLowerCase = (text) => {
-    if (text) {
-      return text.toLowerCase();
-    }
-  };
+  const { bookmarks } = useSelector((state) => state.bookmarks);
   const getAds = async (status, n) => {
     await axios
       .post(`${urls["test"]}/ad/many/${n ?? num}/true/12/${status}/all`, user)
@@ -71,6 +72,9 @@ const MyAds = ({ user }) => {
       getAds(check);
     }
   }, [num]);
+  useEffect(() => {
+    updateBookmarks(bookmarks);
+  }, []);
 
   // const adStatusChecker = async () => {
   //   getAds;
@@ -79,7 +83,7 @@ const MyAds = ({ user }) => {
   const restoreAd = async (id) => {
     try {
       if (token) {
-        let ad = await axios
+        await axios
           .get(
             `${
               urls["test"]
@@ -106,7 +110,7 @@ const MyAds = ({ user }) => {
   const deleteAd = async (id) => {
     try {
       if (token) {
-        let ad = await axios
+        await axios
           .get(
             `${
               urls["test"]

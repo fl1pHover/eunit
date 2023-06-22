@@ -20,11 +20,11 @@ export const bookmarkSlice = createSlice({
       } else {
         state.bookmarks = [...state.bookmarks, action.payload];
       }
-      updateBookmarks(state.bookmarks);
+      
     },
     updateBookmark: (state, action) => {
       state.bookmarks = action.payload;
-      updateBookmarks(state.bookmarks);
+      
     },
   },
 });
