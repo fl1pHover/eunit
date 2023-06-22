@@ -56,8 +56,5 @@
     "postcss": "^8.4.19",
     "sass": "^1.55.0",
     "tailwindcss": "^3.2.4"
-  },
-  "resolutions": {
-    "canvas": "https://registry.yarnpkg.com/@favware/skip-dependency/-/skip-dependency-1.2.1.tgz"
   }
 }
