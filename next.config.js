@@ -4,6 +4,12 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  experimental: {
+    // outputFileTracingRoot: path.join(__dirname, "../../"),
+    outputFileTracingExcludes: {
+      "*": ["node_modules/canvas"],
+    },
+  },
 
   // webp: {
   //   preset: 'default',
