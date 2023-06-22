@@ -155,7 +155,7 @@ const StepButtons = ({
 
                 <div className="grid grid-cols-1 gap-7 ">
                   <WhiteBox heading="Газрын зураг">
-                    <GoogleMap
+                    {/* <GoogleMap
                       onClick={() => {
                         onClose(), setStep(0);
                       }}
@@ -177,7 +177,7 @@ const StepButtons = ({
                           />
                         </div>
                       )}
-                    </GoogleMap>
+                    </GoogleMap> */}
                   </WhiteBox>
                 </div>
                 {data && (

@@ -515,7 +515,7 @@ const Product = () => {
                     </Text>
                   </WhiteBox>
                   <WhiteBox heading="Газрын зураг">
-                    {isLoaded && (
+                    {/* {isLoaded && (
                       <GoogleMap
                         options={mapOptions}
                         zoom={14}
@@ -537,7 +537,7 @@ const Product = () => {
                           />
                         )}
                       </GoogleMap>
-                    )}
+                    )} */}
                   </WhiteBox>
                 </div>
                 <WhiteBox
@@ -777,85 +777,82 @@ const Product = () => {
             {/* )} */}
           </div>
           {suggestion == "map" && categoryAds?.length > 0 ? (
-            <GoogleMap
-              options={mapOptions}
-              onClick={(e) => {
-                // setMap(e.latLng.toJSON());
-                console.log(e.latLng.toJSON());
-              }}
-              zoom={14}
-              center={mapCenter}
-              mapTypeId={google.maps.MapTypeId.ROADMAP}
-              mapContainerStyle={{ width: "100%", height: "50vh" }}
-            >
-              {isLoaded &&
-                categoryAds?.map((m, i) => {
-                  return (
-                    <HStack key={i}>
-                      <MarkerF
-                        position={{
-                          lat: parseFloat(m.location?.lat ?? 47.74604),
-                          lng: parseFloat(m.location?.lng ?? 107.341515),
-                        }}
-                        // onMouseOver={() => setMarkerActive(i)}
-                        onMouseOver={() => setMarkerActive(i)}
-                        animation={google.maps.Animation.DROP}
-                      >
-                        {/* end zasna */}
-                        {/* <Image
-                          src="/images/logo/404.pmg"
-                          alt="map image"
-                          className="w-full h-[100px]"
-                        /> */}
-                        {markerActive == i && (
-                          <InfoWindow
-                            position={{
-                              lat: parseFloat(m.location?.lat ?? 47.74604),
-                              lng: parseFloat(m.location?.lng ?? 107.341515),
-                            }}
-                            options={{
-                              maxWidth: "100%",
-                              width: "100%",
-                              minWidth: "100%",
-                              position: "relative",
-                              zIndex: 120,
-                            }}
-                          >
-                            <div
-                              onClick={() => router.push(`/ad/${m.num}`)}
-                              className={mergeNames(
-                                "h-[125px] aspect-4/3 flex flex-col cursor-pointer justify-end relative",
-                                "group-hover:block relative !important z-50"
-                              )}
-                            >
-                              <Image
-                                src={
-                                  m.images[0] ?? "/images/HeaderSlider/1.jpg"
-                                }
-                                alt="map image"
-                                className={mergeNames(
-                                  "absolute top-0 left-0 object-cover w-full h-full ",
-                                  ""
-                                )}
-                              />
-                              <div className="absolute top-0 left-0 object-cover w-full h-full bg-gradient-to-b from-slate-700/0 via-slate-700/50 to-slate-900/100 "></div>
-                              <p className="z-10 text-base font-bold text-white">
-                                {m.title}
-                              </p>
-                              <p className="z-10 text-base font-bold text-white">
-                                {
-                                  m.items.filter((f) => f.id == "price")[0]
-                                    ?.value
-                                }
-                              </p>
-                            </div>
-                          </InfoWindow>
-                        )}
-                      </MarkerF>
-                    </HStack>
-                  );
-                })}
-            </GoogleMap>
+            // <GoogleMap
+            //   options={mapOptions}
+            //   zoom={14}
+            //   center={mapCenter}
+            //   mapTypeId={google.maps.MapTypeId.ROADMAP}
+            //   mapContainerStyle={{ width: "100%", height: "50vh" }}
+            // >
+            //   {isLoaded &&
+            //     categoryAds?.map((m, i) => {
+            //       return (
+            //         <HStack key={i}>
+            //           <MarkerF
+            //             position={{
+            //               lat: parseFloat(m.location?.lat ?? 47.74604),
+            //               lng: parseFloat(m.location?.lng ?? 107.341515),
+            //             }}
+            //             // onMouseOver={() => setMarkerActive(i)}
+            //             onMouseOver={() => setMarkerActive(i)}
+            //             animation={google.maps.Animation.DROP}
+            //           >
+            //             {/* end zasna */}
+            //             {/* <Image
+            //               src="/images/logo/404.pmg"
+            //               alt="map image"
+            //               className="w-full h-[100px]"
+            //             /> */}
+            //             {markerActive == i && (
+            //               <InfoWindow
+            //                 position={{
+            //                   lat: parseFloat(m.location?.lat ?? 47.74604),
+            //                   lng: parseFloat(m.location?.lng ?? 107.341515),
+            //                 }}
+            //                 options={{
+            //                   maxWidth: "100%",
+            //                   width: "100%",
+            //                   minWidth: "100%",
+            //                   position: "relative",
+            //                   zIndex: 120,
+            //                 }}
+            //               >
+            //                 <div
+            //                   onClick={() => router.push(`/ad/${m.num}`)}
+            //                   className={mergeNames(
+            //                     "h-[125px] aspect-4/3 flex flex-col cursor-pointer justify-end relative",
+            //                     "group-hover:block relative !important z-50"
+            //                   )}
+            //                 >
+            //                   <Image
+            //                     src={
+            //                       m.images[0] ?? "/images/HeaderSlider/1.jpg"
+            //                     }
+            //                     alt="map image"
+            //                     className={mergeNames(
+            //                       "absolute top-0 left-0 object-cover w-full h-full ",
+            //                       ""
+            //                     )}
+            //                   />
+            //                   <div className="absolute top-0 left-0 object-cover w-full h-full bg-gradient-to-b from-slate-700/0 via-slate-700/50 to-slate-900/100 "></div>
+            //                   <p className="z-10 text-base font-bold text-white">
+            //                     {m.title}
+            //                   </p>
+            //                   <p className="z-10 text-base font-bold text-white">
+            //                     {
+            //                       m.items.filter((f) => f.id == "price")[0]
+            //                         ?.value
+            //                     }
+            //                   </p>
+            //                 </div>
+            //               </InfoWindow>
+            //             )}
+            //           </MarkerF>
+            //         </HStack>
+            //       );
+            //     })}
+            // </GoogleMap>
+            <></>
           ) : (
             sData?.ads?.length > 0 && <AdContent data={sData} n={10} />
           )}

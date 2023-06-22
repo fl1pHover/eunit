@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import React, { useMemo, useState } from "react";
 
 import Step1 from "@/components/createAd/step1";
+import Step3 from "@/components/createAd/step3";
 import Step4 from "@/components/createAd/step4";
 
 import StepButtons from "@/components/createAd/stepButtons";
@@ -11,7 +12,6 @@ import StepProgress from "@/components/createAd/stepProgress";
 import FormTitle from "@/components/createAd/title";
 import { ContainerX } from "@/lib/Container";
 
-import Step3 from "@/components/createAd/step3";
 import urls from "@/constants/api";
 import { getSellType } from "@/context/functions";
 import useAd from "@/util/useAd";
@@ -320,7 +320,7 @@ export default function SharingAd() {
                   <Heading variant="mediumHeading" className="mb-5 text-center">
                     Газрын зураг дээр байршлаа сонгоно уу
                   </Heading>
-                  {isLoaded && (
+                  {/* {isLoaded && (
                     <GoogleMap
                       className="shadow aspect-video"
                       options={mapOptions}
@@ -338,7 +338,7 @@ export default function SharingAd() {
                         animation={google.maps.Animation.DROP}
                       />
                     </GoogleMap>
-                  )}
+                  )} */}
                 </div>
               );
             if (index - 1 == 0)

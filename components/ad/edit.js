@@ -116,7 +116,7 @@ const EditAd = ({
                 >
                   {data.description}
                 </Textarea>
-                <GoogleMap
+                {/* <GoogleMap
                   onClick={(e) => {
                     dummyData.location = e.latLng.toJSON();
                     if (!admin) {
@@ -143,7 +143,7 @@ const EditAd = ({
                       />
                     </div>
                   )}
-                </GoogleMap>
+                </GoogleMap> */}
               </div>
             </div>
             <Box h={4} />
