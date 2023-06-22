@@ -220,11 +220,12 @@ const Product = () => {
   const { bookmarks } = useSelector((state) => state.bookmarks);
   const [data, setData] = useState("");
   const dispatch = useDispatch();
-  const [suggestion, setSuggestion] = useState();
+  const [suggestion, setSuggestion] = useState("map");
   // propAds?.subCategory?.suggestionItem[0] ?? "location"
   const dummyData = [];
 
   const [sData, setsData] = useState([]);
+  const [categoryAds, setCategoryAds] = useState([]);
   const libraries = useMemo(() => ["places"], []);
   const [markerActive, setMarkerActive] = useState(null);
   const [generalData, setGeneralData] = useState({
@@ -277,6 +278,16 @@ const Product = () => {
       } catch (error) {
         console.log(error);
       }
+    } else {
+      try {
+        await axios
+          .get(`${urls["test"]}/ad/category/${sd?.subCategory?.href}/0`)
+          .then((d) => {
+            setCategoryAds(d.data.defaultAds.ads.concat(d.data.specialAds.ads));
+          });
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
@@ -284,20 +295,9 @@ const Product = () => {
     await axios.get(`${urls["test"]}/ad/id/${router.query.slug}`).then((d) => {
       setData(d.data);
       dummyData = d.data;
-      getSuggestion(d.data?.subCategory?.suggestionItem[0], d.data);
+      getSuggestion("map", d.data);
     });
   };
-  // useEffect(() => {
-  //   if (propAds) {
-  //     setGeneralData((prev) => ({
-  //       ...prev,
-  //       imgSelected: propAds?.images[0] ? true : false,
-  //       images: [...propAds?.images],
-  //     }));
-  //     setImages(propAds.images ?? []);
-  //     getData();
-  //   }
-  // }, [propAds]);
 
   useEffect(() => {
     if (router?.query?.slug) getData();
@@ -341,7 +341,7 @@ const Product = () => {
                       onClick={() => {
                         if (bookmarks != undefined) {
                           dispatch(setBookmark(data._id));
-                          
+
                           if (bookmarks.includes(data._id)) {
                             toast({
                               title: "Зар хүслээс хасагдлаа.",
@@ -757,26 +757,26 @@ const Product = () => {
             >
               Санал болгох зарууд
             </h1>
-            {sData?.ads?.length > 0 && (
-              <Box>
-                <Select
-                  className="h-[30px] text-sm border-2 pr-3 border-blue-700 rounded-full"
-                  onChange={(e) => {
-                    setSuggestion(e.target.value);
-                    getSuggestion(e.target.value, data);
-                  }}
-                >
-                  <Fragment>
-                    {data?.subCategory?.suggestionItem?.map((sug, i) => {
-                      return getSuggestionValue(sug);
-                    })}
-                    <option value={"map"}>Газрын зургаар</option>
-                  </Fragment>
-                </Select>
-              </Box>
-            )}
+            {/* {sData?.ads?.length > 0 && ( */}
+            <Box>
+              <Select
+                className="h-[30px] text-sm border-2 pr-3 border-blue-700 rounded-full"
+                onChange={(e) => {
+                  setSuggestion(e.target.value);
+                  getSuggestion(e.target.value, data);
+                }}
+              >
+                <Fragment>
+                  {data?.subCategory?.suggestionItem?.map((sug, i) => {
+                    return getSuggestionValue(sug);
+                  })}
+                  <option value={"map"}>Газрын зургаар</option>
+                </Fragment>
+              </Select>
+            </Box>
+            {/* )} */}
           </div>
-          {suggestion == "map" && sData?.ads?.length > 0 ? (
+          {suggestion == "map" && categoryAds?.length > 0 ? (
             <GoogleMap
               options={mapOptions}
               onClick={(e) => {
@@ -789,7 +789,7 @@ const Product = () => {
               mapContainerStyle={{ width: "100%", height: "50vh" }}
             >
               {isLoaded &&
-                sData?.ads?.map((m, i) => {
+                categoryAds?.map((m, i) => {
                   return (
                     <HStack key={i}>
                       <MarkerF
@@ -813,12 +813,19 @@ const Product = () => {
                               lat: parseFloat(m.location?.lat ?? 47.74604),
                               lng: parseFloat(m.location?.lng ?? 107.341515),
                             }}
+                            options={{
+                              maxWidth: "100%",
+                              width: "100%",
+                              minWidth: "100%",
+                              position: "relative",
+                              zIndex: 120,
+                            }}
                           >
                             <div
                               onClick={() => router.push(`/ad/${m.num}`)}
                               className={mergeNames(
                                 "h-[125px] aspect-4/3 flex flex-col cursor-pointer justify-end relative",
-                                "group-hover:block "
+                                "group-hover:block relative !important z-50"
                               )}
                             >
                               <Image

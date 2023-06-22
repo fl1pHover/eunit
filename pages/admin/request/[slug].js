@@ -9,6 +9,7 @@ import mergeNames from "@/util/mergeNames";
 import { Button, Radio, RadioGroup, useToast } from "@chakra-ui/react";
 import axios from "axios";
 import { getCookie } from "cookies-next";
+import NextLink from "next/link";
 
 import { useRouter } from "next/router";
 import { Fragment, useEffect, useState } from "react";
@@ -154,20 +155,20 @@ const RequestAds = () => {
     });
     return sheetData;
   };
-  const exportExcel = async () => {
-    const res = await axios.get(`${urls["test"]}/ad/json/all`);
+  // const exportExcel = async () => {
+  //   const res = await axios.get(`${urls["test"]}/ad/json/all`);
 
-    const wb = utils.book_new();
-    res.data.map((item) => {
-      item.ads.map((ad) => {
-        let num = ad["num"];
-        ad["num"] = `=HYPERLINK("http://eunit.vercel.app/ad/${num}","link")`;
-      });
-      let ws = utils.json_to_sheet(item.ads);
-      utils.book_append_sheet(wb, ws, item.id);
-    });
-    writeFileXLSX(wb, "all.xlsx");
-  };
+  //   const wb = utils.book_new();
+  //   res.data.map((item) => {
+  //     item.ads.map((ad) => {
+  //       let num = ad["num"];
+  //       ad["num"] = `=HYPERLINK("http://eunit.vercel.app/ad/${num}","link")`;
+  //     });
+  //     let ws = utils.json_to_sheet(item.ads);
+  //     utils.book_append_sheet(wb, ws, item.id);
+  //   });
+  //   writeFileXLSX(wb, "all.xlsx");
+  // };
 
   const adStatusChecker = async () => {
     getAds;
@@ -280,12 +281,16 @@ const RequestAds = () => {
           </div>
           <div className="w-full overflow-scroll">
             {ads?.ads && (
-              <button
-                className="p-2 mb-2 font-bold text-white bg-teal-500 rounded-md"
-                onClick={() => exportExcel(ads.ads)}
+              <NextLink
+                href={"https://excel-export-nextjs.vercel.app/"}
+                target="_blank"
               >
-                Excel татах
-              </button>
+                <a target="_blank">
+                  <button className="p-2 mb-2 font-bold text-white bg-teal-500 rounded-md">
+                    Excel татах
+                  </button>
+                </a>
+              </NextLink>
             )}
             <table className="w-full p-2 text-sm text-left border border-gray-400 table-auto">
               <thead>

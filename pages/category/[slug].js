@@ -1,8 +1,8 @@
-import FilterLayout from '@/components/filter';
-import AdContent from '@/components/home/adContent';
-import urls from '@/constants/api';
-import MainContainer from '@/layout/mainContainer';
-import mergeNames from '@/util/mergeNames';
+import FilterLayout from "@/components/filter";
+import AdContent from "@/components/home/adContent";
+import urls from "@/constants/api";
+import MainContainer from "@/layout/mainContainer";
+import mergeNames from "@/util/mergeNames";
 import {
   Box,
   Button,
@@ -14,22 +14,22 @@ import {
   ModalFooter,
   ModalHeader,
   useDisclosure,
-} from '@chakra-ui/react';
+} from "@chakra-ui/react";
 
-import ProAdContent from '@/components/home/proAdContent';
-import { ContainerX } from '@/lib/Container';
-import SkeletonContent from '@/util/SkeletonContent';
+import ProAdContent from "@/components/home/proAdContent";
+import { ContainerX } from "@/lib/Container";
+import SkeletonContent from "@/util/SkeletonContent";
 import {
   GoogleMap,
   InfoWindow,
   MarkerF,
   useLoadScript,
-} from '@react-google-maps/api';
-import axios from 'axios';
-import { useRouter } from 'next/router';
-import { useEffect, useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { setAds } from 'store/slice/ad';
+} from "@react-google-maps/api";
+import axios from "axios";
+import { useRouter } from "next/router";
+import { useEffect, useMemo, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setAds } from "store/slice/ad";
 
 const Category = () => {
   const router = useRouter();
@@ -45,11 +45,11 @@ const Category = () => {
     }
   };
 
-  const libraries = useMemo(() => ['places'], []);
+  const libraries = useMemo(() => ["places"], []);
   const [markerActive, setMarkerActive] = useState(null);
 
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: 'AIzaSyC2u2OzBNo53GxJJdN3Oc_W6Yc42OmdZcE',
+    googleMapsApiKey: "AIzaSyC2u2OzBNo53GxJJdN3Oc_W6Yc42OmdZcE",
     libraries: libraries,
   });
   const mapOptions = useMemo(
@@ -71,7 +71,7 @@ const Category = () => {
     try {
       if (router.query.slug)
         await axios
-          .get(`${urls['test']}/ad/category/${router.query.slug}/${id}`)
+          .get(`${urls["test"]}/ad/category/${router.query.slug}/${id}`)
           .then((d) => {
             dispatch(setAds(d.data));
           });
@@ -82,9 +82,6 @@ const Category = () => {
   }, [router?.query?.slug]);
   if (!isLoaded) {
     return <SkeletonContent />;
-  }
-  function createKey(location) {
-    return location.lat + location.lng;
   }
 
   return (
@@ -102,7 +99,7 @@ const Category = () => {
               <ProAdContent
                 data={ads.specialAds}
                 tlc={toLowerCase}
-                title={''}
+                title={""}
                 showLink="hidden"
                 inCat
                 func={getData}
@@ -115,7 +112,7 @@ const Category = () => {
               <AdContent
                 data={ads.defaultAds}
                 tlc={toLowerCase}
-                title={''}
+                title={""}
                 showLink="hidden"
                 inCat
                 func={getData}
@@ -131,13 +128,13 @@ const Category = () => {
           </Box>
         </div>
         {/* <CustomModal></CustomModal> */}
-        <Modal onClose={onClose} isOpen={isOpen} isCentered size={'4xl'}>
+        <Modal onClose={onClose} isOpen={isOpen} isCentered size={"4xl"}>
           <ModalContent>
             <ModalHeader>Maps</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
               <GoogleMap
-                className={'map'}
+                className={"map"}
                 options={mapOptions}
                 onClick={(e) => {
                   // setMap(e.latLng.toJSON());
@@ -146,7 +143,7 @@ const Category = () => {
                 zoom={14}
                 center={mapCenter}
                 mapTypeId={google.maps.MapTypeId.ROADMAP}
-                mapContainerStyle={{ width: '100%', height: '50vh' }}
+                mapContainerStyle={{ width: "100%", height: "50vh" }}
               >
                 {isLoaded &&
                   ads?.defaultAds?.ads
@@ -161,27 +158,28 @@ const Category = () => {
                             }}
                             onMouseOver={() => setMarkerActive(i)}
                             animation={google.maps.Animation.DROP}
-                            className={mergeNames('group')}
+                            className={mergeNames("group")}
                           >
                             {markerActive == i && (
                               <InfoWindow
+                                options={{ zIndex: 120 }}
                                 children={
                                   <div
                                     onClick={() => router.push(`/ad/${m.num}`)}
                                     className={mergeNames(
-                                      'h-[125px] aspect-4/3 flex flex-col cursor-pointer justify-end relative',
-                                      'group-hover:block '
+                                      "h-[125px] aspect-4/3 flex flex-col cursor-pointer justify-end relative",
+                                      "group-hover:block "
                                     )}
                                   >
                                     <Image
                                       src={
                                         m.images[0] ??
-                                        '/images/HeaderSlider/1.jpg'
+                                        "/images/HeaderSlider/1.jpg"
                                       }
                                       alt="map image"
                                       className={mergeNames(
-                                        'absolute top-0 left-0 object-cover w-full h-full ',
-                                        ''
+                                        "absolute top-0 left-0 object-cover w-full h-full ",
+                                        ""
                                       )}
                                     />
                                     <div className="absolute top-0 left-0 object-cover w-full h-full bg-gradient-to-b from-slate-700/0 via-slate-700/50 to-slate-900/100 "></div>
@@ -191,7 +189,7 @@ const Category = () => {
                                     <p className="z-10 text-base font-bold text-white">
                                       {
                                         m.items?.filter(
-                                          (f) => f.id == 'price'
+                                          (f) => f.id == "price"
                                         )[0]?.value
                                       }
                                     </p>
