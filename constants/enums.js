@@ -11,11 +11,11 @@ export const SellTypes = {
   },
   rent: {
     id: "rent",
-    name: "Түрээслэх",
+    name: "Түрээслүүлэх",
   },
   sellRent: {
     id: "sellRent",
-    name: "Зарах, түрээслэх",
+    name: "Зарах, түрээслүүлэх",
   },
 };
 export const SharingSellTypes = {
@@ -25,7 +25,7 @@ export const SharingSellTypes = {
   },
   rented: {
     id: "rented",
-    name: "Түрээслэсэн",
+    name: "Түрээслүүлсэн",
   },
 };
 export const Committee = [

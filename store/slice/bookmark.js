@@ -1,11 +1,15 @@
-import { createSlice } from '@reduxjs/toolkit';
+import urls from "@/constants/api";
+import { updateBookmarks } from "@/context/functions";
+import { createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
+import { getCookie } from "cookies-next";
 
 const initialState = {
   bookmarks: [],
 };
 
 export const bookmarkSlice = createSlice({
-  name: 'bookmarks',
+  name: "bookmarks",
   initialState,
   reducers: {
     setBookmark: (state, action) => {
@@ -16,9 +20,11 @@ export const bookmarkSlice = createSlice({
       } else {
         state.bookmarks = [...state.bookmarks, action.payload];
       }
+      updateBookmarks(state.bookmarks);
     },
     updateBookmark: (state, action) => {
       state.bookmarks = action.payload;
+      updateBookmarks(state.bookmarks);
     },
   },
 });

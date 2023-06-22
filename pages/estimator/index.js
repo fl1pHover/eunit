@@ -1,38 +1,44 @@
 import FilterDate, {
   FilterSelect,
   FilterText,
-} from '@/components/createAd/filters';
-import ButtonSelectItem from '@/components/createAd/formButtonSelectItem';
-import FormLabel from '@/components/createAd/formLabel';
+} from "@/components/createAd/filters";
+import ButtonSelectItem from "@/components/createAd/formButtonSelectItem";
+import FormLabel from "@/components/createAd/formLabel";
 
-import FieldCategory from '@/components/createAd/step1/fieldCategory';
+import FieldCategory from "@/components/createAd/step1/fieldCategory";
 
-import { ItemContainer } from '@/components/createAd/step4';
-import urls from '@/constants/api';
-import { Committee } from '@/constants/enums';
+import { ItemContainer } from "@/components/createAd/step4";
+import urls from "@/constants/api";
+import { Committee } from "@/constants/enums";
 
-import Input from '@/lib/Input';
-import Select from '@/lib/Select';
-import { STYLES } from '@/styles/index';
-import CustomModal from '@/util/CustomModal';
-import { InfoIcon } from '@/util/Icons';
-import mergeNames from '@/util/mergeNames';
+import Input from "@/lib/Input";
+import Select from "@/lib/Select";
+import { STYLES } from "@/styles/index";
+import CustomModal from "@/util/CustomModal";
+import { InfoIcon } from "@/util/Icons";
+import mergeNames from "@/util/mergeNames";
 
-import useEstimate from '@/util/useEstimate';
-import { Button, useDisclosure, useToast } from '@chakra-ui/react';
-import axios from 'axios';
-import { getCookie } from 'cookies-next';
-import { useRouter } from 'next/router';
-import { Fragment, useEffect, useState } from 'react';
-import { BiX } from 'react-icons/bi';
+import useEstimate from "@/util/useEstimate";
+import {
+  Button,
+  NumberInput,
+  NumberInputField,
+  useDisclosure,
+  useToast,
+} from "@chakra-ui/react";
+import axios from "axios";
+import { getCookie } from "cookies-next";
+import { useRouter } from "next/router";
+import { Fragment, useEffect, useState } from "react";
+import { BiX } from "react-icons/bi";
 
-import { BsChevronDoubleDown } from 'react-icons/bs';
-import { useSelector } from 'react-redux';
+import { BsChevronDoubleDown } from "react-icons/bs";
+import { useSelector } from "react-redux";
 
 const Estimator = ({}) => {
   const [estimate, setEstimate] = useState({
-    categoryId: '',
-    subCategoryId: '',
+    categoryId: "",
+    subCategoryId: "",
     file: [],
   });
   const [estimates, setEstimates] = useState([]);
@@ -40,15 +46,13 @@ const Estimator = ({}) => {
   const [est, setEst] = useState([]);
   const toast = useToast();
   const router = useRouter();
-  const token = getCookie('token');
+  const token = getCookie("token");
   const { categories } = useSelector((state) => state.categories);
-  const getEstimate = async () => {
+  const getEstimate = async (url = "6468e73ee15122dbb07a4364") => {
     try {
-      await axios
-        .get(`${urls['test']}/category/filters/6468e73ee15122dbb07a4364`)
-        .then((d) => {
-          setEst(d.data?.steps?.[0]?.values ?? []);
-        });
+      await axios.get(`${urls["test"]}/category/filters/${url}`).then((d) => {
+        setEst(d.data?.steps?.[0]?.values ?? []);
+      });
     } catch (error) {
       console.error(error?.message);
     }
@@ -64,7 +68,7 @@ const Estimator = ({}) => {
   const addEstimate = () => {
     let filters = [];
     est.map((v) => {
-      if (values[v.type] != '' || values[v.type] != undefined)
+      if (values[v.type] != "" || values[v.type] != undefined)
         filters.push({
           name: v.name,
           id: v.type,
@@ -80,16 +84,16 @@ const Estimator = ({}) => {
           items: filters,
           subCategory: estimate.subCategoryId,
           category: categories[estimate.categoryId]._id,
-          sellType: 'sell',
-          status: 'pending',
+          sellType: "sell",
+          status: "pending",
         },
       ]);
-      setEstimate({ categoryId: '', subCategoryId: '', file: [] });
+      setEstimate({ categoryId: "", subCategoryId: "", file: [] });
       clear();
     } else {
       toast({
-        title: 'Та бүх талбарыг бөглөнө үү.',
-        status: 'warning',
+        title: "Та бүх талбарыг бөглөнө үү.",
+        status: "warning",
         duration: 2000,
         isClosable: true,
       });
@@ -99,63 +103,64 @@ const Estimator = ({}) => {
   const sendEstimate = async () => {
     if (estimates.length == 0) addEstimate();
     let count = 0;
-    if (estimates.length > 0) {
-      estimates.map(async (e) => {
-        try {
-          let file = '';
-          let fileUrl = new FormData();
 
-          fileUrl.append('images', e.file);
-          await axios
-            .post(`${urls['test']}/ad/uploadFields`, fileUrl, {
+    estimates.map(async (e) => {
+      try {
+        let file = "";
+        let fileUrl = new FormData();
+
+        fileUrl.append("images", e.file);
+        await axios
+          .post(`${urls["test"]}/ad/uploadFields`, fileUrl, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Access-Control-Allow-Headers": "*",
+            },
+          })
+          .then((d) => {
+            file = d.data[0];
+          });
+        await axios
+          .post(
+            `${urls["test"]}/estimate`,
+            {
+              file: file,
+              subCategory: e.subCategory,
+              category: e.category,
+              sellType: "sell",
+              items: e.items,
+              status: "pending",
+            },
+            {
               headers: {
                 Authorization: `Bearer ${token}`,
-                'Access-Control-Allow-Headers': '*',
+                "Access-Control-Allow-Headers": "*",
+                charset: "UTF-8",
               },
-            })
-            .then((d) => {
-              file = d.data[0];
+            }
+          )
+          .then((d) => {
+            count++;
+            console.log(d.data);
+            toast({
+              title: "Амжилттай нэмэгдлээ.",
+              status: "success",
+              duration: 1000,
+              isClosable: true,
             });
-          await axios
-            .post(
-              `${urls['test']}/estimate`,
-              {
-                file: file,
-                subCategory: e.subCategory,
-                category: e.category,
-                sellType: 'sell',
-                items: e.items,
-                status: 'pending',
-              },
-              {
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                  'Access-Control-Allow-Headers': '*',
-                  charset: 'UTF-8',
-                },
-              }
-            )
-            .then((d) => {
-              count++;
-              console.log(d.data);
-              toast({
-                title: 'Амжилттай нэмэгдлээ.',
-                status: 'success',
-                duration: 1000,
-                isClosable: true,
-              });
-            });
-        } catch (error) {
-          console.error(error?.message);
-        }
-      });
-    }
+          });
+      } catch (error) {
+        console.error(error?.message);
+      }
+    });
+
     if (estimates.length == count) setEstimates([]);
   };
 
   useEffect(() => {
     getEstimate();
   }, []);
+
   return (
     <section className="px-0 xl:px-28 lg:px-20">
       <div className="flex flex-col items-center">
@@ -176,12 +181,12 @@ const Estimator = ({}) => {
             <div className="w-full md:w-4/5 text-[18px] relative z-10 font-semibold ">
               <h1
                 className={mergeNames(
-                  'md:text-[50px] text-[40px] leading-[50px] mb-5'
+                  "md:text-[50px] text-[40px] leading-[50px] mb-5"
                 )}
               >
                 Хөрөнгийн үнэлгээ
               </h1>
-              <p className={mergeNames('md:text-lg text-base')}>
+              <p className={mergeNames("md:text-lg text-base")}>
                 Өөрийн хөрөнгийн үнэлгээг түргэн шуурхай мэдэж аваарай.
               </p>
             </div>
@@ -213,6 +218,11 @@ const Estimator = ({}) => {
                           ...prev,
                           subCategoryId: item._id,
                         }));
+                        if (item.href == "land") {
+                          getEstimate("64938023abcdf1d10840508d");
+                        } else {
+                          getEstimate();
+                        }
                       }}
                     />
                   )
@@ -239,22 +249,27 @@ const Estimator = ({}) => {
               est?.map((f, i) => {
                 if (
                   f.other == true &&
-                  f.value.find((v) => v.id == 'other') == undefined
+                  f.value.find((v) => v.id == "other") == undefined
                 )
-                  f.value.push({ id: 'other', value: 'Бусад' });
+                  f.value.push({ id: "other", value: "Бусад" });
 
-                if (f.types == 'date')
+                if (f.types == "date")
                   return (
                     <FilterDate
                       key={i}
+                      requirement={
+                        values[f.type] != "" && values[f.type] != undefined
+                          ? false
+                          : true
+                      }
                       title={f.name}
                       name={f.name}
                       onSelect={(num) => {
-                        change(f.type, num, '');
+                        change(f.type, num, "");
                       }}
                     />
                   );
-                if (f.types == 'text')
+                if (f.types == "text")
                   return (
                     <FilterText
                       key={i}
@@ -263,20 +278,54 @@ const Estimator = ({}) => {
                       value={values[f.type]}
                       onChange={(e) => {
                         e.persist();
-                        change(f.type, e.target.value, '');
+                        change(f.type, e.target.value, "");
                       }}
                     />
                   );
+                if (f.types == "number")
+                  return (
+                    <ItemContainer>
+                      <FormLabel title={f.name} />
+                      <NumberInput
+                        className={mergeNames(
+                          "relative flex justify-center",
+                          // ' w-full',
+                          "mx-auto",
 
-                if (f.type == 'committee') {
+                          "md:w-2/3 w-5/6"
+                        )}
+                        onChange={(e) => {
+                          change(f.type, e, "");
+                        }}
+                        value={values[f.type] ?? ""}
+                      >
+                        <NumberInputField
+                          placeholder={f.name}
+                          className={mergeNames(
+                            values[f.type] == "" || values[f.type] == undefined
+                              ? "border-red-400 ring-red-400"
+                              : "border-blue-400/70 ring-blue-400",
+                            "w-full px-4 py-2 border-2 rounded-full  "
+                          )}
+                        />
+                      </NumberInput>
+                    </ItemContainer>
+                  );
+
+                if (f.type == "committee") {
                   return (
                     typeId && (
                       <FilterSelect
                         key={i}
-                        label={values[f.name] ?? f.name}
+                        requirement={
+                          values[f.type] != "" && values[f.type] != undefined
+                            ? false
+                            : true
+                        }
+                        label={values[f.type] ?? f.name}
                         title={f.name}
                         data={
-                          typeId[f.parentId] != 'country'
+                          typeId[f.parentId] != "country"
                             ? Committee
                             : f.value.filter(
                                 (v) => v.parentId == typeId[v.parent]
@@ -288,7 +337,7 @@ const Estimator = ({}) => {
                               {...props}
                               onClick={(e) => {
                                 e.persist();
-                                change(f.type, data, '');
+                                change(f.type, data, "");
                                 onClick();
                               }}
                             >
@@ -301,11 +350,16 @@ const Estimator = ({}) => {
                     )
                   );
                 }
-                if (f.types == 'dropdown')
+                if (f.types == "dropdown")
                   if (f.parentId == null) {
                     return (
                       <FilterSelect
                         key={i}
+                        requirement={
+                          values[f.type] != "" && values[f.type] != undefined
+                            ? false
+                            : true
+                        }
                         title={f.name}
                         data={f.value}
                         label={values[f.type] ?? f.name}
@@ -332,31 +386,37 @@ const Estimator = ({}) => {
                         <ItemContainer
                           key={i}
                           className={
-                            'flex flex-col items-center justify-center'
+                            "flex flex-col items-center justify-center"
                           }
                         >
                           <FormLabel title={f.name} />
                           <Select
+                            requirement={
+                              values[f.type] != "" &&
+                              values[f.type] != undefined
+                                ? false
+                                : true
+                            }
                             width="long"
                             data={
                               f.value.filter(
                                 (v) =>
                                   (f.parentId == v.parent &&
                                     typeId[f.parentId] == v.parentId) ||
-                                  v.id == 'other'
+                                  v.id == "other"
                               ).length > 0
                                 ? f.value.filter(
                                     (v) =>
                                       (f.parentId == v.parent &&
                                         typeId[f.parentId] == v.parentId) ||
-                                      v.id == 'other'
+                                      v.id == "other"
                                   )
                                 : est
                                     .filter((fil) => fil.type == f.parentId)[0]
                                     .value.filter(
                                       (v) =>
-                                        v.id == 'B2' ||
-                                        v.id == 'B1' ||
+                                        v.id == "B2" ||
+                                        v.id == "B1" ||
                                         parseInt(typeId[f.parentId]) >=
                                           parseInt(v.id)
                                     )
@@ -378,18 +438,18 @@ const Estimator = ({}) => {
                               );
                             }}
                           />
-                          {typeId[f.type] == 'other' ? (
+                          {typeId[f.type] == "other" ? (
                             <Fragment>
                               <Box h={4} />
                               <Input
                                 ph={values[f.type]}
                                 onChange={(e) => {
-                                  change(f.type, e.target.value, '');
+                                  change(f.type, e.target.value, "");
                                 }}
                                 value={
-                                  values[f.type] != 'Бусад'
+                                  values[f.type] != "Бусад"
                                     ? values[f.type]
-                                    : ''
+                                    : ""
                                 }
                               />
                             </Fragment>
@@ -401,24 +461,53 @@ const Estimator = ({}) => {
                     );
                   }
               })}
+
             {estimate.categoryId.length != 0 && (
-              <ItemContainer className="mx-auto">
-                <FormLabel title={'Гэрчилгээний хуулбар'} />
-                <form action="">
-                  <input
-                    type="file"
-                    name="upload"
-                    accept="application/pdf"
-                    className="bg-blue-100 cursor-pointer "
+              <>
+                <ItemContainer>
+                  <FormLabel title={"Холбоо барих утасны дугаар"} />
+                  <NumberInput
+                    className={mergeNames(
+                      "relative flex justify-center",
+                      // ' w-full',
+                      "mx-auto",
+
+                      "md:w-2/3 w-5/6"
+                    )}
                     onChange={(e) => {
-                      setEstimate((prev) => ({
-                        ...prev,
-                        file: e.target.files[0],
-                      }));
+                      change("phone", e, "");
                     }}
-                  />
-                </form>
-              </ItemContainer>
+                    value={values["phone"] ?? ""}
+                  >
+                    <NumberInputField
+                      placeholder="Холбоо барих утасны дугаар"
+                      className={mergeNames(
+                        values["phone"] == "" || values["phone"] == undefined
+                          ? "border-red-400 ring-red-400"
+                          : "border-blue-400/70 ring-blue-400",
+                        "w-full px-4 py-2 border-2 rounded-full  "
+                      )}
+                    />
+                  </NumberInput>
+                </ItemContainer>
+                <ItemContainer className="mx-auto">
+                  <FormLabel title={"Гэрчилгээний хуулбар"} />
+                  <form action="">
+                    <input
+                      type="file"
+                      name="upload"
+                      accept="application/pdf"
+                      className="bg-blue-100 cursor-pointer "
+                      onChange={(e) => {
+                        setEstimate((prev) => ({
+                          ...prev,
+                          file: e.target.files[0],
+                        }));
+                      }}
+                    />
+                  </form>
+                </ItemContainer>
+              </>
             )}
             <p className="flex items-center justify-center gap-1 col-span-full">
               <InfoIcon className="text-lg" />
@@ -439,7 +528,7 @@ const Estimator = ({}) => {
             </a>
             {estimates.length == 0 && (
               <Button
-                className={mergeNames(STYLES.blueButton, '  px-10')}
+                className={mergeNames(STYLES.blueButton, "  px-10")}
                 onClick={() => sendEstimate()}
               >
                 Илгээх
@@ -466,7 +555,7 @@ const Estimator = ({}) => {
             <Button
               className={mergeNames(
                 STYLES.blueButton,
-                'mx-auto col-span-full px-10'
+                "mx-auto col-span-full px-10"
               )}
               onClick={() => sendEstimate()}
             >
@@ -488,7 +577,7 @@ const EstimatorModal = ({ est, index, estimates, setEstimates }) => {
       isOpen={isOpen}
       onClose={onClose}
       onOpen={onOpen}
-      btnClose2={'Буцах'}
+      btnClose2={"Буцах"}
       className=""
       btnOpen={
         <div className="w-full relative bg-blue-200 animate-pulse rounded-md h-[100px]  grid place-items-center ">
@@ -520,7 +609,7 @@ const EstimatorModal = ({ est, index, estimates, setEstimates }) => {
           <h2>
             Дэд төрөл:&nbsp;
             <span className="font-semibold">
-              {categories.filter((c) => c._id == est.subCategory)?.[0]?.name}{' '}
+              {categories.filter((c) => c._id == est.subCategory)?.[0]?.name}{" "}
             </span>
           </h2>
 
@@ -552,7 +641,7 @@ const Box = ({ children, className, label }) => {
         {label}
       </h1>
       <div
-        className={mergeNames('flex gap-3 flex-wrap w-full mx-auto', className)}
+        className={mergeNames("flex gap-3 flex-wrap w-full mx-auto", className)}
       >
         {children}
       </div>
@@ -567,7 +656,7 @@ const GridBox = ({ children, className, label }) => {
       </h1>
       <div
         className={mergeNames(
-          'grid grid-cols-1 md:grid-cols-2 gap-3 w-full ',
+          "grid grid-cols-1 md:grid-cols-2 gap-3 w-full ",
           className
         )}
       >

@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 const Bookmark = () => {
   const [ads, setAds] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-
+  const [num, setNum] = useState(0);
   const { bookmarks } = useSelector((state) => state.bookmarks);
   const { user } = useSelector((state) => state.user);
   const [category, setCategory] = useState([]);
@@ -21,7 +21,10 @@ const Bookmark = () => {
     if (bookmarks)
       try {
         await axios
-          .post(`${urls["test"]}/ad/many/0/false/10/created/all`, bookmarks)
+          .post(
+            `${urls["test"]}/ad/many/${num}/false/10/created/all`,
+            bookmarks
+          )
           .then((d) => {
             setAds(d.data);
             setIsLoading(false);
@@ -46,11 +49,6 @@ const Bookmark = () => {
             setCategory(c);
             setSubCategory(s);
           });
-        await axios.patch(`${urls["test"]}/user/bookmark`, bookmarks, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
       } catch (error) {
         console.error(error);
         setIsLoading(false);
@@ -81,6 +79,7 @@ const Bookmark = () => {
         {ads?.ads?.map((item, key) => (
           <AdCard key={key} item={item || {}} />
         ))}
+        
       </div>
     </>
   );

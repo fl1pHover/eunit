@@ -33,6 +33,7 @@ function Card({
   admin = false,
   changeAd = {},
   mine,
+  setType,
 }) {
   const router = useRouter();
   const token = getCookie("token");
@@ -50,7 +51,11 @@ function Card({
   const amountTime = Math.round(
     (new Date(item.updatedAt).getTime() +
       (item?.adStatus == "created"
-        ? 24 * 3600 * 30 * 1000
+        ? item?.adType == "special"
+          ? 24 * 3600 * 5 * 1000
+          : item?.adType == "specialM"
+          ? 24 * 3600 * 10 * 1000
+          : 30 * 3600 * 24000
         : 24 * 3600 * 3 * 1000) -
       Date.now()) /
       (24 * 3600 * 1000)
@@ -188,15 +193,22 @@ function Card({
                       body={
                         <div className="flex flex-col gap-2">
                           "Танаас eunit wallet-с хасагдах болохыг анхаарна уу"
-                          <Select placeholder="Онцгой зарын төрөл сонгох">
-                            <option value="5k">5000 eunit = хоног</option>
-                            <option value="10k">10000 eunit = хоног</option>
+                          <Select
+                            placeholder="Онцгой зарын төрөл сонгох"
+                            onChange={(e) => setType(e.target.value)}
+                          >
+                            <option value="special">
+                              10000 eunit = 5 хоног
+                            </option>
+                            <option value="specialM">
+                              15000 eunit = 10 хоног
+                            </option>
                           </Select>
                         </div>
                       }
                       isDelete={"Онцгой зар болгох"}
                       btn={<PButton onClick={deleteFunc} isDelete={false} />}
-                      onclick={changeAd}
+                      onclick={(e) => changeAd()}
                     />
                   </Tip>
                 )}

@@ -1,9 +1,9 @@
 // import Input from '@/lib/Input';
-import { categories } from '@/data/categories';
-import Select from '@/lib/Select';
-import { STYLES } from '@/styles/index';
-import mergeNames from '@/util/mergeNames';
-import useFilter from '@/util/useFilter';
+import { categories } from "@/data/categories";
+import Select from "@/lib/Select";
+import { STYLES } from "@/styles/index";
+import mergeNames from "@/util/mergeNames";
+import useFilter from "@/util/useFilter";
 import {
   Button,
   Checkbox,
@@ -20,20 +20,20 @@ import {
   Text,
   useDisclosure,
   VStack,
-} from '@chakra-ui/react';
-import axios from 'axios';
-import { useRouter } from 'next/router';
-import { useEffect, useRef, useState } from 'react';
-import { MdFilterList } from 'react-icons/md';
-import { useDispatch } from 'react-redux';
-import { setAds } from 'store/slice/ad';
-import urls from '../../constants/api';
-import FilterStack from '../../util/filterStack';
+} from "@chakra-ui/react";
+import axios from "axios";
+import { useRouter } from "next/router";
+import { useEffect, useRef, useState } from "react";
+import { MdFilterList } from "react-icons/md";
+import { useDispatch } from "react-redux";
+import { setAds } from "store/slice/ad";
+import urls from "../../constants/api";
+import FilterStack from "../../util/filterStack";
 
 const FilterLayout = ({ data, isOpenMap }) => {
   const [subCategory, setSubCategory] = useState();
   const router = useRouter();
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState("");
   const [adType, setAdType] = useState([0]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef();
@@ -42,7 +42,7 @@ const FilterLayout = ({ data, isOpenMap }) => {
   const getItems = async (data) => {
     try {
       await axios
-        .get(`${urls['test']}/category/filters/${data}`, {})
+        .get(`${urls["test"]}/category/filters/${data}`, {})
         .then((d) => {
           setSubCategory(d.data);
         });
@@ -62,13 +62,13 @@ const FilterLayout = ({ data, isOpenMap }) => {
       adType.map((a) => {
         switch (a) {
           case 0:
-            types.push('sell');
+            types.push("sell");
             break;
           case 1:
-            types.push('rent');
+            types.push("rent");
             break;
           case 2:
-            types.push('sellRent');
+            types.push("sellRent");
             break;
         }
       });
@@ -89,7 +89,7 @@ const FilterLayout = ({ data, isOpenMap }) => {
         });
       });
       await axios
-        .post(`${urls['test']}/ad/filter/1`, {
+        .post(`${urls["test"]}/ad/filter/1`, {
           items: filters,
           types: types,
           cateId: subCategory._id,
@@ -111,12 +111,12 @@ const FilterLayout = ({ data, isOpenMap }) => {
         color="teal"
         onClick={onOpen}
         className={mergeNames(
-          ' bg-blue-600 rounded-md text-white font-bold h-[50px]',
+          " bg-blue-600 rounded-md text-white font-bold h-[50px]",
           STYLES.flexCenter,
-          'relative ',
+          "relative ",
           // 'sticky top-[100px] left-[0] z-30',
-          'px-5 ',
-          'flex gap-2 items-center'
+          "px-5 ",
+          "flex gap-2 items-center"
         )}
       >
         Шүүлтүүр
@@ -138,7 +138,7 @@ const FilterLayout = ({ data, isOpenMap }) => {
           // className="text-white bg-mainBlossom"
           >
             <FilterStack>
-              <Heading variant={'smallHeading'} mb={2}>
+              <Heading variant={"smallHeading"} mb={2}>
                 Үл хөдлөх хөрөнгө
               </Heading>
               {categories?.map((c, i) => {
@@ -155,14 +155,14 @@ const FilterLayout = ({ data, isOpenMap }) => {
                       ) > -1) &&
                       c.submenu.map(({ href, category }, id) => {
                         return (
-                          href != 'shared' && (
+                          href != "shared" && (
                             <Radio
                               value={href}
                               key={id}
                               onChange={(e) => {
                                 getItems(e.target.value);
                               }}
-                              _selected={{ font: 'bold' }}
+                              _selected={{ font: "bold" }}
                             >
                               <Text>{category}</Text>
                             </Radio>
@@ -175,14 +175,14 @@ const FilterLayout = ({ data, isOpenMap }) => {
             </FilterStack>
 
             <FilterStack>
-              <Heading variant={'smallHeading'} mb={2}>
+              <Heading variant={"smallHeading"} mb={2}>
                 Борлуулах төрөл
               </Heading>
-              {['Зарна', 'Түрээслэнэ', 'Зарах & түрээслэнэ'].map((s, i) => {
+              {["Зарах", "Түрээслүүлэх", "Зарах & түрээслүүлэх"].map((s, i) => {
                 return (
                   <Checkbox
                     key={i}
-                    borderColor={'mainBlue'}
+                    borderColor={"mainBlue"}
                     defaultChecked={adType.find((a) => a == i) != undefined}
                     onChange={(e) => {
                       if (e.target.checked) {
@@ -198,7 +198,7 @@ const FilterLayout = ({ data, isOpenMap }) => {
               })}
             </FilterStack>
             <FilterStack>
-              <Heading variant={'smallHeading'} mb={2}>
+              <Heading variant={"smallHeading"} mb={2}>
                 Байршлаар
               </Heading>
 
@@ -213,8 +213,8 @@ const FilterLayout = ({ data, isOpenMap }) => {
               </button>
             </FilterStack>
 
-            <FilterStack borderBottom={'2px solid '} borderColor="bgGrey">
-              <Heading variant={'smallHeading'}>Нэмэлт хайлт</Heading>
+            <FilterStack borderBottom={"2px solid "} borderColor="bgGrey">
+              <Heading variant={"smallHeading"}>Нэмэлт хайлт</Heading>
 
               {subCategory?.steps?.map((f) => {
                 return f.values?.map((v, i) => {
@@ -258,14 +258,14 @@ const FilterLayout = ({ data, isOpenMap }) => {
                   ) : (
                     v.isSearch && (
                       <VStack flex key={i}>
-                        <Heading variant={'smallHeading'}>{v.name}</Heading>
-                        <Flex alignItems={'center'} gap={2}>
+                        <Heading variant={"smallHeading"}>{v.name}</Heading>
+                        <Flex alignItems={"center"} gap={2}>
                           <Input
                             type="number"
                             placeholder="Доод"
                             className="border-blue-400 rounded-full lue-400 border-1"
                             onChange={(e) =>
-                              handle(v.type, e.target.value, '', 'true')
+                              handle(v.type, e.target.value, "", "true")
                             }
                           />
                           <Text>-</Text>
@@ -274,7 +274,7 @@ const FilterLayout = ({ data, isOpenMap }) => {
                             placeholder="Дээд"
                             className="border-blue-400 rounded-full lue-400 border-1 focus:outline-none"
                             onChange={(e) =>
-                              handle(v.type, e.target.value, '', 'false')
+                              handle(v.type, e.target.value, "", "false")
                             }
                           />
                         </Flex>
@@ -284,7 +284,7 @@ const FilterLayout = ({ data, isOpenMap }) => {
                 });
               })}
 
-              <Button variant={'blueButton'} mx={4} onClick={() => filterAd()}>
+              <Button variant={"blueButton"} mx={4} onClick={() => filterAd()}>
                 Хайх
               </Button>
             </FilterStack>

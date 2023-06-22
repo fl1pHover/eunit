@@ -188,11 +188,11 @@ export const ProductInfo = ({
                       },
                       {
                         id: "rent",
-                        value: "Түрээслэх",
+                        value: "Түрээслүүлэх",
                       },
                       {
                         id: "sellRent",
-                        name: "Зарах, түрээслэх",
+                        name: "Зарах, түрээслүүлэх",
                       },
                     ],
                     name: "Борлуулах төрөл",
@@ -341,6 +341,7 @@ const Product = () => {
                       onClick={() => {
                         if (bookmarks != undefined) {
                           dispatch(setBookmark(data._id));
+                          
                           if (bookmarks.includes(data._id)) {
                             toast({
                               title: "Зар хүслээс хасагдлаа.",

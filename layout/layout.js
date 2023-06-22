@@ -11,6 +11,7 @@ import { setUser } from "store/slice/user";
 import Footer from "../components/footer/index";
 import { setCategories } from "store/slice/category";
 
+
 const Layout = ({ children }) => {
   const token = getCookie("token");
   const dispatch = useDispatch();
@@ -36,6 +37,7 @@ const Layout = ({ children }) => {
       });
     }
   };
+
   useEffect(() => {
     if (
       user &&
@@ -44,6 +46,7 @@ const Layout = ({ children }) => {
       user?.bookmarks?.length > 0
     ) {
       dispatch(updateBookmark(user.bookmarks));
+
     }
   }, [user?.bookmarks]);
   useEffect(() => {

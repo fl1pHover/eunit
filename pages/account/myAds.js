@@ -1,7 +1,7 @@
 import AdCard from "@/components/home/adCard";
 import FilterAd from "@/components/Profile/filterAd";
 import urls from "@/constants/api";
-import { stopPropagation } from "@/context/functions";
+import { setAdType, stopPropagation } from "@/context/functions";
 import { brk, radioGroup, STYLES } from "@/styles/index";
 import Alerting from "@/util/Alert";
 import CustomPagination from "@/util/CustomPagination";
@@ -21,6 +21,7 @@ const MyAds = ({ user }) => {
   const [subCategory, setSubCategory] = useState([]);
   const [num, setNum] = useState(0);
   const [check, setCheck] = useState("created");
+  const [type, setType] = useState("");
   const router = useRouter();
   const toast = useToast();
   const token = getCookie("token");
@@ -71,9 +72,9 @@ const MyAds = ({ user }) => {
     }
   }, [num]);
 
-  const adStatusChecker = async () => {
-    getAds;
-  };
+  // const adStatusChecker = async () => {
+  //   getAds;
+  // };
 
   const restoreAd = async (id) => {
     try {
@@ -129,6 +130,21 @@ const MyAds = ({ user }) => {
       }
     } catch (error) {
       console.error(error);
+    }
+  };
+  const changeAdType = (id) => {
+    if (type != undefined) {
+      setAdType(id, type, "").then((d) => {
+        console.log(d);
+        router.reload(), setType();
+      });
+    } else {
+      toast({
+        title: "Та төрлөө сонгоно уу.",
+        status: "warning",
+        duration: 2000,
+        isClosable: true,
+      });
     }
   };
 
@@ -240,13 +256,14 @@ const MyAds = ({ user }) => {
         {ads?.ads?.map((item, key) => {
           return (
             <AdCard
+              setType={setType}
               mine
               setData={setAds}
               data={ads}
               admin={true}
               key={key}
-              changeAd={(e) => {
-                stopPropagation(e);
+              changeAd={() => {
+                // stopPropagation(e);
                 changeAdType(item._id);
               }}
               item={item || {}}

@@ -11,16 +11,20 @@ import { useRef } from "react";
 import { STYLES } from "../styles";
 import mergeNames from "./mergeNames";
 
-const Alerting = ({ btn, onclick = {}, body, isDelete = "" }) => {
+const Alerting = ({
+  btn,
+  onclick = {},
+  bg = "bg-red-500 hover:bg-red-900",
+  body,
+  isDelete = "",
+  title = "Зар",
+}) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef();
 
   return (
     <>
-      <button
-        className={mergeNames(STYLES.button, "bg-red-500 hover:bg-red-900")}
-        onClick={onOpen}
-      >
+      <button className={mergeNames(STYLES.button, bg)} onClick={onOpen}>
         {btn}
       </button>
 
@@ -33,11 +37,12 @@ const Alerting = ({ btn, onclick = {}, body, isDelete = "" }) => {
         <AlertDialogOverlay>
           <AlertDialogContent>
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              Зар {isDelete.toLowerCase()}
+              {title} {isDelete.toLowerCase()}
             </AlertDialogHeader>
 
             <AlertDialogBody>
               {body ?? <p>Та итгэлтэй байна уу?</p>}
+              
             </AlertDialogBody>
 
             <AlertDialogFooter>

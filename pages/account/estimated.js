@@ -47,7 +47,6 @@ const Estimated = () => {
       <div className="grid grid-cols-1 gap-3 my-3 xl:grid-cols-2 4xl:grid-cols-3 w-100">
         {estimate &&
           estimate.map((est, i) => {
-            console.log(est);
             return <EstimatedCard est={est} key={i} />;
           })}
       </div>

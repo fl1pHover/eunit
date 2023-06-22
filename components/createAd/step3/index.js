@@ -1,11 +1,12 @@
-import FormTitle from '@/components/createAd/title';
-import mergeNames from '@/util/mergeNames';
-import { NumberInput, NumberInputField } from '@chakra-ui/react';
-import FormLine from '../formLine';
-import { AtomLabel } from './atom';
-import FieldPhotoUpload from './fieldPhotoUpload';
-import FieldPriceArea from './fieldPriceArea';
-import FieldTitle from './fieldTitle';
+import FormTitle from "@/components/createAd/title";
+import mergeNames from "@/util/mergeNames";
+import { NumberInput, NumberInputField } from "@chakra-ui/react";
+import FormLine from "../formLine";
+import { AtomLabel } from "./atom";
+import FieldPhotoUpload from "./fieldPhotoUpload";
+import FieldPriceArea from "./fieldPriceArea";
+import FieldTitle from "./fieldTitle";
+import { useSelector } from "react-redux";
 
 // FILTER DATA: PRICE, AREA, UNITPRICE
 // TITLE, DESCRIPTION, IMAGE UPLOAD
@@ -17,6 +18,8 @@ const Step3 = ({
   setGeneralData = () => {},
   sharing,
 }) => {
+  const { user } = useSelector((state) => state.user);
+
   return (
     <>
       <FormTitle>Ерөнхий мэдээлэл</FormTitle>
@@ -33,8 +36,8 @@ const Step3 = ({
           <div
             className={mergeNames(
               sharing
-                ? 'grid grid-cols-2 w-full items-center gap-10'
-                : 'flex-1 space-y-8 '
+                ? "grid grid-cols-2 w-full items-center gap-10"
+                : "flex-1 space-y-8 "
             )}
           >
             <FieldTitle
@@ -45,17 +48,17 @@ const Step3 = ({
               <AtomLabel>Утасны дугаар</AtomLabel>
               <NumberInput
                 className="flex flex-col items-start w-full"
-                onChange={(e) =>
-                  setGeneralData((prev) => ({ ...prev, phone: e }))
-                }
-                value={generalData.phone}
+                onChange={(e) => {
+                  setGeneralData((prev) => ({ ...prev, phone: e }));
+                }}
+                value={generalData.phone == 0 ? user.phone : generalData.phone}
               >
                 <NumberInputField
                   className={mergeNames(
                     generalData.phone.length < 8
-                      ? 'border-red-400 ring-red-400'
-                      : 'border-blue-400/70 ring-blue-400',
-                    'w-full px-4 py-2 border-2 rounded-full  '
+                      ? "border-red-400 ring-red-400"
+                      : "border-blue-400/70 ring-blue-400",
+                    "w-full px-4 py-2 border-2 rounded-full  "
                   )}
                 />
               </NumberInput>
@@ -83,7 +86,7 @@ const Step3 = ({
                 rows={13}
                 placeholder="Дэлгэрэнгүй"
                 maxLength="1000"
-                value={generalData?.desc || ''}
+                value={generalData?.desc || ""}
                 onChange={
                   (e) =>
                     setGeneralData((prev) => ({
@@ -94,9 +97,9 @@ const Step3 = ({
                 }
                 className={mergeNames(
                   generalData?.desc.length > 0
-                    ? 'border-blue-400/60 ring-blue-400 '
-                    : 'border-red-400 ring-red-400',
-                  'w-full px-4 border-2 rounded-2xl '
+                    ? "border-blue-400/60 ring-blue-400 "
+                    : "border-red-400 ring-red-400",
+                  "w-full px-4 border-2 rounded-2xl "
                 )}
               />
             </div>
