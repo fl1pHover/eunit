@@ -2,7 +2,6 @@ import { AtomLabel } from "@/components/createAd/step3/atom";
 import { Image, Link } from "@chakra-ui/react";
 
 import React, { useState } from "react";
-import { Document, Page } from "react-pdf";
 
 import { BiX } from "react-icons/bi";
 import { MdPictureAsPdf } from "react-icons/md";
