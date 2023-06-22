@@ -4,7 +4,6 @@ import MainContainer from "@/layout/mainContainer";
 import { Radio, RadioGroup, useToast } from "@chakra-ui/react";
 import axios from "axios";
 import { getCookie } from "cookies-next";
-import { Button } from "flowbite-react";
 
 import { useEffect, useState } from "react";
 
@@ -55,7 +54,7 @@ const Estimating = () => {
     if (token) getEstimate("pending");
   }, [token]);
   return (
-    <div className="">
+    <div className="mt-10">
       <MainContainer>
         <RadioGroup className="flex flex-col justify-end" defaultValue="2">
           <Radio
@@ -113,12 +112,12 @@ const Estimating = () => {
                       key={i}
                       adminBtn={
                         est.status == "estimated" ? (
-                          <Button
+                          <button
                             onClick={() => updateEstimate(est._id)}
                             className="px-5 mx-auto my-4"
                           >
                             Дууссан
-                          </Button>
+                          </button>
                         ) : (
                           <></>
                         )

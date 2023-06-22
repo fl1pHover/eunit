@@ -2,9 +2,8 @@ import { LoadingButton } from "@/lib/Button";
 import CustomModal from "@/util/CustomModal";
 import mergeNames from "@/util/mergeNames";
 import WhiteBox from "@/util/product/WhiteBox";
-import { Box, Input, useDisclosure } from "@chakra-ui/react";
+import { Box, Input, Textarea, useDisclosure } from "@chakra-ui/react";
 import { GoogleMap, MarkerF, useLoadScript } from "@react-google-maps/api";
-import { Textarea } from "flowbite-react";
 
 import { ProductInfo } from "pages/ad/[slug]";
 import { useMemo, useState } from "react";
@@ -101,7 +100,7 @@ const EditAd = ({
               <Box h={4} />
               <div className="grid grid-cols-1 gap-7 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
                 <Textarea
-                  mt={5}
+                  className="h-full"
                   onChange={(e) => {
                     dummyData.description = e.target.value;
                     if (!admin) {

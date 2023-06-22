@@ -1,21 +1,21 @@
-import urls from '@/constants/api';
-import { STYLES } from '@/styles/index';
-import CustomToast from '@/util/customToast';
-import mergeNames from '@/util/mergeNames';
-import { Link, useToast } from '@chakra-ui/react';
-import axios from 'axios';
-import { getCookie } from 'cookies-next';
-import { Button } from 'flowbite-react';
-import NextLink from 'next/link';
-import { Fragment, useState } from 'react';
-import { BiEdit } from 'react-icons/bi';
-import { MdDelete, MdOutlineArrowDropDownCircle } from 'react-icons/md';
-import { SiVerizon } from 'react-icons/si';
-import { useSelector } from 'react-redux';
+import urls from "@/constants/api";
+import { STYLES } from "@/styles/index";
+import CustomToast from "@/util/customToast";
+import mergeNames from "@/util/mergeNames";
+import { Link, useToast } from "@chakra-ui/react";
+import axios from "axios";
+import { getCookie } from "cookies-next";
+
+import NextLink from "next/link";
+import { Fragment, useState } from "react";
+import { BiEdit } from "react-icons/bi";
+import { MdDelete, MdOutlineArrowDropDownCircle } from "react-icons/md";
+import { SiVerizon } from "react-icons/si";
+import { useSelector } from "react-redux";
 
 const Users = () => {
   const { user } = useSelector((state) => state.user);
-  const token = getCookie('token');
+  const token = getCookie("token");
   const [num, setNum] = useState(0);
   const toast = useToast();
 
@@ -25,19 +25,19 @@ const Users = () => {
     try {
       await axios
         .get(
-          `${urls['test']}/user/update/${id}/active/{message}?message=${''}`,
+          `${urls["test"]}/user/update/${id}/active/{message}?message=${""}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
-              'Access-Control-Allow-Headers': '*',
-              charset: 'UTF-8',
+              "Access-Control-Allow-Headers": "*",
+              charset: "UTF-8",
             },
           }
         )
         .then((d) => {
           toast({
             title: `Хэрэглэгчийг зөвшөөрлөө`,
-            status: 'success',
+            status: "success",
             duration: 3000,
             isClosable: true,
           });
@@ -51,20 +51,20 @@ const Users = () => {
       await axios
         .get(
           `${
-            urls['test']
-          }/user/update/${id}/returned/{message}?message=${'буцаалаа'}`,
+            urls["test"]
+          }/user/update/${id}/returned/{message}?message=${"буцаалаа"}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
-              'Access-Control-Allow-Headers': '*',
-              charset: 'UTF-8',
+              "Access-Control-Allow-Headers": "*",
+              charset: "UTF-8",
             },
           }
         )
         .then((d) => {
           toast({
             title: `Хэрэглэгчийг буцаалаа`,
-            status: 'warning',
+            status: "warning",
             duration: 3000,
             isClosable: true,
           });
@@ -77,19 +77,19 @@ const Users = () => {
     try {
       await axios
         .get(
-          `${urls['test']}/user/update/${id}/banned/{message}?message=${''}`,
+          `${urls["test"]}/user/update/${id}/banned/{message}?message=${""}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
-              'Access-Control-Allow-Headers': '*',
-              charset: 'UTF-8',
+              "Access-Control-Allow-Headers": "*",
+              charset: "UTF-8",
             },
           }
         )
         .then((d) => {
           toast({
             title: `Хэрэглэгчийг бандлаа`,
-            status: 'error',
+            status: "error",
             duration: 3000,
             isClosable: true,
           });
@@ -137,7 +137,7 @@ const Users = () => {
               </thead>
               <tbody>
                 {user
-                  .filter((u) => u.userType != 'system')
+                  .filter((u) => u.userType != "system")
                   ?.map((a, i) => {
                     let adData = { ...a };
                     return (
@@ -145,43 +145,41 @@ const Users = () => {
                         <td className="50px">{i + 1}</td>
                         <td className="truncate ...">
                           {/* {a.title} */}
-                          <Button
-                            as="a"
+                          <button
                             className={mergeNames(
                               STYLES.blueButton,
-                              'text-sm h-[30px]'
+                              "text-sm h-[30px]"
                             )}
-                            target="_blank"
-                            href={`/ad/${a.num}`}
+
                             // onClick={() => router.push(`/product/${a.num}`)}
                           >
-                            <a target="_blank">
+                            <a href={`/ad/${a.num}`} target="_blank">
                               {(a.agentAddition?.organizationName ||
                                 a.organizationAddition?.organizationName) ??
                                 a.username}
                             </a>
-                          </Button>
+                          </button>
                         </td>
                         <td className="truncate ...">{a.email}</td>
                         <td className="truncate ...">{a.phone}</td>
                         <td
                           className={mergeNames(
-                            'truncate ... font-bold',
-                            a.userType == 'default' && 'text-purple-900',
-                            a.userType == 'agent' && 'text-primary',
-                            a.userType == 'organization' && 'text-green',
-                            a.userType == 'admin' && 'text-yellow'
+                            "truncate ... font-bold",
+                            a.userType == "default" && "text-purple-900",
+                            a.userType == "agent" && "text-primary",
+                            a.userType == "organization" && "text-green",
+                            a.userType == "admin" && "text-yellow"
                           )}
                         >
                           {a.userType}
                         </td>
                         <td
                           className={mergeNames(
-                            'truncate ... font-bold',
+                            "truncate ... font-bold",
                             // a.status == '' && 'text-yellow-400',
-                            a.status == 'active' && 'text-green-500',
-                            a.status == 'pending' && 'text-yellow-500',
-                            a.status == 'banned' && 'text-red-400'
+                            a.status == "active" && "text-green-500",
+                            a.status == "pending" && "text-yellow-500",
+                            a.status == "banned" && "text-red-400"
                             // a.status == 'default' && 'text-primary'
                           )}
                         >
@@ -225,7 +223,7 @@ const Users = () => {
                         <td>
                           <div
                             className={mergeNames(
-                              'flex flex-row justify-center'
+                              "flex flex-row justify-center"
                               // 'p-2 rounded-md bg-white',
                             )}
                           >
@@ -241,25 +239,25 @@ const Users = () => {
                             >
                               <MdOutlineArrowDropDownCircle
                                 className={mergeNames(
-                                  expand == i + 1 ? 'text-blue-600 ' : ''
+                                  expand == i + 1 ? "text-blue-600 " : ""
                                 )}
                               />
                             </button>
                             <div
                               className={mergeNames(
-                                expand == i + 1 ? 'flex' : 'hidden',
-                                'justify-center  flex-end  gap-2'
+                                expand == i + 1 ? "flex" : "hidden",
+                                "justify-center  flex-end  gap-2"
                               )}
                               onClick={() => {
                                 setExpand(0);
                               }}
                             >
-                              {a.status != 'active' && (
+                              {a.status != "active" && (
                                 <CustomToast
                                   // status="error"
                                   className={mergeNames(
                                     STYLES.button,
-                                    'bg-teal-500 justify-center w-7 h-7 '
+                                    "bg-teal-500 justify-center w-7 h-7 "
                                   )}
                                   toastH="Амжилттай нэмэгдлээ"
                                   onclick={() => verifyUser(a._id)}
@@ -267,12 +265,12 @@ const Users = () => {
                                   toastBtn={<SiVerizon />}
                                 />
                               )}
-                              {a.status == 'pending' && (
+                              {a.status == "pending" && (
                                 <button
                                   onClick={() => returnRequest(a._id)}
                                   className={mergeNames(
                                     STYLES.button,
-                                    'bg-yellow-500 w-7 h-7 justify-center'
+                                    "bg-yellow-500 w-7 h-7 justify-center"
                                   )}
                                 >
                                   <BiEdit />
@@ -283,7 +281,7 @@ const Users = () => {
                                 // status="error"
                                 className={mergeNames(
                                   STYLES.button,
-                                  'bg-red-500 w-7 h-7 justify-center'
+                                  "bg-red-500 w-7 h-7 justify-center"
                                 )}
                                 toastH="Амжилттай ban"
                                 onclick={() => banUser(a._id)}
@@ -317,7 +315,7 @@ const Users = () => {
                   (l, i) => {
                     // [...Array(Math.ceil(data.limit / n)).keys()].map((l) => {
                     return (
-                      <li className={l == num ? 'active' : ''} key={i}>
+                      <li className={l == num ? "active" : ""} key={i}>
                         <button
                           className={mergeNames(
                             l == num ? STYLES.active : STYLES.notActive
@@ -356,17 +354,17 @@ const Users = () => {
 export default Users;
 
 export async function getServerSideProps({ req, res }) {
-  const token = getCookie('token', { req, res });
+  const token = getCookie("token", { req, res });
   const { user } = useSelector((state) => state.user);
   if (token) {
-    if (user?.userType == 'admin' || user?.userType == 'system') {
+    if (user?.userType == "admin" || user?.userType == "system") {
       return {
         props: {},
       };
     } else {
       return {
         redirect: {
-          destination: '/',
+          destination: "/",
           permanent: false,
         },
       };
@@ -374,7 +372,7 @@ export async function getServerSideProps({ req, res }) {
   } else {
     return {
       redirect: {
-        destination: '/login',
+        destination: "/login",
         permanent: false,
       },
     };
