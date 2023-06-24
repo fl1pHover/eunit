@@ -373,7 +373,7 @@ export const proSwiperBreakpoints = {
     },
   },
 
-  870: {
+  1280: {
     slidesPerView: 2,
     grid: {
       rows: 2,

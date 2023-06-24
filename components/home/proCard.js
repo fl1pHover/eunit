@@ -46,7 +46,7 @@ function ProCard({
   return (
     // <Skeleton>
     <Skeleton isLoaded>
-      <div className="relative overflow-hidden rounded-2xl md:min-h-[350px] min-h-[300px]  shadow-md  group flex flex-col w-full h-full mb-2">
+      <div className="max-w-[800px] mx-auto relative overflow-hidden rounded-2xl md:min-h-[350px] min-h-[400px]  shadow-md  group flex flex-col w-full h-full mb-2">
         <div className="absolute top-0 left-0 z-10 flex items-center justify-between flex-1 w-full px-3 py-2">
           {item?.images.length != 0 ? (
             <ImageCount onClick={() => console.log("Zurag")}>
@@ -88,7 +88,7 @@ function ProCard({
           )}
         </div>
         <div className="grid flex-1 w-full h-full grid-cols-1 md:grid-cols-2">
-          <div className="relative z-0 w-full h-full bg-gray-800 cursor-pointer">
+          <div className="relative z-0 w-full bg-gray-800 cursor-pointer md:h-full h-[200px]">
             <div className="absolute z-20 p-2 text-center text-white -rotate-45 top-[30px] w-52 -left-[50px] bg-mainBlossom">
               {/* <Image src="/utils/vip.png" layout="fill" /> */}
               <p className="font-bold tracking-wide">VIP</p>
@@ -258,11 +258,11 @@ function ProCard({
                   )}
                 />
               </div>
-              <p className="font-semibold">{item?.user?.username ?? ""}</p>
+              <p className="font-semibold ">{item?.user?.username ?? ""}</p>
             </button>
           </Tip>
 
-          <div className="flex gap-2">
+          <div className="hidden gap-2 sm:flex">
             <button
               className={mergeNames(
                 " bg-white text-blue-600 border rounded-full border-blue-600",
@@ -337,7 +337,12 @@ const TextContainer = ({ title = "", description = "", dark }) => {
       >
         {title}
       </p>
-      <p className="text-[12px] md:text-base font-semibold truncate text-slate-200/90 first-letter:uppercase">
+      <p
+        className={
+          (mergeNames ? "text-mainBlossom/50" : "text-slate-200/90",
+          "text-[12px] md:text-base font-semibold truncate  first-letter:uppercase")
+        }
+      >
         {description}
       </p>
     </div>

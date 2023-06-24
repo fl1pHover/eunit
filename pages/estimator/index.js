@@ -192,7 +192,7 @@ const Estimator = ({}) => {
             </div>
           </div>
         </div>
-        <div className="flex p-10 flex-col gap-5 w-[93%] -translate-y-16 mx-10 bg-white shadow-xl   xl:w-[70%] rounded-3xl">
+        <div className="flex p-5 md:p-10 flex-col gap-5 w-[93%] -translate-y-16 mx-10 bg-white shadow-xl   xl:w-[70%] rounded-3xl">
           <Box label="Хөрөнгийн төрөл" className="justify-center">
             <FieldCategory
               categories={categories}

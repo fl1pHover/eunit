@@ -1,4 +1,4 @@
-@use '../vars/' as *;
+@use "../vars/" as *;
 
 .headerSwiper {
   height: 100% !important;
@@ -12,7 +12,7 @@
 .headerSwiper {
   .swiper-button-prev,
   .swiper-button-next {
-    background: url(../../public/utils/swiper-arrow.png);
+    background: url(../../public/utils/swiper-arrow2.png);
 
     background-position: center;
     background-size: cover;
@@ -20,19 +20,21 @@
     width: 40px;
     height: 40px;
     z-index: 11 !important;
+
+    border-radius: 50%;
     &::after {
       display: none !important;
     }
     &::before {
-      content: '';
+      content: "";
       position: absolute;
       width: 100%;
       height: 100%;
       top: 0%;
       left: 0;
       border-radius: 50%;
-      box-shadow: rgba(60, 64, 67, 0.3) 0px 0px 2px 0px,
-        rgba(60, 64, 67, 0.15) 0px 0px 3px 1px;
+      box-shadow: rgba(60, 64, 67, 1) 0px 0px 2px 0px,
+        rgba(60, 64, 67, 0.5) 0px 0px 3px 1px;
     }
 
     // &::before {
@@ -65,7 +67,7 @@
   .headerSwiper {
     .swiper-button-prev,
     .swiper-button-next {
-      background: url(../../public/utils/swiper-arrow.png);
+      background: url(../../public/utils/swiper-arrow2.png);
 
       background-position: center;
       background-size: cover;

@@ -1,11 +1,11 @@
-import { useRouter } from 'next/router';
-import { AiFillCalculator } from 'react-icons/ai';
-import { BiSearch } from 'react-icons/bi';
-import { FaUserCircle } from 'react-icons/fa';
-import { HiHome } from 'react-icons/hi';
-import { IoWallet } from 'react-icons/io5';
+import { useRouter } from "next/router";
+import { AiFillCalculator } from "react-icons/ai";
+import { BiSearch } from "react-icons/bi";
+import { FaUserCircle } from "react-icons/fa";
+import { HiHome } from "react-icons/hi";
+import { IoWallet } from "react-icons/io5";
 
-const Container = ({ text = '', Icon = () => <></>, onClick = () => {} }) => {
+const Container = ({ text = "", Icon = () => <></>, onClick = () => {} }) => {
   return (
     <button
       onClick={onClick}
@@ -32,28 +32,28 @@ const BottomMenu = (props) => {
     <div className="fixed bottom-0 left-0 right-0 z-50 w-screen md:hidden bg-mainBlossom">
       <div className="flex flex-row">
         <Container
-          onClick={() => handleLink('/')}
+          onClick={() => handleLink("/")}
           text="Нүүр"
           Icon={(props) => <HiHome {...props} />}
         />
         <Container
-          onClick={() => handleLink('/wallet')}
+          onClick={() => handleLink("/wallet")}
           text="Хэтэвч"
           Icon={(props) => <IoWallet {...props} />}
         />
         <Container
-          onClick={() => handleLink('/')}
+          onClick={() => handleLink("/")}
           text="Хайлт"
           Icon={(props) => <BiSearch {...props} />}
         />
         <Container
-          onClick={() => handleLink('/estimate')}
+          onClick={() => handleLink("/estimator")}
           text="Үнэлгээ"
           Icon={(props) => <AiFillCalculator {...props} />}
         />
         <Container
           text="Профайл"
-          onClick={() => handleLink('/account')}
+          onClick={() => handleLink("/account")}
           Icon={(props) => <FaUserCircle {...props} />}
         />
       </div>
