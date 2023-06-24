@@ -30,6 +30,7 @@ import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setAds } from "store/slice/ad";
+import MapCard from "@/components/ad/MapCard";
 
 const Category = () => {
   const router = useRouter();
@@ -164,36 +165,37 @@ const Category = () => {
                               <InfoWindow
                                 options={{ zIndex: 120 }}
                                 children={
-                                  <div
-                                    onClick={() => router.push(`/ad/${m.num}`)}
-                                    className={mergeNames(
-                                      "h-[125px] aspect-4/3 flex flex-col cursor-pointer justify-end relative",
-                                      "group-hover:block "
-                                    )}
-                                  >
-                                    <Image
-                                      src={
-                                        m.images[0] ??
-                                        "/images/HeaderSlider/1.jpg"
-                                      }
-                                      alt="map image"
-                                      className={mergeNames(
-                                        "absolute top-0 left-0 object-cover w-full h-full ",
-                                        ""
-                                      )}
-                                    />
-                                    <div className="absolute top-0 left-0 object-cover w-full h-full bg-gradient-to-b from-slate-700/0 via-slate-700/50 to-slate-900/100 "></div>
-                                    <p className="z-10 text-base font-bold text-white">
-                                      {m.title}
-                                    </p>
-                                    <p className="z-10 text-base font-bold text-white">
-                                      {
-                                        m.items?.filter(
-                                          (f) => f.id == "price"
-                                        )[0]?.value
-                                      }
-                                    </p>
-                                  </div>
+                                  // <div
+                                  //   onClick={() => router.push(`/ad/${m.num}`)}
+                                  //   className={mergeNames(
+                                  //     "h-[125px] aspect-4/3 flex flex-col cursor-pointer justify-end relative",
+                                  //     "group-hover:block "
+                                  //   )}
+                                  // >
+                                  //   <Image
+                                  //     src={
+                                  //       m.images[0] ??
+                                  //       "/images/HeaderSlider/1.jpg"
+                                  //     }
+                                  //     alt="map image"
+                                  //     className={mergeNames(
+                                  //       "absolute top-0 left-0 object-cover w-full h-full ",
+                                  //       ""
+                                  //     )}
+                                  //   />
+                                  //   <div className="absolute top-0 left-0 object-cover w-full h-full bg-gradient-to-b from-slate-700/0 via-slate-700/50 to-slate-900/100 "></div>
+                                  //   <p className="z-10 text-base font-bold text-white">
+                                  //     {m.title}
+                                  //   </p>
+                                  //   <p className="z-10 text-base font-bold text-white">
+                                  //     {
+                                  //       m.items?.filter(
+                                  //         (f) => f.id == "price"
+                                  //       )[0]?.value
+                                  //     }
+                                  //   </p>
+                                  // </div>
+                                  <MapCard data={m} />
                                 }
                                 position={{
                                   lat: parseFloat(m.location?.lat ?? 47.74604),

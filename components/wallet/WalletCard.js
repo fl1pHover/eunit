@@ -1,5 +1,6 @@
 import { Image } from "@chakra-ui/react";
 import TransactionGuide from "./TransactionGuide";
+import currency from "currency.js";
 
 const WalletCard = ({ user }) => {
   return (
@@ -21,7 +22,19 @@ const WalletCard = ({ user }) => {
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-white/80">Үлдэгдэл</h1>
-              <h1 className="text-xl">{user?.point ?? 0} E-unit - ₮</h1>
+              <h1 className="text-xl">
+                {currency(
+                  `${user?.point ?? 0}`,
+
+                  {
+                    separator: ",",
+                    symbol: " E-unit - ₮",
+                    pattern: `# !`,
+                  }
+                )
+                  .format()
+                  .toString() ?? 0}
+              </h1>
             </div>
             <TransactionGuide />
           </div>
