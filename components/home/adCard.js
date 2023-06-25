@@ -11,6 +11,7 @@ import Tip from '@/lib/Tip';
 import Alerting from '@/util/Alert';
 import mergeNames from '@/util/mergeNames';
 import { Select, Skeleton } from '@chakra-ui/react';
+import axios from 'axios';
 import { getCookie } from 'cookies-next';
 import currency from 'currency.js';
 import Image from 'next/image';
@@ -21,7 +22,6 @@ import { BsThreeDots } from 'react-icons/bs';
 import { useSelector } from 'react-redux';
 import EditAd from '../ad/edit';
 import AdCardButton from './adCardButton';
-import axios from 'axios';
 
 // import { detectContentType } from "next/dist/server/image-optimizer";
 
@@ -128,7 +128,11 @@ function Card({
               }}
             >
               <Image
-                src={item?.user?.profileImg ?? '/images/logo/bom-white.png'}
+                src={
+                  item?.user?.profileImg == ''
+                    ? '/images/logo/bom-white.png'
+                    : item?.user?.profileImg ?? '/images/logo/bom-white.png'
+                }
                 alt="BOM logo"
                 objectFit="cover"
                 layout="fill"
@@ -331,7 +335,7 @@ function Card({
                     }
                   />
                   Устахад
-                  {' ' + amountTime + ' '}
+                  {' ' + amountTime < 0 ? 0 : amountTime + ' '}
                   хоног
                 </p>
               </>
