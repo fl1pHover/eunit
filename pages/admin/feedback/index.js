@@ -1,19 +1,32 @@
 import urls from '@/constants/api';
 import { ContainerX } from '@/lib/Container';
+import axios from 'axios';
 import { getCookie } from 'cookies-next';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 
-const Feedback = ({ feedbacks }) => {
+const Feedback = () => {
   const [feedback, setF] = useState([]);
+  const token = getCookie('token');
+  const getFeedback = async () => {
+    try {
+      const res = await axios
+        .get(`${urls['test']}/user/feedback/get`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((d) => setF(d.data));
+    } catch (error) {
+      console.error(error);
+    }
+  };
   useEffect(() => {
-    setF(feedbacks);
-  }, [feedbacks]);
+    getFeedback();
+  }, []);
 
   return (
-
-    <ContainerX classname="p-2 my-5">
-      <table class="table-auto border border-gray-400">
+    <ContainerX className="p-2 my-5">
+      <table className="table-auto border border-gray-400">
         <thead>
           <tr>
             <th>Нэр</th>
@@ -39,45 +52,45 @@ const Feedback = ({ feedbacks }) => {
 };
 export default Feedback;
 
-export async function getServerSideProps({ req, res }) {
-  const token = getCookie('token', { req, res });
-  const { user } = useSelector((state) => state.user);
-  if (token) {
-    try {
-      if (user?.userType == 'admin' || user?.userType == 'system') {
-        const feedbacks = await fetch(`${urls['test']}/user/feedback/get`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const feedbacksJson = await feedbacks.json();
-        return {
-          props: {
-            feedbacks: feedbacksJson,
-          },
-        };
-      } else {
-        return {
-          redirect: {
-            destination: '/',
-            permanent: false,
-          },
-        };
-      }
-    } catch (err) {
-      return {
-        redirect: {
-          destination: '/login',
-          permanent: false,
-        },
-      };
-    }
-  } else {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      },
-    };
-  }
-}
+// export async function getServerSideProps({ req, res }) {
+//   const token = getCookie('token', { req, res });
+//   const { user } = useSelector((state) => state.user);
+//   if (token) {
+//     try {
+//       if (user?.userType == 'admin' || user?.userType == 'system') {
+//         const feedbacks = await fetch(`${urls['test']}/user/feedback/get`, {
+//           headers: {
+//             Authorization: `Bearer ${token}`,
+//           },
+//         });
+//         const feedbacksJson = await feedbacks.json();
+//         return {
+//           props: {
+//             feedbacks: feedbacksJson,
+//           },
+//         };
+//       } else {
+//         return {
+//           redirect: {
+//             destination: '/',
+//             permanent: false,
+//           },
+//         };
+//       }
+//     } catch (err) {
+//       return {
+//         redirect: {
+//           destination: '/login',
+//           permanent: false,
+//         },
+//       };
+//     }
+//   } else {
+//     return {
+//       redirect: {
+//         destination: '/login',
+//         permanent: false,
+//       },
+//     };
+//   }
+// }
