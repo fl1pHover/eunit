@@ -52,7 +52,7 @@ export default function Login() {
   };
   return (
     <ContainerXP
-      className={mergeNames(
+      classname={mergeNames(
         'w-[auto] md:w-[800px] lg:w-[1000px] ',
         'relative grid grid-cols-1 md:grid-cols-2',
         'mx-auto my-5 md:my-10 rounded-xl overflow-hidden'
