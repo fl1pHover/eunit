@@ -1,19 +1,21 @@
-import Tip from "@/lib/Tip";
-import mergeNames from "@/util/mergeNames";
-import currency from "currency.js";
-import Image from "next/image";
-import React from "react";
-import { ApartmentIconInfo } from "../home/adCard";
-import ItemContainer from "@/util/product/ItemContainer";
-import { getSellType } from "@/context/functions";
-import { calcValue } from "pages/ad/[slug]";
-import { BiArea } from "react-icons/bi";
+import { getSellType } from '@/context/functions';
+import Tip from '@/lib/Tip';
+import mergeNames from '@/util/mergeNames';
+import ItemContainer from '@/util/product/ItemContainer';
+import currency from 'currency.js';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { calcValue } from 'pages/ad/[slug]';
+import React from 'react';
+import { BiArea } from 'react-icons/bi';
+import { ApartmentIconInfo } from '../home/adCard';
 
 const MapCard = ({ data }) => {
+  const router = useRouter();
   return (
     <div
       className={mergeNames(
-        "relative overflow-hidden rounded-md ] h-[200px] aspect-4/3  shadow-md bg-zinc-200 group"
+        'relative overflow-hidden rounded-md ] h-[200px] aspect-4/3  shadow-md bg-zinc-200 group'
       )}
       onClick={() => router.push(`/ad/${data.num}`)}
     >
@@ -21,13 +23,17 @@ const MapCard = ({ data }) => {
       <div className="absolute top-0 bottom-0 left-0 right-0 z-0 w-full h-full cursor-pointer">
         {data?.images && (
           <Image
-            src={data?.images[0] ?? "/images/noImage.png"}
+            src={
+              data?.images[0] == ''
+                ? '/images/noImage.png'
+                : data?.images[0] ?? '/images/noImage.png'
+            }
             alt=" зар"
             layout="fill"
             objectFit="cover"
             className={mergeNames(
-              "group-hover:scale-125  transition-all w-full object-cover h-full ease-in-out duration-400 aspect-[4/5] relative z-0 ",
-              "text-center grid place-items-center font-bold"
+              'group-hover:scale-125  transition-all w-full object-cover h-full ease-in-out duration-400 aspect-[4/5] relative z-0 ',
+              'text-center grid place-items-center font-bold'
             )}
           />
         )}
@@ -45,7 +51,7 @@ const MapCard = ({ data }) => {
         <Tip lbl="Зарын эзэн">
           <button
             className={mergeNames(
-              "relative overflow-hidden rounded-full w-9 h-9 bg-mainBlossom"
+              'relative overflow-hidden rounded-full w-9 h-9 bg-mainBlossom'
             )}
             onClick={(e) => {
               stopPropagation(e);
@@ -53,13 +59,17 @@ const MapCard = ({ data }) => {
             }}
           >
             <Image
-              src={data?.user?.profileImg ?? "/images/logo/bom-white.png"}
+              src={
+                data?.user?.profileImg == ''
+                  ? '/images/logo/bom-white.png'
+                  : data?.user?.profileImg ?? '/images/logo/bom-white.png'
+              }
               alt="BOM logo"
               objectFit="cover"
               layout="fill"
               className={mergeNames(
-                "object-cover w-full",
-                data?.user?.profileImg ? "" : " p-2"
+                'object-cover w-full',
+                data?.user?.profileImg ? '' : ' p-2'
               )}
             />
           </button>
@@ -69,13 +79,13 @@ const MapCard = ({ data }) => {
       {/* Zariin info  */}
       <div className="absolute bottom-0 left-0 flex flex-col justify-end w-full p-2 mb-2 space-y-2 cursor-pointer">
         <div className="flex items-center justify-between gap-4 text-sm text-white font-md">
-          <p className={mergeNames("font-bold text-xl")}>
+          <p className={mergeNames('font-bold text-xl')}>
             {currency(
-              `${data?.items.find((f) => f.id == "price")?.value}`,
+              `${data?.items.find((f) => f.id == 'price')?.value}`,
 
               {
-                separator: ",",
-                symbol: "₮ ",
+                separator: ',',
+                symbol: '₮ ',
                 pattern: `# !`,
               }
             )
@@ -85,11 +95,11 @@ const MapCard = ({ data }) => {
         </div>
 
         <div className="flex items-center justify-between gap-4 text-sm text-white font-md">
-          <p className={mergeNames("font-semibold text-white mt-0")}>
-            {data?.subCategory?.name ?? ""}
+          <p className={mergeNames('font-semibold text-white mt-0')}>
+            {data?.subCategory?.name ?? ''}
           </p>
-          <p className={mergeNames("font-semibold text-white mt-0")}>
-            {getSellType(data?.sellType ?? "")}
+          <p className={mergeNames('font-semibold text-white mt-0')}>
+            {getSellType(data?.sellType ?? '')}
           </p>
         </div>
 
@@ -99,12 +109,12 @@ const MapCard = ({ data }) => {
               <React.Fragment key={i}>
                 <ApartmentIconInfo p={p} />
 
-                {p.id === "area" && (
+                {p.id === 'area' && (
                   <ItemContainer
                     txtWhite={true}
                     lbl={p.name}
                     Icon={(props) => <BiArea {...props} text="" />}
-                    text={calcValue(p.value ?? 0, "байхгүй", "м.кв")}
+                    text={calcValue(p.value ?? 0, 'байхгүй', 'м.кв')}
                   />
                 )}
               </React.Fragment>

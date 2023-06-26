@@ -1,17 +1,14 @@
-import CustomModal from "@/util/CustomModal";
-import DialogBox from "@/util/Dialog";
-import { AddIcon } from "@/util/Icons";
+import DialogBox from '@/util/Dialog';
+import { AddIcon } from '@/util/Icons';
 import {
   Link,
   List,
   ListIcon,
   ListItem,
   useDisclosure,
-} from "@chakra-ui/react";
-import React from "react";
-import { BiCommentError, BiMessageSquareError } from "react-icons/bi";
-import { IoIosAddCircle } from "react-icons/io";
-import { MdCheckCircle, MdSettings } from "react-icons/md";
+} from '@chakra-ui/react';
+import { BiMessageSquareError } from 'react-icons/bi';
+import { MdCheckCircle } from 'react-icons/md';
 
 const TransactionGuide = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -22,7 +19,7 @@ const TransactionGuide = () => {
           isOpen={isOpen}
           onOpen={onOpen}
           onClose={onClose}
-          dlHeader="Хэвэтч цэнэглэх заавар"
+          dlHeader="Хэтэвч цэнэглэх заавар"
           btnDialog={
             <div
               onClick={() => {}}

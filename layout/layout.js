@@ -1,18 +1,18 @@
-import CompareSelect from "@/components/Profile/CompareSelect";
-import urls from "@/constants/api";
-import axios from "axios";
-import { getCookie } from "cookies-next";
-import Head from "next/head";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { updateBookmark } from "store/slice/bookmark";
-import { setUser } from "store/slice/user";
-import Footer from "../components/footer/index";
-import { setCategories } from "store/slice/category";
+import CompareSelect from '@/components/Profile/CompareSelect';
+import urls from '@/constants/api';
+import axios from 'axios';
+import { getCookie } from 'cookies-next';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateBookmark } from 'store/slice/bookmark';
+import { setCategories } from 'store/slice/category';
+import { setUser } from 'store/slice/user';
+import Footer from '../components/footer/index';
 
 const Layout = ({ children }) => {
-  const token = getCookie("token");
+  const token = getCookie('token');
   const dispatch = useDispatch();
   const { compare } = useSelector((state) => state.compare);
   const { user } = useSelector((state) => state.user);
@@ -21,7 +21,7 @@ const Layout = ({ children }) => {
   const getUser = async () => {
     if (user.userType == undefined && token) {
       await axios
-        .get(`${urls["test"]}/user/me`, {
+        .get(`${urls['test']}/user/me`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -31,7 +31,7 @@ const Layout = ({ children }) => {
         });
     }
     if (categories?.length == 0) {
-      await axios.get(`${urls["test"]}/category`).then((d) => {
+      await axios.get(`${urls['test']}/category`).then((d) => {
         dispatch(setCategories(d.data));
       });
     }
@@ -66,13 +66,13 @@ const Layout = ({ children }) => {
       >
         {children}
         {compare &&
-          (router?.pathname == "/" ||
-            router?.pathname == "/category" ||
-            router?.pathname == "/category/[slug]" ||
-            router?.pathname == "/account/[slug]" ||
-            (router?.pathname == "/account" &&
-              (router?.query?.tab == "MyAds" ||
-                router?.query?.tab == "Bookmark"))) && (
+          (router?.pathname == '/' ||
+            router?.pathname == '/category' ||
+            router?.pathname == '/category/[slug]' ||
+            router?.pathname == '/account/[slug]' ||
+            (router?.pathname == '/account' &&
+              (router?.query?.tab == 'MyAds' ||
+                router?.query?.tab == 'Bookmark'))) && (
             <CompareSelect btnView={false} />
           )}
       </div>

@@ -173,7 +173,7 @@ export default function CreateAd() {
         duration: 1000,
         isClosable: true,
       });
-      router.push('/account?tab=MyAds');
+
       await axios
         .post(`${urls['test']}/ad/uploadFields`, fImages, {
           headers: {
@@ -206,6 +206,7 @@ export default function CreateAd() {
           },
         }
       );
+      router.push('/account?tab=MyAds');
     } catch (error) {
       setIsLoading(false);
       console.error(error);

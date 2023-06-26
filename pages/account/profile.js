@@ -1,19 +1,18 @@
-import ChangeAgent from "@/components/Profile/ChangeAgent";
-import ProfileImage from "@/components/Profile/profileImage";
-import ProfileInput from "@/components/Profile/profileInput";
-import Socials from "@/components/Profile/socials";
-import urls from "@/constants/api";
-import mergeNames from "@/util/mergeNames";
-import { Image, useToast } from "@chakra-ui/react";
-import axios from "axios";
-import { getCookie } from "cookies-next";
-import moment from "moment";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
-import { Fragment, useState } from "react";
+import ChangeAgent from '@/components/Profile/ChangeAgent';
+import ProfileImage from '@/components/Profile/profileImage';
+import ProfileInput from '@/components/Profile/profileInput';
+import Socials from '@/components/Profile/socials';
+import urls from '@/constants/api';
+import mergeNames from '@/util/mergeNames';
+import { Image, useToast } from '@chakra-ui/react';
+import axios from 'axios';
+import { getCookie } from 'cookies-next';
+import moment from 'moment';
+import { useRouter } from 'next/router';
+import { Fragment, useEffect, useState } from 'react';
 
-const GroupLayout = ({ title, children, className = "" }) => (
-  <div className={mergeNames("flex flex-col justify-start gap-3", className)}>
+const GroupLayout = ({ title, children, className = '' }) => (
+  <div className={mergeNames('flex flex-col justify-start gap-3', className)}>
     <h2 className="text-[20px] font-bold">{title}</h2>
     <div className="relative flex gap-1">{children}</div>
   </div>
@@ -30,19 +29,19 @@ const Profile = ({
   const [edit, setEdit] = useState(false);
   const [userData, setUserData] = useState();
   const [orgData, setOrgData] = useState({
-    orgName: "",
-    orgRegister: "",
-    orgLocation: "",
+    orgName: '',
+    orgRegister: '',
+    orgLocation: '',
     orgCertification: [],
   });
   const [agentData, setAgentData] = useState({
-    orgName: "",
+    orgName: '',
     orgCertification: [],
     images: [],
-    orgLocation: "",
-    firstName: "",
-    lastName: "",
-    register: "",
+    orgLocation: '',
+    firstName: '',
+    lastName: '',
+    register: '',
   });
   const toast = useToast();
   const [agentPersonalCard, setAgentPersonal] = useState([]);
@@ -53,41 +52,40 @@ const Profile = ({
 
   const handleEdit = async () => {
     setIsLoading(true);
-
     if (edit) {
-      const token = getCookie("token");
+      const token = getCookie('token');
       toast({
-        title: "Та түр хүлээнэ үү",
+        title: 'Та түр хүлээнэ үү',
       });
       let image = new FormData();
 
-      image.append("images", selectedImage);
-      let profileImg = "";
-      await axios
-        .post(`${urls["test"]}/ad/uploadFields`, image, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Access-Control-Allow-Headers": "*",
-          },
-        })
-        .then((d) => {
-          profileImg = d.data[0];
-        });
+      image.append('images', selectedImage);
+      let profileImg = '';
+      // await axios
+      //   .post(`${urls["test"]}/ad/uploadFields`, image, {
+      //     headers: {
+      //       Authorization: `Bearer ${token}`,
+      //       "Access-Control-Allow-Headers": "*",
+      //     },
+      //   })
+      //   .then((d) => {
+      //     profileImg = d.data[0];
+      //   });
 
       let agentFiles = [];
       let orgFiles = [];
-      setUserData((prev) => ({ ...prev, userType: "default" }));
-      if (orgData.orgCertification != "") {
-        setUserData((prev) => ({ ...prev, userType: "organization" }));
+      let userType = '';
+      if (orgData.orgCertification != '') {
+        userType = 'organization';
         let oFile = new FormData();
         orgData.orgCertification?.map((prev) => {
-          oFile.append("images", prev);
+          oFile.append('images', prev);
         });
         await axios
-          .post(`${urls["test"]}/ad/uploadFields`, oFile, {
+          .post(`${urls['test']}/ad/uploadFields`, oFile, {
             headers: {
               Authorization: `Bearer ${token}`,
-              "Access-Control-Allow-Headers": "*",
+              'Access-Control-Allow-Headers': '*',
             },
           })
           .then((d) => {
@@ -95,20 +93,20 @@ const Profile = ({
           });
       }
 
-      if (agentData.orgCertification != "") {
-        setUserData((prev) => ({ ...prev, userType: "agent" }));
+      if (agentData.orgCertification != '') {
+        userType = 'agent';
         let oFile = new FormData();
         agentData.orgCertification?.map((prev) => {
-          oFile.append("images", prev);
+          oFile.append('images', prev);
         });
         agentPersonalCard?.map((prev) => {
-          oFile.append("images", prev);
+          oFile.append('images', prev);
         });
         await axios
-          .post(`${urls["test"]}/ad/uploadFields`, oFile, {
+          .post(`${urls['test']}/ad/uploadFields`, oFile, {
             headers: {
               Authorization: `Bearer ${token}`,
-              "Access-Control-Allow-Headers": "*",
+              'Access-Control-Allow-Headers': '*',
             },
           })
           .then((d) => {
@@ -119,7 +117,7 @@ const Profile = ({
       try {
         await axios
           .put(
-            `${urls["test"]}/user`,
+            `${urls['test']}/user`,
             {
               profileImg: profileImg,
               socials: [
@@ -139,8 +137,8 @@ const Profile = ({
               phone: userData.phone,
               birthday: userData.birthday,
               username: userData.username,
-              userType: userData.userType,
-              status: "pending",
+              userType: userType,
+              status: 'pending',
               agentAddition: {
                 organizationName: agentData.orgName,
                 organizationContract: agentFiles[0],
@@ -169,8 +167,8 @@ const Profile = ({
             {
               headers: {
                 Authorization: `Bearer ${token}`,
-                "Access-Control-Allow-Headers": "*",
-                charset: "UTF-8",
+                'Access-Control-Allow-Headers': '*',
+                charset: 'UTF-8',
               },
             }
           )
@@ -187,15 +185,15 @@ const Profile = ({
   useEffect(() => {
     setSocials([
       {
-        name: "facebook",
+        name: 'facebook',
         url: user?.socials?.[0]?.url,
       },
       {
-        name: "instagram",
+        name: 'instagram',
         url: user?.socials?.[1]?.url,
       },
       {
-        name: "telegram",
+        name: 'telegram',
         url: user?.socials?.[2]?.url,
       },
     ]);
@@ -210,9 +208,9 @@ const Profile = ({
     <div className="flex-col h-full">
       <div
         className={mergeNames(
-          "grid grid-cols-1 xs:grid-cols-2 md:grid-cols-1 lg:grid-cols-2",
-          "gap-y-6 gap-x-10",
-          "py-5"
+          'grid grid-cols-1 xs:grid-cols-2 md:grid-cols-1 lg:grid-cols-2',
+          'gap-y-6 gap-x-10',
+          'py-5'
         )}
       >
         <GroupLayout title="Овог Нэр">
@@ -240,19 +238,19 @@ const Profile = ({
 
         <GroupLayout title="Хэрэглэгчийн төрөл" className="">
           <p className="flex items-center gap-4 italic font-semibold uppercase">
-            {userData?.userType == "default"
-              ? "Энгийн"
-              : userData?.userType == "agent"
-              ? "Агент"
-              : userData?.userType == "organization"
-              ? "Байгууллага"
+            {userData?.userType == 'default'
+              ? 'Энгийн'
+              : userData?.userType == 'agent'
+              ? 'Агент'
+              : userData?.userType == 'organization'
+              ? 'Байгууллага'
               : userData?.userType}
             {edit && user && (
               <Fragment>
                 <ChangeAgent
                   setAgent={setAgentData}
                   setOrg={setOrgData}
-                  org={userData?.userType == "default"}
+                  org={userData?.userType == 'default'}
                   setImage={setAgentPersonal}
                   agent={false}
                 />
@@ -261,7 +259,7 @@ const Profile = ({
                   setOrg={setOrgData}
                   org={false}
                   setImage={setAgentPersonal}
-                  agent={userData?.userType == "default"}
+                  agent={userData?.userType == 'default'}
                 />
               </Fragment>
             )}
@@ -297,12 +295,12 @@ const Profile = ({
           <ProfileInput
             value={moment(
               userData?.birthday ?? Date.now(),
-              "YYYY-MM-DD"
-            ).format("YYYY-MM-DD")}
+              'YYYY-MM-DD'
+            ).format('YYYY-MM-DD')}
             type="date"
             item="date"
             edit={edit}
-            ph={"01-02-2002"}
+            ph={'01-02-2002'}
             onChange={(e) =>
               setUserData((prev) => ({ ...prev, birthday: e.target.value }))
             }
@@ -324,7 +322,7 @@ const Profile = ({
                 alt="Current Profile"
                 src={
                   user?.profileImg ??
-                  "https://www.pikpng.com/pngl/m/80-805068_my-profile-icon-blank-profile-picture-circle-clipart.png"
+                  'https://www.pikpng.com/pngl/m/80-805068_my-profile-icon-blank-profile-picture-circle-clipart.png'
                 }
               />
             </div>
@@ -340,13 +338,13 @@ const Profile = ({
       <button
         className={mergeNames(
           // 'hidden',
-          "text-white  transition-all ease-linear",
-          "float-right mt-5 px-5 py-2 font-bold w-32 rounded-[30px]",
-          edit ? "bg-mainBlue hover:bg-blue-900" : "bg-red-500"
+          'text-white  transition-all ease-linear',
+          'float-right mt-5 px-5 py-2 font-bold w-32 rounded-[30px]',
+          edit ? 'bg-mainBlue hover:bg-blue-900' : 'bg-red-500'
         )}
         onClick={handleEdit}
       >
-        <p>{edit ? "Хадгалах" : "Засварлах"}</p>
+        <p>{edit ? 'Хадгалах' : 'Засварлах'}</p>
       </button>
     </div>
   );
