@@ -24,6 +24,9 @@ import { useState } from "react";
 
 import { AiFillEye } from "react-icons/ai";
 import { BiTrash } from "react-icons/bi";
+import { CgZoomIn } from "react-icons/cg";
+
+import { MdRestartAlt } from "react-icons/md";
 
 const EstimatedCard = ({ est, adminBtn }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -74,11 +77,11 @@ const EstimatedCard = ({ est, adminBtn }) => {
   const [note, setNote] = useState("");
   return (
     <div className="w-full text-left">
-      <div className="bg-white shadow-md  flex  gap-3 rounded-md p-5 border border-gray-200  h-[125px]">
+      <div className="bg-white shadow-md flex gap-5 rounded-md p-5 border border-gray-200  h-[125px]">
         <Link
           href={est.file ?? ""}
           target="_blank"
-          className="flex items-center"
+          className="relative flex items-center"
         >
           <Image
             src={
@@ -87,6 +90,7 @@ const EstimatedCard = ({ est, adminBtn }) => {
             alt="Үнэлгээ зураг"
             className="w-[60px] overflow-hidden border border-gray-300 rounded-md "
           />
+          <CgZoomIn className="absolute text-2xl text-slate-700 bg-blue-100 rounded-full p-[2px] -bottom-2 -right-2 position" />
         </Link>
         <div className="flex flex-col justify-between w-full h-full ">
           <div className="flex justify-between w-full">
@@ -130,10 +134,11 @@ const EstimatedCard = ({ est, adminBtn }) => {
                 className={mergeNames(cardIcon.div, "px-2 rounded-md")}
                 bg="bg-transparent"
                 btn={
-                  <BiTrash
-                    className={mergeNames("text-red-500", cardIcon.icon)}
-                    isDelete={false}
-                  />
+                  // <BiTrash
+                  //   className={mergeNames("text-red-500", cardIcon.icon)}
+                  //   isDelete={false}
+                  // />
+                  <EstimateButton icon="delete" isDelete={false} />
                 }
                 onclick={() => {
                   deleteEstimate(est._id);
@@ -141,7 +146,7 @@ const EstimatedCard = ({ est, adminBtn }) => {
               />
               <Alerting
                 title="Үнэлгээ"
-                isDelete={"буцаах"}
+                isDelete={"Буцаах"}
                 className={mergeNames(cardIcon.div, "px-2 rounded-md")}
                 bg="bg-transparent"
                 body={
@@ -153,10 +158,11 @@ const EstimatedCard = ({ est, adminBtn }) => {
                   </>
                 }
                 btn={
-                  <BiTrash
-                    className={mergeNames("text-yellow-500", cardIcon.icon)}
-                    isDelete={false}
-                  />
+                  // <BiTrash
+                  //   className={mergeNames("text-yellow-500", cardIcon.icon)}
+                  //   isDelete={false}
+                  // />
+                  <EstimateButton icon="return" isDelete={false} />
                 }
                 onclick={() => {
                   updateMessageEstimate(est._id, "returned", {
@@ -164,7 +170,7 @@ const EstimatedCard = ({ est, adminBtn }) => {
                   });
                 }}
               />
-              {/* <EstimateDeleteButton /> */}
+              {/* <EstimateButton /> */}
               <CustomModal
                 className=""
                 isOpen={isOpen}
@@ -172,7 +178,7 @@ const EstimatedCard = ({ est, adminBtn }) => {
                 onClose={onClose}
                 btnClose2={"Буцах"}
                 header={"Үнэлгээ"}
-                btnOpen={<EstimateShowButton />}
+                btnOpen={<EstimateButton icon="show" />}
               >
                 <div className="flex flex-col gap-3">
                   {est?.items?.map((item, i) => {
@@ -249,38 +255,55 @@ const EstimatedCard = ({ est, adminBtn }) => {
 
 export default EstimatedCard;
 
-export const EstimateDeleteButton = ({ label = false, onClick = () => {} }) => {
-  return (
-    <div className="relative flex flex-row items-center space-x-2">
-      <button
-        className={mergeNames(cardIcon.div, label && "px-2 rounded-md")}
-        onClick={onClick}
-      >
-        <BiTrash className={mergeNames("text-red-500", cardIcon.icon)} />
-        {label && <p className="text-sm text-red-400 "> Үнэлгээг хоослох</p>}
-      </button>
-    </div>
-  );
-};
-
-export const EstimateShowButton = ({ label = false }) => {
+export const EstimateButton = ({
+  label = false,
+  icon = "delete",
+  onClick = () => {},
+}) => {
   return (
     <div className="relative flex flex-row items-center space-x-2">
       <button
         className={mergeNames(
           cardIcon.div,
-          "bg-blue-200/40",
-          label && "px-2 rounded-md"
+          label && "px-2 rounded-md bg-red-200/40"
         )}
-        onClick={() => {}}
+        onClick={onClick}
       >
-        <AiFillEye className={mergeNames("text-blue-500", cardIcon.icon)} />
-        {label && <p className="text-sm text-blue-400 "> Үнэлгээг хоослох</p>}
+        {icon == "delete" && (
+          <BiTrash className={mergeNames("text-red-500", cardIcon.icon)} />
+        )}
+        {icon == "return" && (
+          <MdRestartAlt
+            className={mergeNames("text-yellow-500", cardIcon.icon)}
+          />
+        )}
+        {icon == "show" && (
+          <AiFillEye className={mergeNames("text-blue-500", cardIcon.icon)} />
+        )}
+
+        {label && <p className="text-sm text-red-400 ">Үнэлгээг хоослох</p>}
       </button>
     </div>
   );
 };
+
+// export const EstimateShowButton = ({ label = false }) => {
+//   return (
+//     <div className="relative flex flex-row items-center space-x-2">
+//       <button
+//         className={mergeNames(
+//           cardIcon.div,
+//           label && "px-2 rounded-md bg-red-200/40"
+//         )}
+//         onClick={() => {}}
+//       >
+//         <AiFillEye className={mergeNames("text-blue-500", cardIcon.icon)} />
+//         {label && <p className="text-sm text-blue-400 "> Үнэлгээг хоослох</p>}
+//       </button>
+//     </div>
+//   );
+// };
 const cardIcon = {
-  div: "flex items-center justify-center transition-all duration-300 ease-in-out rounded-full bg-red-200/40 group-a hover:bg-slate-200  shadow-md",
+  div: "flex items-center justify-center transition-all duration-300 ease-in-out rounded-full bg-blue-200/40 group-a hover:bg-slate-200  shadow-md",
   icon: "md:p-2 p-[5px] h-7 w-7 md:w-8 md:h-8",
 };

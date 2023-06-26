@@ -1,15 +1,13 @@
 import EstimatedCard, {
-  EstimateDeleteButton,
+  EstimateButton,
 } from "@/components/estimator/EstimatedCard";
 import urls from "@/constants/api";
 import axios from "axios";
 import { getCookie } from "cookies-next";
 
-
 import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
-
 
 const Estimated = () => {
   const token = getCookie("token");
@@ -33,7 +31,7 @@ const Estimated = () => {
       <div className="flex justify-end w-full">
         {/* Таны үнэлгээ */}
 
-        <EstimateDeleteButton label={true} />
+        <EstimateButton label={true} />
       </div>
       <div className="grid grid-cols-1 gap-3 my-3 xl:grid-cols-2 4xl:grid-cols-3 w-100">
         {estimate &&
