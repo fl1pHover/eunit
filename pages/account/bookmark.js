@@ -5,6 +5,7 @@ import axios from "axios";
 import { getCookie } from "cookies-next";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { NoAds } from "./myAds";
 
 const Bookmark = () => {
   const [ads, setAds] = useState([]);
@@ -79,8 +80,12 @@ const Bookmark = () => {
         {ads?.ads?.map((item, key) => (
           <AdCard key={key} item={item || {}} />
         ))}
-        
       </div>
+      {ads?.ads?.length == 0 && (
+        <div className="h-[20vh] flex justify-center items-center w-full text-xl">
+          Зар байхгүй байна
+        </div>
+      )}
     </>
   );
 };

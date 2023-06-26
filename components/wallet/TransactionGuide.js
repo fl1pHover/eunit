@@ -26,7 +26,7 @@ const TransactionGuide = () => {
               className="flex items-center gap-2 px-2 py-1 duration-300 border border-white rounded-md hover:bg-white/20"
             >
               <AddIcon className="text-2xl" />
-              <p>Цэнэглэх</p>
+              {/* <p>Цэнэглэх</p> */}
             </div>
           }
           dlBody={

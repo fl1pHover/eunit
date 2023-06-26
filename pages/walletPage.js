@@ -162,6 +162,7 @@ const WalletPage = ({ user }) => {
         </form>
         {/* <WalletForm onClick={() => sendPoint()} /> */}
       </div>
+      <div className="h-[2px] bg-bgGrey" />
       <WHistory user={user} />
     </div>
   );

@@ -37,7 +37,7 @@ const BottomMenu = (props) => {
           Icon={(props) => <HiHome {...props} />}
         />
         <Container
-          onClick={() => handleLink("/wallet")}
+          onClick={() => handleLink("/account?tab=WalletPage")}
           text="Хэтэвч"
           Icon={(props) => <IoWallet {...props} />}
         />
