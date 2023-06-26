@@ -60,7 +60,7 @@ const Profile = ({
       let image = new FormData();
 
       image.append('images', selectedImage);
-      let profileImg = '';
+      let profileImg = user.profileImg ?? '';
       // await axios
       //   .post(`${urls["test"]}/ad/uploadFields`, image, {
       //     headers: {
