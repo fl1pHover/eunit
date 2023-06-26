@@ -60,7 +60,7 @@ const Profile = ({
       let image = new FormData();
 
       image.append('images', selectedImage);
-      let profileImg = '';
+      let profileImg = user.profileImg ?? '';
       // await axios
       //   .post(`${urls["test"]}/ad/uploadFields`, image, {
       //     headers: {
@@ -74,7 +74,7 @@ const Profile = ({
 
       let agentFiles = [];
       let orgFiles = [];
-      let userType = '';
+      let userType = user.userType;
       if (orgData.orgCertification != '') {
         userType = 'organization';
         let oFile = new FormData();
