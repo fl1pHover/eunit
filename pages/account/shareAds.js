@@ -12,6 +12,7 @@ import { getCookie } from "cookies-next";
 
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { NoAds } from "./myAds";
 
 const SharingAds = ({ user }) => {
   const [ads, setAds] = useState({ ads: [], limit: 0 });
@@ -265,6 +266,7 @@ const SharingAds = ({ user }) => {
           );
         })}
       </div>
+      <NoAds data={ads?.ads} />
       <CustomPagination
         num={num}
         prev={() => {

@@ -8,6 +8,7 @@ import { getCookie } from "cookies-next";
 import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
+import { NoAds } from "./myAds";
 
 const Estimated = () => {
   const token = getCookie("token");
@@ -38,6 +39,7 @@ const Estimated = () => {
           estimate.map((est, i) => {
             return <EstimatedCard est={est} key={i} />;
           })}
+        <NoAds data={estimate} info="Үнэлгээ байхгүй байна" />
       </div>
     </div>
   );
