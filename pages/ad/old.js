@@ -574,6 +574,7 @@ const Product = ({ propAds, user }) => {
                         }}
                         // onMouseOver={() => setMarkerActive(i)}
                         onMouseOver={() => setMarkerActive(i)}
+                        onClick={() => setMarkerActive(i)}
                         animation={google.maps.Animation.DROP}
                       >
                         {/* end zasna */}

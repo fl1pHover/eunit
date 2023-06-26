@@ -158,6 +158,7 @@ const Category = () => {
                               lng: parseFloat(m.location?.lng ?? 107.341515),
                             }}
                             onMouseOver={() => setMarkerActive(i)}
+                            onClick={() => setMarkerActive(i)}
                             animation={google.maps.Animation.DROP}
                             className={mergeNames("group")}
                           >

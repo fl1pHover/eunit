@@ -808,6 +808,7 @@ const Product = () => {
                         }}
                         // onMouseOver={() => setMarkerActive(i)}
                         onMouseOver={() => setMarkerActive(i)}
+                        onClick={() => setMarkerActive(i)}
                         animation={google.maps.Animation.DROP}
                       >
                         {/* end zasna */}

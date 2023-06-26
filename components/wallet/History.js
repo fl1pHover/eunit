@@ -22,6 +22,7 @@ const WHistory = ({ body, user }) => {
         </div>
       </div> */}
       <div className="flex flex-col w-full mt-4">
+        {console.log(user?.pointHistory)}
         {user?.pointHistory?.map((ph, i) => {
           return (
             <div className="flex flex-col w-full my-1" key={i}>
@@ -32,7 +33,7 @@ const WHistory = ({ body, user }) => {
                 <div className={mergeNames(colSpan, " text-gray-500")}>
                   {/* <p className="text-left ">Илгээгч</p> */}
                   <div className="flex flex-col justify-start text-left">
-                    <p className=""> {ph.message}</p>
+                    <p className="truncate ">{ph.message}</p>
                     {ph.type == "sender" ? (
                       <div className="flex gap-2 text-sm font-normal">
                         <p>to</p>
