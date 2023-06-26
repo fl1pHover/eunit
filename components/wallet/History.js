@@ -24,47 +24,47 @@ const WHistory = ({ body, user }) => {
       <div className="flex flex-col w-full mt-4">
         {user?.pointHistory?.map((ph, i) => {
           return (
-            <>
-              <div className="flex flex-col w-full gap-3 mt-4" key={i}>
-                <div className="flex items-center gap-4">
-                  <p className="font-semibold">{i + 1}</p>
-                  <div className={mergeNames(colSpan, " text-gray-500")}>
-                    {/* <p className="text-left ">Илгээгч</p> */}
-                    <div className="flex flex-col justify-start text-left">
-                      <p className=""> {ph.message}</p>
-                      {ph.type == "sender" ? (
-                        <div className="flex gap-2 text-sm font-normal">
-                          <p>to</p>
-                          <a
-                            href={"/account/" + ph.receiver?.id}
-                            target="_blank"
-                            className={mergeNames(txthover, "text-center")}
-                          >
-                            {ph.receiver?.username}
-                          </a>
-                        </div>
-                      ) : (
-                        <div className="flex gap-2 text-sm font-normal">
-                          <p>from</p>
-                          <a
-                            href={"/account/" + ph.sender?.id}
-                            target="_blank"
-                            className={mergeNames(txthover)}
-                          >
-                            {ph.sender?.username}
-                          </a>
-                        </div>
-                      )}
-                    </div>
-                    <p className="text-right text-blue-700">
-                      {ph.type == "sender" ? "-" : "+"}
-                      {ph.point}
-                    </p>
+            <div className="flex flex-col w-full my-1" key={i}>
+              <div className="w-full h-[2px] bg-bgGrey mb-2" />
+              <div className="flex items-center gap-4">
+                <p className="font-semibold">{i + 1}</p>
+                <div className="w-1 h-8 bg-bgGrey " />
+                <div className={mergeNames(colSpan, " text-gray-500")}>
+                  {/* <p className="text-left ">Илгээгч</p> */}
+                  <div className="flex flex-col justify-start text-left">
+                    <p className=""> {ph.message}</p>
+                    {ph.type == "sender" ? (
+                      <div className="flex gap-2 text-sm font-normal">
+                        <p>to</p>
+                        <a
+                          href={"/account/" + ph.receiver?.id}
+                          target="_blank"
+                          className={mergeNames(txthover, "text-center")}
+                        >
+                          {ph.receiver?.username}
+                        </a>
+                      </div>
+                    ) : (
+                      <div className="flex gap-2 text-sm font-normal">
+                        <p>from</p>
+                        <a
+                          href={"/account/" + ph.sender?.id}
+                          target="_blank"
+                          className={mergeNames(txthover)}
+                        >
+                          {ph.sender?.username}
+                        </a>
+                      </div>
+                    )}
                   </div>
+                  <p className="text-right text-blue-700">
+                    {ph.type == "sender" ? "-" : "+"}
+                    {ph.point}
+                  </p>
                 </div>
               </div>
-              <div className="w-full h-[2px] bg-bgGrey mt-2" />
-            </>
+            </div>
+
             // <div
             //   className="flex items-center gap-4 border-t-2 border-gray-200"
             //   key={i}
