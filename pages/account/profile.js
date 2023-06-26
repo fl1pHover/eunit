@@ -74,7 +74,7 @@ const Profile = ({
 
       let agentFiles = [];
       let orgFiles = [];
-      let userType = 'default';
+      let userType = user.userType;
       if (orgData.orgCertification != '') {
         userType = 'organization';
         let oFile = new FormData();
