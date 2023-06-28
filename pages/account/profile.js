@@ -61,16 +61,17 @@ const Profile = ({
 
       image.append('images', selectedImage);
       let profileImg = user.profileImg ?? '';
-      // await axios
-      //   .post(`${urls["test"]}/ad/uploadFields`, image, {
-      //     headers: {
-      //       Authorization: `Bearer ${token}`,
-      //       "Access-Control-Allow-Headers": "*",
-      //     },
-      //   })
-      //   .then((d) => {
-      //     profileImg = d.data[0];
-      //   });
+      await axios
+        .post(`${urls["test"]}/ad/uploadFields`, image, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Access-Control-Allow-Headers": "*",
+          },
+        })
+        .then((d) => {
+
+          profileImg = d.data[0];
+        });
 
       let agentFiles = [];
       let orgFiles = [];

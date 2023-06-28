@@ -149,8 +149,10 @@ export default function SharingAd() {
 
     let fImages = new FormData();
 
-    images?.map((prev) => {
-      fImages.append('images', prev);
+    images?.map((prev, i) => {
+      if (i < 8) {
+        fImages.append('images', prev);
+      }
     });
     let fileUrl = new FormData();
     generalData.file?.map((prev) => fileUrl.append('images', prev));
