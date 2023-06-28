@@ -207,7 +207,7 @@ export default function CreateAd() {
         duration: 1000,
         isClosable: true,
       });
-      // router.push('/account?tab=MyAds');
+      router.push('/account?tab=MyAds');
     } catch (error) {
       setIsLoading(false);
       console.error(error);
