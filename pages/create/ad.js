@@ -223,7 +223,7 @@ export default function CreateAd() {
       }
     });
     if (emptyAd) {
-      if (user?.status == 'active') {
+      if (user?.status != 'banned') {
         await sendAd();
       } else {
         toast({
