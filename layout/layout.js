@@ -56,14 +56,49 @@ const Layout = ({ children }) => {
     <>
       <Head>
         <title>Eunit</title>
-        <meta
+        {/* <meta
           name="description"
           content="Eunit, үл хөдлөх хөрөнгийн зарын сайт"
         />
         <meta
           name="keywords"
           content="eunit, Eunit, үл хөдлөх, зарын сайт, гар утас, тээврийн хэрэгсэл, зарна, түрээслэнэ, монгол зарын сайт, хөрөнгийн үнэлгээ, хөрөнгө харьцуулалт, үнэлгээ хийх, "
+        /> */}
+
+        {/* <!-- Primary Meta Tags --> */}
+        <title>Eunit - Монголын зарын сайт</title>
+        <meta name="title" content="Eunit - Монголын зарын сайт" />
+        <meta
+          name="description"
+          content="Та манай сайтанд үл хөдлөх хөрөнгө, тээврийн гэх мэт бусад төрлийн зарах болон түрээслэх заруудыг байршуулж болно. Мөн хөрөнгийн үнэлгээ, зарын харьцуулалт, зар хуваалцах зэрэг олон төрлийн давуу талтай."
         />
+
+        {/* <!-- Open Graph / Facebook --> */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://metatags.io" />
+        <meta property="og:title" content="Eunit - Монголын зарын сайт" />
+        <meta
+          property="og:description"
+          content="Та манай сайтанд үл хөдлөх хөрөнгө, тээврийн гэх мэт бусад төрлийн зарах болон түрээслэх заруудыг байршуулж болно. Мөн хөрөнгийн үнэлгээ, зарын харьцуулалт, зар хуваалцах зэрэг олон төрлийн давуу талтай."
+        />
+        <meta
+          property="og:image"
+          content="https://metatags.io/images/meta-tags.png"
+        />
+
+        {/* <!-- Twitter --> */}
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content="https://metatags.io" />
+        <meta property="twitter:title" content="Eunit - Монголын зарын сайт" />
+        <meta
+          property="twitter:description"
+          content="Та манай сайтанд үл хөдлөх хөрөнгө, тээврийн гэх мэт бусад төрлийн зарах болон түрээслэх заруудыг байршуулж болно. Мөн хөрөнгийн үнэлгээ, зарын харьцуулалт, зар хуваалцах зэрэг олон төрлийн давуу талтай."
+        />
+        <meta
+          property="twitter:image"
+          content="https://metatags.io/images/meta-tags.png"
+        />
+
         <meta name="language" content="Mongolia" />
         <link rel="icon" href="/images/logo/bom-blue.png" />
       </Head>
