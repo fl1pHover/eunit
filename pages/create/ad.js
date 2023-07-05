@@ -13,7 +13,6 @@ import { ContainerX } from '@/lib/Container';
 
 import Step3 from '@/components/createAd/step3';
 import urls from '@/constants/api';
-import { getSellType } from '@/context/functions';
 import useAd from '@/util/useAd';
 import { GoogleMap, MarkerF, useLoadScript } from '@react-google-maps/api';
 import { getCookie } from 'cookies-next';
@@ -130,7 +129,7 @@ export default function CreateAd() {
 
   const sendAd = async () => {
     const token = getCookie('token');
-
+    console.log(`start ${new Date(Date.now())}`);
     const filters = [];
     const pushedImages = [];
     subCategory.steps.map((s) => {
@@ -163,17 +162,12 @@ export default function CreateAd() {
 
     let fImages = new FormData();
 
-    images?.map((prev) => {
-      fImages.append('images', prev);
+    images?.map((prev, i) => {
+      if (i < 8) {
+        fImages.append('images', prev);
+      }
     });
     try {
-      toast({
-        title: 'Амжилттай нэмэгдлээ.',
-        status: 'success',
-        duration: 1000,
-        isClosable: true,
-      });
-
       await axios
         .post(`${urls['test']}/ad/uploadFields`, fImages, {
           headers: {
@@ -206,6 +200,13 @@ export default function CreateAd() {
           },
         }
       );
+
+      toast({
+        title: 'Амжилттай нэмэгдлээ.',
+        status: 'success',
+        duration: 1000,
+        isClosable: true,
+      });
       router.push('/account?tab=MyAds');
     } catch (error) {
       setIsLoading(false);
@@ -222,7 +223,7 @@ export default function CreateAd() {
       }
     });
     if (emptyAd) {
-      if (user?.status == 'active') {
+      if (user?.status != 'banned') {
         await sendAd();
       } else {
         toast({
