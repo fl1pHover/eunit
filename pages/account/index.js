@@ -80,7 +80,7 @@ const Account = () => {
             "transition-all duration-500"
           )}
         >
-          <div className="flex flex-row gap-5 border-b account-tabs cursor-pointer border-b-bgGrey lg:text-base text-[12px]">
+          <div className="flex flex-row gap-5 border-b account-tabs whitespace-nowrap overflow-x-scroll sm:overflow-x-visible cursor-pointer border-b-bgGrey lg:text-base text-[12px]">
             {tabs.map((tab, index) => {
               return (
                 <button

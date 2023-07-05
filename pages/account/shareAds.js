@@ -184,7 +184,11 @@ const SharingAds = ({ user }) => {
               })}
             </FilterAd>
           </div>
-          <RadioGroup className={mergeNames(radioGroup)} defaultValue="1">
+          <RadioGroup
+            size="sm"
+            className={mergeNames(radioGroup)}
+            defaultValue="1"
+          >
             <Radio
               colorScheme="green"
               onChange={(e) => {
@@ -198,17 +202,7 @@ const SharingAds = ({ user }) => {
             >
               Нэмсэн зарууд
             </Radio>
-            <Radio
-              onChange={(e) => {
-                if (e.target.checked) {
-                  getAds("returned");
-                  setCheck("returned");
-                }
-              }}
-              value="2"
-            >
-              Буцаагдсан зар
-            </Radio>
+
             <Radio
               colorScheme="yellow"
               onChange={(e) => {
@@ -220,9 +214,19 @@ const SharingAds = ({ user }) => {
               }}
               value="3"
             >
-              Шалгаж байгаа зар
+              Шалгаж байгаа
             </Radio>
-
+            <Radio
+              onChange={(e) => {
+                if (e.target.checked) {
+                  getAds("returned");
+                  setCheck("returned");
+                }
+              }}
+              value="2"
+            >
+              Буцаагдсан зар
+            </Radio>
             <Radio
               colorScheme="red"
               onChange={(e) => {

@@ -120,6 +120,7 @@ const Bottom = ({ sticky }) => {
                 duration: 0.3,
               },
             }}
+            exit={{ opacity: 0, y: -10 }}
             onMouseOver={() => setActiveSearch(true)}
             className={mergeNames(
               "bg-blue-900/[0.96] w-full absolute left-0",
@@ -140,14 +141,14 @@ const Bottom = ({ sticky }) => {
                 onChange={(e) => setSearch(e.target.value)}
                 type="text"
                 placeholder="Зараа хайна уу"
-                onKeyPress={(e) => {
+                onKeyDown={(e) => {
                   if (event.key === "Enter") {
                     () => func(search), console.log("Searching!!");
                   }
                 }}
                 value={search}
                 className={mergeNames(
-                  "h-full w-full ml-2 border-none rounded-md placeholder-blue-300/40 bg-mainBlossom bg-opacity-40  focus:ring-0 "
+                  "h-full w-full p-2 text-base ml-2 border-none rounded-md placeholder-blue-300/40 bg-mainBlossom bg-opacity-40  focus:ring-0 "
                 )}
               />
               <button

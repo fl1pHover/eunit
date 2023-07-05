@@ -222,7 +222,11 @@ const MyAds = ({ user }) => {
             </FilterAd>
           </div>
 
-          <RadioGroup className={mergeNames(radioGroup)} defaultValue="1">
+          <RadioGroup
+            className={mergeNames(radioGroup)}
+            size={"sm"}
+            defaultValue="1"
+          >
             <Radio
               colorScheme="green"
               onChange={(e) => {
@@ -362,7 +366,7 @@ export const NoAds = ({ data, info = "Зар байхгүй байна" }) => {
   return (
     <>
       {data.length == 0 && (
-        <div className="h-[20vh] flex justify-center items-center w-full text-xl">
+        <div className="min-h-[20vh] md:min-h-[40vh] h-full flex justify-center items-center w-full text-xl">
           {info}
         </div>
       )}

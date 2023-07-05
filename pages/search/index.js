@@ -1,9 +1,9 @@
-import AdContent from '@/components/home/adContent';
-import ProAdContent from '@/components/home/proAdContent';
-import { useAuth } from '@/context/auth';
-import MainContainer from '@/layout/mainContainer';
-import { ContainerX } from '@/lib/Container';
-import { Box } from '@chakra-ui/react';
+import AdContent from "@/components/home/adContent";
+import ProAdContent from "@/components/home/proAdContent";
+import { useAuth } from "@/context/auth";
+import MainContainer from "@/layout/mainContainer";
+import { ContainerX } from "@/lib/Container";
+import { Box } from "@chakra-ui/react";
 
 const SearchedAds = () => {
   const { defaultAds, specialAds } = useAuth();
@@ -23,7 +23,7 @@ const SearchedAds = () => {
               <ProAdContent
                 data={specialAds}
                 tlc={toLowerCase}
-                title={''}
+                title={""}
                 showLink="hidden"
                 inCat
                 func={() => {}}
@@ -36,7 +36,7 @@ const SearchedAds = () => {
               <AdContent
                 data={defaultAds}
                 tlc={toLowerCase}
-                title={''}
+                title={""}
                 showLink="hidden"
                 inCat
                 func={() => {}}
