@@ -119,7 +119,7 @@ export default function Login() {
       classname={mergeNames(
         "w-[auto] md:w-[800px] lg:w-[1000px] ",
         "relative grid grid-cols-1 md:grid-cols-2",
-        "md:mx-auto m-5 md:my-10 rounded-xl overflow-hidden min-h-[550px]"
+        "md:mx-auto md:my-10 m-0 rounded-xl overflow-hidden min-h-[550px]"
       )}
     >
       <div className="relative hidden bg-blue-900 md:block">
@@ -148,7 +148,7 @@ export default function Login() {
               <button
                 key={index}
                 className={mergeNames(
-                  "pb-3 relative text-xl ",
+                  "pb-3 relative text-lg md:text-xl",
                   sign === tab.title ? "text-mainBlossom" : "text-gray-400"
                 )}
                 onClick={() => {
@@ -165,7 +165,7 @@ export default function Login() {
               >
                 <div
                   className={mergeNames(
-                    "absolute bottom-0 left-1/2 -translate-x-1/2 bg-mainBlue h-[2px] duration-300",
+                    "absolute bottom-0 left-1/2 -translate-x-1/2 bg-mainBlue h-[3px] duration-300",
                     sign === tab.title ? "w-full " : "w-0"
                   )}
                 ></div>
