@@ -1,4 +1,7 @@
+import { CloseIcon, SearchIcon } from "@/util/Icons";
+import mergeNames from "@/util/mergeNames";
 import { useRouter } from "next/router";
+import { useState } from "react";
 import { AiFillCalculator } from "react-icons/ai";
 import { BiSearch } from "react-icons/bi";
 import { FaUserCircle } from "react-icons/fa";
@@ -28,34 +31,62 @@ const BottomMenu = (props) => {
   const handleLink = (link) => {
     router.push(link);
   };
+
+  const [search, setSearch] = useState(false);
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 w-screen md:hidden bg-mainBlossom">
-      <div className="flex flex-row">
-        <Container
-          onClick={() => handleLink("/")}
-          text="Нүүр"
-          Icon={(props) => <HiHome {...props} />}
-        />
-        <Container
-          onClick={() => handleLink("/account?tab=WalletPage")}
-          text="Хэтэвч"
-          Icon={(props) => <IoWallet {...props} />}
-        />
-        <Container
-          onClick={() => handleLink("/")}
-          text="Хайлт"
-          Icon={(props) => <BiSearch {...props} />}
-        />
-        <Container
-          onClick={() => handleLink("/estimator")}
-          text="Үнэлгээ"
-          Icon={(props) => <AiFillCalculator {...props} />}
-        />
-        <Container
-          text="Профайл"
-          onClick={() => handleLink("/account")}
-          Icon={(props) => <FaUserCircle {...props} />}
-        />
+    <div className="relative">
+      <div className="fixed bottom-0 left-0 right-0 z-50 w-screen md:hidden bg-mainBlossom">
+        <div className="flex flex-row">
+          <Container
+            onClick={() => handleLink("/")}
+            text="Нүүр"
+            Icon={(props) => <HiHome {...props} />}
+          />
+          <Container
+            onClick={() => handleLink("/account?tab=WalletPage")}
+            text="Хэтэвч"
+            Icon={(props) => <IoWallet {...props} />}
+          />
+          <Container
+            onClick={() => setSearch(true)}
+            text="Хайлт"
+            Icon={(props) => <BiSearch {...props} />}
+          />
+          <Container
+            onClick={() => handleLink("/estimator")}
+            text="Үнэлгээ"
+            Icon={(props) => <AiFillCalculator {...props} />}
+          />
+          <Container
+            text="Профайл"
+            onClick={() => handleLink("/account")}
+            Icon={(props) => <FaUserCircle {...props} />}
+          />
+        </div>
+        <div
+          className={mergeNames(
+            "fixed  left-0 z-50 w-full h-full p-6 bg-bgGrey duration-300 flex  flex-col items-center justify-between",
+            search ? "top-0" : "top-[100%]"
+          )}
+        >
+          <div className="flex items-center w-full overflow-hidden shadow-md rounded-xl">
+            <input
+              type="text"
+              placeholder="Хайх"
+              className="w-full px-4 py-3 text-sm"
+            />
+            <button onClick={() => {}} className="h-full p-3 bg-white">
+              <SearchIcon className="text-xl" />
+            </button>
+          </div>
+
+          <button
+            onClick={() => setSearch(false)}
+            className="p-4 bg-gray-300 rounded-full"
+          >
+            <CloseIcon className="text-xl" />
+          </button>
+        </div>
       </div>
     </div>
   );

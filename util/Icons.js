@@ -1,4 +1,5 @@
-import { IoIosAddCircle } from "react-icons/io";
+import { FiSearch } from "react-icons/fi";
+import { IoIosAddCircle, IoMdClose } from "react-icons/io";
 import { RiInformationLine } from "react-icons/ri";
 
 export function GoogleIcon({ size = "1em", props }) {
@@ -54,3 +55,7 @@ export function FacebookIcon({ size = "1em", props }) {
 export const AddIcon = (props) => <IoIosAddCircle {...props} />;
 
 export const InfoIcon = (props) => <RiInformationLine {...props} />;
+
+export const CloseIcon = (props) => <IoMdClose {...props} />;
+
+export const SearchIcon = (props) => <FiSearch {...props} />;
