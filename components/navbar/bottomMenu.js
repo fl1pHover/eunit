@@ -75,7 +75,12 @@ const BottomMenu = (props) => {
               placeholder="Хайх"
               className="w-full px-4 py-3 text-sm"
             />
-            <button onClick={() => {}} className="h-full p-3 bg-white">
+            <button
+              onClick={() => {
+                handleLink("/search"), setSearch(false);
+              }}
+              className="h-full p-3 bg-white"
+            >
               <SearchIcon className="text-xl" />
             </button>
           </div>
