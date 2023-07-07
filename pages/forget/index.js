@@ -1,7 +1,7 @@
-import urls from '@/constants/api';
-import { ContainerXP } from '@/lib/Container';
-import { STYLES } from '@/styles/index';
-import mergeNames from '@/util/mergeNames';
+import urls from "@/constants/api";
+import { ContainerXP } from "@/lib/Container";
+import { STYLES } from "@/styles/index";
+import mergeNames from "@/util/mergeNames";
 import {
   Box,
   FormControl,
@@ -9,10 +9,10 @@ import {
   Image,
   Input,
   useToast,
-} from '@chakra-ui/react';
-import axios from 'axios';
-import { useRouter } from 'next/router';
-import { useState } from 'react';
+} from "@chakra-ui/react";
+import axios from "axios";
+import { useRouter } from "next/router";
+import { useState } from "react";
 
 const Forget = () => {
   const router = useRouter();
@@ -21,9 +21,9 @@ const Forget = () => {
   return (
     <ContainerXP
       classname={mergeNames(
-        'w-[auto] md:w-[800px] lg:w-[1000px] ',
-        'relative grid grid-cols-1 md:grid-cols-2',
-        'mx-auto my-5 md:my-10 rounded-xl overflow-hidden'
+        "w-[auto] md:w-[800px] lg:w-[1000px] ",
+        "relative grid grid-cols-1 md:grid-cols-2",
+        "mx-auto my-0 md:my-10 rounded-xl overflow-hidden"
       )}
     >
       <div className="relative hidden bg-blue-900 md:block">
@@ -55,40 +55,40 @@ const Forget = () => {
             />
             <Box h={7} />
             <button
-              className={mergeNames('w-full h-auto py-3', STYLES.blueButton)}
+              className={mergeNames("w-full h-auto py-3", STYLES.blueButton)}
               onClick={async () => {
-                if (email != '') {
+                if (email != "") {
                   try {
                     await axios
-                      .get(`${urls['test']}/auth/forget?email=${email}`)
+                      .get(`${urls["test"]}/auth/forget?email=${email}`)
                       .then((d) => {
                         console.log(d.data);
-                        if (d.data == 'true' || d.data) {
+                        if (d.data == "true" || d.data) {
                           toast({
                             title:
-                              'Имэйл рүү тань нууц үг шинэчлэх линк явууллаа',
-                            status: 'success',
+                              "Имэйл рүү тань нууц үг шинэчлэх линк явууллаа",
+                            status: "success",
                             duration: 5000,
                           });
                         } else {
                           toast({
-                            title: 'Имэйлээ шалгана уу',
-                            status: 'warning',
+                            title: "Имэйлээ шалгана уу",
+                            status: "warning",
                             duration: 5000,
                           });
                         }
                       });
                   } catch (error) {
-                    if (error?.response?.data?.message == 'user not found') {
+                    if (error?.response?.data?.message == "user not found") {
                       toast({
-                        title: 'Бүртгэлгүй имэйл байна',
-                        status: 'warning',
+                        title: "Бүртгэлгүй имэйл байна",
+                        status: "warning",
                         duration: 5000,
                       });
                     } else {
                       toast({
-                        title: 'Алдаа гарлаа',
-                        status: 'error',
+                        title: "Алдаа гарлаа",
+                        status: "error",
                         duration: 5000,
                       });
                     }
@@ -102,7 +102,7 @@ const Forget = () => {
           <p className="my-10 text-sm font-bold text-center text-gray-600">
             <button
               className="text-blue-800"
-              onClick={() => router.push('/login')}
+              onClick={() => router.push("/login")}
             >
               Нэвтрэх хэсэг рүү буцах
             </button>
@@ -115,18 +115,18 @@ const Forget = () => {
 
 export const ForgetInput = ({ lbl, onChange }) => {
   return (
-    <Box bg={'bg.input'} borderRadius={12} w="full">
-      <FormControl variant={'floating'} id="first-name" isRequired>
+    <Box bg={"bg.input"} borderRadius={12} w="full">
+      <FormControl variant={"floating"} id="first-name" isRequired>
         <Input
           placeholder=" "
           border="1px solid #d9d9d9 "
-          className={mergeNames('relative text-[14px] rounded-full')}
+          className={mergeNames("relative text-[14px] rounded-full")}
           // type={type === 'password' ? (!show ? 'password' : 'text') : type}
           onChange={onChange}
-          type={'email'}
+          type={"email"}
           required
         />
-        <FormLabel className={mergeNames('text-[14px] md:text-base ')}>
+        <FormLabel className={mergeNames("text-[14px] md:text-base ")}>
           {lbl}
         </FormLabel>
 
